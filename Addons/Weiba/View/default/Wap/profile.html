@@ -1,0 +1,127 @@
+<include file="header" />
+<style type="text/css">
+   #i_info_top_ava{ margin:2em 0 1em; position:static}
+  #i_info_top_box{ text-align:left; position:static;}
+  .name_intro{ margin:16px 20px; display:-webkit-box;}
+   .name_intro .u_info{ -webkit-box-flex:1; width:73%; padding-right:0.5em; border-right:1px solid #ebebeb;}
+    .name_intro .u_zan{ -webkit-box-flex:1; width:27%; text-align:center; color:#777}
+	.name_intro .u_zan b{ font-size:1.2em}
+	.name_intro .u_info .name{ padding-bottom:0.2em}
+	.name_intro .u_info .name img{ vertical-align:-0.2em; height:1.2em; margin-left:5px}
+	.name_intro .intro{ color:#999}
+  #i_info_top_name{ color:#444}
+  #i_info_top_ava img{ border:5px solid #ddd; border-radius:45px;}
+  .bklist{ margin-top:0.75em;}
+</style>
+<div id="content" interface="favorite">
+    <div id="user-weibo-list" data-title="{$datatitle}" date-selected="true" data-footer="none" data-rememberScroll="true">
+        <header>
+            <div id="header-buttons">
+                <a href="javascript:history.go(-1);">
+                    <div id="back" class="header-menu-link" data-back="false">
+                    返回
+                    </div>
+                </a>
+				<!--
+                <div id="messageLink" class="header-menu-link"><a href="{:U('w3g/Index/msgbox')}"><i class="num"></i></a></div>
+        <div id="menuLink" class="header-menu-link"></div>
+        -->
+            </div>
+            <h1 class="hasback">
+                {$datatitle}
+            </h1>
+        </header>
+    <!-- 个人信息 -->
+    <div id="i_info">
+        <div id="i_info_top">
+                <div id="i_info_top_ava">
+                    <!-- 头像 -->
+                    <img src="{$profile.headimgurl}" width="80" height="80" >
+                </div>
+                <div id="i_info_top_box">
+                    <div class="name_intro">
+                    	<div class="u_info">
+                        	<span class="name"><strong>{$profile.nickname}</strong><!--<img  src="{:APPS_URL}/w3g/_static/img/sys/ic_teacher.png"/>--></span><br/>
+                            <span class="intro">
+                            	<if condition="$profile['remark']">
+                            	{$profile.remark}
+                                <else/>
+                                 一句话介绍一下自己让大家更了解你
+                                </if>
+                            </span>
+                        </div>
+                        <div class="u_zan">
+                        	<b>{$praiseCount}</b><br/>
+                            收到的赞
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+    </div>
+    
+    <div class="bklist">
+      <php>if(!$post_list['list_data']):</php>
+      <div class="nodata">还没有任何帖子!</div>
+      <php>else:</php>
+      <div class="weiba_postlist">
+          <ul id="listData">
+            <volist name="post_list.list_data" id="vo">
+            <li onclick="javascript:window.open('{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}','_self')">
+                <div class="name">
+                    
+                    <a href="{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}">
+                    	<if condition="$vo['tag_id']"><span class="blue">[ {$vo.tag_name} ]</span></if>
+                        <span>{$vo.title}</span>
+                        <php>if($vo['attach']){</php><i class="ico-bar-attach">&nbsp;</i><php>}</php>
+                        <!--
+                        <php>if($vo['is_img']){</php><i class="ico-bar-image">&nbsp;</i><php>}</php>
+                        -->
+                        <php>if($vo['top']==1){</php><i class="ico-bar-top">&nbsp;</i><php>}</php>
+                        <php>if($vo['digest']==1){</php><i class="ico-bar-fine">&nbsp;</i><php>}</php>
+                        <php>if($vo['recommend']){</php><i class="ico-bar-recd">&nbsp;</i><php>}</php>
+                    </a>
+                </div>
+                <php>if($vo['image']){</php> 
+                <a class="weiba_postlist_pics" href="{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}">
+                <div class="ninepic_list">
+                    <volist name="vo['image']" id="vo2">
+                        <lt name="i" value="4">
+                        <span><img src="{$vo2}"/></span>
+                        </lt>
+                    </volist>
+                </div>
+                </a>
+                <php>}</php>
+                <div class="info clearfix">
+                    <div class="left">
+                         <a href="{:addons_url('Weiba://Wap/profile',array('uid'=>$vo['post_uid']))}">
+                         <img height="16" width="16" src="{$vo['post_uid']|get_userface}"/>
+                         {$vo.user.nickname}</a></span>
+                    </div>
+                    <div class="right">
+                    <php>if($vo['read_count']>0){</php><span class="llnum">{$vo.read_count}</span><php>}if($vo['reply_count']>0){</php><span class="plnum">{$vo.reply_count}</span><php>}</php>
+                    </div>
+                </div>
+            </li>
+            </volist>
+          </ul>
+          <php>if($post_list['totalPages']>1):</php>
+          <div id="pager_box">
+            <php>if($post_list['nowPage']>1):</php>
+            <a href="{:addons_url('Weiba://Wap/profile',array('weiba_id'=>$weiba_detail['id'],'type'=>$type,'page'=>$post_list['nowPage']-1))}" id="prev" class="pure-button pager_child pager_p_n pure-button-primary">上一页</a>
+            <php>endif;</php>
+            <php>if($post_list['nowPage']<$post_list['totalPages']):</php>
+            <a href="{:addons_url('Weiba://Wap/profile',array('weiba_id'=>$weiba_detail['id'],'type'=>$type,'page'=>$post_list['nowPage']+1))}" id="next" class="pure-button pager_child pager_p_n pure-button-primary">下一页</a>
+            <php>endif;</php>
+          </div>
+          <php>endif;</php>
+        </div>
+      <php>endif;</php>
+  </div>
+    
+    
+    
+    </div>
+	
+    <include file="footer" />

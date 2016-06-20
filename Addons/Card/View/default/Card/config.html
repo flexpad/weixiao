@@ -1,0 +1,308 @@
+<extend name="Base/common" />
+<block name="body">
+<div class="span9 page_message">
+	<section id="contents">
+      <include file="Addons/_nav" />
+      <p class="normal_tips"><b class="fa fa-info-circle"></b>会员卡链接:<a target="_blank" href="{:U( 'preview' )}">预览</a>,<a id="copyLink" data-clipboard-text="{:addons_url('Card://Wap/index',array('publicid'=>$public_info['id']))}">复制链接</a><script type="application/javascript">$.WeiPHP.initCopyBtn("copyLink");</script>
+      </p>
+      <div class="tab-content has-weixinpreivew"> 
+      	
+        <form action="{:U('config')}" class="form-horizontal" method="post">
+            <empty name="custom_config">
+            	<div class="field_group">
+                		<h3>会员卡正面</h3>
+                        <div class="field_group_inner" style="overflow:hidden">
+                        <div class="card_preview fl" style="margin:15px 40px;">
+                        	<div id="cardLogo" style="display:none"><img src="__IMG__/default.png"></div>
+                            <div id="cardBg"><img id="cardBgImg" src="{:ADDON_PUBLIC_PATH}/card_bg_1.png" width="100%" height="100%"></div>
+                            <span class="card_num number_color" id="cardNumber">NO. 80001</span>
+                            <span class="card_name title_color"></span>
+                       </div>
+                       <div class="fr" style="width:560px">
+                <foreach name="data['config']" item="form" key="o_key">
+                	<if condition="$o_key=='back_background'">
+                    	</div>
+                    	</div>
+                        </div>
+                    	<div class="field_group">
+                		<h3>会员卡反面</h3>
+                        <div class="field_group_inner" style="overflow:hidden">
+                        <div class="card_preview fl" style="margin:15px 40px;">
+                            <a id="cardBackBg" href="{:ADDON_PUBLIC_PATH}/card_bg_1.png" target="_blank"><img id="cardBackBgImg" src="{:ADDON_PUBLIC_PATH}/card_bg_1.png" width="100%" height="100%"></a>
+                            <div class="card_intro back_color">
+                            	<p class="title">使用说明</p>
+                                <p class="intro"></p>
+                            </div>
+                       </div>
+                       <div class="fr" style="width:560px">
+                    </if>
+                    <div class="form-item cf">
+                        <label class="item-label">
+                            {$form.title|default=''}
+                            <present name="form.tip">
+                                <span class="check-tips">{$form.tip}</span>
+                            </present>
+                        </label>
+                            <switch name="form.type">
+                                <case value="text">
+                                <div class="controls">
+                                    <input id="{$o_key}" type="text" name="config[{$o_key}]" class="text input-large" value="{$form.value}">
+                                </div>
+                                </case>
+                                 <case value="color">
+                                    <div class="controls">
+                                        <input id="{$o_key}" type="hidden" name="config[{$o_key}]" value="{$form.value}">
+                                        <div data-color="{$o_key}" class="color_picker" style="background:{$form.value}"></div>
+                                    </div>
+                                </case>
+                                <case value="password">
+                                <div class="controls">
+                                    <input type="password" name="config[{$o_key}]" class="text input-large" value="{$form.value}">
+                                </div>
+                                </case>
+                                <case value="hidden">
+                                    <input type="hidden" name="config[{$o_key}]" id="hidden_{$o_key}" value="{$form.value}">
+                                </case>
+                                <case value="radio">
+                                <div class="controls">
+                                    <foreach name="form.options" item="opt" key="opt_k">
+                                        <label class="radio">
+                                            <input type="radio" name="config[{$o_key}]" value="{$opt_k}" <eq name="form.value" value="$opt_k"> checked</eq>>{$opt}
+                                        </label>
+                                    </foreach>
+                                </div>
+                                </case>
+                                <case value="checkbox">
+                                <div class="controls">
+                                    <foreach name="form.options" item="opt" key="opt_k">
+                                        <label class="checkbox">
+                                            <php>
+                                                is_null($form["value"]) && $form["value"] = array();
+                                            </php>
+                                            <input type="checkbox" name="config[{$o_key}][]" value="{$opt_k}" <in name="opt_k" value="$form.value"> checked</in>>{$opt}
+                                        </label>
+                                    </foreach>
+                                </div>
+                                </case>
+                                <case value="select">
+                                <div class="controls">
+                                	<if condition="$o_key eq 'length'">
+                                	<select name="config[{$o_key}]" id="select_{$o_key}">
+                                        <volist name='form.options' id='opt_k'>
+                                        	 <option value="{$key}" <php>if(strlen($form['value'])==strlen($key)){echo 'selected';}</php>>{$opt_k}</option>
+                                        </volist>
+                                    </select>
+                                    
+                                	<else/>
+                                	<select name="config[{$o_key}]" id="select_{$o_key}">
+                                        <foreach name="form.options" item="opt" key="opt_k">
+                                            <option value="{$opt_k}" <eq name="form.value" value="$opt_k"> selected</eq>>{$opt}</option>
+                                        </foreach>
+                                    </select>
+                                	</if>
+                                </div>
+                                <if condition="$o_key=='background'">
+                                 <!-- 自定义上传背景 -->
+                                 <div id="customBackground">
+                                     <P style="color:#888">自定义会员卡背景图片尺寸建议为：宽534像素高318像素</P>
+                                    <div  class="controls uploadrow2"  data-max="1" title="点击修改图片" rel="bg">
+                                          <input type="file" id="upload_picture_bg">
+                                          <input type="hidden" name="config[bg]" id="cover_id_bg" value="{$config['bg_id']}"/>
+                                          <div class="upload-img-box">
+                                            <notempty name="config.bg_id">
+                                           
+                                              <div class="upload-pre-item2"><img width="100" height="100" src="{$config['bg_id']|get_cover_url}"/></div>
+                                              <em class="edit_img_icon">&nbsp;</em>
+                                            </notempty>
+                                            
+                                          </div>
+                                          
+                                      </div> 
+                                  </div>
+                                </if>
+                                 <if condition="$o_key=='back_background'">
+                                 <!-- 自定义上传背景 -->
+                                 <div id="customBackBackground"
+                                    <P style="color:#888">自定义会员卡背景图片尺寸建议为：宽534像素高318像素</P>
+                                    <div class="controls uploadrow2"  data-max="1" title="点击修改图片" rel="backbg">
+                                          <input type="file" id="upload_picture_backbg">
+                                          <input type="hidden" name="config[backbg]" id="cover_id_backbg" value="{$config['backbg_id']}"/>
+                                          <div class="upload-img-box">
+                                            <notempty name="config.backbg_id">
+                                           
+                                              <div class="upload-pre-item2"><img width="100" height="100" src="{$config['backbg_id']|get_cover_url}"/></div>
+                                              <em class="edit_img_icon">&nbsp;</em>
+                                            </notempty>
+                                            
+                                          </div>
+                                      </div> 
+                                  </div>
+                                </if>
+                                </case>
+                               
+                                <case value="textarea">
+                                <div class="controls">
+                                    <label class="textarea input-large">
+                                        <textarea id="{$o_key}" name="config[{$o_key}]">{$form.value}</textarea>
+                                    </label>
+                                </div>
+                                </case>
+                                <case value="picture">
+                                	<div class="controls uploadrow2" data-max="1" title="点击修改图片" rel="{$o_key}">
+                                      <input type="file" id="upload_picture_{$o_key}">
+                                      <input type="hidden" name="config[{$o_key}]" id="cover_id_{$o_key}" value="{$form['value']}" data-callback="logoCallback"/>
+                                      <div class="upload-img-box">
+                                        <notempty name="form['value']">
+                                       
+                                          <div class="upload-pre-item2"><img width="100" height="100" src="{$form['value']|get_cover_url}"/></div>
+                                          <em class="edit_img_icon">&nbsp;</em>
+                                        </notempty>
+                                        
+                                      </div>
+                                  </div> 
+                                </case>
+                                
+                            </switch>
+                        </div>
+                </foreach>
+                </div>
+                </div>
+                </div>
+            <else />
+                <present name="custom_config">
+                    {$custom_config}
+                </present>
+            </empty>
+            <input type="hidden" name="id" value="{$data.id}" readonly>
+            <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+            
+        </form>
+        
+      </div>
+    </section>
+ </div>
+</block>
+
+<block name="script">
+<link type="text/css" rel="stylesheet" href="__STATIC__/colorpicker/colpick.css?v={:SITE_VERSION}"/>
+<script type="text/javascript" src="__STATIC__/colorpicker/colpick.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+<script type="text/javascript" charset="utf-8">
+	//导航高亮
+    $('.side-sub-menu').find('a[href="{:U('Addons/index')}"]').closest('li').addClass('current');
+    if($('ul.tab-nav').length){
+    	$('.btn-return').hide();
+    }
+	$(function(){
+		showTab();
+		initUploadImg();
+		$('#select_background').change(function(){
+				if($(this).val()==11){
+					$('#customBackground').show();
+				}else{
+					var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$(this).val()+".png";
+					$('#cardBg').attr("href",cardBgUrl);
+					$('#cardBgImg').attr("src",cardBgUrl);
+					$('#customBackground').hide();
+				}
+		});
+		$('#select_length').change(function(){
+			var val = 'NO. '+$(this).val();
+			$('#cardNumber').html(val);
+		});		
+		$('#title').keyup(function(){
+			$('.card_name').html($(this).val());
+		})
+		
+		//初始化
+		var startNum = $('#select_startNumber').val();
+		$('#select_length option').each(function(index, element) {
+			var tempVal = $(this).prop('value');
+			$(this).prop('value',startNum +""+tempVal.substring(1));  
+        })
+		$('.card_name').html($('#title').val());
+		$('#cardNumber').html('NO. '+$('#select_length').val());
+		if($('#select_background').val()==11){
+			$('#customBackground').show();
+			var cardBgUrl = $("#hidden_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_background').val()+".png";
+			$('#customBackground').hide();
+		}	
+		$('#cardBg').attr("href",cardBgUrl);
+		$('#cardBgImg').attr("src",cardBgUrl);	
+		if($('#cover_id_logo').val()!=""){
+			$('#cardLogo').find('img').attr('src',$('#cover_id_logo').next().find('img').attr('src'));
+			if($('input[name="config[show_logo]"]:checked').val()!=0){
+				$('#cardLogo').show();
+			}else{
+				$('#cardLogo').hide();
+			}
+		}
+		$('input[name="config[show_logo]"]').click(function(){
+			if($(this).val()!=0){
+				$('#cardLogo').show();
+			}else{
+				$('#cardLogo').hide();
+			}
+		})
+		
+		$('#select_startNumber').change(function(){
+			var tNum = $(this).val();
+			$('#select_length option').each(function(index, element) {
+				var tempVal = $(this).prop('value');
+				$(this).prop('value',tNum +""+tempVal.substring(1));  
+			})
+			$('#cardNumber').html('NO. '+$('#select_length').val());
+		});
+		
+		//反面初始化
+		$('#select_back_background').change(function(){
+				if($(this).val()==11){
+					$('#customBackBackground').show();
+				}else{
+					var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$(this).val()+".png";
+					$('#cardBackBg').attr("href",cardBgUrl);
+					$('#cardBackBgImg').attr("src",cardBgUrl);
+					$('#customBackBackground').hide();
+				}
+		});	
+		$('#instruction').keyup(function(){
+			$('.intro').html($(this).val());
+		})
+		
+		//初始化
+		$('.intro').html($('#instruction').val().replace(/\n/g,'<br/>'));
+		if($('#select_back_background').val()==11){
+			$('#customBackBackground').show();
+			var cardBgUrl = $("#hidden_back_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_back_background').val()+".png";
+			$('#customBackBackground').hide();
+		}	
+		$('#cardBackBg').attr("href",cardBgUrl);
+		$('#cardBackBgImg').attr("src",cardBgUrl);
+		
+		//初始化颜色控件
+		$('.color_picker').each(function(index, ele) {
+            $(ele).colpick({
+			colorScheme:'white',
+			submitText:"确定",
+			layout:'rgbhex',
+			color:'ff8800',
+			onSubmit:function(hsb,hex,rgb,el) {
+					$(el).css('background-color', '#'+hex);
+					$(el).colpickHide();
+					$(el).prev().val('#'+hex);
+					$('.'+$(el).data('color')).css('color','#'+hex);
+					
+				}
+			});
+			$('.'+$(ele).data('color')).css('color',$('#'+$(ele).data('color')).val());
+        });	
+	})
+	function logoCallback(name,id,src){
+		$('#cardLogo').find('img').attr('src',src);
+		$('#cardLogo').show();
+	}
+</script>
+</block>

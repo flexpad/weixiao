@@ -1,0 +1,146 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left: 50px
+}
+</style>
+<!-- 标签页导航 -->
+
+<div class="span9 page_message">
+  <section id="contents"> <include file="Addons/_nav" />
+    <div class="tab-content"> 
+      <!-- 表单 -->
+      <php> $post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+      <form class="form-horizontal form-center" method="post" action="{$post_url}" id="form">
+        <div class="form-item cf toggle-title">
+          <label class="item-label"> <span class="need_flag">*</span> 活动名称 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.title}" name="title" class="text" placeholder="请填写活动名称">
+          </div>
+        </div>
+        <div class="form-item cf toggle-start_time">
+          <label class="item-label"> <span class="need_flag">*</span> 有效期 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="datetime" placeholder="请选择生效时间" value="{$data.start_time|time_format}" class="text time" name="start_time">
+            -
+            <input type="datetime" placeholder="请选择过期时间" value="{$data.end_time|time_format}" class="text time" name="end_time">
+          </div>
+        </div>
+        <div class="form-item cf toggle-type">
+          <label class="item-label"> 活动策略 <span class="check-tips">  </span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="type" id="type_0" value="0" class="regular-radio choose_type" <if condition="intval($data[type])==0">checked="checked"</if> >
+              <label for="type_0"></label>
+              送积分 </div>
+            <div class="check-item">
+              <input type="radio" name="type" id="type_1" value="1" class="regular-radio choose_type" <if condition="$data[type]==1">checked="checked"</if> >
+              <label for="type_1"></label>
+              送代金券 </div>
+          </div>
+        </div>
+        <div class="form-item cf" id="score" style="display:none">
+        <label class="item-label">  <span class="check-tips"> </span></label>
+          <div class="controls">
+            开卡即赠送 <input type="score" value="{$data.score}" name="score" class="text money"> 积分
+          </div>
+        </div>
+        <div class="form-item cf" id="coupon_id" style="display:none">
+        
+          <div class="controls">
+                    <select name="coupon_id">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建优惠券</option>
+                          <else />
+                          <option value="0">请选择</option>
+                          <volist name="shop_conpon_list" id="sc">
+                            <option value="{$sc.id}" <if condition="$data[coupon_id]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+          </div>
+        </div>   
+        <div class="form-item cf">
+          <label class="item-label"> 营销 <span class="check-tips"> </span></label>
+          <div class="controls">
+        	<input type="checkbox" class="regular-checkbox" value="1" id="is_show_0" name="is_show" 
+                              <if condition="$data[is_show]==1">checked="checked"</if> >
+                              <label for="is_show_0"></label>在用户领卡界面显示
+                              
+            <label class="textarea input-large" style="margin:10px 0 0">
+              <textarea name="content" placeholder="请输入活动说明">{$data[content]}</textarea>
+            </label>
+          </div>
+        </div>             
+        
+        <div class="form-item form_bh">
+          <notempty name="data.id">
+            <input type="hidden" name="id" value="{$data.id}">
+          </notempty>
+          <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+        </div>
+      </form>
+   
+    </div>
+  </section>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+
+function choose_type(){
+	var val = $('input[name="type"]:checked').val();
+	if(val==0){
+		$('#score').show();
+		$('#coupon_id').hide();
+	}else{
+		$('#score').hide();
+		$('#coupon_id').show();
+	}
+}
+
+$(function(){    
+	$('input[type=score]').keypress(function(e) {
+    if (e.which==8) {
+      $(this).val('');
+    };
+
+		  if (!String.fromCharCode(e.which).match(/[0-9\.]/)) {
+		    return false;
+		  }
+		});
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    showTab();
+	
+	$('.choose_type').bind('click',function(){ choose_type();	});
+	choose_type();	
+});
+</script> 
+</block>

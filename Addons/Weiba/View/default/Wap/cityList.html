@@ -1,0 +1,58 @@
+<include file="../Public/header" />
+<div id="content">
+    <div id="weiba" data-title="论坛" class="panel" data-selected="true" style="padding:0;">
+        <header>
+        	
+            <div id="header-buttons">
+            	
+            	<a href="javascript:history.go(-1);">
+                	<div id="back" class="header-menu-link" data-back="false">
+                    </div>
+                </a>
+               
+            </div>
+            
+            <h1 class="hasback">
+            	切换城市
+            </h1>
+        </header>
+        <div class="mainWeiba">
+        	<div style="background:#fff; padding:15px 16px;">
+            	当前定位城市:
+                <if condition="$curCity">
+                	<a id="curCity" class="blue">{$curCity}</a>
+                <else/>
+                	<span style="color:#999">无法定位您所在的城市</span>
+                </if>
+            </div>
+    		<div class="navlist">
+            <ul>
+            	<volist name="list" id="vo">
+                	<li><a href="{:U('switchCity', array('city'=>$vo['id']))}">{$vo.city}</a></li>
+                </volist>
+            </ul>
+          </div>
+    	</div>
+
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    <if condition="$curCity">
+	var hasCity  = 0;
+	$('.navlist li').each(function(index, element) {
+        var curCityDom = $('#curCity');
+		if(curCityDom.text()==$(element).find('a').text()){
+			hasCity = 1;
+			curCityDom.attr('href',$(element).find('a').attr('href'));
+		}
+    });
+	if(hasCity==0){
+		$('#curCity').click(function(){
+			 $.ui.showMask("该城市暂没开通论坛！", true);
+		})
+	}
+	</if>
+})
+</script>
+<include file="../Public/footer" />

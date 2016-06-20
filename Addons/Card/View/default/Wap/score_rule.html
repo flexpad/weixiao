@@ -1,0 +1,38 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div class="container body">
+    	<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>积分规则</span>
+        </div>
+    	<ul class="toggle_list" style="margin-top:10px">
+        	<volist name="list" id="vo">
+        	<php>
+                	 if(intval($vo['score'])!=0 || intval($vo['experience'])!=0){
+               </php> 	 
+        	<li class="single_item m_10 p_10 toggle_list_open">
+            	<div class="title icon_arrow_right">
+                 	<img width="30" class="fl mr_10" src="{:ADDON_PUBLIC_PATH}/score_method_gray.png"/> 
+                	<p ><strong>{$vo.title}</strong></p>
+                </div>
+                <div class="content">
+                	<p class="t_color"><strong>赠送值（'-' 代表 扣除）</strong></p>
+                	 	<p>积分赠送： {$vo.score|intval} </p>
+                	<p>经验值赠送： {$vo.experience|intval} </p>
+                	 	
+                </div>
+            </li>
+            <php>
+                 }
+             </php>
+            </volist>
+        </ul>
+    	
+        <p class="copyright">{$system_copy_right}</p>
+    </div>
+    <script type="text/javascript">
+    </script>
+</body>
+</html>

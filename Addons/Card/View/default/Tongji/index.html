@@ -1,0 +1,146 @@
+<extend name="Base/common" />
+<block name="body">
+  <div class="span9 page_message">
+  <section id="contents"> 
+  	<include file="Addons/_nav" />
+    <div class="tab-content">
+    <if condition="!empty($normal_tips)">
+		<p class="normal_tips"><b class="fa fa-info-circle"></b> {$normal_tips}</p>
+		<br/>
+	</if> 
+    	
+            <div class="shop_base">
+            <div style="display: inline;">
+            	<span class='span_title'>按月份查看</span>
+    			<select id='select_year' class='select_year_month'>
+    			<php>
+    				$nowYear= time_format(time(),'Y');
+    				for($i=1989;$i<=$nowYear;$i++){
+    					if($nowYear ==$i){
+    						echo "<option value='$i' selected>$i</option>";
+    					}else{
+    						echo "<option value='$i'>$i</option>";
+    					}
+    				}
+    			</php>
+    			</select>
+    			
+    			<select id='select_month' class='select_year_month'>
+    				<option value='1'>一月</option>
+    				<option value='2'>二月</option>
+    				<option value='3'>三月</option>
+    				<option value='4'>四月</option>
+    				<option value='5'>五月</option>
+    				<option value='6'>六月</option>
+    				<option value='7'>七月</option>
+    				<option value='8'>八月</option>
+    				<option value='9'>九月</option>
+    				<option value='10'>十月</option>
+    				<option value='11'>十一月</option>
+    				<option value='12'>十二月</option>
+    			</select>
+    			<span class='span_title'>本月新增会员数：<span id='totalcount'>{$total_count}</span></span>
+    		</div>
+            
+            <h3>会员数据统计</h3>
+            <div class="shop_pv" style="height:400px;">
+            	
+            </div>
+        
+    </div>
+  </section>
+  </div>
+</block>
+<block name="script"> 
+<script type="text/javascript" src="__STATIC__/highcharts-4.0.1/js/highcharts.js"></script>
+<script>
+var the_xAxis;
+var the_series;
+$(function () {
+	
+	var mydate = new Date();
+	var month=mydate.getMonth() +1;
+	var year=mydate.getFullYear();
+	$("#select_month option[value="+month+"]").attr('selected','selected');
+	
+	
+	$('#select_month,#select_year').change(function(){
+		var month=$('#select_month').val();
+		var year=$('#select_year').val();
+		var data=getDayProfit(year,month);
+		the_xAxis=data.xAxis;
+		the_series=data.series;
+
+		$('.shop_pv').highcharts({
+		        chart: {
+		            type: 'area'
+		        },
+				title: {
+		            text: ''
+		        },
+		        xAxis: {
+		            categories: the_xAxis
+		        },
+		        series: [{
+					name:'新增会员',
+		            data: the_series
+		        }]
+		    });
+		
+	});
+	var data=JSON.parse('{$highcharts}');
+// 	console.log(data);
+	the_xAxis=data.xAxis;
+	the_series=data.series;
+    $('.shop_pv').highcharts({
+        chart: {
+            type: 'area'
+        },
+		title: {
+            text: ''
+        },
+        xAxis: {
+            categories: the_xAxis
+        },
+        series: [{
+			name:'新增会员',
+            data: the_series
+        }]
+    });
+});   	
+
+//获取所选月份每天所获得佣金
+function getDayProfit(year,month){
+	var return_data;
+	var url="{:addons_url('Card://Tongji/index')}";
+	$.ajax({ 
+		  type: 'POST', 
+		  url: url, 
+		  data: {'year':year,'month':month,'is_ajax':1}, 
+		  success: function(data){
+			  $('#totalcount').text(data.total_count);
+// 				the_xAxis=data.xAxis;
+// 				the_series=data.series;
+				return_data=data;
+// 				alert(data.xAxis);
+// 				alert(data.series);
+			}, 
+		  async:false 
+		}); 
+	return return_data;
+}
+
+
+</script>			
+<style type='text/css'>
+.select_year_month{
+	width:180px;
+	margin-right:15px;
+
+}
+.span_title{
+	 color: darkgray;
+	 padding: 15px;
+}
+</style>
+</block>

@@ -1,0 +1,62 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div class="container body">
+    	<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>客户关怀</span>
+        </div>
+        <notempty name='list_data'>
+            <ul class="toggle_list" style="margin-top:10px">
+                <volist name="list_data" id="vo">
+                    <li class="single_item m_10 p_10 toggle_list_open">
+                        <div class="title icon_arrow_right">
+                            <img width="26" class="fl mr_10" src="{:ADDON_PUBLIC_PATH}/cake.png"/>
+                            <p class="t_color"><strong>{$vo.title}</strong></p>
+                        </div>
+                        <div class="content">
+                            <p>使用日期:{$vo.start_time}</p>
+                            <p>{$vo.type}</p>
+                            <p>描述: {$vo.content}</p>
+                            <notempty name='vo.custom_log'>
+                            	<eq name="vo.is_send" value='0'>
+                            	<p style="text-align: right;"><a onclick="get_score({$vo.custom_log},'{$vo.title}');" style="border: none; background-color: #DA5F66; border-radius: 5px;font-size: 16px;text-decoration: none;color: #fff; padding: 5px 16px 8px 16px;">领取</a></p>
+                       			<else/>
+                       			<p style="text-align: right;"><a  style="border: none; background-color: #807B7B; border-radius: 5px;font-size: 16px;text-decoration: none;color: #fff; padding: 5px 16px 8px 16px;">已领取</a></p>
+                       			</eq>
+                       		</notempty>
+                        </div>
+                    </li>
+                </volist>
+            </ul>
+        <else/>
+        	<div class="empty_default">
+            <br/><br/><br/><br/>
+                <img src="__IMG__/empty_content.png" width="100"/>
+                <br/>
+                还没有客户关怀活动~</p>
+            </div>
+        </notempty>
+    	
+         <p class="copyright">{$system_copy_right}</p>
+    </div>
+    <include file="Public/card_footer"/>	
+<div class="bottom_nav_blank"></div>
+    <script type="text/javascript">
+    function get_score(id,title){
+    	$.post("{:U('get_privilege')}",{'id':id,'title':title},function(res){
+    		if(res.status==1){
+//     			$.Dialog.success(res.msg);
+    			$.Dialog.confirm('提示',res.msg,function(){
+    				window.location.reload();
+    			});
+    		}else{
+    			$.Dialog.fail(res.msg);
+    		}
+    		
+    	});
+    }
+    </script>
+</body>
+</html>

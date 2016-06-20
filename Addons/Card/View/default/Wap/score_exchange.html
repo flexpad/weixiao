@@ -1,0 +1,85 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+  <div class="container">  
+  		<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>积分兑换</span>
+        </div>
+  		<ul class="integral_list">
+  			<notempty name='score_exchange'>
+  				<volist name='score_exchange' id='vo'>
+  					<li>
+                    <p class="title">{$vo.title}</p>
+<!--                     <p class="info">此券有效期至：2015-4-27</p> -->
+                    <p class="info">兑换有效期：<span>{$vo.start_time|time_format='Y-m-d'}至{$vo.end_time|time_format='Y-m-d'}</span></p>
+                    <empty name="vo.cover_id">
+                    <img src="{:ADDON_PUBLIC_PATH}/exchange_pic.jpg"/>
+                    <else />
+                    <img src="{$vo[cover_id]|get_cover_url}"/>
+                    </empty>
+                    <br/>（{$vo.coupon}）
+                    <div class="integral_bottom">
+                    	
+                    	<span class="count">
+                    	
+                            <em>{$vo.score_limit}</em>
+                            积分 
+                        </span>
+                        <php>
+                        	$time=time();
+                        	if($time >= $vo['end_time']){
+                        	</php>
+                        	<a class="btn gray_btn exchange_btn" href="#">已过期</a>
+                        	<php>
+                        	}else if($vo['no_count']==1){
+                        	</php>
+                        	<a class="btn gray_btn exchange_btn" href="#">已兑换完</a>
+                        	<php>
+                        	}else{
+                        	</php>
+                        	<a class="btn exchange_btn" onclick='do_exchange("{$vo.id}","{$vo.coupon_id}")'>兑换</a>
+                        	
+                        	<php>
+                        	}
+                        </php>
+                        
+                        <!--
+                        <a class="btn gray_btn exchange_btn" href="#">已兑换或已过期</a>
+                        -->
+                    </div>
+             </li>     
+  				</volist>
+  			<else/>
+            	<div class="empty_default">
+                    <br/><br/><br/><br/>
+                        <img src="__IMG__/empty_content.png" width="100"/>
+                        <br/>
+                        还没有积分兑换活动~</p>
+                    </div>
+            </notempty>
+             
+   		</ul>
+           
+            
+            
+        <include file="Public/card_footer"/>	
+ </div>
+ 
+<script type="text/javascript">
+function do_exchange(id,coupon_id){
+	var url = "{:addons_url('Card://Wap/do_score_exchange')}&id="+id+"&coupon_id="+coupon_id;
+	$.post(url,function(d){
+		if(d==1){
+			$.Dialog.success('兑换成功');
+			window.location.reload();
+		}else if(d==-1){
+			$.Dialog.fail('积分不足');
+		}else{
+			$.Dialog.fail('兑换失败');
+		}
+	});
+}
+</script>
+</body>
+</html>

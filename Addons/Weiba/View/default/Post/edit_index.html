@@ -1,0 +1,125 @@
+<extend name="Base/common" />
+<block name="body">
+  
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      <include file="Addons/_nav" />
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <php> $post_url || $post_url = U('edit_index?model='.$model['id'], $get_param);</php>
+        <form id="form" action="{$post_url}" method="post" class="form-horizontal form-center">
+   	<div id='nid' style="display:none">
+             	<input  name="id" value="{$data.id}">
+            </div>
+            <div class="controls" id='tiezi'>
+		
+		<a onClick="addPost()" >选择帖子</a>
+		</div>
+           <div class="form-item" id="post" >   
+          	 <label class="item-label">帖子标题</label>
+             <div class="controls">
+             	<input type="text" class="text" name="title" value="{$data.title}" readonly>
+             </div>
+            </div>
+            
+            <div class="controls">
+		
+		</div>
+            <div class="form-item">   
+             <label class="item-label">帖子图片</label>
+          	 <div class="controls uploadrow2" data-max="1" title="点击修改图片" rel="index_img">
+                    <input type="file" id="upload_picture_index_img">
+                    <input type="hidden" name="index_img" id="cover_id_index_img" value="{$data.index_img}"/>
+                    <div class="upload-img-box">
+                      <notempty name="data['index_img']">
+                        <div class="upload-pre-item2"><img width="100" height="100" src="{$data.index_img|get_cover_url}"/></div>
+                        <em class="edit_img_icon">&nbsp;</em>
+                      </notempty>
+                    </div>
+                  </div>
+            </div>
+           
+        </div>
+        <div class="form-item form_bh" style="text-align:center">
+            <notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"></notempty>
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+          </div>
+      </form>
+      </div>
+    </section>
+  </div>
+</block>
+<block name="script">
+  
+  <script type="text/javascript">
+  $(function(){
+	var UploadFileExts = "{$UploadFileExts}";
+	initUploadImg();
+	if(UploadFileExts!=""){
+		initUploadFile(function(){},UploadFileExts);
+	}else{
+		initUploadFile();
+	}
+    showTab();	
+
+  });
+   var _id =$('#nid').find('input').val();
+	function addPost(){
+		var $postHtml = $('<div class="chooseShopDialog"><ul><center><img src="__IMG__/loading.gif"/></center></ul><br/><div class="m15"><a href="javascript:;" class="btn" id="confirmBtn">确定</a></div></div>');
+		$.Dialog.open("选择帖子",{width:600,height:500},$postHtml);
+		
+		$.ajax({
+	  		url:"{:addons_url('Weiba://Post/post_data',array('p'=>1))}",
+	  		data:{},
+	  		dataType:'JSON',
+	  		success:function(data){
+	  			var html = "";
+	  			var list_data = data.list_data;
+	  			//console.log(list_data);
+	  			if(list_data && list_data.length>0){
+	  				//alert(123);
+	  				for(var i=0;i<list_data.length;i++){
+	  					//console.log(list_data[i].title);
+	  					var id = list_data[i].id;
+	  					var title = list_data[i].title;
+	  					var post_uid = list_data[i].post_uid;
+	  					var weiba_id=list_data[i].weiba_id;
+	  					//var img_url=list_data[i].img_url;
+	  					
+	  					//console.log(id)
+	  					if(_id==id){
+	  						html += '<li><input type="radio"  checked="checked" class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
+	  					}else{
+	  						html += '<li><input type="radio"   class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
+	  					}
+	  				}
+	  				if(html!=""){
+	  					$('ul',$postHtml).html(html);
+	  					//$('#awardList').show();
+	  				}
+	  			}else{
+	  				$('ul',$postHtml).html("<center>还没有帖子</center>");
+	  			}
+	  		}
+	  	})
+	  	
+     $('#confirmBtn',$postHtml).click(function(){
+        $('li',$postHtml).each(function(index, element) {
+        if($(this).find('.post_id').prop("checked")==true){
+            var title = $(this).find('.title').text();
+            var nid = $(this).find('.post_id').val();
+            //console.log(nid);
+           // var titleHtml ='<div><input type="hidden" class="text" name="post_id" value="'+id+'"></div><div class="form-item">   <label class="item-label">帖子标题</label><div class="controls"><input type="text" class="text" name="id" value="'+title+'"> </div></div>';
+          
+           $('#post').find('input').val(title);
+            $('#nid').find('input').val(nid);
+            $.Dialog.close();
+        }
+    })
+   
+    })
+	};
+	
+</script> 
+</block>

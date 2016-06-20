@@ -1,0 +1,36 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div class="container body">
+    	<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>等级介绍</span>
+        </div>
+    	<ul class="toggle_list" style="margin-top:10px">
+        	<volist name="list" id="vo">
+        	<li class="single_item m_10 p_10 toggle_list_open">
+            	<div class="title icon_arrow_right">
+            		<eq name='vo.id' value='0'>
+            		
+            		<else/>
+                	<img width="30" class="fl mr_10" src="{:ADDON_PUBLIC_PATH}/privilege.png"/>
+                	</eq>
+                	<p class="t_color"><strong>{$vo.level}</strong></p>
+                </div>
+                <div class="content">
+                	<p><strong>等级条件：</strong></p>
+                	<p>累计积分达： {$vo.score}</p>
+                	<p>累计充值： {$vo.recharge}</p>
+                    <p>可以享受折扣： {$vo.discount}%</p>
+                </div>
+            </li>
+            </volist>
+        </ul>
+    	
+        <p class="copyright">2014&copy;WeiPHP</p>
+    </div>
+    <script type="text/javascript">
+    </script>
+</body>
+</html>

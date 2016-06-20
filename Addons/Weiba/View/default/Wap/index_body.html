@@ -1,0 +1,155 @@
+<style type="text/css">
+body{ background:#f1f1f1}
+</style>
+
+<div id="content">
+    <div id="weiba" data-title="论坛">
+        <header>
+        	
+            <div id="header-buttons">
+            	<!--
+                <div id="messageLink" class="header-menu-link"><a href="{:U('w3g/Index/msgbox')}"><i class="num"></i></a></div>
+        		<div id="menuLink" class="header-menu-link"></div>
+                -->
+                <div class="head_left">
+                    <if condition="$weiba_curCityInfo && $weiba_curCityInfo['logo']">
+                    	<a class="head_logo" href="/"><img src="{$site.logo}"/></a>
+                    <else/>
+                    	<a class="head_logo" href="/"><img src="{:ADDON_PUBLIC_PATH}/sys/logo.png?v={:SITE_VERSION}"/></a>
+                    </if>
+                    <a class="head_city_link" href="{:U('cityList')}">
+                        {$weiba_curCityInfo['city']}<i class="arrow_down"></i>
+                    </a>
+                </div>
+                <div id="otherLink" style="right:0">
+                	 <!--<a id="writeLink" class="header-menu-link" href="{:U('post')}">发帖</a>-->
+                     <a id="searchLink" class="header-menu-link" href="{:U('w3g/Search/post')}">搜索</a>
+                    <div id="headMenu" class="header-menu-link msg_tips_container" href="javascript:;">
+                    	导航<em class="msg"></em>
+                    	<ul class="head_sub_menu">
+                            <a href="{:U('forum')}">版块</a>
+                            <a class="msg_tips_container" href="{:U('my')}">我<em class="msg"></em></a>
+                        </ul>
+                    </div>
+                    <!--
+                    <a id="weibaLink" class="header-menu-link" href="{:U('forum')}">版块</a>
+                    <a id="myLink" class="header-menu-link msg_tips_container" href="{:U('my')}">我<em class="msg"></em></a>
+                    -->
+                </div>
+            </div>
+        </header>
+        <div class="mainWeiba">
+           
+            {:hook('show_ad_space', array('place'=>'weiba_banner','tpl'=>'weiba_banner'))}
+			 <php>if(!$indexList && !$list){</php>
+             	<div class="empty_list">暂时没有推荐!</div>
+              <php>}</php>
+            <div class="weiba_postlist">
+              <php>if($indexList):</php>
+              <ul class="wbtz_list">
+                <volist name="indexList" id="vo">
+               
+                <li  class="top_li" onclick="javascript:window.open('{:U('postDetail',array('post_id'=>$vo['id']))}','_self')">
+                	<a class="img" href="{:U('postDetail',array('post_id'=>$vo['id']))}">
+                    <img src="{:get_cover_url($vo['index_img'])}" />
+                   
+                    
+                    </a>
+                    <a class="link abs" href="{:U('postDetail',array('post_id'=>$vo['id']))}">{$vo.title}</a>
+                </li>
+                </volist>
+              </ul>
+              <!--
+              <ul class="wbtz_list">
+                <volist name="list" id="vo">
+                
+                <li onclick="javascript:window.open('{:U('postDetail',array('post_id'=>$vo['post_id']))}','_self')">
+                        
+                        <a class="link" href="{:U('postDetail',array('post_id'=>$vo['post_id']))}"><img class="face" src="{:get_userface($vo['post_uid'])}" />{$vo.title}</a>
+                </li>
+                
+                
+                
+                </volist>
+                
+              </ul>
+             -->
+              <php>endif;if($list):</php>
+              <div class="block_title mt8"><p>全站热帖</p></div>
+             	<ul id="listData">
+                    <volist name="list" id="vo">
+                    <li onclick="javascript:window.open('{:U('postDetail',array('post_id'=>$vo['id']))}','_self')">
+                        <div class="name">
+                           
+                            <a <if condition="$vo['digest']">class="yellow"</if> href="{:U('postDetail',array('post_id'=>$vo['id']))}">
+                            <if condition="$vo['tag_id']"><span class="blue">[ {$vo.tag_name} ]</span></if>
+                            <if condition="$vo['is_event']"><span class="blue">[ 活动 ]</span></if>
+                            <span>{$vo.title}</span>
+                            
+                            <!--<php>if(preg_match('/<img/i',$vo['content'])){</php><i class="ico-img"><img class="icons" width="16" src="{:APPS_URL}/w3g/_static/images/ico-img.png"></i><php>}</php></a>-->
+                            </a>
+                            <php>if($vo['attach']){</php><i class="ico-bar-attach">&nbsp;</i><php>}</php>
+                            <!--<php>if($vo['is_img']){</php><i class="ico-bar-image">&nbsp;</i><php>}</php>-->
+                            <!--
+                            <php>if($vo['top']==1){</php><i class="ico-bar-top">&nbsp;</i><php>}</php>
+                            -->
+                            <php>if($vo['digest']==1){</php><i class="ico-bar-fine">&nbsp;</i><php>}</php>
+                            <php>if($vo['recommend']){</php><i class="ico-bar-recd">&nbsp;</i><php>}</php>
+                        </div>
+                        <php>if($vo['image']){</php> 
+                        <a class="weiba_postlist_pics" href="{:U('postDetail',array('post_id'=>$vo['id']))}">
+                        <div class="ninepic_list">
+                            <volist name="vo['image']" id="vo2">
+                                <lt name="i" value="4">
+                                <span><img src="{$vo2}"/></span>
+                                </lt>
+                            </volist>
+                        </div>
+                        </a>
+                        <php>}</php> 
+                        <div class="info clearfix">
+                            <div class="left">
+                                <a href="{:addons_url('Weiba://Wap/profile',array('uid'=>$vo['post_uid']))}">
+                                <img height="16" width="16" src="{$vo['post_uid']|get_userface}"/>
+                                {$user_info[$vo['post_uid']]['uname']}</a>
+                                <!--&nbsp;-&nbsp;<span>{$vo.post_time|time_format}</span>-->
+                            </div>
+                            <div class="right">
+                            <php>if($vo['event'] && $vo['event']['join_count']>0){</php><span class="jlnum">{$vo.event.join_count}</span><php>}if($vo['read_count']>0){</php><span class="llnum">{$vo.read_count}</span><php>}if($vo['reply_count']>0){</php><span class="plnum">{$vo.reply_count}</span><php>}</php>
+                            </div>
+                        </div>
+                    </li>
+                    </volist>
+                  </ul>
+                <php>endif;</php>
+            </div>
+            <!--
+            <php>if($weibalist):</php>
+            <div class="weiba_forumlist">
+			<div class="section">
+              <div class="slt">推荐版块</div>
+                <div class="slc clearfix">
+                  <div class="bklist">
+                    <volist name="weibalist" id="vo">
+                        <dl>
+                          <dt>
+                            <a href="{:U('detail',array('weiba_id'=>$vo['weiba_id']))}">
+                              <img width="105" height="105" src="{$vo.avatar_big}">
+                            </a>
+                          </dt>
+                          <dd>
+                            <h3>
+                              <a title="{$vo.weiba_name}" href="{:U('detail',array('weiba_id'=>$vo['weiba_id']))}">   {$vo.weiba_name}
+                              </a>
+                            </h3>
+                          </dd>
+                        </dl>
+                    </volist>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <php>endif;</php>
+            -->
+        </div>
+    </div>

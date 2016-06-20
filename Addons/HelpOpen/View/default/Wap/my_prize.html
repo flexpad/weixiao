@@ -1,0 +1,60 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+	<div id="container" class="container">
+    	<notempty name="info.cover_id">
+        <div class="fixed_bg"><img src="{$info.cover_id|get_cover_url}" /></div>
+      <else />
+       <div class="fixed_bg"><img src="{:ADDON_PUBLIC_PATH}/bg.jpg" /></div>
+      </notempty>   
+      <div class="main_wrap">
+		<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>我的奖品</span>
+        </div>
+        <div class="my_prizes">
+        <empty name="list">
+        <div class="empty_default">
+            <br/><br/>
+            	<img src="__IMG__/empty_content.png" width="100"/>
+                <br/>
+                你目前还没奖品~</p>
+            </div>
+        
+        <else />
+        <ul>
+        	<volist name="list" id="vo">
+        		
+        		<li>
+        			 <empty name="vo.is_big"><img src="__IMG__/small_bag.jpg"/><!--小礼包图标--><else /><img src="__IMG__/big_bag.jpg"/><!--大礼包图标--></empty>
+	                <p class="p_title">{$vo.prize.name}</p>
+                    <if condition="$vo['prize']['prize_type'] neq 3">
+	                <p class="colorless">有效期：{$vo.time}</p>
+	                <p class="btn_p"><a href="{$vo.url}" class="get_btn"><empty name="vo.is_use">使用<else />已用</empty></a></p>
+                    <else />
+                    <p class="colorless">返现金额已经充值到你的会员卡余额</p>
+                    <p class="btn_p"><a href="{$vo.url}" class="get_btn">查看</a></p>
+                    </if>
+            	</li>
+                
+                </volist>
+        		
+        	
+        </ul>
+        </empty>
+        <div class="btm_content">
+        	<p class="link_p"><a href="{:U('prize_log',array('help_id'=>$help_id))}"><img src="{:ADDON_PUBLIC_PATH}/gift.png" width="14"/>获奖名单</a> | <a href="{:U('content',array('id'=>$help_id))}"><img src="{:ADDON_PUBLIC_PATH}/intro.png" width="14"/>活动规则</a> </p>
+            <p>已有<span>{$total|intval}</span>人获得丰厚礼品</p>
+        </div>
+        </div>
+        <p class="copyright">{$system_copy_right}{$tongji_code}</p>
+       </div>
+    </div>
+    <include file="Public/mobile_foot"/>
+    <script>
+	$('#container').css({'min-height':$(window).height()});
+	$('.my_prizes').css({'min-height':$(window).height()-250});
+	</script>
+    
+</body>
+</html>

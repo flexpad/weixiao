@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head"/>
+<body style="background:#fff">
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      
+      <div class="tab-content" style="padding:0 20px"> 
+        <!-- 表单 -->
+        <form id="form" action="{:U('duihuang?model='.$model['id'])}" method="post" class="form-horizontal">
+          <ul id="tab" class="tab-pane in">
+          	                 
+            	 <li class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>兑换码<span class="check-tips"></span></label>
+                    <div class="controls">
+                      <input type="text" class="text input-large samll_num" name="sn_id" value="" placeholder="优惠券 Sn码" >
+                    </div>
+                  </li>  
+                  
+               	</ul>
+          </div>
+          <div class="form-item form_bh">
+            <input type="hidden" name="id" value="{$data.id}">
+            <input type='hidden' name='member_id' value='{$data.member_id}' />
+            <button class="btn submit-btn ajax-post dialog_submit" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+          </div>
+        </form>
+       
+      </div>
+    </section>
+  </div>
+  </div>
+</body>
+<script type="text/javascript">
+$(function(){
+	set_number();
+	$("select[name='card_id']").change(function(){
+		set_number();
+	})
+	
+	$('.check_number').blur(function(){ var number = $(this).val(); checkMember(number); });
+});
+function set_number(){
+	var number_id=$("select[name='card_id'] option:selected").val();
+	
+	if(number_id==0){
+		$("input[name='number']").val('').show();
+		$('#number_tips').html('');
+		$('#event_div').hide();
+	}else{
+		var number = $("select[name='card_id'] option:selected").text();
+	    checkMember(number);
+		
+		$("input[name='number']").hide();
+	}
+}
+function checkMember(number){
+	var url = "{:U('checkMemberByAjax')}&number="+number;
+	$.post(url,{number:number},function(data){
+		var data = $.parseJSON(data);
+		if(data.status==0){
+			$('#number_tips').html('此会员不存在！');
+			$('#event_div').hide();
+		}else{
+			$('#number_tips').html('会员：'+data.name);
+			if(data.event_id!=0){
+			 var html = '<input type="checkbox" class="regular-checkbox" value="'+data.event_id+'" id="event_id" name="event_id" checked="checked" ><label for="event_id"></label>'+data.event_title;
+			
+			$('#event_div').show();
+			$('#event_html').html(html);}
+		}		
+	});
+}
+</script>
+</html>

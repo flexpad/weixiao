@@ -1,0 +1,81 @@
+<include file="header" />
+<style type="text/css">
+  body{background-color: #f1f1f1;}
+</style>
+<div id="content">
+  <div id="weiba" data-title="论坛" class="panel" data-selected="true"  data-menu="msgmenu" style="padding:0;">
+    <header>
+        <div id="header-buttons">
+            <div class="head_left">
+                    <a class="head_logo" href="/"><img src="{:ADDON_PUBLIC_PATH}/sys/logo.png?v={:SITE_VERSION}"/></a>
+                    
+                </div>
+             <div id="otherLink" style="right:0">
+                <a id="writeLink" class="header-menu-link" href="{:U('post')}">发帖</a>
+                <a id="myLink" class="header-menu-link msg_tips_container" href="{:addons_url('Weiba://Wap/my')}">我<em class="msg"></em></a>
+            </div>
+        </div>
+        
+    </header>
+    <div class="mainWeiba">
+      
+      <div class="weiba_forumlist">
+      	 <php>if(empty($weibacate)):</php>
+         	<div class="empty_list">暂时没有版块!</div>
+         <php>endif;</php>
+         <volist name="weibacate" id="cate">
+         <php>if(empty($cate['weibalist'])):continue;endif;</php>
+              <div class="section">
+              <a name="{$cate.name}"></a>
+                <div class="block_title">
+                	<p>{$cate.name}</p>
+                </div>
+                <div class="slc clearfix">
+                  <div class="bklist">
+                    <volist name="cate.weibalist" id="vo">
+                    	<a class="bk" href="{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$vo['id']))}">
+                        <dl>
+                          <dt>
+                            <span>
+                              <img class="w-h-img" width="100%" height="auto" src="{$vo.logo|get_cover_url}">
+                            <span>
+                          </dt>
+                          <dd>
+                            <h3>
+                              <span title="{$vo.weiba_name}" >   {$vo.weiba_name}
+                              </span>
+                            </h3>
+                            <p class="intro">{$vo.intro}</p>
+                          </dd>
+                        </dl>
+                        </a>
+                    </volist>
+                  </div>
+                </div>
+              </div>
+          </volist>
+          <div style="height:75px;"></div>
+      </div>
+      <script>
+        $(function(){
+        	var arrow_t = "{:ADDON_PUBLIC_PATH}/sys/arrowB.png";
+        	var arrow_t0 = "{:ADDON_PUBLIC_PATH}/sys/arrowT.png";
+        	
+           $('.slt').click(function(){
+        	   var cla = $(this).find('span').attr('title');
+        	   if(cla=='收起'){
+        		   $(this).find('span').attr('title', '展开');
+        		   $(this).find('img').attr('src', arrow_t0);
+        		   $(this).next().hide();
+        	   }else{
+        		   $(this).find('span').attr('title', '收起');
+        		   $(this).find('img').attr('src', arrow_t);
+        		   $(this).next().show();		   
+        	   }
+           });
+
+        })
+      </script>
+    </div>
+</div>
+<include file="footer" />

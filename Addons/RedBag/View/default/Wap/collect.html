@@ -1,0 +1,24 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/css.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body id="scratch">
+<div class="container" style="position:relative">
+	<div class="head_pic">
+     	<center><img src="{:ADDON_PUBLIC_PATH}/head_pic.png" width="100%"/></center>
+    </div>
+    
+    <div class="res_tips">
+    	<h4><center>温馨提示</center></h4>
+    	<p>{$msg}</p>
+    </div>
+      
+   <p class="copyright">{$system_copy_right}{$tongji_code}</p>
+</div>
+</body>
+<script type="text/javascript">
+function closepage(){
+	WeixinJSBridge.call('closeWindow');
+}
+var h=$(document).height();
+$('.container').css("min-height",h);
+</script>
+</html>

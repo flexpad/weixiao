@@ -1,0 +1,174 @@
+<extend name="Base/common" />
+<block name="body">
+<div class="span9 page_message">
+	<section id="contents">
+      <include file="Addons/_nav" />
+      
+      
+      <div class="box_title">
+      <h3>
+      <i class="i_edit">
+      </i>
+      营销管理
+      </h3>
+      </div>
+      <div class="box-content">
+      <div class="tab-content has-weixinpreivew"> 
+     <h5>赠送券管理</h5>
+     <a class="tile tile_themed" href="{:addons_url('Coupon://Coupon/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_ticket"></i>
+     <div class="div_info">
+     <strong>优惠券</strong>
+     </div>
+     </a>
+     
+     <a class="tile tile_themed" href="{:addons_url('ShopCoupon://ShopCoupon/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_ticket"></i>
+     <div class="div_info">
+     <strong>代金券</strong>
+     </div>
+     </a>
+      </div>
+      
+      
+      <div class="tab-content has-weixinpreivew"> 
+     <h5>客户营销</h5>
+     <a class="tile tile_themed" href="{:addons_url('Card://Reward/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_card"></i>
+     <div class="div_info">
+     <strong>开卡即送</strong>
+     </div>
+     </a>
+     <a class="tile tile_themed" href="{:addons_url('SingIn://SingIn/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_share"></i>
+     <div class="div_info">
+     <strong>签到分享</strong>
+     </div>
+     </a>
+     <a class="tile tile_themed" href="{:addons_url('Card://Score/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_empty"></i>
+     <div class="div_info">
+     <strong>积分兑换</strong>
+     </div>
+     </a>
+     <a class="tile tile_themed" href="{:addons_url('Card://Recharge/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_chongzhi"></i>
+     <div class="div_info">
+     <strong>充值赠送</strong>
+     </div>
+     </a>
+     <a class="tile tile_themed" href="{:addons_url('ShopReward://ShopReward/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_shopping"></i>
+     <div class="div_info">
+     <strong>消费赠送</strong>
+     </div>
+     </a>
+     
+ 
+      </div>
+      
+      <div class="tab-content has-weixinpreivew"> 
+      
+     <h5>客户关怀</h5>
+     <a class="tile tile_themed" href="{:addons_url('Card://Custom/lists')}&mdm={$_GET['mdm']}">
+     <i class="i_heart"></i>
+     <div class="div_info">
+     <strong>客户关怀</strong>
+     </div>
+     </a>
+  
+      </div>
+      </div>
+    </section>
+ </div>
+</block>
+
+<block name="script">
+<link type="text/css" rel="stylesheet" href="__STATIC__/colorpicker/colpick.css?v={:SITE_VERSION}"/>
+<script type="text/javascript" src="__STATIC__/colorpicker/colpick.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+<script type="text/javascript" charset="utf-8">
+	//导航高亮
+    $('.side-sub-menu').find('a[href="{:U('Addons/index')}"]').closest('li').addClass('current');
+    if($('ul.tab-nav').length){
+    	$('.btn-return').hide();
+    }
+	$(function(){
+		showTab();
+		initUploadImg();
+		$('#select_background').change(function(){
+				if($(this).val()==11){
+					$('#customBackground').show();
+				}else{
+					var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$(this).val()+".png";
+					$('#cardBg').attr("href",cardBgUrl);
+					$('#cardBgImg').attr("src",cardBgUrl);
+					$('#customBackground').hide();
+				}
+		});
+		$('#select_length').change(function(){
+			var val = 'NO. '+$(this).val();
+			$('#cardNumber').html(val);
+		});		
+		$('#title').keyup(function(){
+			$('.card_name').html($(this).val());
+		})
+		
+		//初始化
+		$('.card_name').html($('#title').val());
+		$('#cardNumber').html('NO. '+$('#select_length').val());
+		if($('#select_background').val()==11){
+			$('#customBackground').show();
+			var cardBgUrl = $("#hidden_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_background').val()+".png";
+			$('#customBackground').hide();
+		}	
+		$('#cardBg').attr("href",cardBgUrl);
+		$('#cardBgImg').attr("src",cardBgUrl);	
+		//反面初始化
+		$('#select_back_background').change(function(){
+				if($(this).val()==11){
+					$('#customBackBackground').show();
+				}else{
+					var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$(this).val()+".png";
+					$('#cardBackBg').attr("href",cardBgUrl);
+					$('#cardBackBgImg').attr("src",cardBgUrl);
+					$('#customBackBackground').hide();
+				}
+		});	
+		$('#instruction').keyup(function(){
+			$('.intro').html($(this).val());
+		})
+		
+		//初始化
+		$('.intro').html($('#instruction').val());
+		if($('#select_back_background').val()==11){
+			$('#customBackBackground').show();
+			var cardBgUrl = $("#hidden_back_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_back_background').val()+".png";
+			$('#customBackBackground').hide();
+		}	
+		$('#cardBackBg').attr("href",cardBgUrl);
+		$('#cardBackBgImg').attr("src",cardBgUrl);
+		
+		//初始化颜色控件
+		$('.color_picker').each(function(index, ele) {
+            $(ele).colpick({
+			colorScheme:'white',
+			submitText:"确定",
+			layout:'rgbhex',
+			color:'ff8800',
+			onSubmit:function(hsb,hex,rgb,el) {
+					$(el).css('background-color', '#'+hex);
+					$(el).colpickHide();
+					$(el).prev().val('#'+hex);
+					$('.'+$(el).data('color')).css('color','#'+hex);
+					
+				}
+			});
+			$('.'+$(ele).data('color')).css('color',$('#'+$(ele).data('color')).val());
+        });	
+	})
+</script>
+</block>

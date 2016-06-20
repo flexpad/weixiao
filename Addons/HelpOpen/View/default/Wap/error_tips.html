@@ -1,0 +1,35 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+	<div id="container" class="container">
+    	<notempty name="info.cover_id">
+        <div class="fixed_bg"><img src="{$info.cover_id|get_cover_url}" /></div>
+      <else />
+       <div class="fixed_bg"><img src="{:ADDON_PUBLIC_PATH}/bg.jpg" /></div>
+      </notempty>   
+      <div class="main_wrap">
+		
+        <div class="my_prizes">
+        <div class="empty_default">
+            <br/><br/><br/><br/>
+            	<img src="__IMG__/blank_pic.png" width="100"/>
+                <br/>
+                {$msg}</p>
+            </div>
+        
+        
+        <div class="btm_content">
+        	<p class="link_p"><a href="{:U('prize_log',array('help_id'=>$help_id))}"><img src="{:ADDON_PUBLIC_PATH}/gift.png" width="14"/>获奖名单</a> | <a href="{:U('content',array('id'=>$help_id))}"><img src="{:ADDON_PUBLIC_PATH}/intro.png" width="14"/>活动规则</a> </p>
+        </div>
+        </div>
+        <p class="copyright">{$system_copy_right}{$tongji_code}</p>
+       </div>
+    </div>
+    <include file="Public/mobile_foot"/>
+    <script>
+	$('#container').css({'min-height':$(window).height()});
+	$('.my_prizes').css({'min-height':$(window).height()-150});
+	</script>
+    
+</body>
+</html>

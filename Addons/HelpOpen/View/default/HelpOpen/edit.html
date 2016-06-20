@@ -1,0 +1,304 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 150px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left: 50px
+}
+</style>
+<!-- 标签页导航 -->
+
+<div class="span9 page_message">
+  <section id="contents"> <include file="Addons/_nav" />
+    <div class="tab-content"> 
+      <!-- 表单 -->
+      <php> $post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+      <form class="form-horizontal form-center" method="post" action="{$post_url}" id="form">
+        <div class="form-item cf toggle-title">
+          <label class="item-label"> <span class="need_flag">*</span> 活动名称 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.title}" name="title" class="text" placeholder="请填写活动名称">
+          </div>
+        </div>
+        <div class="form-item cf toggle-status">
+          <label class="item-label"> 是否开启 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="status" id="status_1" value="1" class="regular-radio status" <if condition="$data[status]==1">checked="checked"</if> >
+              <label for="status_1"></label>
+              开启 </div>          
+            <div class="check-item">
+              <input type="radio" name="status" id="status_0" value="0" class="regular-radio status" <if condition="intval($data[status])==0">checked="checked"</if> >
+              <label for="status_0"></label>
+              禁用 </div>
+          </div>
+        </div>
+        <div class="form-item cf toggle-start_time">
+          <label class="item-label"> <span class="need_flag">*</span> 有效期 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="datetime" placeholder="请选择生效时间" value="{$data.start_time|time_format}" class="text time" name="start_time">
+            -
+            <input type="datetime" placeholder="请选择过期时间" value="{$data.end_time|time_format}" class="text time" name="end_time">
+          </div>
+        </div>         
+        <div class="form-item cf">
+          <label class="item-label"> <span class="need_flag">*</span> 大礼包个数限制 <span class="check-tips">为空时表示不限制，超过此限制，系统会提示“礼包已被抢完!”</span></label>
+          <div class="controls">
+            <input type="number" value="{$data.prize_num|default=100}" name="prize_num" class="text" placeholder="大礼包数量">
+          </div>
+        </div>   
+        <div class="form-item cf">
+          <label class="item-label">活动规则 <span class="check-tips"> 200字以内最佳</span></label>
+          <div class="controls">
+            <label class="textarea input-large">
+            <textarea name="content">{$data[content]}</textarea>
+            </label>
+          </div>
+        </div>    
+        <div class="form-item cf">
+          <label class="item-label"> 领取说明 <span class="check-tips"> 20字以内最佳 </span></label>
+          <div class="controls">
+            <label class="textarea input-large">
+            <textarea name="collect_tips">{$data[collect_tips]}</textarea>
+            </label>
+          </div>
+        </div>                   
+ 
+        <div class="form-item cf">
+          <label class="item-label"> <span class="need_flag">*</span> 转发配置 <span class="check-tips"> （上传的图片尺寸建议为150*150像素）</span></label>
+          <div class="controls specTable data-table" style="margin:15px 0;" >
+          <table cellspacing="1" cellpadding="0">
+  <tr>
+    <td width="100" rowspan="2">
+    <div class="uploadrow2" data-max="1" title="点击修改图片" rel="share_icon">
+      <input type="file" id="upload_picture_share_icon">
+      <input type="hidden" name="share_icon" id="cover_id_share_icon" value="{$data[share_icon]}"/>
+      <div class="upload-img-box">
+        <notempty name="data[share_icon]">
+          <div class="upload-pre-item2"><img width="100" height="100" src="{$data[share_icon]|get_cover_url}"/></div>
+          <em class="edit_img_icon">&nbsp;</em>
+        </notempty>
+      </div>
+    </div>    
+    </td>
+    <td>转发标题： <input type="text" value="{$data.share_title}" name="share_title" class="text input-large"></td>
+  </tr>
+  <tr>
+    <td>转发描述： <input type="text" value="{$data.share_intro}" name="share_intro" class="text input-large"></td>
+  </tr>
+</table>
+
+          </div>
+        </div>
+        <div class="form-item cf">
+        <label class="item-label"> <span class="need_flag">*</span> 小礼包需要分享 <span class="check-tips"> 多少个小礼包被领取了才能颁发大礼包</span></label>
+          <div class="controls">
+            <input style="vertical-align:0" type="number" value="{$data.limit_num|default=5}" name="limit_num" class="text money"> </div>
+        </div>  
+        <div class="form-item cf">
+        <div style="margin:15px 0;" class="data-table">
+            <table cellspacing="1" cellpadding="0">
+              <thead>
+                <tr>
+                  <th width="80">奖项</th>
+                  <th width="150">奖品名称</th>
+                  <th>奖品类型</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="list_data_tbody">
+              <volist name="prize_list" id="cd">
+                 <tr class="list_tr">
+                  <td align="center"><span class="td_key">{$cd.title}</span></td>
+                  <td align="center">
+                    <input type="text" value="{$cd.name}" class="form-control money input_name" name="name[{$cd.sort}]">
+                    </td>
+                  <td>
+                  <select style="width: 100px;" name="prize_type[{$cd.sort}]" onchange="select_type(this)">
+                          <option value="0">请选择</option>
+                          <option value="1" <if condition="$cd[prize_type]==1">selected="selected"</if> >优惠券</option>
+                          <option value="3" <if condition="$cd[prize_type]==3">selected="selected"</if> >返现</option>
+                      </select>
+                  <span class="param" rel="1" <if condition="$cd[prize_type]!=1">style="display:none"</if> >
+                      <select style="width: 180px;" name="coupon_id[{$cd.sort}]" onchange="select_param(this)">
+                        <empty name="conpon_list">
+                          <option selected="selected" value="0">你还未创建优惠券</option>
+                          <else />
+                          <volist name="conpon_list" id="sc">                            
+                            <option value="{$sc.id}" <if condition="$cd[coupon_id]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span>
+                  
+                    <span class="param" rel="2" <if condition="$cd[prize_type]!=2">style="display:none"</if> >
+                      <select style="width: 180px;" name="shop_coupon_id[{$cd.sort}]" onchange="select_param(this)">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建代金券</option>
+                          <else />
+                          <volist name="shop_conpon_list" id="sc">                            
+                            <option value="{$sc.id}" <if condition="$cd[shop_coupon_id]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span>
+                      <span class="param" rel="3" <if condition="$cd[prize_type]!=3">style="display:none"</if> >
+                      <input type="text" value="{$cd.money|default='0.00'}" class="form-control money" name="money[{$cd.sort}]" maxlength="11">
+                      元</span>
+                      </td>
+                      <td>
+                      <input type="hidden" name="prize_ids[{$cd.sort}]" value="{$cd.id}" />
+                      <php>if($cd['sort']>1) { </php>
+                      <a href="javascript:void(0);" onclick="remove_tr(this)">删除</a>
+                      <php> } </php>
+                      </td> 
+                </tr>
+                </volist>
+                <tr class="more_tr">
+                  <td colspan="4"><a href="javascript:add_tr()">+增加奖项</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div> 
+        <div class="form-item form_bh">
+          <notempty name="data.id">
+            <input type="hidden" name="id" value="{$data.id}">
+          </notempty>
+          <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+        </div>
+      </form>
+<table style="display:none">
+<tr id="default_tr">
+                  <td align="center"><span class="td_key">小礼包sort_id</span></td>
+                  <td align="center">
+                    <input type="text" value="" class="form-control money input_name" name="name[sort_id]">
+                    </td>
+                  <td>
+                  <select style="width: 100px;" name="prize_type[sort_id]" onchange="select_type(this)">
+                          <option value="0">请选择</option>
+                          <option value="1">优惠券</option>
+                          <option value="3">返现</option>
+                      </select>
+                  <span class="param" rel="1" style="display:none">
+                      <select style="width: 180px;" name="coupon_id[sort_id]" onchange="select_param(this)">
+                        <empty name="conpon_list">
+                          <option selected="selected" value="0">你还未创建优惠券</option>
+                          <else />
+                          <volist name="conpon_list" id="sc">                            
+                            <option value="{$sc.id}">{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span>
+                  
+                    <span class="param" rel="2" style="display:none">
+                      <select style="width: 180px;" name="shop_coupon_id[sort_id]" onchange="select_param(this)">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建代金券</option>
+                          <else />
+                          <volist name="shop_conpon_list" id="sc">                            
+                            <option value="{$sc.id}">{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span>
+                      <span class="param" rel="3" style="display:none">
+                      <input type="text" value="0.00" class="form-control money" name="money[sort_id]" maxlength="11">
+                      元</span>
+                      </td>
+                      <td>
+                      <input type="hidden" name="prize_ids[sort_id]" value="" />
+                      <a href="javascript:void(0);" onclick="remove_tr(this)">删除</a>
+                      </td>
+</tr> </table>           
+    </div>
+  </section>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+function add_tr(){
+	var count = 0;
+	$('.list_tr').each(function() {
+        count += 1;
+    });	
+	
+	re = new RegExp("sort_id", "g");
+	str  = $('#default_tr').html().replace(re, count);
+	console.log(str);
+	var html = '<tr class="list_tr">'+ str +'</tr>';
+	if(count==0)
+	  $('#list_data_tbody tr').before(html);	
+	else
+	  $('.list_tr:last').after(html);
+}
+function remove_tr(_this){	
+	$(_this).parent().parent().remove();
+	
+	var count = 0;
+	$('.td_key').each(function() {
+        if(count>1) $(this).html('小礼包'+count);
+		count = count + 1;
+    });	
+}
+function select_type(_this){
+	var val = $(_this).val();
+	
+	$(_this).parents('tr').find('.param').each(function() {
+		if(val!=0 && val==$(this).attr('rel')){
+		    $(this).show();
+			
+			if(val!=3){ //自动选择第一项
+			   var obj = $(this).find('select');
+			   select_param(obj);
+			}
+	    }else{
+			$(this).hide();
+		}
+    });	
+}
+function select_param(_this){
+	var val = $(_this).find(':selected').text();
+	$(_this).parents('tr').find('.input_name').val(val);
+}
+$(function(){    
+	initUploadImg();
+	initUploadFile();
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });	
+    showTab();
+
+});
+</script> 
+</block>

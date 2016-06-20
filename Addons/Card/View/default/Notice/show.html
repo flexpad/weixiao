@@ -1,0 +1,55 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div id="container" class="container body">
+    	<!--
+    	<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>最新通知</span>
+        </div>
+        -->
+        <ul class="toggle_list" style="margin-top:10px">
+        <volist name='list' id="vo" key='k'>
+        	<li class="single_item m_15 p_10">
+            	<div class="title icon_arrow_right">
+                	<img width="30" class="fl mr_10" src="{:ADDON_PUBLIC_PATH}/notice.png"/>
+                	<p class="t_color"><strong>{$vo.title} 
+                		<php>
+                			/*$red=$newnum-$k;
+                			if($red >= 0){
+                				echo '<span class="red_circle" >NEW</span>';
+                			}*/
+                		</php>
+                	</strong></p>
+                </div>
+                <div class="content" style="margin-top:0">
+                <p class="colorless">发布时间：{$vo.cTime|time_format}</p>
+                	<p>{$vo.content|htmlspecialchars_decode}</p>
+                </div>
+            </li>
+            </volist>
+        </ul>   	
+        <if condition="empty($list)" >
+        	<div class="empty_default">
+            	<br/><br/>
+            	<p><img src="__IMG__/empty_content.png"/><br/>会员卡目前还没通知~</p>
+            </div>
+        </if>
+        <p class="copyright">{$system_copy_right}</p>
+         <nav class="bottom_nav">
+            <a class="icon_me_gray" href="{:addons_url('Card://Wap/me')}">我的</a>
+            <a class="icon_card_gray" href="{:addons_url('Card://Wap/index')}">会员卡</a>
+            <a class="icon_notice_blue cur" href="{:addons_url('Card://notice/show')}">最新通知</a>
+            <!--<a class="icon_ticket_gray" href="{:addons_url('Card://coupons/show')}">优惠券</a>-->
+        <a class="icon_share_gray" href="{:addons_url('Card://Wap/share')}">分享</a>
+        <a class="icon_signin_gray" href="{:addons_url('Card://Wap/signin')}">签到</a>
+        </nav>     
+    </div>
+</body>
+<script type="text/javascript">
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+	WeixinJSBridge.call('hideToolbar');
+});
+</script>
+</html>

@@ -1,0 +1,37 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div id="container" class="container body">
+    	<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>我的特权</span>
+        </div>
+        <ul class="toggle_list" style="margin-top:10px">
+        <volist name='lists' id="vo">
+        	<li class="single_item m_15 p_10 toggle_list_open">
+            	<div class="title icon_arrow_right">
+                	<img width="30" class="fl mr_10" src="{:ADDON_PUBLIC_PATH}/privilege.png"/>
+                	<p class="t_color"><strong>{$vo.title}</strong></p>
+                </div>
+                <div class="content" style="margin-top:0">
+                	<p>{$vo.intro}</p>
+                	<p class=" colorless">有效期：{$vo.start_time|day_format} - {$vo.end_time|day_format}</p>
+                    <p>状态: <if condition="$vo['enable'] eq true"><img style="vertical-align:-6px" src="__IMG__/yes.png" height="20"/>可用<else/><img style="vertical-align:-6px" src="__IMG__/error.png" height="20"/>不可用</if></p>
+                </div>
+            </li>
+            </volist>
+        </ul>   	
+        <if condition="empty($lists)" >
+        	<div class="empty_default">
+            	<br/><br/>
+            	<p><img src="__IMG__/empty_content.png"/><br/>没有任何特权~</p>
+            </div>
+        </if>
+        <p class="copyright">{$system_copy_right}</p>
+          
+    </div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

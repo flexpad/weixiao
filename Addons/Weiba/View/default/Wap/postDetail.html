@@ -1,0 +1,422 @@
+<include file="header" />
+<script type="text/javascript">					
+var mySwiper
+function showBigImgBox(obj){
+	$('.pagination').html('');
+	$('.swiper-slide-duplicate').remove('');
+	$('#content_img_list').html("");
+	
+	var old_src = $(obj).attr('src');
+		
+	var imgArr = new Array();
+	var index = 0;
+	
+	$(obj).closest('.content_imgs').find('img').each(function(i, e) {
+		var src = $(this).attr('src');
+
+		if(src!=""){
+			if(src==old_src){
+				index = i;
+			}
+
+			src = src.replace(/_250_250./,".");
+			src = src.replace(/_200_200./,".");	
+
+			imgArr.push(src);
+			var html = "<div class=\"swiper-slide\"><img src=\""+src+"\" width=\"100%\" /></div>";
+			$('#content_img_list').append(html);
+
+		}        
+    });
+
+	$('.device').show();
+
+	mySwiper = new Swiper('.swiper-container',{
+		pagination: '.pagination',
+		loop:true,
+		grabCursor: true,
+		paginationClickable: true,
+		calculateHeight: true,
+		initialSlide:index
+    })	
+	//location.hash="anchor";
+	$("body,html").animate({scrollTop: 0}, 0); 
+}
+function closeBox(){
+	mySwiper.destroy();
+	$('.device').hide();
+}
+</script>
+<div id="content">
+    <div id="weiba" data-title="{$post_detail.title}" class="panel" data-selected="false"  data-menu="msgmenu" style="padding:0;">
+        <header>
+            <div id="header-buttons">
+            	<php> if(isset($_SERVER['HTTP_REFERER'])){if(session('post_before_url')){</php>
+                	<a href="javascript:window.location.replace('{:session('post_before_url')}');">
+                    <div id="back" class="header-menu-link" data-back="false">
+                    返回
+                    </div>
+                <php>session('post_before_url',NULL);}else{</php>
+                	<a href="javascript:history.go(-1);">
+                    <div id="back" class="header-menu-link" data-back="false">
+                     返回
+                    </div>
+                <php>}}else{</php>
+                	<if condition="$post_detail['city'] eq $curCity">
+                		<a href="{:U('index',array('from_city'=>$post_detail['city']))}">
+                    <else/>
+                    	<a href="javascript:;" onclick="ui.chooseCity({$post_detail.city});">
+                    </if>
+                   <div id="back_index">首页</div>
+                <php>}</php>
+                	
+                </a>
+				<!--
+                <div id="messageLink" class="header-menu-link"><a href="{:U('w3g/Index/msgbox')}"><i class="num"></i></a></div>
+        		<div id="menuLink" class="header-menu-link"></div>
+                -->
+                <php>$userinfo = getUserInfo($post_detail['post_uid']);</php>
+                <div id="otherLink" style="right:0">
+                    
+                      <php>if($mid){</php>
+                        <a id="unfavoriteBtn" class="unfavorite header-menu-link" event-args="post_id={$post_detail['id']}&weiba_id={$post_detail['weiba_id']}&post_uid={$post_detail['post_uid']}" href="javascript:void(0)" event-node="post_unfavorite" id="favorite" onclick="unfavorite_weiba(this, {$post_detail['id']},{$post_detail['post_uid']},{$post_detail['weiba_id']})" <php>if($post_detail['favorite']!=1){</php>style="display:none;"<php>}</php>>已收藏</a>
+                        <a id="favoriteBtn" class="header-menu-link" event-args="post_id={$post_detail['id']}&weiba_id={$post_detail['weiba_id']}&post_uid={$post_detail['post_uid']}" href="javascript:void(0)" event-node="post_favorite" id="favorite" onclick="favorite_weiba(this, {$post_detail['id']},{$post_detail['post_uid']},{$post_detail['weiba_id']})" <php>if($post_detail['favorite']==1){</php>style="display:none;"<php>}</php>>收藏</a>
+                        <php>}else{</php>
+                            <a id="favoriteBtn" class="header-menu-link" href="{:U('w3g/Public/Login')}">收藏</a>
+                         <php>}</php>
+                    <div id="headMenu" class="header-menu-link msg_tips_container" href="javascript:;">
+                    	导航<em class="msg"></em>
+                    	<ul class="head_sub_menu">
+                        	<a href="{:U('index')}">首页</a>
+                            <a href="{:U('forum')}">版块</a>
+                            <a class="msg_tips_container" href="{:U('my')}">我<em class="msg"></em></a>
+                        </ul>
+                    </div>
+                   
+
+                </div>
+            </div>
+            <h1 style="display:none">
+                {$weiba_name|getShort=6,'...'}
+            </h1>
+            
+        </header>
+  <div class="mainWeiba">
+    <!-- <div class="path"> <a href="{:U('forum')}">版块</a><i>></i><a href="{:U('forum')}#{$cate}">{$cate}</a><i>></i><a href="{:U('detail',array('weiba_id'=>$weiba_id))}"><span class="text-required">{$weiba_name}</span></a></div> -->
+    <div class="postDetail">
+      <div class="detail_follow">
+      	<a class="weiba_title" href="{:U('detail',array('weiba_id'=>$post_detail['weiba_id']))}">{$weiba_name|getShort=6,'...'}</a>
+        <span class="small">已有{$weiba_detail['follower_count']}人关注</span>
+       
+        {:W('FollowWeiba',array('weiba_id'=>$post_detail['weiba_id'],'follow_state'=>array('following'=>$follow_state[$post_detail['weiba_id']]['following']),'isrefresh'=>1))}
+      </div>
+      <div style="background:#fff">
+      
+      <div class="pc_info">
+      	<div class="pc_title_wrap">
+            <span class="pc_title">
+            <if condition="$post_detail['tag_id']">
+            <a class="blue" href="{:U('detail',array('weiba_id'=>$weiba_id,'tag_id'=>$post_detail['tag_id']))}">[ {$post_detail.tag_name} ]</a>
+            </if>
+            <if condition="$post_detail['is_event']">
+            <a class="blue" href="{:U('detail',array('weiba_id'=>$weiba_id,'filter'=>'event'))}">[ 活动 ]</a>
+            </if>
+            {$post_detail.title}
+            </span>
+        </div>
+        <dl>
+          <dt><a href="{:addons_url('Weiba://Wap/profile',array('uid'=>$post_detail['post_uid']))}" ><img src="{$post_detail.post_uid|get_userface}"></a></dt>
+          <dd>
+            
+            <div class="name"><a href="{:addons_url('Weiba://Wap/profile',array('uid'=>$userInfo['uid']))}">{$userInfo.nickname}</a></div>
+            <div class="info">
+              <p class="date">
+              	{$post_detail.post_time|time_format}　
+                <div class="pinfo">
+                　<span class="llnum">{$post_detail.read_count}</span>
+                  <span class="plnum">{$post_detail.reply_count}</span>
+                </div>
+              </p>
+            </div>
+          </dd>
+        </dl>
+      </div>
+      <!-- 活动信息 -->
+        <if condition="$post_detail['is_event']">
+            <div class="event_wrap">
+            	<div class="event_cover">
+                	<img width="100%" src="{$event_detail.cover|get_cover_url}"/>
+                </div>
+                <div class="event_info">
+                	<p>报名人数：<span class="b">{$event_detail.join_count}</span> <if condition="$event_detail['max'] gt 0">
+                    	 / {$event_detail.max}
+                    </if>人</p>
+                    <p>活动时间：{$event_detail.start_time|date='Y/m/d h:i',###} - {$event_detail.end_time|date='Y/m/d h:i',###}</p>
+                    <p>报名截止：{$event_detail.deadline|date='Y/m/d h:i',###}</p>
+                    <p>活动地点：{$event_detail.address}</p>
+                    <if condition="$isJoin">
+                    <a class="btn-big join_btn" style="background:#ffb533" href="javascript:;">已报名</a>
+                    <elseif condition="$event_detail['deadline'] lt time()"/>
+                    <a class="btn-big join_btn" style="background:#ccc" href="javascript:;">结束报名</a>
+                    <elseif condition="$event_detail['max'] gt 0 && $event_detail['join_count'] egt $event_detail['max']"/>
+                    <a class="btn-big join_btn" style="background:#ccc" href="javascript:;">已报满</a>
+                    <else/>
+                    	 <a class="btn-big join_btn" href="javascript:;" onClick="joinEvent();">参加活动</a>
+                    </if>
+                </div>
+                <div class="line"><em></em></div>
+            </div>
+            <script type="text/javascript">
+			var eventAttrs = <php>echo $event_detail['attrs']?json_encode($event_detail['attrs']):'';</php>;
+			var event_id = '{$event_detail.event_id}';
+			function joinEvent(){
+				var attrHtml = '';
+				if(eventAttrs!=''){
+					for(var i=0;i<eventAttrs.length;i++){
+						var json = eventAttrs[i];
+						if(json.type=='text'){
+							attrHtml +='<div class="form_row"><p>'+json.label+'</p><div class="row"><input type="text" name="'+json.name+'"/></div></div>';
+						}else if(json.type=='radio' || json.type=='checkbox'){
+							var selAttrHtml = '';
+							for(var j=0;j<json.extra.length;j++){
+								var json2 = json.extra[j];
+								selAttrHtml += '<label for="attr_value_'+i+'_'+j+'"><input type="'+json.type+'" value="'+j+'" name="'+json.name+'" id="attr_value_'+i+'_'+j+'"/><em></em>'+json2+'</label>';
+							}
+							var typeTxt = json.type=='radio'?'<span> (单选)</span>':'<span> (多选)</span>';
+							attrHtml +='<div class="form_row form_row_check"><p>'+json.label+typeTxt+'</p><div class="row">'+selAttrHtml+'</div></div>';
+							
+						}
+					}
+				}
+				var joinHtml = $('<div class="join_event_dialog">'+
+				'<form class="join_form">'+
+					'<a class="close" href="javascript:;"></a>'+
+					'<p class="title">我要参加</p>'+
+					'<div class="form_row"><p>真实姓名<em>*</em></p><div class="row"><input type="text" name="name"/></div></div>'+
+					'<div class="form_row"><p>手机<em>*</em></p><div class="row"><input type="text" name="phone"/></div></div>'+
+					attrHtml+
+					'<input type="hidden" name="event_id" value="'+event_id+'"/>'+
+					'<a class="btn-big" id="submitJoinBtn" href="javascript:;">提交</a>'+
+				'</form>'+
+				'</div>');
+				$('body').append(joinHtml);
+				$('.join_event_dialog').height($('#layout').height()+50);	
+				var dialogTop = $(window).scrollTop()+($('body').height()-$('.join_event_dialog .join_form').height()-32)/2;
+				if($('.join_event_dialog .join_form').height()>=$(window).height()){
+					dialogTop = 0;
+					$('body').css('min-height',$('.join_event_dialog .join_form').height())
+				}
+				$('.join_event_dialog .join_form').css('top',dialogTop);
+				$('.close',joinHtml).click(function(){
+					joinHtml.remove();
+				})
+				$('#submitJoinBtn',joinHtml).click(function(){
+					var name = $('input[name="name"]',joinHtml).val();
+					var phone = $('input[name="phone"]',joinHtml).val();
+					if(name==''){
+						 $.ui.showMask("请填写真实姓名！", true);
+						 return;
+					}
+					if(phone==''){
+						 $.ui.showMask("请填写手机！", true);
+						 return;
+					}
+					$.post(U('doJoinEvent'), $('.join_form',joinHtml).serializeArray(), function(txt) {
+						if(1 == txt.status ) {
+							$.ui.showMask('提交成功',true);
+							setTimeout(function(){
+								window.location.reload();
+							},1500);
+						  } else {
+							$.ui.showMask(txt.info);
+						  }
+					  }, 'json');
+				})
+			}
+			</script>
+        </if>
+      <div class="pc_text content_imgs" id="detail_content_img" >
+      	{$post_detail.content}<br/>
+      	
+      </div>
+      <div class="m_attach">
+      	  <php>if($post_detail['attachInfo']){</php>
+          <ul class="attach_list mt10">
+            <volist name="post_detail.attachInfo" id="vo">
+              <li> 
+               <!-- onclick="openAttachAction('{:U('widget/Upload/down',array('attach_id'=>$vo['attach_id']))}');" -->
+               
+               <a style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" href="javascript:;" onclick="openAttachAction('{:getAttachUrlByAttachId($vo[attach_id])}','{$vo.attach_name}','{$vo.attach_id}','{$post_detail.post_id}');">
+              	<i class="ico-attach-small ico-{$vo.extension}-small"></i>			
+              	<span class="name">{$vo.attach_name}</span>
+                <!--<span class="tips">({$vo.size|byte_format})</span>-->
+              </a>
+              </li>
+            </volist>
+          </ul>
+          <php>}</php>
+      </div>
+      </div>
+      <div class="pc_reply">
+        <!--评论列表-->
+        <div class="weiba-com" id="commentlist_{$post_id}">
+          <volist name='postcomment.list_data' id='vo' key="k">
+            <div class="list" id="item_{$vo.reply_id}">
+              <dl model-node="comment_list">
+                <dt><a href="{:addons_url('Weiba://Wap/profile', array('uid'=>$vo['user_info']['uid']))}"><img width="50" height="50" src="{$vo.user_info.headimgurl}"></a><php>if($vo['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['user_info']['group_icon_only']['user_group_name']}" src="{$vo['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
+                <dd>
+                  <p class="cont mb5 name_p"> <a href="{:addons_url('Weiba://Wap/profile', array('uid'=>$vo['user_info']['uid']))}">{$vo.user_info.nickname}</a>
+                    <span class="floor">
+                    <php>$page = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;</php>
+                    {$k+(($page-1)*$limit)}楼</span> </p>
+                  <p><span class="date">{$vo.ctime|time_format}</span></p>
+                  <if condition="$vo['replyData']">
+                      <div class="to_reply_div">
+                        <p class="reply_p">引用：{$vo.replyData.user_info.nickname}&nbsp;&nbsp;&nbsp;{$vo.replyData.ctime|time_formate}</p>
+                        {$vo.replyData.content}
+                      </div>
+                  </if>
+                  <p class="det-c">{$vo.content}</p>
+                  
+                </dd>
+              </dl>
+        
+              
+              <p class="info textR"><span> 
+              
+              <php> $isdel=0;if( $vo['user_info']['uid'] == $mid){</php><php>$isdel=1;</php><span class="c_ico w3g_reply_del"><a href="javascript:void(0);" event-node="reply_del" event-args="reply_id={$vo.reply_id}"></a></span><php>}</php>
+             <span class="c_ico w3g_reply"><a href="javascript:void(0)" onclick="showreplyDialog({'tempp':'{}','weiba_id':{$weiba_id},'post_id':{$post_detail.id},'post_uid':{$post_detail.post_uid},'to_reply_id':{$vo.reply_id},'to_uid':{$vo.uid},'to_comment_uname':'{$vo.user_info.nickname}','feed_id':0,'comment_id':{$vo.comment_id},'addtoend':'{$addtoend}'});"></a></span>
+             	<!--
+                <span class="c_ico w3g_digg">{:W('ReplyDigg', array('row_id'=>$vo['reply_id'], 'digg_count'=>$vo['digg_count'], diggArr=>$diggArr,'widget_appname'=>'weiba','tpl'=>'w3g'))} </span>
+                -->
+                
+                </span></p>
+            </div>
+          </volist>
+        </div>
+        
+        <!--页码-->
+        <neq name='list.html' value=''>
+          <!--<div id="page" class="page" style="padding: 10px 0px 20px 0px;"> {$list.html} </div>-->
+          <a id="load_page_btn" href="javascript:;" data-page="{$postcomment.totalPages}" data-url="{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$post_id))}">下一页</a>
+           <div class="no_more_data">没有更多数据了</div>
+           <div class="page_loading">正在加载中...</div>
+           <script>
+            loadPageByMore('#commentlist_{$post_id}');
+            </script>
+        </neq>
+        <!--页码/end--> 
+    
+  </div>
+</div>
+
+<!--大图相册的效果-->
+<style type="text/css">
+#topcontrol{ display:none;}
+#content .postDetail{ padding-bottom:3em;}
+/*大图相册的效果*/
+.device {
+  display:none;position: absolute;top: 0px; bottom:44px;left: 0px;width: 100%;height: 100%;background-color: #333;z-index: 10009;
+}
+.device .showImg{position: relative;}
+.device .showImg_t{height: 38px;line-height: 38px;text-align: center;background-color: #000;color: #fff;font-size: 14px;padding: 0 20px;}
+.device .showImg_close{position: absolute;right: 20px;top: 10px; color: #fff;}
+.device .swiper-container {
+  width: 100%;
+}
+.device .content-slide {
+  padding: 20px;  color: #fff;
+}
+.device .title {
+  font-size: 25px;  margin-bottom: 10px;
+}
+.device .pagination {
+  position: absolute; left: 0;  text-align: center; bottom: 50px;  width: 100%;  z-index: 99999;
+}
+.swiper-slide{display: box; display: -webkit-box; -webkit-box-pack:center; -webkit-box-align:center;}
+.device .swiper-pagination-switch {
+  display: inline-block;  width: 12px;  height: 12px; border-radius:6px; background: #ccc; margin: 0 3px;  cursor: pointer;}
+.device .swiper-active-switch {
+  background: #09b092;
+}
+</style>
+
+<div class="device">
+  <div class="showImg">
+    <a class="showImg_close" href="javascript:void(0)" onClick="closeBox()">关闭</a>
+    <h1 class="showImg_t">图片浏览</h1>
+    <div class="swiper-container">
+      <div class="swiper-wrapper" id="content_img_list"> 
+        <!--        <div class="swiper-slide">
+            <img src="{$vo.img_url}" alt="{$vo.ad_name}" width="100%" height="198" />
+          </div>--> 
+        
+      </div>
+    </div>
+    <div class="pagination"></div>
+  </div>
+</div>
+</div>
+<script src="{:ADDON_PUBLIC_PATH}/sendAttach.js?v={:SITE_VERSION}"></script>
+<script>
+var loginMid =  "{$mid}";
+$(".pc_reply a[event-node='reply_del']").click(function(){
+    if(!confirm("确认删除此回复？")){
+        return false;
+    }
+    var _this = $(this);
+    var data  = _this.attr('event-args')+'&widget_appname=weiba';
+    $.post("{:addons_url('Weiba://Wap/delReply')}", data, function(result){
+		//console.log(result==1)
+        if(result == '1'){
+            _this.parents('.list').remove();
+        }else{
+            $.ui.showMask("删除失败，请稍候再试！", true);
+        }
+    });
+    return false;
+});
+$(".pc_reply a[event-node='reply_reply']").click(function(){
+    window.location.href=U('reply')+'&'+$(this).attr('event-args');
+});
+
+function addDigg(id){
+	if(loginMid>0){
+		var span = $('#digg'+id);
+		var data = {
+			widget_appname: 'weiba',
+			row_id:id
+		};
+		$.post('{:U("widget/ReplyDigg/addDigg")}', data, function(result){
+			if(result.status == 1){
+				var num = parseInt(span.attr('rel'))+1;
+				span.attr('rel', num).html('<a href="javascript:;" class="like-h digg-like-yes" onclick="delDigg('+id+')">'+num+'</a>');
+			}else{
+				$.ui.showMask("点赞失败，请稍候再试！", true);
+			}
+		}, 'json');
+	}else{
+		$.ui.showMask("请先登录", true);
+		setTimeout(function(){
+			window.location.href = "{:U('w3g/Public/login')}";		
+		},1500)
+	}
+}
+function delDigg(id){
+    var span = $('#digg'+id);
+    var data = {
+        widget_appname: 'weiba',
+        row_id:id
+    };
+    $.post('{:U("widget/ReplyDigg/delDigg")}', data, function(result){
+        if(result.status == 1){
+            var num = parseInt(span.attr('rel'))-1;
+            var zan = num>0?num:'';
+            span.attr('rel', num).html('<a href="javascript:;" onclick="addDigg('+id+')">'+zan+'</a>');
+        }else{
+            $.ui.showMask("取消失败，请稍候再试！", true);
+        }
+    }, 'json');
+}
+</script>
+<include file="footer" />

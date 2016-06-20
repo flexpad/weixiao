@@ -1,0 +1,186 @@
+
+
+    </div><!--content-->
+</div><!--main-->
+        <script>
+            (function(){
+                TS.cache.profile = {
+                    uid:'{$profile["uid"]}',
+                    uname:'{$profile["uname"]}',
+                    email:'{$profile["email"]}',
+                    avatar_original:'{$profile["avatar_original"]}',
+                    avatar_small:'{$profile["avatar_small"]}'
+                };
+//                $(document).on("touchmove",".pic-view-img",function(e){
+//                        console.log(e);
+//                });
+            })();
+
+        </script>
+
+</div>
+	<!--
+    <div class="postentry">
+        <php>if(MODULE_NAME == 'Index' && in_array(ACTION_NAME,array('index','rec','fri_weibo','doSearch'))){</php>
+            <a href="#new-weibo" id="postentry">&nbsp;</a>
+        <php>}elseif(MODULE_NAME == 'Channel'){</php>
+            <a href="#new-channel-weibo" id="postentry">&nbsp;</a>
+        <php>}elseif(MODULE_NAME == 'Weiba'){</php>
+            <php>if(ACTION_NAME == 'postDetail'){</php>
+            <a href="{:U('reply', array('post_id'=>intval($_GET['post_id'])))}" id="postentry">&nbsp;</a>
+            <php>}elseif(!in_array(ACTION_NAME, array('reply', 'post'))){</php>
+            <a href="{:U('post', array('weiba_id'=>intval($_GET['weiba_id'])))}" id="postentry">&nbsp;</a>
+            <php>}</php>
+        <php>}</php>
+    </div>
+    -->
+    <div id="pure-shadow"></div>
+    <div id="footer"></div>
+    <div id="custom"></div>
+    <php>if($is_post_detail == 1){</php>
+    	<!-- 详情底部兰 -->
+        <div class="weiba_detail_bar">
+            <a href="javascript:;" onclick="showreplyDialog();"><i class="comment"></i><span>评论</span></a>
+            <a href="javascript:;" onclick="doPostDigg()">
+            	<div id="post-zan" class="<eq name="is_digg" value="1">iszan</eq>"><i class="zan"></i><em><gt name="post_detail[praise]" value="0">{$post_detail.praise}</gt></em></div><span class="mcount">点赞</span>
+            </a>
+            <if condition="$isWeixin">
+            <a onclick="ui.showShareTips();" href="javascript:;"><i class="share"></i><span>分享</span></a>
+            </if>
+        </div>
+        <div class="reply_dialog">
+            <div class="dialog">
+                <div class="textarea"><textarea autofocus name="weiba-reply-textarea" id="weiba-reply-textarea" placeholder="内容,2-70个字"></textarea></div>
+                <div class="bar">
+                    <a id="replybtn" class="btn" href="javascript:;" onclick="submitReply();">发送</a>
+                    <a class="btn btn_border" href="javascript:;" onclick="hidereplyDialog();">取消</a>
+                    
+                </div>
+            </div>
+        </div> 
+        <script type="text/javascript">
+			
+        	function showreplyDialog(data){
+				$('.reply_dialog').height($('#layout').height()+50);
+				$('.reply_dialog .dialog').css('top',$(window).scrollTop()+50);
+				if('{$mid}'>0){
+					$('.reply_dialog').show();
+					$('.reply_dialog textarea').focus();
+					if(data){
+						window.replyData = data;
+						$('#weiba-reply-textarea').attr('placeholder','回复'+window.replyData.to_comment_uname);
+						//console.log(window.replyData)
+					}else{
+						window.replyData = null;
+					}
+				}else{
+					$.ui.showMask("请先登录", true);
+					setTimeout(function(){
+						window.location.href = "{:U('w3g/Public/login')}";		
+					},1500)
+				}
+				//window.location.href = "{:U('reply', array('post_id'=>intval($_GET['post_id'])))}";
+			}
+			function hidereplyDialog(){
+				$('.reply_dialog').hide();
+			}
+			function submitReply(){
+					var url = "{:addons_url('Weiba://Wap/addReply')}";
+					var data = {};
+					if(window.replyData){
+						data.weiba_id = window.replyData.weiba_id;
+						data.post_id = window.replyData.post_id;
+						data.post_uid = window.replyData.post_uid;
+						data.to_reply_id = window.replyData.to_reply_id;
+						data.to_uid = window.replyData.to_uid;
+						data.feed_id = window.replyData.feed_id;
+						data.list_count= 0;
+						
+					}else{
+						data.weiba_id = '<php>echo $post_detail["weiba_id"];</php>';
+						data.post_id = '<php>echo $post_detail["id"];</php>';
+						data.post_uid = '<php>echo $post_detail["post_uid"];</php>';
+						data.to_reply_id = data.reply_id?data.reply_id:0;
+						data.to_uid = data.uid?data.uid:0;
+						data.feed_id = '<php>echo $post_detail["feed_id"];</php>';
+						data.list_count= '<php>echo $list_count;</php>';
+					}
+					data.widget_appname = 'weiba';
+					data.content = '';
+					data.ifShareFeed = '0';
+					data.attach_id = '0';
+					var content = $.trim($('#weiba-reply-textarea').val());
+					if(!content){
+						$.ui.showMask("请输入内容！", true);
+						return false;
+					}
+					if(content.length<2 || content.length>70){
+						$.ui.showMask("评论限制2-70个字！", true);
+						return false;
+					}
+					data.content = content;
+					
+					
+					$.post(url, data, function(result){
+						if(result.status == 1){
+							hidereplyDialog();
+							$.ui.showMask("评论成功！", true);
+							//setTimeout(function(){
+								window.location.href = "{:addons_url('Weiba://Wap/postDetail', array('post_id'=>$post_detail['id']))}";
+							//}, 1200);
+						}else{
+							$.ui.showMask("回复失败，请稍候再试！", true);
+						}
+					}, 'json');
+						
+			}
+			function doPostDigg(){
+				if('{$mid}'<=0){
+					$.ui.showMask("请先登录", true);
+					setTimeout(function(){
+						window.location.href = "{:U('w3g/Public/login')}";		
+					},1500)
+				}else{
+				var type = $('#post-zan').hasClass('iszan')?0:1;
+				if(type==1){
+					var url = "{:U('addPostDigg')}";
+				}else{
+					var url = "{:U('delPostDigg')}";
+				}
+				
+				var data = {};
+					data.row_id = '<php>echo $post_detail["post_id"];</php>';
+				$.post(url, data,function(result){
+					if(result == 1){
+						if(type==1){
+							$('#post-zan').addClass('iszan');
+							if($('#post-zan em').text()==""){
+								var count = 0;
+							}else{
+								var count = parseInt($('#post-zan em').text());
+							}
+							$('#post-zan em').text(count+1);
+						}else{
+							$('#post-zan').removeClass('iszan');
+							var count = parseInt($('#post-zan em').text());
+							if(count-1>0){
+								$('#post-zan em').text(count-1);
+							}else{
+								$('#post-zan em').text('');
+							}
+						}
+					}else{
+						
+					}
+				}, 'json');
+				}
+			}
+        </script>    
+    <php>}</php>
+    <!-- 统计代码-->
+<div id="site_analytics_code" style="display:none;"> {$site.site_analytics_code|base64_decode} </div>
+<eq name='site.site_online_count' value='1'> 
+  <script src="{:SITE_URL}/online_check.php?uid={$mid}&uname={$user.uname}&mod={:MODULE_NAME}&app={:APP_NAME}&act={:ACTION_NAME}&action=trace&city={:session('city')}"></script> 
+</eq>
+</body>
+</html>

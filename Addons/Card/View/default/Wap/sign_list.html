@@ -1,0 +1,42 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div class="container">
+            <div class="common_header">
+                <a class="back" href="javascript:;" onClick="history.back()"></a>
+                <span>签到记录</span>
+            </div>
+            <div class="m_15">
+			<table cellpadding="0" cellspacing="0" class="data_table">
+                 <thead>
+                     <tr>                
+                     <td>详情</td>
+                     <td>日期</td>
+                     <td>积分</td>
+                     </tr>  
+                 </thead>
+                 <tbody>
+                 <notempty name='signin_log' >
+                 <volist name='signin_log' id='vo'>
+                 <tr>                
+                       <td>签到得积分</td>
+                       <td>{$vo.sTime|time_format='Y-m-d'}</td>
+                       <td>{$vo.score}</td>
+                   </tr> 
+                  </volist>
+                   
+                 </notempty>
+                         
+                 </tbody>          
+          </table>
+          <empty name='signin_log'>
+          </div>
+          <p class="m_15">            
+              <center>没有签到记录</center>                 
+          </p>
+         </div>
+</empty>
+   </div>
+</body>
+</html>

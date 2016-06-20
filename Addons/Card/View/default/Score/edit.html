@@ -1,0 +1,185 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left: 50px
+}
+</style>
+<!-- 标签页导航 -->
+
+<div class="span9 page_message">
+  <section id="contents"> <include file="Addons/_nav" />
+    <div class="tab-content"> 
+      <!-- 表单 -->
+      <php> $post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+      <form class="form-horizontal form-center" method="post" action="{$post_url}" id="form">
+        <div class="form-item cf ">
+          <label class="item-label"> <span class="need_flag">*</span> 活动名称 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.title}" name="title" class="text" placeholder="请填写活动名称">
+          </div>
+        </div>
+        <div class="form-item cf toggle-start_time">
+          <label class="item-label"> <span class="need_flag">*</span> 有效期 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="datetime" placeholder="请选择生效时间" value="{$data.start_time|time_format}" class="text time" name="start_time">
+            -
+            <input type="datetime" placeholder="请选择过期时间" value="{$data.end_time|time_format}" class="text time" name="end_time">
+          </div>
+        </div>
+<!--         <div class="form-item cf"> -->
+<!--           <label class="item-label"> 选择人群 </label> -->
+<!--           <div class="controls"> -->
+<!--             <select name="member"> -->
+<!--               <option class="toggle-data" value="0"  <eq name="data[member]" value="0">selected="selected"</eq> >所有用户 </option> -->
+<!--               <option class="toggle-data" value="-1"  <eq name="data[member]" value="-1">selected="selected"</eq> >所有会员卡成员 </option> -->
+<!--               <volist name="card_level" id="cl"> -->
+<!--               <option class="toggle-data" value="{$cl.id}"  <eq name="data[member]" value="$cl[id]">selected="selected"</eq> >{$cl.level} </option> -->
+<!--               </volist> -->
+<!--             </select> -->
+<!--           </div> -->
+<!--         </div>   -->
+ <div class="controls">
+<label class="item-label"><span class="need_flag"></span>
+                       适用人群<span class="check-tips"></span>
+                </label>
+                <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="0" id="member_0" name="member[]" toggle-data=""
+                              
+                 <php>if(in_array(0,$data['member']) || empty($data['member'])){echo ' checked="checked"';}</php>                   >
+                        <label for="member_0"></label>所有用户 </div>
+                <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="-1" id="member_-1" name="member[]" toggle-data=""
+                              
+                           <php>if(in_array(-1,$data['member'])){echo ' checked="checked"';}</php>                        >
+                        <label for="member_-1"></label>所有会员 </div>
+                <notempty name='card_level'>
+                	<volist name='card_level' id='vo'>
+                	<div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="{$vo.id}" id="member_{$vo.id}" name="member[]" toggle-data=""
+                      <php>if(in_array($vo['id'],$data['member'])){echo ' checked="checked"';}</php>                                    >
+                        <label for="member_{$vo.id}"></label>
+                       {$vo.level} </div> 
+                	</volist>
+                </notempty>
+                             </div>
+                             
+                             
+
+        <div class="form-item cf ">
+          <label class="item-label"> <span class="need_flag">*</span> 兑换所需积分 <span class="check-tips">必须为正整数 </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.score_limit}" name="score_limit" class="number">
+          </div>
+        </div>
+        <div class="form-item cf ">
+          <label class="item-label"> <span class="need_flag"></span> 兑换次数 <span class="check-tips">必须为正整数 </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.num_limit}" name="num_limit" class="text">
+          </div>
+        </div>    
+        <div class="form-item cf ">
+          <label class="item-label"> 兑换券类型 <span class="check-tips"></span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="coupon_type" id="coupon_type_0" value="0" class="regular-radio coupon_type" <if condition="intval($data[coupon_type])==0">checked="checked"</if> >
+              <label for="coupon_type_0"></label>
+              代金券 </div>
+            <div class="check-item">
+              <input type="radio" name="coupon_type" id="coupon_type_1" value="1" class="regular-radio coupon_type" <if condition="$data[coupon_type]==1">checked="checked"</if> >
+              <label for="coupon_type_1"></label>
+              优惠券 </div>
+          </div>
+        </div>
+                            
+        <div class="form-item cf" id="coupon_id">
+        <label class="item-label"> <span class="need_flag">*</span> 兑换券 <span class="check-tips">  </span></label>
+          <div class="controls">
+                    <select name="coupon_id">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建优惠券</option>
+                        <else />
+                          <option value="0">请选择</option>
+                          <volist name="shop_conpon_list" id="sc">
+                            <option value="{$sc.id}" <if condition="$data[coupon_id]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+          </div>
+        </div>   
+        <div class="form-item cf ">
+          <label class="item-label"> 活动封面图 <span class="check-tips"> </span></label>
+                          <div class="controls uploadrow2" data-max="1" title="点击修改图片" rel="cover_id">
+                            <input type="file" id="upload_picture_cover_id">
+                            <input type="hidden" name="cover_id" id="cover_id_cover_id" value="{$data[cover_id]}"/>
+                            <div class="upload-img-box">
+                              <notempty name="data[cover_id]">
+                                <div class="upload-pre-item2"><img width="100" height="100" src="{$data[cover_id]|get_cover_url}"/></div>
+                                <em class="edit_img_icon">&nbsp;</em>
+                              </notempty>
+                            </div>
+                          </div>
+        </div>        
+        <div class="form-item form_bh">
+          <notempty name="data.id">
+            <input type="hidden" name="id" value="{$data.id}">
+          </notempty>
+          <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+        </div>
+      </form>
+   
+    </div>
+  </section>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+
+
+
+$(function(){    
+    initUploadImg();
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    showTab();
+    $("input[name='coupon_type']").click(function(){
+    	var type=$(this).val();
+    	var url="{:addons_url('Card://Score/ajax_get_card_conpon')}";
+    	$.post(url,{'type':type},function(data){
+    		var str='';
+    		$("select[name='coupon_id'] option").remove();
+    		if(!data){
+    			str+='<option selected="selected" value="0">你还未创建优惠券</option>';
+    		}else{
+    			for(var i=0 ;i<data.length;i++){
+    				str+='<option value="'+data[i]['id']+'"  >'+data[i]['title']+'</option>';
+        		}
+    		}
+    		$(str).appendTo($("select[name='coupon_id']"));
+    	});
+    });
+});
+</script> 
+</block>

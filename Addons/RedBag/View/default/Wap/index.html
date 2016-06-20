@@ -1,0 +1,26 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+<div id="container" class="container">
+	  <div class="head_pic">
+      	<img src="{:ADDON_PUBLIC_PATH}/index_head_pic.png"/>
+        <div class="wish">
+        <p class="title" style="word-wrap:break-word;">{$data.act_name}</p>
+        <p style="word-wrap:break-word;">{$data.wishing}</p>
+        </div>
+      </div>
+     <a href="{$jumpURL}" class="start_btn"> 
+        	抢红包
+     </a> 
+     <p class="copyright">{$system_copy_right}</p>
+<include file="Public/mobile_foot"/> 
+<script>
+$.WeiPHP.initWxShare({
+	title:"{$data.act_name}",
+	imgUrl:"{:ADDON_PUBLIC_PATH}/index_head_pic.png",
+	desc:"{$data.wishing}",
+	link:window.location.href
+})
+</script>
+</body>
+</html>

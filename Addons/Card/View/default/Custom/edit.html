@@ -1,0 +1,246 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left: 50px
+}
+</style>
+<!-- 标签页导航 -->
+
+<div class="span9 page_message">
+  <section id="contents"> <include file="Addons/_nav" />
+    <div class="tab-content"> 
+      <!-- 表单 -->
+      <php> $post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+      <form class="form-horizontal form-center" method="post" action="{$post_url}" id="form">
+        <div class="form-item cf toggle-title">
+          <label class="item-label"> <span class="need_flag">*</span> 节日名 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.title}" name="title" class="text" placeholder="请填写活动名称">
+          </div>
+        </div> 
+<!--         <div class="form-item cf"> -->
+<!--           <label class="item-label"> 选择人群 </label> -->
+<!--           <div class="controls"> -->
+<!--             <select name="member"> -->
+<!--               <option class="toggle-data" value="0"  <eq name="data[member]" value="0">selected="selected"</eq> >所有用户 </option> -->
+<!--               <option class="toggle-data" value="-1"  <eq name="data[member]" value="-1">selected="selected"</eq> >所有会员卡成员 </option> -->
+<!--               <volist name="card_level" id="cl"> -->
+<!--               <option class="toggle-data" value="{$cl.id}"  <eq name="data[member]" value="$cl[id]">selected="selected"</eq> >{$cl.level} </option> -->
+<!--               </volist> -->
+<!--             </select> -->
+<!--           </div> -->
+<!--         </div>          -->
+
+  <div class="form-item cf">
+<label class="item-label"><span class="need_flag"></span>
+                       适用人群<span class="check-tips"></span>
+                </label>
+                <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="0" id="member_0" name="member[]" toggle-data=""
+                 <php>if(in_array(0,$data['member']) || empty($data['member'])){echo ' checked="checked"';}</php>                   >
+                        <label for="member_0"></label>所有用户 </div>
+                        
+                 <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="-2" id="member_-2" name="member[]" toggle-data=""
+                 <php>if(in_array('-2',$data['member'])){echo ' checked="checked"';}</php>                   >
+                        <label for="member_-2"></label>女性用户 </div>
+                        
+                  <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="-3" id="member_-3" name="member[]" toggle-data=""
+                 <php>if(in_array('-3',$data['member'])){echo ' checked="checked"';}</php>                   >
+                        <label for="member_-3"></label>男性用户 </div>
+                        
+                <div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="-1" id="member_-1" name="member[]" toggle-data=""
+                           <php>if(in_array(-1,$data['member'])){echo ' checked="checked"';}</php>                        >
+                        <label for="member_-1"></label>所有会员 </div>
+                        
+                <notempty name='card_level'>
+                	<volist name='card_level' id='vo'>
+                	<div class="check-item"> <input type="checkbox" class="regular-checkbox toggle-data" value="{$vo.id}" id="member_{$vo.id}" name="member[]" toggle-data=""
+                      <php>if(in_array($vo['id'],$data['member'])){echo ' checked="checked"';}</php>                                    >
+                        <label for="member_{$vo.id}"></label>
+                       {$vo.level} </div> 
+                	</volist>
+                </notempty>
+                             </div>
+                             
+                             
+        <div class="form-item cf toggle-is_birthday">
+          <label class="item-label"> 节日类型 <span class="check-tips">  </span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="is_birthday" id="is_birthday_0" value="0" class="regular-radio choose_birthday" <if condition="intval($data[is_birthday])==0">checked="checked"</if> >
+              <label for="is_birthday_0"></label>
+              公历节日 </div>
+            <div class="check-item">
+              <input type="radio" name="is_birthday" id="is_birthday_1" value="1" class="regular-radio choose_birthday" <if condition="$data[is_birthday]==1">checked="checked"</if> >
+              <label for="is_birthday_1"></label>
+              会员生日节日 </div>
+          </div>
+        </div>     
+        <div class="form-item cf toggle-start_time" id="div_start_time" style="display:none">
+          <label class="item-label"> <span class="need_flag">*</span> 节日日期 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="datetime" placeholder="请选择节日时间" value="{$data.start_time|time_format='Y-m-d'}" class="text date" name="start_time">
+          </div>          
+        </div>
+        <div class="form-item cf toggle-end_time">
+          <label class="item-label"> <span class="need_flag">*</span> 赠送时间 <span class="check-tips"> </span></label>
+          <div class="controls" id="div_end_time_0" style="display:none">
+            <input type="datetime" placeholder="请选择赠送时间" value="{$data.end_time|time_format}" class="text time" name="end_time">
+          </div>
+          <div class="controls" id="div_end_time_1" style="display:none">
+            生日前 <input type="number"  value="{$data.before_day|default=1}" class="text money" name="before_day" style="padding:5px 10px; vertical-align:0;"> 天
+          </div>
+        </div>           
+        <div class="form-item cf toggle-type">
+          <label class="item-label"> 赠送类型 <span class="check-tips">  </span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="type" id="type_0" value="0" class="regular-radio choose_type" <if condition="intval($data[type])==0">checked="checked"</if> >
+              <label for="type_0"></label>
+              送积分 </div>
+            <div class="check-item">
+              <input type="radio" name="type" id="type_1" value="1" class="regular-radio choose_type" <if condition="$data[type]==1">checked="checked"</if> >
+              <label for="type_1"></label>
+              送优惠券 </div>
+          </div>
+        </div>
+        <div class="form-item cf" id="score" style="display:none">
+        <label class="item-label">  <span class="check-tips"> </span></label>
+          <div class="controls">
+            赠送 <input type="score" value="{$data.score}" name="score" class="text money"> 积分
+          </div>
+        </div>
+        <div class="form-item cf" id="coupon_id" style="display:none">
+        
+          <div class="controls">
+                    <select name="coupon_id">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建优惠券</option>
+                          <else />
+                          <option value="0">请选择</option>
+                          <volist name="shop_conpon_list" id="sc">
+                            <option value="{$sc.id}" <if condition="$data[coupon_id]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+          </div>
+        </div>   
+        <div class="form-item cf">
+          <label class="item-label"> 营销 <span class="check-tips"> </span></label>
+          <div class="controls">
+      	  <input type="checkbox" class="regular-checkbox" value="1" id="is_show_0" name="is_show" 
+                              <if condition="$data[is_show]==1">checked="checked"</if> >
+                              <label for="is_show_0"></label>在会员卡界面展示
+                              
+            <label class="textarea input-large" style="margin:10px 0 0">
+              <textarea name="content" placeholder="请输入活动说明">{$data[content]}</textarea>
+            </label>
+          </div>
+        </div>             
+        
+        <div class="form-item cf">
+          <label class="item-label">通知用户领取信息 <span class="check-tips" > </span></label>
+          <div class="controls">
+            <label class="textarea input-large" style="margin:10px 0 0">
+              <textarea name="notice_mess" placeholder="请输入通知用户领取信息">{$data[notice_mess]}</textarea>
+            </label>
+            <div id='notice_tip' style="border: 1px solid #94BDAA;padding: 15px;color: #A29E9E;background-color: aliceblue;" ></div>
+          </div>
+        </div> 
+        
+        <div class="form-item form_bh">
+          <notempty name="data.id">
+            <input type="hidden" name="id" value="{$data.id}">
+          </notempty>
+          <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+        </div>
+      </form>
+   
+    </div>
+  </section>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+
+function choose_birthday(){
+	var val = $('input[name="is_birthday"]:checked').val();
+	if(val==0){
+		var strtip='通知信息默认为：{username}用户您好，今天是个特殊的日子（{title}），在此我们为您准备份小礼物，请到 会员卡-客户关怀 领取吧！(注：其中{username}代表用户名，{title}节日名称)';
+		$('#notice_tip').text(strtip);
+		$('#div_start_time').show();
+		$('#div_end_time_0').show();
+		$('#div_end_time_1').hide();
+	}else{
+		var strtip='通知信息默认为：{username}用户您好，再过{before_time}天就是您的破蛋日啦！<br/>我们在"{title}"活动中为您准备份小礼物，请到 会员卡-客户关怀 领取吧！(注：其中{username}代表用户名，{before_time}赠送时间，{title}节日名称)';
+		$('#notice_tip').text(strtip);
+		$('#div_start_time').hide();
+		$('#div_end_time_0').hide();
+		$('#div_end_time_1').show();
+	}
+}
+function choose_type(){
+	var val = $('input[name="type"]:checked').val();
+	if(val==0){
+		$('#score').show();
+		$('#coupon_id').hide();
+	}else{
+		$('#score').hide();
+		$('#coupon_id').show();
+	}
+}
+
+  $('input[type=score]').keypress(function(e) {
+    if (e.which==8) {
+      $(this).val('');
+    };
+
+      if (!String.fromCharCode(e.which).match(/[0-9\.]/)) {
+        return false;
+      }
+    });
+
+$(function(){    
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });	
+    showTab();
+	
+	$('.choose_type').bind('click',function(){ choose_type();	});
+	choose_type();
+	
+	$('.choose_birthday').bind('click',function(){ choose_birthday();	});
+	choose_birthday();	
+});
+</script> 
+</block>

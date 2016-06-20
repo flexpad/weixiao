@@ -1,0 +1,349 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left: 50px
+}
+</style>
+<!-- 标签页导航 -->
+
+<div class="span9 page_message">
+  <section id="contents"> <include file="Addons/_nav" />
+    <div class="tab-content"> 
+      <!-- 表单 -->
+      <php> $post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+      <form class="form-horizontal form-center" method="post" action="{$post_url}" id="form">
+        <div class="form-item cf toggle-title">
+          <label class="item-label"> <span class="need_flag">*</span> 活动名称 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="text" value="{$data.title}" name="title" class="text" placeholder="请填写活动名称">
+          </div>
+        </div>
+        <div class="form-item cf toggle-start_time">
+          <label class="item-label"> <span class="need_flag">*</span> 有效期 <span class="check-tips"> </span></label>
+          <div class="controls">
+            <input type="datetime" placeholder="请选择生效时间" value="{$data.start_time|time_format}" class="text time" name="start_time">
+            -
+            <input type="datetime" placeholder="请选择过期时间" value="{$data.end_time|time_format}" class="text time" name="end_time">
+          </div>
+        </div>
+        <div class="form-item cf toggle-is_mult">
+          <label class="item-label"> 赠送方式 <span class="check-tips"> （多级情况下每级赠送不累积叠加） </span></label>
+          <div class="controls">
+            <div class="check-item">
+              <input type="radio" name="is_mult" id="is_mult_0" value="0" class="regular-radio is_mult" <if condition="intval($data[is_mult])==0">checked="checked"</if> >
+              <label for="is_mult_0"></label>
+              普通赠送 </div>
+            <div class="check-item">
+              <input type="radio" name="is_mult" id="is_mult_1" value="1" class="regular-radio is_mult" <if condition="$data[is_mult]==1">checked="checked"</if> >
+              <label for="is_mult_1"></label>
+              多级赠送 </div>
+          </div>
+        </div>
+        <div class="form-item cf">
+          <div style="margin:15px 0;" class="specTable data-table">
+            <table cellspacing="1" cellpadding="0">
+              <thead>
+                <tr>
+                  <th align="center" width="100">层级/操作</th>
+                  <th align="center" width="200">赠送要求</th>
+                  <th>赠送内容（可多选）</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list_tr">
+                  <td align="center">1</td>
+                  <td align="center">满
+
+                    <input type="text" value="{$cd.condition|default='0.00'}" class="form-control money" name="condition[1]" maxlength="11">
+
+                    元可用</td>
+                  <td><p>
+
+                      <input type="checkbox" name="money[1]" onclick="select_param(this)" value="1" <if condition="$cd[money]==1">checked="checked"</if> >
+
+                      <span class="title">送现金</span> <span class="param">送
+
+                      <input type="text" value="{$cd.money_param|default='0.00'}" class="form-control money" name="money_param[1]" maxlength="11">
+
+                      元</span></p>
+
+                    <p>
+
+                      <input type="checkbox" name="score[1]" onclick="select_param(this)" value="1" <if condition="$cd[score]==1">checked="checked"</if>>
+
+                      <span class="title">送积分</span><span class="param">送
+
+                      <input type="text" value="{$cd.score_param}" class="form-control money" name="score_param[1]" maxlength="11">
+
+                      积分</span></p>
+                    <p>
+
+                      <input type="checkbox" name="shop_coupon[1]" onclick="select_param(this)" value="1" <if condition="$cd[shop_coupon]==1">checked="checked"</if>>
+
+                      <span class="title">送赠送券</span><span class="param">送
+                      <select style="width: 180px;" name="shop_coupon_param[1]">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建赠送券</option>
+                          <else />
+                          <option value="0">请选择</option>
+                          <volist name="shop_conpon_list" id="sc">
+                            <option value="{$sc.id}" <if condition="$cd[shop_coupon_param]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span></p></td>
+                </tr>
+                <volist name="condition_list" id="cd">
+                 <tr class="list_tr">
+                  <td align="center"><span class="td_key">{$cd.sort}</span><br/>
+    <br/>
+    <a href="javascript:void(0);" onclick="remove_tr(this)">删除</a></td>
+                  <td align="center">满
+                    <input type="text" value="{$cd.condition|default='0.00'}" class="form-control money" name="condition[{$cd.sort}]" maxlength="11">
+                    元</td>
+                  <td><p>
+                      <input type="checkbox" name="money[{$cd.sort}]" onclick="select_param(this)" value="1" <if condition="$cd[money]==1">checked="checked"</if> >
+                      <span class="title">送现金</span> <span class="param">送
+                      <input type="text" value="{$cd.money_param|default='0.00'}" class="form-control money" name="money_param[{$cd.sort}]" maxlength="11">
+                      元</span></p>
+                    <p>
+                      <input type="checkbox" name="score[{$cd.sort}]" onclick="select_param(this)" value="1" <if condition="$cd[score]==1">checked="checked"</if>>
+                      <span class="title">送积分</span><span class="param">送
+                      <input type="text" value="{$cd.score_param}" class="form-control money" name="score_param[{$cd.sort}]" maxlength="11">
+                      积分</span></p>
+                    <p>
+                      <input type="checkbox" name="shop_coupon[{$cd.sort}]" onclick="select_param(this)" value="1" <if condition="$cd[shop_coupon]==1">checked="checked"</if>>
+                      <span class="title">送赠送券</span><span class="param">送
+                      <select style="width: 180px;" name="shop_coupon_param[{$cd.sort}]">
+                        <empty name="shop_conpon_list">
+                          <option selected="selected" value="0">你还未创建赠送券</option>
+                          <else />
+                          <option value="0">请选择</option>
+                          <volist name="shop_conpon_list" id="sc">                            
+                            <option value="{$sc.id}" <if condition="$cd[shop_coupon_param]==$sc[id]">selected="selected"</if> >{$sc.title}</option>
+                          </volist>
+                        </empty>
+                      </select>
+                      </span></p></td>
+                </tr>
+                </volist>
+                <tr class="more_tr">
+                  <td colspan="3"><a href="javascript:add_tr()">+增加一级赠送</a><span class="check-tips">最多可设置五个层级</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>        
+        
+        <div class="form-item form_bh">
+          <notempty name="data.id">
+            <input type="hidden" name="id" value="{$data.id}">
+          </notempty>
+          <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+        </div>
+      </form>
+      <table style="display:none">
+<tr id="default_tr">
+  <td align="center"><span class="td_key">sort_id</span><br/>
+    <br/>
+    <a href="javascript:void(0);" onclick="remove_tr(this)">删除</a></td>
+  <td align="center">满
+    <input type="text" value="0.00" class="form-control money" name="condition[sort_id]" maxlength="11">
+    元</td>
+  <td><p>
+
+      <input type="checkbox" name="money[sort_id]" onclick="select_param(this)" value="1">
+
+      <span class="title">送现金</span> <span class="param">送
+      <input type="text" value="0.00" class="form-control money" name="money_param[sort_id]" maxlength="11">
+      元</span></p>
+    <p>
+
+      <input type="checkbox" name="score[sort_id]" onclick="select_param(this)" value="1">
+      <span class="title">送积分</span><span class="param">送
+      <input type="text" value="" class="form-control money" name="score_param[sort_id]" maxlength="11">
+      积分</span></p>
+    <p>
+
+      <input type="checkbox" name="shop_coupon[sort_id]" onclick="select_param(this)" value="1">
+      <span class="title">送赠送券</span><span class="param">送
+      <select style="width: 180px;" name="shop_coupon_param[sort_id]">
+        <empty name="shop_conpon_list">
+          <option selected="selected" value="0">你还未创建赠送券</option>
+          <else />
+          <option value="0">请选择</option>
+          <volist name="shop_conpon_list" id="sc">
+            <option value="{$sc.id}">{$sc.title}</option>
+          </volist>
+        </empty>
+      </select>
+      </span></p></td>
+</tr> </table>     
+    </div>
+  </section>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+function select_param(_this){
+	var val = $(_this).is(':checked');
+	if(val==true){
+	  $(_this).parent().find('.title').hide();
+	  $(_this).parent().find('.param').show();
+  }else{
+	  $(_this).parent().find('.title').show();
+	  $(_this).parent().find('.param').hide();
+  }
+}
+function is_mult(){
+	var count = 0;
+	$('.list_tr').each(function() {
+        count += 1;
+    });
+	
+	var val = $('input[name="is_mult"]:checked').val();
+	if(val==0||count==5){
+		$('.more_tr').hide();
+	}else{
+		$('.more_tr').show();
+	}
+	
+	if(val==0){
+		$('.list_tr').each(function(index, element) {
+            if(index>0) $(this).remove();
+        });
+	}
+}
+
+function add_tr(){
+	var count = 0;
+	$('.list_tr').each(function() {
+        count += 1;
+    });	
+	
+	re = new RegExp("sort_id", "g");
+	str  = $('#default_tr').html().replace(re, count+1);
+	console.log(str);
+	var html = '<tr class="list_tr">'+ str +'</tr>';
+	$('.list_tr:last').after(html);
+	
+	if(count>=4){
+	    $('.more_tr').hide();	
+	}
+}
+function remove_tr(_this){	
+	$(_this).parent().parent().remove();
+	
+	var count = 0;
+	$('.td_key').each(function() {
+		count = count + 1;
+        if(count>1) $(this).html(count);
+    });	
+	is_mult();
+}
+function is_all_goods(){
+	var val = $('input[name="is_all_goods"]:checked').val();
+	if(val==0){
+		$('#goods_item').hide();
+		$('.goods_data').each(function(index, element) {
+            $(this).remove();
+        });
+	}else{
+		$('#goods_item').show();
+	}
+}
+function choose_goods(){
+	var dataUrl = "{:addons_url('Shop://Goods/lists', array('isAjax'=>1))}";
+
+	$.WeiPHP.openSelectGoods(dataUrl,function(goodsList){
+				if(goodsList.length>0){
+					//获取已经存在的商品
+					var arr = [];
+					var goods_count = 0;
+					$('.goods_data').each(function(){
+						var gid = $(this).attr('rel');
+						arr.push(gid);
+						goods_count = goods_count + 1;
+					});
+					
+					for(var i=0;i<goodsList.length;i++){
+						var val = goodsList[i];
+						
+						if($.inArray(val.id, arr)!=-1) continue;
+												
+						var html =  '<tr rel="'+val.id+'" class="goods_data">'
+								  + '<td width="100" align="center"><img class="list_img" src="'+val.img+'" /></td>'
+								  + '<td align="center">'+val.title+'</td>'
+								  + '<td align="center">'+val.stock_num+'</td>'
+								  + '<td align="center">'
+								  + '<input type="hidden" name="goods_ids[]" value="'+val.id+'" />'
+								  + '<a href="javascript:void(0);" onclick="remove_tr(this)">删除</a></td> '                 
+								  + '</tr>';
+								  
+				        $('.add_goods_tr').before(html);
+					}
+				}
+			});
+}
+$(function(){    
+	initUploadImg();
+	initUploadFile();
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });	
+    showTab();
+	
+	$('.toggle-data').each(function(){
+		var data = $(this).attr('toggle-data');
+		if(data=='') return true;		
+		
+	     if($(this).is(":selected") || $(this).is(":checked")){
+			 change_event(this)
+		 }
+	});
+	
+	$('.toggle-data').bind("click",function(){ change_event(this) });
+	
+	$('.is_mult').bind('click',function(){ is_mult();	});
+	is_mult();
+	
+	$('.is_all_goods').bind('click',function(){ is_all_goods();	});
+	is_all_goods();
+	
+	$('.list_tr input[type="checkbox"]').each(function() {
+        select_param(this);
+    });
+});
+</script> 
+</block>

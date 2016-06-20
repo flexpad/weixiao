@@ -1,0 +1,60 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+
+<body>
+	<div class="container body">
+    	<div class="my_card" style="background:url({$config.background_url}) no-repeat -10px -10px; background-size:120% 120%;">
+        	<img class="head" src="{$userInfo.headimgurl}"/>
+            <p class="name">{$userInfo.nickname}</p>
+            <p class="level"><a href="{:U('level_intro')}"><img src="{:ADDON_PUBLIC_PATH}/king.png" width="16"/> <notempty name="levelInfo[level]"> {$levelInfo.level}<else/>体验卡</notempty></a></p>
+            <div class="my_card_nav">
+            	<a href="{:addons_url('Coupon://Wap/personal')}&use=1">优惠券<br/>{$coupon_count}</a>
+                <a href="{:addons_url('ShopCoupon://Wap/personal')}&use=1">代金券<br/>{$shop_coupon_count}</a>
+                <a href="{:addons_url('Card://Wap/score')}">积分<br/>{$userInfo.score}</a>
+                <a href="{:addons_url('Card://Wap/recharge')}">余额<br/>{$info.recharge}</a>
+            </div>
+            <a class="edit_icon" href="{:U('writeCardInfo')}&edit=1"></a>
+        </div>
+         <div class="h_item_container">
+            <a class="h_item" href="{:addons_url('Coupon://Wap/personal')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/ticket.png"/> 我的优惠券 <span class="colorless">({$coupon_count})</span><em></em></a>
+            <div class="h_item_line"></div>
+             <a class="h_item" href="{:addons_url('ShopCoupon://Wap/personal')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/money_ticket.png"/> 我的代金券 <span class="colorless">({$shop_coupon_count})</span><em></em></a>
+            <div class="h_item_line"></div>
+<!--             <a class="h_item" href="{:addons_url('Coupon://Wap/personal')}"><img style="vertical-align: -6px;" width="18" src="{:ADDON_PUBLIC_PATH}/gift.png"/>&nbsp;&nbsp;我的礼品券 <span class="colorless">({$couponCount|intval})</span><em></em></a> 
+<div class="h_item_line"></div>-->
+            
+            <a class="h_item" href="{:addons_url('Card://Wap/recharge')}" ><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/money.png"/> 我的账单<em></em></a>
+            
+        </div>
+          	<empty name='info.is_bind'>
+        <div class="h_item_container">
+      
+        	 <p style="color: darkgray;">（若已是实体店会员，可点击 绑定实体店会员卡）</p>
+                 <div class="form-item pt_10">
+                	<button class="home_btn submit-btn mb_10 flex_1 yellow_btn" type="button" id='bind_card' >绑定实体店会员卡</button>
+                 </div>
+        	
+<!--         	<a style="padding-right:10px;" class="h_item" href="{:U('writeCardInfo')}&edit=1"><img style="vertical-align: -5px;" width="12" src="{:ADDON_PUBLIC_PATH}/phone_1.png"/>   {$info.phone} <span class="btn fr" style="display:inline; width:auto; height:14px; line-height:14px; padding:4px 10px;">绑定新号码</span></a> -->
+        </div>
+        </empty>
+        <p class="copyright">{$system_copy_right}</p>
+    </div>
+    <nav class="bottom_nav">
+        <a class="icon_me_blue cur" href="{:addons_url('Card://Wap/me')}">我的</a>
+        <a class="icon_card_gray" href="{:addons_url('Card://Wap/index')}">会员卡</a>
+        <a class="icon_notice_gray" href="{:addons_url('Card://notice/show')}">最新通知</a>
+        <!--<a class="icon_ticket_gray" href="{:addons_url('Card://coupons/show')}">优惠券</a>-->
+        <a class="icon_share_gray" href="{:addons_url('Card://Wap/share')}">分享</a>
+        <a class="icon_signin_gray" href="{:addons_url('Card://Wap/signin')}">签到</a>
+    </nav>
+    <div class="bottom_nav_blank"></div>
+</body>
+<script type="text/javascript">
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+	WeixinJSBridge.call('hideToolbar');
+});
+$('#bind_card').click(function(){
+	window.location.href="{:addons_url('Card://Wap/bindCard')}";
+});
+</script>
+</html>

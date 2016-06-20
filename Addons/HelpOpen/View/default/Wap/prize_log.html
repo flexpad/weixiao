@@ -1,0 +1,50 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+	<div id="container" class="container">
+    	<notempty name="info.cover_id">
+        <div class="fixed_bg"><img src="{$info.cover_id|get_cover_url}" /></div>
+      <else />
+       <div class="fixed_bg"><img src="{:ADDON_PUBLIC_PATH}/bg.jpg" /></div>
+      </notempty>   
+      <div class="main_wrap">
+		<div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>获奖名单</span>
+        </div>
+        <div class="prize_log">
+                <empty name="list_data">
+        <div class="empty_default">
+            <br/><br/>
+            	<img src="__IMG__/empty_content.png" width="100"/>
+                <br/>
+                目前还没获奖名单~
+            </div>
+        
+        <else />
+         <div class="join_list" style="position:relative; top:0; left:0;">
+                <ul>
+                <volist name="list_data" id="vo">
+                    <li>
+                        <img src="{$vo.userface}">
+                        <span>{$vo.nickname} [{$vo.prize}]</span><br/><span class="time">{$vo.cTime}</span>
+                    </li>
+                 </volist>  
+                </ul>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="page"> {$_page|default=''} </div>
+           </empty>    
+        </div>
+        <p class="copyright">{$system_copy_right}{$tongji_code}</p>
+       </div>
+    </div>
+    <include file="Public/mobile_foot"/>
+    <script>
+	$('#container').css({'min-height':$(window).height()});
+	$('.prize_log').css({'min-height':$(window).height()-250});
+	</script>
+    
+</body>
+</html>

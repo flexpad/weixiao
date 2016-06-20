@@ -1,0 +1,93 @@
+<div class="head_search">
+    <div class="select_search">
+        <if condition="$_GET['act'] eq 'post'">
+      <span>帖子</span><em></em> 
+            <else/>
+      <span>用户</span><em></em> 
+        </if>
+            
+        <ul class="search-tab">
+
+            <li <php>if($curType==5){</php>class="current"<php>}</php>><a href="{:U('w3g/Search/post',array('t'=>5,'a'=>'public','k'=>$keyword,'scity'=>$scity,'sch'=>$sch,'qdr'=>$qdr))}" date-s="post">帖子</a></li>
+
+            <li <php>if($curType==1){</php>class="current"<php>}</php>><a href="{:U('w3g/Search/person',array('t'=>1,'a'=>'public','k'=>$keyword,'scity'=>$scity,'sch'=>$sch,'qdr'=>$qdr))}" date-s="person">用户</a></li>
+
+        </ul>
+    </div> 
+    <div class="search-content clearfix">
+        <div class="main-top-search">
+        <form action="{:addons_url('Weiba://Search/post')}" name="Search" id="Search" method="get">
+             
+            
+            <input type="hidden" name="t" value="{$curType}" id="t"/>
+            <input type="hidden" name="sch" value="{$sch}" id="sch"/>
+            <input type="hidden" name="scity" value="{$scity}" id="scity"/>
+            <input type="hidden" name="qdr" value="{$qdr}" id="qdr"/>
+            <input type="text" value="{$keyword}" id="keyword" name="k" autocomplete="off" placeholder="请输入搜索内容">
+            <a href="javascript:;" class="search-del"></a>
+            <!-- <a href="javascript:void(0);" onclick="$('#Search').submit();return false;" class="btn-search">搜索</a> -->
+        </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function doHighlight(a,b){
+    highlightStartTag="<span style='color:#f57c00'>";
+    highlightEndTag="</span>";
+    var c="";
+    var i=-1;
+    var d=b.toLowerCase();
+    var e=a.toLowerCase();
+    while(a.length>0){
+        i=e.indexOf(d,i+1);
+        if(i<0){
+            c+=a;
+            a="";
+        }else{
+            if(a.lastIndexOf(">",i)>=a.lastIndexOf("<",i)){
+                if(e.lastIndexOf("/script>",i)>=e.lastIndexOf("<script",i)){
+                    c+=a.substring(0,i)+highlightStartTag+a.substr(i,b.length)+highlightEndTag;
+                    a=a.substr(i+b.length);e=a.toLowerCase();
+                    i=-1;
+                }
+            }
+        }
+    }
+    return c;
+};
+
+$.fn.highlight=function(z){
+    $(this).each(
+        function(){
+            if (z !== null) {
+                $(this).html(doHighlight($(this).html(),z))
+            }
+        });
+    return this;
+}
+$(function(){
+	var curType = '{$curType}';
+	//$('.name span').highlight( '{$keyword}' );
+	//$('.follow_uname').highlight( '{$keyword}' );	
+})
+$('#keyword').on('keydown', function(){
+    $('.search-del').show();
+})
+$('#keyword').on('keyup', function(){
+    if($('#keyword').val()=='')$('.search-del').hide();
+})
+$('.select_search').click(function(event){
+    event.stopPropagation();
+    $('.search-tab').toggle();
+})
+$('html').click(function(){
+    $('.search-tab').hide();
+})
+$('.search-del').click(function(){
+    $('#keyword').val('');
+    $(this).hide();
+})
+if($('#keyword').val()!=''){
+    $('.search-del').show();
+}
+</script>

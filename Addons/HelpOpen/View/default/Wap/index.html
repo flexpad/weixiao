@@ -1,0 +1,196 @@
+<include file="Public/mobile_head"/>
+<script type="text/javascript" src="__STATIC__/qrcode/qrcode.js"></script>
+<script type="text/javascript" src="__STATIC__/qrcode/jquery.qrcode.js"></script>
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+<div id="container" class="container" data-mh="0.9">
+  <notempty name="info.cover_id">
+    <div class="fixed_bg"><img src="{$info.cover_id|get_cover_url}" /></div>
+  <else />
+   <div class="fixed_bg"><img src="{:ADDON_PUBLIC_PATH}/bg.jpg" /></div>
+  </notempty>   
+  <div class="main_wrap">      
+      <div class="main_content">    
+          <!--<p class="title">{$info.title}</p>-->
+          <em class="l"></em><em class="r"></em>
+          <div class="info">
+         <if condition="$invite_uid eq $mid"><!--参与人自己打开的页面显示的内容-->
+         
+          <else/><!--朋友打开的页面显示的内容-->
+                 <if condition="$join[has_help] eq 1">
+                     <p><a>你是第 <span class="left_count">{$invite_count}</span> 领取奖品的小伙伴</a></p>
+                     <p><a>还差 <span class="left_count">{$invite_left}</span> 位小伙伴就能助TA获得大奖</a></p>
+                 <else />  
+                 	<p><a>小伙伴，我是<span>{$invite_uid|get_nickname}</span><br/>赶快领取我的爱心分享吧！</a><br><span class="prize_title text_bg_w">神秘礼品一份</span></p>       
+                 </if>  	
+          </if>
+                           
+            <!--
+            <p class="time"><a>有效期：<span class="start_time">{$info.start_time|time_format}</span> - <span class="end_time">{$info.end_time|time_format}</span></a></p>
+            -->
+          </div>
+          <if condition="($invite_uid eq $mid) or ($join[has_help] eq 1)">
+            <div class="info"><p><a><span class="prize_title" style="font-size:18px; padding:5px 10px;">{$prize_name}</span></a></p></div><!--奖品信息-->
+          	<img class="prize_box" src="{:ADDON_PUBLIC_PATH}/openbox.png"/>
+          <else/>
+          	<img class="prize_box" src="{:ADDON_PUBLIC_PATH}/unopenbox.png"/>
+          </if>
+      </div>
+
+      
+          
+      
+         <if condition="$invite_uid eq $mid"><!---访问自己的页面--->
+         	 
+
+              	<div class="info">
+                 <p class="invite_tips" <empty name="invite_count">style="display:none"</empty> onClick="show_join()"><a>已有<span class="invite_count">{$invite_count}</span>位好友帮忙 </a></p>
+                  <php> if($invite_left==0 && $join_info[sn_id]=='-1'){ </php>
+                  <p>很抱歉，大礼包已被抢完!</p>
+                  <php> }else{ </php>
+                  <p onClick="show_join()"><a>还差 <span class="left_count">{$invite_left}</span> 位好友就能获得了<a></p>
+                  <php> } </php>
+                 </a>
+                 </div>
+                  <!-- 进度条 -->
+                  <div class="progress">
+                  	<div class="done" style="width:{$progress}%"></div>
+                  </div>     
+              <!--<div class="btnWrap"><br/><br/><a href="javascript:;" onClick="check_subscribe('share')" class="main_btn"><img src="{:ADDON_PUBLIC_PATH}/main_share_btn.png"/></a><br/><br/></div>-->
+              <div class="sub_btn_div">
+              	 <a href="javascript:;" onClick="check_subscribe('share')"><img src="{:ADDON_PUBLIC_PATH}/help_btn.png"/></a>
+              	 <a href="{:U('my_prize',array('help_id'=>$info['id']))}"><img src="{:ADDON_PUBLIC_PATH}/prize_btn.png"/></a> 
+                 
+              </div>
+        <!---访问自己的页面  end--->
+        <else /><!---访问好友分享给我的页面--->
+        
+            <if condition="$join[has_help] eq 0"><!--还没帮拆开时-->
+              <div class="btnWrap" id="do_help_open">
+                  <a href="javascript:;" onClick="check_subscribe('do_help')" id="do_help_open" class="main_btn"><img src="{:ADDON_PUBLIC_PATH}/main_btn.png"/><br/>谢谢你分享接力助我赢取大奖吧</a> 
+              </div>
+               <else/>
+               	<br/>
+                <br/>
+               </if>      
+              <div class="sub_btn_div">
+              	  <if condition="$join[has_help] eq 1">
+                  <a href="{:U('my_prize',array('help_id'=>$info['id']))}"><img src="{:ADDON_PUBLIC_PATH}/prize_btn.png"/></a> 
+                  <!--查看小礼品-->
+                  <else/>
+                   <a href="javascript:;" onClick="check_subscribe('share')"><img src="{:ADDON_PUBLIC_PATH}/share_btn.png"/></a><!--帮ta分享-->
+                  </if><!--帮ta分享-->
+                  <empty name="has_join">
+                  <a href="javascript:;" onClick="check_subscribe('get')"><img src="{:ADDON_PUBLIC_PATH}/get_btn.png"/><br/>{$big.name}</a> <!--我也要领-->
+                  </empty>
+              </div>
+         </if><!---访问好友分享给我的页面 end--->
+     
+    <div class="join_list" style="display:none">
+    	<a class="close" onClick="$('.join_list').hide();"></a>
+        <empty name="join.list_data">
+        <div class="empty_default">还没有好友领取</div>
+        <else />
+        <ul>
+            <volist name="join.list_data" id="vo">
+                <li>
+                    <img src="{$vo.friend_uid|get_userface}">
+                    <span>{$vo.friend_nickname}</span><br/><span class="time">{$vo.cTime|time_format}</span>
+                </li>
+            </volist>
+        </ul>
+        </empty>
+    </div>
+    <p class="link">
+  		<notempty name="info.shop_ids"><a href="{:U('store_list',array('id'=>$info[id]))}">适用门店</a> | </notempty>
+  		<a href="{:U('content',array('id'=>$info[id]))}">活动规则</a>
+  	</p>
+    <center><img width="90%" src="{:ADDON_PUBLIC_PATH}/bottom_pic.png"/></center>
+    <p class="copyright" style="color:#333; line-height:30px;">{$system_copy_right}{$tongji_code}</p>
+</div>
+<include file="Public/mobile_foot"/>
+<script type="text/javascript">
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+	WeixinJSBridge.call('hideToolbar');
+});
+wx.ready(function(){
+	var shareData = {
+			title: '{$info.share_title}', // 分享标题
+			desc: '{$info.share_intro}', // 分享描述
+			link: "{:U( 'index',array('invite_uid'=>$invite_uid,'id'=>$info['id'],'token'=>get_token()))}", //分享的链接地址
+			imgUrl: "<empty name='info.share_icon'>{:SITE_URL}/Addons/HelpOpen/View/default/Public/cover_pic.jpg<else />{$info.share_icon|get_cover_url}</empty>", // 分享图标
+			type: 'link', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () { 
+				// 用户确认分享后执行的回调函数
+				$('.shareTips').remove();
+			},
+			cancel: function () { 
+				// 用户取消分享后执行的回调函数
+				$('.shareTips').remove();
+			}
+	}
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareTimeline(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+});
+
+function openBox(){
+	$.Dialog.loading("正在打开礼盒...");
+	$.get("{:U('do_help',array('invite_uid'=>$invite_uid,'id'=>$info[id]))}",function(data){
+		if(data.status){
+//			$('.prize_box').attr('src','{:ADDON_PUBLIC_PATH}/openbox.png');
+//			$('.invite_tips').show();
+//			var inviteCount = parseInt($('.invite_count').text());
+//			var leftCount = parseInt($('.left_count').text());
+//			$('.invite_count').text(inviteCount+1);
+//			$('.left_count').text(leftCount-1);
+//			$('#do_help_open').remove();
+			//setTimeout(function(){
+				window.location.href = window.location.href;
+			//},3000);
+		}else{
+			$.Dialog.fail(data.info);
+		}
+	})
+}
+function show_join(){
+	//$('.join_list').show();
+}
+function check_subscribe(type){
+	var has_subscribe = "{$has_subscribe}";
+	//var has_subscribe = 1;
+	if(has_subscribe=="0"){
+	    $.WeiPHP.showSubscribeTips({'title':'{$public_info.public_name}','qrcode': '{$qrcode}'});
+		return false;	
+	}
+	
+	if(type=='share'){
+		$.WeiPHP.showShareFriend();
+	}else if(type=='do_help'){
+		openBox();
+	}else{
+		var url="{:U('index',array('invite_uid'=>$mid,'id'=>$info[id]))}";
+		window.location.href = url;
+	}
+}
+
+$(function(){
+	<if condition="$is_use eq 0">
+	var timer = setInterval(function(){
+		$.post("{:U('check_use')}",{ id:"{$info.id}",invite_uid:"{$invite_uid}"},function(data){
+			if(data==1){
+				$('#usedStatus').show();
+				$('#unusedStatus').hide();
+				clearInterval(timer)
+			}
+		})
+	},2000);
+	</if>
+	
+	$('.join_list').css({'height':$(window).height()*0.7,'top':$(window).height()*0.1});
+})
+</script>
+</body>
+</html>

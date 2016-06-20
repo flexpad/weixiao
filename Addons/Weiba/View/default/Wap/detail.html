@@ -1,0 +1,207 @@
+<include file="header" />
+<style type="text/css">
+  body{background-color: #f1f1f1;}
+</style>
+<div id="content">
+        <div id="weiba" data-title="{$weiba_name|getShort=6,'...'}" class="panel" data-selected="true"  data-menu="msgmenu" style="padding:0;">
+        <header>
+            <div id="header-buttons">
+           <php> if(isset($_SERVER['HTTP_REFERER'])){</php>
+                	<a href="javascript:history.go(-1);">
+                    <div id="back" class="header-menu-link" data-back="false">
+                    返回
+                    </div>
+                <php>}else{</php>
+                	<a href="{:addons_url('Weiba://Wap/index')}">
+                    <div id="back_index">
+                    首页
+                    </div>
+                <php>}</php>
+                	
+                </a>
+				<!--
+                <div id="messageLink" class="header-menu-link">
+                	<a href="{:U('w3g/Index/msgbox')}"><i class="num"></i></a>
+                </div>
+        		<div id="menuLink" class="header-menu-link"></div>
+                -->
+                <div id="otherLink" style="right:0">
+                 	<a id="writeLink" class="header-menu-link" href="{:addons_url('Weiba://Wap/post',array('weiba_id'=>$weiba_detail['id']))}">发帖</a>
+                    <div id="headMenu" class="header-menu-link msg_tips_container" href="javascript:;">
+                    	导航<em class="msg"></em>
+                    	<ul class="head_sub_menu">
+                        	<a href="{:addons_url('Weiba://Wap/index')}">首页</a>
+                            <a href="{:addons_url('Weiba://Wap/forum')}">版块</a>
+                            <a class="msg_tips_container" href="{:addons_url('Weiba://Wap/my')}">我<em class="msg"></em></a>
+                        </ul>
+                    </div>
+                 </div>
+            </div>
+            <h1 class="hasback" style="display:none">
+                {$weiba_name}
+            </h1>
+            <div style="ine-height: 48px;font-weight: normal;font-size: 1.3em; text-align: left; padding-left: 40px; line-height:48px;color: #fff;">
+            	<php> if(isset($_SERVER['HTTP_REFERER'])){</php>
+            	   
+                <php>}else{</php>
+                   
+                 <php>}</php>
+            </div>
+        </header>
+        <div class="mainWeiba">
+            <div class="weiba_info">
+                <dl>
+                    <dt>
+                        <h1><img width="90" height="90" src="{$weiba_detail.logo|get_cover_url}"></h1>
+                        <h2>{$weiba_name}
+                        
+                        <if condition="0 eq $follow_state[$weiba_id]['following']">
+                            <a id="followAction" class="unfollow" href="javascript:;" data-href="{:addons_url('Weiba://Wap/followWeiba', array('weiba_id'=>$weiba_id))}">关注</a>
+                        <else />
+                            <a id="followAction" class="followed" href="javascript:;" data-href="{:addons_url('Weiba://Wap/followWeiba', array('weiba_id'=>$weiba_id))}">已关注</a>
+                        </if>
+                       </h2>
+                    <h3>帖子: {$weiba_detail['thread_count']}&nbsp;&nbsp;粉丝: {$weiba_detail['follower_count']}　<br/>吧主:&nbsp;<a href="{:addons_url('Weiba://Wap/profile', array('uid'=>$weiba_detail['uid']))}">{$nickname}</a></h3>
+                    </dt>
+                    <!--
+                    <php>if($weiba_detail['intro']){</php>
+                    <dd><span>简介</span>{$weiba_detail.intro}</dd>
+                    <php>}</php>
+                    <php>if($weiba_detail['notify']){</php>
+                    <dd><span>公告</span>{:var_dump($weiba_detail['notify'])}</dd>
+                    <php>}</php>
+                    -->
+                </dl>
+            </div>
+			<div class="weiba_tab_wrap">
+                <div class="weiba_tab">
+                   <a id="show_tag_list" class="{$type=='digest'?'':'current'}" href="javascript:;" data-href="{:addons_url('Weiba://Wap/detail', array('weiba_id'=>$weiba_detail['id'],'type'=>'all','tag_id'=>$tag_id))}">
+                   <if condition="$tag_id">
+                   	{$tag_name}
+                   <elseif condition="$filter eq 'event'"/>
+                   活动
+                   <else/>
+                   	全部
+                   </if>
+                   <em>&nbsp;</em></a>
+                   <a class="{$type=='digest'?'current':''}" href="javascript:window.location.replace('{:addons_url('Weiba://Wap/detail', array('weiba_id'=>$weiba_detail['id'],'type'=>'digest','tag_id'=>$tag_id,'filter'=>$filter))}')">精华</a>
+                </div>
+                <if condition="$tagList or $hasEvent">
+                <ul class="drop_tag_list">
+                	<li><a <if condition="!$tag_id">class="active"</if> href="javascript:window.location.replace('{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$weiba_detail['id']))}')">全部</a></li>
+                    </volist>
+                	<volist name="tagList" id="tag">
+                    <li><a <if condition="$tag_id eq $tag['tag_id']">class="active"</if> href="javascript:window.location.replace('{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$weiba_detail['id'],'tag_id'=>$tag['tag_id']))}')">{$tag.name}</a></li>
+                    </volist>
+                    <if condition="$hasEvent">
+                        <a <if condition="$filter eq 'event'">class="active"</if> href="{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$weiba_id,'filter'=>'event'))}">活动</a>
+                    </if>
+                </ul>
+                </if>
+            </div>
+            <div class="weiba_postlist" style="position:relative">
+              <div class="tag_pop_layer"></div>
+              <ul id="listData">
+                <volist name="list.list_data" id="vo">
+                <li onclick="javascript:window.open('{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}','_self')">
+                    <div class="name">
+                    	
+                        <a <if condition="$vo['digest']">class="yellow"</if> href="{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}">
+                        <if condition="$vo['tag_id']"><span class="blue">[ {$vo.tag_name} ]</span></if>
+                        <if condition="$vo['is_event']"><span class="blue">[ 活动 ]</span></if>
+                        <span>{$vo.title}</span>
+                        <php>if($vo['attach']){</php><i class="ico-bar-attach">&nbsp;</i><php>}</php>
+                        <!--
+                        <php>if($vo['is_img']){</php><i class="ico-bar-image">&nbsp;</i><php>}</php>
+                        -->
+                        <php>if($vo['top']==1){</php><i class="ico-bar-top">&nbsp;</i><php>}</php>
+                        <php>if($vo['digest']==1){</php><i class="ico-bar-fine">&nbsp;</i><php>}</php>
+                        <php>if($vo['recommend']){</php><i class="ico-bar-recd">&nbsp;</i><php>}</php>
+                        <!--<php>if(preg_match('/<img/i',$vo['content'])){</php><i class="ico-img"><img class="icons" width="16" src="{:APPS_URL}/w3g/_static/images/ico-img.png"></i><php>}</php></a>-->
+                        </a>
+                    </div>
+                    <php>if($vo['image']){</php> 
+                    <a class="weiba_postlist_pics" href="{:addons_url('Weiba://Wap/postDetail',array('post_id'=>$vo['id']))}">
+                    <div class="ninepic_list">
+                        <volist name="vo['image']" id="vo2">
+                            <lt name="i" value="4">
+                             <span><img src="{$vo2}"/></span>
+                            </lt>
+                        </volist>
+                        
+                    </div>
+                    </a>
+                    <php>}</php> 
+                    <div class="info clearfix">
+                    	<div class="left">
+                        	 <a href="{:addons_url('Weiba://Wap/profile',array('uid'=>$vo['post_uid']))}">
+                            <img height="16" width="16" src="{$vo['post_uid']|get_userface}"/>
+                            {$user_info[$vo['post_uid']]['uname']}
+                            </a><!--&nbsp;-&nbsp;<span>{$vo.post_time|time_format}</span>-->
+                        </div>
+                        <div class="right">
+                        <php>if($vo['event'] && $vo['event']['join_count']>0){</php><span class="jlnum">{$vo.event.join_count}</span><php>}if($vo['read_count']>0){</php><span class="llnum">{$vo.read_count}</span><php>}if($vo['reply_count']>0){</php><span class="plnum">{$vo.reply_count}</span><php>}</php>
+                        </div>
+                    </div>
+                </li>
+                </volist>
+              </ul>
+              <php>if($list['totalPages']>1):</php>
+              <a id="load_page_btn" href="javascript:;" data-page="{$list['totalPages']}" data-url="{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$weiba_detail['id'],'type'=>$type))}">下一页</a>
+              <div class="no_more_data">没有更多数据了</div>
+              <div class="page_loading">正在加载中...</div>
+              
+              <php>endif;</php>
+              <!--
+              <php>if($list['totalPages']>1):</php>
+              <div id="pager_box">
+              	<php>if($list['nowPage']>1):</php>
+                <a href="{:U('detail',array('weiba_id'=>$weiba_detail['id'],'type'=>$type,'page'=>$list['nowPage']-1))}" id="prev" class="pure-button pager_child pager_p_n pure-button-primary">上一页</a>
+                <php>endif;</php>
+                <php>if($list['nowPage']<$list['totalPages']):</php>
+                <a href="{:U('detail',array('weiba_id'=>$weiba_detail['id'],'type'=>$type,'page'=>$list['nowPage']+1))}" id="next" class="pure-button pager_child pager_p_n pure-button-primary">下一页</a>
+                <php>endif;</php>
+              </div>
+              <php>endif;</php>
+              -->
+              
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    loadPageByMore();
+	$('.mainWeiba').css('min-height',$(window).height());
+	$('#show_tag_list').click(function(){
+		if($(this).hasClass('current')){
+			if(!$('.drop_tag_list').is(':visible')){
+				/*$('.tag_pop_layer').show();*/
+				$('.drop_tag_list').show();
+				$(this).addClass('is_show');
+			}else{
+				/*$('.tag_pop_layer').hide();*/
+				$('.drop_tag_list').hide();
+				$(this).removeClass('is_show');
+	
+			}
+		}else{
+			window.location.replace($(this).data('href'));
+		}
+		return false;
+	});
+	$('#followAction').click(function(){
+		$.post($(this).data('href'),{'is_follow':$('#followAction').hasClass('unfollow')?0:1},function(data){
+			if(data.status){
+				if($('#followAction').hasClass('unfollow')){
+					$('#followAction').removeClass('unfollow').addClass('followed').text('已关注')
+				}else{
+					$('#followAction').removeClass('followed').addClass('unfollow').text('关注');
+				
+				}
+			}else{
+				$.ui.showMask(data.info,true);
+			}
+		},'JSON');
+	})
+    </script>
+<include file="footer" />

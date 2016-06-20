@@ -1,0 +1,78 @@
+<include file="../Public/header" />
+<div id="content">
+    <div id="weiba" data-title="论坛" class="panel" data-selected="true"  data-menu="msgmenu" style="padding:0;">
+        <header>
+        	
+            <div id="header-buttons">
+            	<a href="javascript:history.go(-1);">
+                    <div id="back" class="header-menu-link" data-back="false">
+                    返回
+                    </div>
+                </a>
+       
+                <div id="otherLink" style="right:0">
+                    <div id="headMenu" class="header-menu-link msg_tips_container" href="javascript:;">
+                    	导航<em class="msg"></em>
+                    	<ul class="head_sub_menu">
+                        	<a href="{:U('index')}">首页</a>
+                            <a href="{:U('forum')}">版块</a>
+                            <a class="msg_tips_container" href="{:U('my')}">我<em class="msg"></em></a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h1>
+            	我的下载
+            </h1>
+        </header>
+        <div class="mainWeiba">
+        	
+    <div class="weiba_forumlist">
+      
+      <div class="weiba_postlist_wrap">
+        
+        <div class="slc clearfix">
+          <div class="bklist">
+              <php>if(!$list['data']):</php>
+              <div class="nodata">还没下载记录!</div>
+              <php>else:</php>
+              <div class="weiba_postlist my_download_list">
+                  <ul id="listData">
+                    <volist name="list.data" id="vo">
+                    	 <li> 
+                           <i class="ico-attach-small ico-{$vo.attachData.extension}-small"></i>
+                           <div class="attach-con">
+                               <a style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">
+                                            
+                                <p>{$vo.attachData.name}</p>
+                                <p class="small">来自:{$vo.postData.title}</p>
+                                <p class="small">{$vo.ctime|time_format}</p>
+                              </a>
+                              
+                            </div>
+                             <a class="download-ico" href="javascript:;" onclick="openAttachAction('{:getAttachUrlByAttachId($vo[attach_id])}','{$vo.attachData.name}','{$vo.attach_id}','{$vo.post_id}');"></a>
+                          </li>
+                    </volist>
+                  </ul>
+                  <php>if($list['totalPages']>1):</php>
+                  <a id="load_page_btn" href="javascript:;" data-page="{$list['totalPages']}" data-url="{:U('myDownbload',array('type'=>$type))}">下一页</a>
+                  <div class="no_more_data">没有更多数据了</div>
+                  <div class="page_loading">正在加载中...</div>
+                  
+                  <php>endif;</php>
+               
+                </div>
+              <php>endif;</php>
+          </div>
+        </div>
+      </div>
+    </div>
+<script src="{:APPS_URL}/w3g/_static/sendAttach.js?v={:SITE_VERSION}"></script>
+<script>
+loadPageByMore();
+</script>
+
+    </div>
+</div>
+<include file="../Public/footer" />

@@ -1,0 +1,28 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/index.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+<div class="container body" style="position:relative; background:#eee;">
+  <notempty name="info.cover_id">
+    <div class="fixed_bg"><img src="{$info.cover_id|get_cover_url}" /></div>
+  <else />
+  	<div class="fixed_bg"><img src="{:ADDON_PUBLIC_PATH}/bg.jpg" /></div>
+  </notempty>   
+  <div class="main_wrap">
+  	  <div class="common_header">
+        	<a class="back" href="javascript:;" onClick="history.back()"></a>
+            <span>活动规则</span>
+        </div>
+  	 
+  	  <div class="intro_content">
+          <div>{$info.content}</div>
+          <br/>
+         
+      </div>
+      <p class="copyright">{$system_copy_right}{$tongji_code}</p>
+  </div>
+</div>
+<script type="text/javascript">
+$('.intro_content').css('min-height',$(window).height()-160);
+</script>
+</body>
+</html>

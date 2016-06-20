@@ -1,0 +1,60 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<style>
+.card_get_error{
+	position: absolute;
+    left: 5%;
+    right: 5%;
+    top: 15px;
+    bottom: 0;
+    z-index: 1000;
+    border-radius: 8px;
+    color: #fff;
+    padding-top: 125px;
+    font-size: 14px;
+    text-align: center;
+}
+</style>
+<body>
+	<div class="container body">
+    	<div class="card">
+        	<img class="card_bg" src="{$config.background_url}"/>
+            <div class="card_container">
+                <p class="logo"><eq name='config.show_logo' value='1' ><img src="{$config.logo|get_cover_url}"/></eq></p>
+                <p class="card_name" style="color:{$config.title_color}">{$config.title}</p>
+                <empty name='is_error'><p class="card_number" style="color:{$config.number_color}"><small>体验卡号</small><br/>{$card_info.number}</p></empty>
+            </div>
+            <empty name='is_error'><div class="card_get_mark">填写会员资料，即可升级会员卡！</div><else/><div class="card_get_error">{$is_error}</div></empty>
+        </div>
+        <div class="m_15">
+        	<div class="write_tips_content">
+            	<h6>{$info.title}</h6>
+                <!-- 开卡寄送提示语  -->
+           		<p>{$info.content}</p>
+            </div>
+            <empty name='is_error'> <a class="btn" href="{:addons_url('Card://Wap/writeCardInfo')}">完善会员资料</a><else/><a class="btn" href="{:addons_url('Card://Wap/index')}">返回</a></empty>
+        </div>
+        
+        <p class="copyright">{$system_copy_right}</p>
+    </div>
+    
+</body>
+<script type="text/javascript">
+	  var is_error="{$is_error}";
+	  if(is_error){
+		$('.card_get_mark').css('background_image','');  
+	  }
+	  
+		if($('#select_background').val()==11){
+			var cardBgUrl = $("#hidden_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_background').val()+".png";
+
+		}	
+		$('#cardBg').attr("href",cardBgUrl);
+		
+		wx.ready(function(){
+			wx.hideAllNonBaseMenuItem();
+		})
+</script>
+</html>

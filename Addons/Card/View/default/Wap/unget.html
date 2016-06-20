@@ -1,0 +1,40 @@
+<include file="Public/mobile_head"/>	
+<link href="{:ADDON_PUBLIC_PATH}/card.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body>
+	<div class="container body">
+    	<div class="card">
+        	<img class="card_bg" src="{$config.background_url}"/>
+            <div class="card_container">
+                <p class="logo"><eq name='config.show_logo' value='1'><img src="{$config.logo|get_cover_url}"/></eq></p>
+                <p class="card_name" style="color:{$config.title_color}">{$config.title}</p>
+            </div>
+            <if condition="$has_subscribe eq 1">
+            	<a class="get_btn" href="{:addons_url('Card://Wap/get_success')}&status=2">点击领取体验卡</a>
+            <else/>
+            	<a class="get_btn" href="javascript:;" onClick="$.WeiPHP.showSubscribeTips({'title':'{$public_info.public_name}','qrcode': '{$qrcode}'});">点击领取体验卡</a>
+            </if>
+        </div>
+        <div class="h_item_container">
+        	 <a class="h_item" href="{:U('privilege')}"><img width="24" src="{:ADDON_PUBLIC_PATH}/vip.png"/> 会员卡特权<em></em></a>
+            <div class="h_item_line"></div>
+            <a class="h_item" href="{:addons_url('Card://Wap/introduction')}" ><img style="vertical-align: -5px;" width="22" src="{:ADDON_PUBLIC_PATH}/intro.png"/> 会员卡使用说明<em></em></a>
+            <div class="h_item_line"></div>
+            <div class="h_item_line"></div>
+            
+            <a class="h_item" href="{:addons_url($_REQUEST ['_addons'].'://'.$_REQUEST ['_controller'].'/storeList')}" target="_blank"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/map.png"/> 适用门店<em></em></a>
+        </div>
+        
+        <p class="copyright">{$system_copy_right}</p>
+    </div>
+    
+</body>
+<script type="text/javascript">
+		if($('#select_background').val()==11){
+			var cardBgUrl = $("#hidden_background_custom").val();
+		}else{
+			var cardBgUrl = '{:ADDON_PUBLIC_PATH}/card_bg_'+$('#select_background').val()+".png";
+
+		}	
+		$('#cardBg').attr("href",cardBgUrl);
+</script>
+</html>

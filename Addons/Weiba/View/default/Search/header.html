@@ -1,0 +1,69 @@
+<include file="Public/mobile_head"/>
+
+    <link href="{:ADDON_PUBLIC_PATH}/css.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css" />
+
+    <link href="{:ADDON_PUBLIC_PATH}/style.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="{:ADDON_PUBLIC_PATH}/swiper/dist/idangerous.swiper.css">
+
+    <!--TS-U function-->
+    <script type="text/javascript">
+        var SITE_URL  = '<php> echo SITE_URL;</php>';
+        //载入函数
+        var U = function(url, params) {
+            var website = SITE_URL+'/index.php';
+            url = url.split('/');
+            if(url[0]=='' || url[0]=='@')
+                url[0] = APPNAME;
+            if (!url[1])
+                url[1] = 'Index';
+            if (!url[2])
+                url[2] = 'index';
+            website = website+'?app='+url[0]+'&mod='+url[1]+'&act='+url[2];
+            if(params) {
+                params = params.join('&');
+                website = website + '&' + params;
+            }
+            return website;
+        };
+        var _static = '__APP__';
+    </script>
+    <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js.min.js?v={:SITE_VERSION}"></script>
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID       = '<php> echo $mid;</php>';
+var UID       = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>';
+var _CITY = '{:session("init_city")}';
+var ISWAP = 1;
+var USER_UN_SETTING = '{$unsetting}';
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)) {</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={:SITE_VERSION}"></script>
+</volist>
+<php>}</php>
+<!--
+<script src="__THEME__/js/js.php?t=js&f=3"></script>
+-->
+<script src="{:ADDON_PUBLIC_PATH}/js.min.w3g.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/swiper/dist/idangerous.swiper.min.js"></script>
+
+<body>
+<div id="header">
+    <div id="header-buttons">
+    </div>
+    <h1>
+        
+    </h1>
+</div>
+<div id="layout">
+    <div id="main">

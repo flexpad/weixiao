@@ -1,0 +1,140 @@
+<include file="header" />
+<style type="text/css">
+  body{background-color: #f1f1f1;}
+</style>
+<div id="content">
+    <div id="weiba" data-title="发新帖" class="panel" data-selected="true"  data-menu="msgmenu">
+        <header>
+            <div id="header-buttons">
+            	<a href="javascript:history.go(-1);">
+                    <div id="back" class="header-menu-link" data-back="false">
+                    </div>
+                </a>
+				<div class="header-menu-link" id="hmp-send">
+                    <a class="sendBtn disable" onClick="doWeibaPost()" id="postbut" href="javascript:;">发布</a>
+                </div>
+            </div>
+            <h1 class="hasback">
+                发新帖
+            </h1>
+        </header>
+      
+      <div class="weibaPost">
+      	<form method="post" action="{:addons_url('Weiba://Wap/doPost')}" id="doWeibaPost" onsubmit="doWeibaPost();return false;">
+        <div class="navlist">
+          <ul style="margin:0 0 10px">
+             <li>
+                <select style="color:#333" name="weiba_id" id="weiba_id" class="ts-select" >
+                <option value="0">选择版块</option>
+                <volist name="weibacate" id="vo">
+                <php>if(empty($vo['weibalist']))continue;</php>
+                <optgroup label="{$vo.name}" disabled>{$vo.name}</optgroup>
+                    <volist name="vo.weibalist" id="wb">
+                    <option <if condition="$weiba_id eq $wb['id']">selected="selected"</if> value="{$wb.id}">{$wb.weiba_name}</option>
+                    </volist>
+                </volist>
+                </select>
+                <script type="text/javascript"></script>
+             </li>
+        	<!--
+             <li>
+                <select style="color:#333" name="tag_id" id="tag_id" class="ts-select">
+                
+                </select>
+             </li>
+             -->
+         </ul>
+      </div>
+        
+          <div class="pure-form send_box">
+            <input type="text" id="title" name="title" class="ts-text" placeholder="填写标题，4-30个字符">
+          </div>
+          <div class="pure-form send_box">
+          <textarea class="ts-textarea" name="content" id="post-content" rows="4" placeholder="填写文本，不少于10个字符"></textarea>
+          </div>
+          <div class="ts-footer">
+              <!-- 表情 -->
+              <!--<a class="icon facelistbutton ts-listen" data-listen="weibo-facelist-show"><i class="fa-btn fa-btn-smile"></i></a>
+              -->
+              <!-- 图片 -->
+              <div class="upload_img_wrap">
+                 <div class="controls">
+                    <div class="upload_row muti_picture_row">
+                        
+                        <notempty name="data[$field['name']]">
+                            <php>
+                                $tempArr = explode(',',$data['img_ids']);
+                                
+                                for($i=0;$i<count($tempArr);$i++){
+                                    echo '<div class="img_item"><em>X</em><input type="hidden" name="img_ids[]" value="'.$tempArr[$i].'"/><img src="'.get_cover_url($tempArr[$i]).'"/></div>';
+                                }
+                            </php>
+                        </notempty>
+                        <a class="img_item add_btn" href="javascript:;" onClick="$.WeiPHP.wxChooseImg(this,1,'img_ids[]')"><img width="100%" src="__IMG__/add.png"/></a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+<include file="footer" />
+<script type="text/javascript">
+function doWeibaPost(){
+	var weiba_id = $('#weiba_id').val();
+	var tag_id = $('#tag_id').val();
+	var title = $.trim($('#title').val());
+	var content = $.trim($('#post-content').val());
+	var imageIds = '';
+	$('.img_item input').each(function(i, el){
+		imageIds = $(el).val()+','+imageIds;
+		
+	});
+
+	if(!weiba_id || weiba_id=='0'){
+		$.ui.showMask("请选择版块",true);
+	}else if(!title){
+		$.ui.showMask("标题不能为空!",true);
+		$('#title').focus();
+	}else if(!content){
+		$.ui.showMask("内容不能为空!",true);
+		$('#post-content').focus();
+	}else if(content.length<10){
+		$.ui.showMask("内容不能少于10个字符",true);
+		$('#post-content').focus();
+	}else{
+		$.post($('#doWeibaPost').attr('action'), {
+			weiba_id: weiba_id,
+			tag_id: tag_id,
+			title   : title,
+			content : content,
+			imageIds: imageIds
+		}, function(data){
+			if(data.status){
+				$('#title').val('');
+				$('#post-content').val('');
+				$('#ts-upload-img-box').empty();
+				$.ui.showMask('发布成功', true);
+				setTimeout(function(){
+					window.location.href = data.url;
+				},2000)
+			}else{
+				$.ui.showMask(typeof data=='string'?data:data.info,true);
+			}
+			
+		},'JSON');
+	}
+}
+/*
+function getTags(tagId){
+	var url = U('getTagsByAjax');
+	tag_id=tagId?tagId:0;
+	weiba_id = $('select[name="weiba_id"]').val();
+	$.post(url,{tag_id:tag_id,weiba_id:weiba_id},function(data){
+		$('select[name="tag_id"]').html(data);
+	});
+}
+getTags({$tag_id});
+*/
+</script>
