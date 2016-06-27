@@ -13,7 +13,8 @@ class WapController extends AddonsController {
 		// 投票活动信息
 		$voteInfo = D ( 'Addons://Vote/ShopVote' )->getInfo ( $voteId );
 		// 判断是否过期
-		
+		$page_title =$voteInfo['title'];
+		$this->assign('page_title',$page_title);
 		if ($this->_is_overtime ( $voteInfo )) {
 			// 过期 未开始
 			if (! empty ( $voteInfo ['start_time'] ) && $voteInfo ['start_time'] > NOW_TIME)
@@ -144,6 +145,8 @@ class WapController extends AddonsController {
 		
 		// 投票活动信息
 		$voteInfo = D ( 'Addons://Vote/ShopVote' )->getInfo ( $voteId );
+		$page_title =$voteInfo['title'];
+		$this->assign('page_title',$page_title);
 		// 判断是否过期
 		if ($this->_is_overtime ( $voteInfo )) {
 			// 过期

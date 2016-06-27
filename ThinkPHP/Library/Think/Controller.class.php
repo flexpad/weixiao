@@ -584,6 +584,7 @@ abstract class Controller {
 		
 		/* 管理中心的导航 */
 		$menus = D ( 'Common/ManagerMenu' )->get ( $this->mid );
+		
 		$this->assign ( $menus );
 		
 		$this->assign ( 'reg_audit_switch', C ( 'REG_AUDIT' ) );

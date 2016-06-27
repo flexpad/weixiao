@@ -43,11 +43,16 @@ class AddonCategoryController extends AdminController {
 	// 插件分类编辑
 	function category() {
 		$map ['id'] = I ( 'id' );
+		//dump($map);exit;
 		if (IS_POST) {
-			D ( 'Home/Addons' )->where ( $map )->setField ( 'cate_id', I ( 'cate_id' ) );
-			D ( 'Home/Addons' )->clear();
-			$this->success ( '设置成功', U ( 'Admin/Addons/weixin' ) );
-			exit ();
+		    $cate_id =I ( 'cate_id',0,"intval" );
+		    
+			$res =D ( 'Home/Addons' )->where ( $map )->setField ( 'cate_id', $cate_id );
+			
+			//D ( 'Home/Addons' )->clear();
+			
+			$this->success ( '设置成功', U ( 'Admin/Addons/index' ) );
+			//exit ();
 		}
 		$data = M('addons')->where ( $map )->find ();
 		$this->assign ( 'data', $data );

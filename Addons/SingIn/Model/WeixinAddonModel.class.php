@@ -105,7 +105,8 @@ class WeixinAddonModel extends WeixinModel {
 							$user [$m ['openid']] = $m['uid'];
 						}
 						foreach ( $top5 as &$vo ) {
-							$vo ['nickname'] = getUserInfo($user [$vo ['uid']], 'nickname');
+							//$vo ['nickname'] = getUserInfo($user [$vo ['uid']], 'nickname');
+						    $vo ['nickname'] = getUserInfo($vo ['uid'], 'nickname');
 						}
 					}
 					

@@ -16,10 +16,11 @@ class UpdateController extends AdminController {
 		// 一键升级功能的目录可写权限判断
 		$dirList = array (
 				'Addons',
+				'Plugins',
 				'Application',
 				'Public',
 				'ThinkPHP',
-				'URLRewrite',
+				'WxpayAPI',
 				'Uploads' 
 		);
 		$noWritable = array ();

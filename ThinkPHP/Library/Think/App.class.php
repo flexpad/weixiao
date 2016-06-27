@@ -45,14 +45,6 @@ class App {
 		// TMPL_EXCEPTION_FILE 改为绝对地址
 		C ( 'TMPL_EXCEPTION_FILE', realpath ( C ( 'TMPL_EXCEPTION_FILE' ) ) );
 		
-		// 泛域名支持
-		if (C ( 'DIV_DOMAIN' )) {
-			$top_domain = top_domain ();
-			C ( 'COOKIE_DOMAIN', $top_domain );
-			C ( 'SESSION_OPTIONS', array (
-					'domain' => $top_domain 
-			) );
-		}
 		return;
 	}
 	

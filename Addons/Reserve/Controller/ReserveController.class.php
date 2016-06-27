@@ -42,7 +42,9 @@ class ReserveController extends AddonsController {
 		$count = M ( $name )->where ( $map )->count ();
 
 		$list_data ['list_data'] = $data;
-
+         $token =get_token();
+         $this->assign('token',$token);
+         
 		// 分页
 		if ($count > $row) {
 			$page = new \Think\Page ( $count, $row );

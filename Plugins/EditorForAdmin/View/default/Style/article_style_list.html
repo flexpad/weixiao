@@ -4,12 +4,12 @@
 	<include file="Public/head"/>
     <script src="__STATIC__/ueditor/dialogs/internal.js"></script>
     <style type="text/css">
-    	.style_list{ box-shadow:0 0 3px #ccc inset; background:#fff}
+    	.style_list{ border: 1px solid #ccc; background:#fff}
 		.style_list .tabs{ height:40px; border-bottom:1px solid #ddd;}
 		.style_list .tabs a{ line-height:40px; padding:0 15px; float:left; color:#444; border-right:1px solid #ddd;}
 		.style_list .tabs a.current{ background:#3C0; color:#fff;}
-		.style_wrap{ margin:15px auto; width:500px;}
-		#styleList li{ padding:10px 0; cursor:pointer;border:3px solid #fff}
+		.style_wrap{ margin:15px auto; width:540px;}
+		#styleList li{ padding:10px 0; cursor:pointer;border:3px solid #fff;overflow: hidden;}
 		
     </style>
 </head>
@@ -28,7 +28,7 @@
             </ul>
         </div>
         
-        <div id="pagelist">{$list._page}</div>
+        <div id="pagelist" class="page">{$list._page}</div>
     </div>
 	
 </body>

@@ -12,6 +12,8 @@ class WapController extends AddonsController {
 		$this->reserve_id = I ( 'reserve_id', 0 );
 		$id = I ( 'id', 0 );
 		$reserve = M ( 'reserve' )->find ( $this->reserve_id );
+		$page_title =$reserve['title'];
+		$this->assign('page_title',$page_title);
 		$reserve ['cover'] = ! empty ( $reserve ['cover'] ) ? get_cover_url ( $reserve ['cover'] ) : ADDON_PUBLIC_PATH . '/background.png';
 		$reserve ['intro'] = str_replace ( chr ( 10 ), '<br/>', $reserve ['intro'] );
 		$this->assign ( 'reserve', $reserve );
@@ -137,14 +139,17 @@ class WapController extends AddonsController {
 				'name' => 'reserve_id',
 				'value' => $this->reserve_id
 		);
-
+        
+       
 		$this->assign ( 'fields', $fields );
-
+        
 		$this->display ();
 	}
 	function reserve_success() {
 		$map3 ['reserve_id'] = $map ['reserve_id'] = $map2 ['reserve_id'] = $this->reserve_id = I ( 'reserve_id', 0, intval );
 		$reserve = M ( 'reserve' )->find ( $this->reserve_id );
+		$page_title =$reserve['title'];
+		$this->assign('page_title',$page_title);
 		$reserve ['cover'] = ! empty ( $reserve ['cover'] ) ? get_cover_url ( $reserve ['cover'] ) : ADDON_PUBLIC_PATH . '/background.png';
 		$reserve ['intro'] = str_replace ( chr ( 10 ), '<br/>', $reserve ['intro'] );
 
@@ -317,4 +322,5 @@ class WapController extends AddonsController {
     	$jurl=U('reserve_success',array('reserve_id'=>$info['aim_id']));
     	redirect($jurl);
     }
+    
 }

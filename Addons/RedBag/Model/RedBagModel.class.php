@@ -37,10 +37,11 @@ class RedBagModel extends Model {
 		return $data_list;
 	}
 	function getPackageData($id) {
+	   
 		$info = get_token_appinfo ();
 		$param ['publicid'] = $info ['id'];
 		$param ['publicUid'] = session ( 'mid' );
-		;
+		
 		$param ['id'] = $id;
 		$data ['jumpURL'] = addons_url ( "RedBag://Wap/collect", $param );
 		$data ['data'] = $this->getInfo ( $id, true );

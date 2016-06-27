@@ -13,21 +13,24 @@ namespace Home\Controller;
  * 主要获取首页聚合数据
  */
 class ToolController extends HomeController {
-	var $db2 = '`weiphp3.0`'; // 要更新的数据库
-	var $db1 = '`shop`'; // 源数据库
+	var $db2 = '`w3`'; // 要更新的数据库
+	var $db1 = '`weiphp3.0`'; // 源数据库
 	function index() {
 		$tables = array (
 				'wp_auth_rule' => 'name',
-				'wp_menu' => 'title',
+				// 'wp_menu' => 'title',
 				'wp_config' => 'name',
 				'wp_addons' => 'name',
 				'wp_action' => 'name',
-				'wp_hooks' => 'name' 
+				'wp_hooks' => 'name' ,
+				'wp_plugin' => 'name',
 		);
 		
 		foreach ( $tables as $t => $field ) {
 			$this->adddel ( $t, $field );
 		}
+		
+		$this->upateModel ();
 	}
 	function upateModel() {
 		// 先判断模型
@@ -35,14 +38,14 @@ class ToolController extends HomeController {
 		
 		// 属性更新
 		$table = 'wp_attribute';
-		$sql = "SELECT a.*, m.name as model_name FROM {$this->db1}.`$table` a left join {$this->db1}.wp_model m on a.model_id=m.id";
+		$sql = "SELECT * FROM {$this->db1}.`$table`";
 		$list1 = M ()->query ( $sql );
 		foreach ( $list1 as $vo1 ) {
 			$arr1 [$vo1 ['model_name']] [$vo1 ['name']] = $vo1 ['id'];
 		}
 		// dump ( $arr1 );
 		
-		$sql = "SELECT a.*, m.name as model_name FROM {$this->db2}.`$table` a left join {$this->db2}.wp_model m on a.model_id=m.id";
+		$sql = "SELECT * FROM {$this->db2}.`$table`";
 		$list2 = M ()->query ( $sql );
 		foreach ( $list2 as $vo1 ) {
 			$arr2 [$vo1 ['model_name']] [$vo1 ['name']] = $vo1 ['id'];
@@ -50,46 +53,54 @@ class ToolController extends HomeController {
 		}
 		// dump ( $arr2 );exit;
 		
+		$has_insert = false;
 		foreach ( $list1 as $vo ) {
 			if (isset ( $arr2 [$vo ['model_name']] [$vo ['name']] )) {
 				$field1 = $vo;
 				$field2 = $fields2 [$arr2 [$vo ['model_name']] [$vo ['name']]];
-				unset ( $field1 ['id'], $field1 ['update_time'], $field1 ['create_time'] );
-				unset ( $field2 ['id'], $field2 ['update_time'], $field2 ['create_time'] );
+				unset ( $field1 ['id'], $field1 ['update_time'], $field1 ['create_time'], $field1 ['model_id'] );
+				unset ( $field2 ['id'], $field2 ['update_time'], $field2 ['create_time'], $field2 ['model_id'] );
 				
 				$diff = array_diff ( $field1, $field2 );
+				
 				if (! empty ( $diff )) {
-					$updateArr [$vo ['model_name']] [$vo ['name']] = $diff;
+					$set = '';
+					foreach ( $diff as $f => $v ) {
+						$v = str_replace ( "\r\n", '\r\n', $v );
+						$set .= "`{$f}`='{$v}',";
+					}
+					$set = trim ( $set, ',' );
+					
+					$sqlArr [] = "UPDATE $table SET {$set} WHERE `model_name`='{$vo [model_name]}' AND name='{$vo [name]}';<br/>";
 				}
 			} else {
 				
-				$vo ['model_id'] = '{$model_id}';
+				$vo ['model_id'] = 0;
 				$model_name = $vo ['model_name'];
 				unset ( $vo ['id'] );
-				unset ( $vo ['model_name'] );
+				foreach ( $vo as $f => $v ) {
+					$vo [$f] = str_replace ( "\r\n", '\r\n', $v );
+				}
 				$fields = array_keys ( $vo );
 				$fields = '`' . implode ( '`,`', $fields ) . '`';
 				$val = "'" . implode ( "','", $vo ) . "'";
 				
-				$insertArr [$model_name] .= " ({$val}),";
+				$sqlArr [] = "INSERT INTO $table ({$fields}) VALUES ({$val});<br/>";
+				$has_insert = true;
 			}
 		}
 		foreach ( $list2 as $vo ) {
 			if (isset ( $arr1 [$vo ['model_name']] [$vo ['name']] ))
 				continue;
 			
-			$delArr [] = "DELETE a FROM wp_attribute a, wp_model m WHERE a.model_id=m.id and m.`name`='{$vo [model_name]}' and a.`name`='{$vo [name]}';";
+			$sqlArr [] = "DELETE FROM wp_attribute WHERE `model_name`='{$vo [model_name]}' and `name`='{$vo [name]}';";
 		}
 		
-		if (! empty ( $insertArr )) {
-			echo '$insertArr=' . var_export ( $insertArr, true ) . ';<br/><br/><br/>';
+		if ($has_insert) {
+			$sqlArr [] = "UPDATE `wp_attribute` a, wp_model m SET a.model_id=m.`id` where m.`name`=a.model_name and a.model_id=0;";
 		}
-		if (! empty ( $updateArr )) {
-			echo '$updateArr=' . var_export ( $updateArr, true ) . ';<br/><br/><br/>';
-		}
-		if (! empty ( $delArr )) {
-			echo '$delArr=' . var_export ( $delArr, true ) . ';<br/><br/><br/>';
-		}
+		
+		echo implode ( '<br/>', $sqlArr );
 	}
 	function adddel($table, $field) {
 		$sql = "SELECT * FROM {$this->db1}.`$table`";
@@ -115,6 +126,9 @@ class ToolController extends HomeController {
 		foreach ( $list1 as $key => $value ) {
 			unset ( $value ['id'] );
 			if (in_array ( $value [$field], $add_arr )) {
+				foreach ( $value as $f => $v ) {
+					$value [$f] = str_replace ( "\r\n", '\r\n', $v );
+				}
 				$fields = array_keys ( $value );
 				$fields = '`' . implode ( '`,`', $fields ) . '`';
 				$val = "'" . implode ( "','", $value ) . "'";
@@ -125,16 +139,18 @@ class ToolController extends HomeController {
 				unset ( $value ['id'], $value ['update_time'], $value ['create_time'] );
 				$diff = array_diff ( $value, $fields [$value ['name']] );
 				if (! empty ( $diff )) {
-					$modelArr [$value ['name']] = $diff;
+					$set = '';
+					foreach ( $diff as $f => $v ) {
+						$v = str_replace ( "\r\n", '\r\n', $v );
+						$set .= "`{$f}`='{$v}',";
+					}
+					$set = trim ( $set, ',' );
+					
+					$sqlArr [] = "UPDATE $table SET {$set} WHERE `{$field}`='{$value [$field]}';<br/>";
 				}
 			}
 		}
-		if (! empty ( $modelArr )) {
-			echo '$modelArr=' . var_export ( $modelArr, true ) . ';<br/><br/><br/>';
-		}
-		if (! empty ( $sqlArr )) {
-			echo '$sqlArr=' . var_export ( $sqlArr, true ) . ';<br/><br/><br/>';
-		}
+		echo implode ( '<br/>', $sqlArr );
 	}
 	function updateFieldSort() {
 		$list = M ( 'model' )->select ();
@@ -199,9 +215,8 @@ class ToolController extends HomeController {
 		dump ( $res );
 		lastsql ();
 		
-		$arr = array (
-
-		);
+		$arr = array ();
+		
 		foreach ( $arr as $t ) {
 			$res = M ()->execute ( 'DELETE FROM ' . $t );
 			dump ( $res );

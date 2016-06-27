@@ -248,8 +248,7 @@ class WeixinController extends HomeController {
 			}
 			return false;
 		}
-		// 测试
-		// addWeixinLog ( $addons [$key], 'addonskeylffkdg' );
+		
 		$arr = explode ( $keywordInfo ['keyword'], $key );
 		if (count ( $arr ) > 1) {
 			// 在关键词不相等的情况下进行左右匹配判断，否则相等的情况肯定都匹配

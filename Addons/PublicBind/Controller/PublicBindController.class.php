@@ -104,7 +104,8 @@ class PublicBindController extends AddonsController {
 			D ( 'Common/User' )->clear ( $this->mid );
 			$url = U ( 'Home/Public/public_edit', $param );
 		}
-		
+		$key1 = 'pre_auth_code';
+		S ( $key1 ,null);
 		// 授权完成，进入平台
 		redirect ( $url );
 	}

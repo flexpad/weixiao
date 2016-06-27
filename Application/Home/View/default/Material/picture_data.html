@@ -1,3 +1,11 @@
+<include file="Public/head"/>
+<style>
+.material_list{margin: 0;}
+.appmsg_item .main_img {
+    height: auto;margin: 0;
+}
+</style>
+<body style="background: #fff;">
 <empty name="list_data">
 <div class="empty_container"><p>您的图片素材库为空，<a href="{:U('Home/Material/picture_lists')}">请先增加素材</a></p></div>
 <else /><div class="data_container"><ul class="material_list">
@@ -19,3 +27,4 @@
         </li></if></volist></ul>
 </empty>
 <div class="page"> {$_page|default=''} </div></div>
+</body>

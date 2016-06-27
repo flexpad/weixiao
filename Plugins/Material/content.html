@@ -120,7 +120,7 @@ function changeOption(){
 				}else{
 					for(var i=0;i<vo.length;i++){
 						if(vo[i]['id']==group_id){
-							html_str='<div class="appmsg_item"><div class="main_img"><img src="'+vo[i]['img_url']+'"/><h6>'+vo[i]['title']+'</h6></div><p class="desc">'+vo[i]['intro']+'</p></div>';
+							html_str='<div class="appmsg_item"><div class="main_img"><img src="'+vo[i]['img_url']+'"/><h6 class="ellipsis"">'+vo[i]['title']+'</h6></div><p class="desc">'+vo[i]['intro']+'</p></div>';
 						}else{
 							html_str+=' <div class="appmsg_sub_item"><p class="title">'+vo[i]['title']+'</p><div class="main_img"><img src="'+vo[i]['img_url']+'"/></div></div>';
 						}
@@ -164,7 +164,7 @@ function changeOption(){
 		if(voice_id){
 			$.post("{:U('Home/Material/ajax_voice_by_id')}",{'voice_id':voice_id},function(vo){
 				if(vo){
-					voice_html+='<div class="picture_item"><div class="sound_item" onclick="playSound(\'sound_'+voice_id+'\',this);"><img class="icon_sound" src="__IMG__/icon_sound.png"><p class="audio_name">'+vo['title']+'<span class="fr colorless">'+vo['playtime']+'</span></p><audio id="sound_'+voice_id+'" src="'+vo['file_path']+'"></audio></div><div class="hover_area"></div></div>';
+					voice_html+='<div class="picture_item"><div class="sound_item" onclick="playSound(\'sound_'+voice_id+'\',this);"><img class="icon_sound" src="__IMG__/icon_sound.png"><p class="audio_name ellipsis"">'+vo['title']+'<span class="fr colorless">'+vo['playtime']+'</span></p><audio id="sound_'+voice_id+'" src="'+vo['file_path']+'"></audio></div><div class="hover_area"></div></div>';
 					$('.voice_wrap').html(voice_html).show();
 					$('.select_voice').hide();
 					$('#voice_area .delete').show();
@@ -177,7 +177,7 @@ function changeOption(){
 		if(video_id){
 			$.post("{:U('Home/Material/ajax_video_by_id')}",{'video_id':video_id},function(vo){
 				if(vo){
-					video_html+='<div class="picture_item"><div class="video_item"><p class="title">'+vo['title']+'</p> <p class="ctime colorless">'+vo['cTime']+'</p><div class="video_area"><video src="'+vo['file_url']+'" controls="controls">您的浏览器不支持 video 标签。</video></div><p></p></div></div>';
+					video_html+='<div class="picture_item"><div class="video_item"><p class="title ellipsis"">'+vo['title']+'</p> <p class="ctime colorless">'+vo['cTime']+'</p><div class="video_area"><video src="'+vo['file_url']+'" controls="controls">您的浏览器不支持 video 标签。</video></div><p></p></div></div>';
 					$('.video_wrap').html(video_html).show();
 					$('.select_video').hide();
 					$('#video_area .delete').show();

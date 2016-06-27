@@ -200,16 +200,16 @@ class UserController extends HomeController {
 				}
 				
 				// 判断是否已经绑定公众号登录
-				if(C('SCAN_LOGIN')){
-					  unset ( $map );
-					  $map ['uid'] = $uid;
-					  $map ['token'] = DEFAULT_TOKEN;
-					  $openid = M ( 'public_follow' )->where ( $map )->getField ( 'openid' );
-					  if (! $openid) {
-						  $url = U ( 'bind_login' );
-						  $this->success ( '请先绑定扫码登录公众号', $url );
-						  exit;
-					  } 
+				if (C ( 'SCAN_LOGIN' )) {
+					unset ( $map );
+					$map ['uid'] = $uid;
+					$map ['token'] = DEFAULT_TOKEN;
+					$openid = M ( 'public_follow' )->where ( $map )->getField ( 'openid' );
+					if (! $openid) {
+						$url = U ( 'bind_login' );
+						$this->success ( '请先绑定扫码登录公众号', $url );
+						exit ();
+					}
 				}
 				$this->success ( '登录成功！', $url );
 			} else {

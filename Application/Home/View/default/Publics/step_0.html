@@ -46,15 +46,7 @@
           <div class="controls">
             <input type="text" value="{$info.wechat}" name="wechat" class="text input-large">
           </div>
-        </div>       
-        <php>if(C('DIV_DOMAIN') && SITE_DOMAIN != 'localhost') { $arr = explode ( '.', SITE_DOMAIN ); if(count($arr)>2) { unset($arr[0]); } $new_site_domain = implode ( '.', $arr );</php>   
-        <div class="form-item cf toggle-domain">
-          <label class="item-label"> <span class="need_flag">*</span> 专属域名 <span class="check-tips">只能由字母，数字和下划线组成，不能是纯数字</span></label>
-          <div class="controls">
-            http://<input type="text" value="{$info.domain}" name="domain" class="text input-large" style="width:50px">.{$new_site_domain}
-          </div>
-        </div>
-        <php> } </php>           
+        </div>           
         </div>     
         <div class="form-item cf mt_10 bind_step_form_next_item">
           <input type="hidden" name="id" value="{$id|intval}">

@@ -273,18 +273,28 @@ class UserController extends AdminController {
 				$this->delete ( 'User', $map );
 				break;
 			case 'audit_1' :
-				$this->audit ( $map, 1 );
+				$this->audit ( $map, 1, $id );
 				break;
 			case 'audit_0' :
-				$this->audit ( $map, 0 );
+				$this->audit ( $map, 0, $id );
 				break;
 			default :
 				$this->error ( '参数非法' );
 		}
 	}
-	function audit($map, $val) {
-		$res = M ( 'user' )->where ( $map )->setField ( 'is_audit', $val );
+	function audit($map, $val, $ids = 0) {
+		$savedata ['is_audit'] = $val;
+		$savedata ['audit_time'] = time ();
+		$res = M ( 'user' )->where ( $map )->save ( $savedata );
 		if ($res) {
+			if (is_array ( $ids )) {
+				foreach ( $ids as $id ) {
+					D ( 'Common/User' )->getUserInfo ( $id, true );
+				}
+			} else {
+				D ( 'Common/User' )->getUserInfo ( $ids, true );
+			}
+			
 			$this->success ( '设置成功' );
 		} else {
 			$this->error ( '设置失败' );
@@ -391,7 +401,8 @@ class UserController extends AdminController {
 	/**
 	 * 显示用户公众号信息
 	 */
-	function showPublic($uid) {
+	function showPublic() {
+		$uid = I ( 'uid' );
 		if (! empty ( $uid )) {
 			$map ['uid'] = $uid;
 			$ucanter = M ( 'user' )->where ( $map )->find ();
@@ -400,7 +411,7 @@ class UserController extends AdminController {
 			$this->assign ( 'ucanter', $ucanter );
 			$this->assign ( 'public', $public );
 		}
-		$this->display ();
+		$this->display ( 'showMemberPublic' );
 	}
 	// 修改审核
 	function changeAudit($is_audit, $uid) {

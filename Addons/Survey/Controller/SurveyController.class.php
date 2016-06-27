@@ -162,7 +162,7 @@ class SurveyController extends AddonsController {
 				$act == 'add' && $id = $res;
 
 				$this->_setAttr ( $id, $_POST );
-
+				D ( 'Common/Keyword' )->set ( I ( 'post.keyword' ), 'Survey', I ( 'post.id' ) );
 				$this->success ( '保存成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
 			} else {
 				$this->error ( $Model->getError () );

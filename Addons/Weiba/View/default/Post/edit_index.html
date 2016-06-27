@@ -89,9 +89,9 @@
 	  					
 	  					//console.log(id)
 	  					if(_id==id){
-	  						html += '<li><input type="radio"  checked="checked" class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
+	  						html += '<li><input type="radio" name="post" checked="checked" class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
 	  					}else{
-	  						html += '<li><input type="radio"   class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
+	  						html += '<li><input type="radio" name="post"  class="post_id" value="'+id+'"/><span class="title">'+title+'</span></li>';
 	  					}
 	  				}
 	  				if(html!=""){

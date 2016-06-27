@@ -44,17 +44,22 @@ class PublicBindModel extends Model {
 	function _get_pre_auth_code($component_access_token = '') {
 		empty ( $component_access_token ) && $component_access_token = $this->_get_component_access_token ();
 		
-		$url = 'https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=' . $component_access_token;
-		
-		$param ['component_appid'] = $this->component_appid;
-		
-		$data = post_data ( $url, $param );
-		if (! isset ( $data ['pre_auth_code'] )) {
-			return false;
+		$key1 = 'pre_auth_code';
+		$pre_auth_code = S ( $key1 );
+		if ($pre_auth_code === false) {
+			$url = 'https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=' . $component_access_token;
+			
+			$param ['component_appid'] = $this->component_appid;
+			
+			$data = post_data ( $url, $param );
+			if (! isset ( $data ['pre_auth_code'] )) {
+				return false;
+			}
+			
+			$pre_auth_code = $data ['pre_auth_code'];
+			
+			S ( $key1, $pre_auth_code, $data ['expires_in'] );
 		}
-		
-		$pre_auth_code = $data ['pre_auth_code'];
-		
 		return $pre_auth_code;
 	}
 	function bind() {

@@ -555,7 +555,6 @@ var WeiPHP_RAND_COLOR = ["#ff6600","#ff9900","#99cc00","#33cc00","#0099cc","#339
 */
 $(function(){
 	//初始化微信js api
-	console.log($.WeiPHP)
 	$.WeiPHP.initWxApi();
 	//页面总是撑满屏幕
 	$('.body').css('min-height',$(window).height());
