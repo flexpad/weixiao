@@ -163,7 +163,8 @@ class CustomMenuController extends AddonsController {
 			$Model->create () && $res = $Model->save ();
 			if ($res !== false) {
 				// $this->_saveKeyword ( $model, $id );
-				$this->success ( '保存' . $model ['title'] . '成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
+				//$this->success ( '保存' . $model ['title'] . '成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
+			    $this->success ( '保存菜单成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
 			} else {
 				$this->error ( $Model->getError () );
 			}
@@ -255,7 +256,8 @@ class CustomMenuController extends AddonsController {
 			$Model = $this->checkAttr ( $Model, $model ['id'] );
 			if ($Model->create () && $id = $Model->add ()) {
 				// $this->_saveKeyword ( $model, $id );
-				$this->success ( '添加' . $model ['title'] . '成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
+				//$this->success ( '添加' . $model ['title'] . '成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
+			    $this->success ( '添加菜单成功！', U ( 'lists?model=' . $model ['name'], $this->get_param ) );
 			} else {
 				$this->error ( $Model->getError () );
 			}

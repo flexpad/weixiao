@@ -435,8 +435,7 @@ class UserCenterController extends AddonsController {
 		
 		if (! isset ( $data ['count'] ) || $data ['count'] == 0) {
 			// 拉取完毕
-			$this->success ( '同步用户数据中，请勿关闭', U ( 'syc_user' ) );
-			exit ();
+			$this->jump ( U ( 'syc_user' ), '同步用户数据中，请勿关闭' );
 		}
 		
 		$map ['openid'] = array (
@@ -464,7 +463,7 @@ class UserCenterController extends AddonsController {
 		
 		$param2 ['next_openid'] = $data ['next_openid'];
 		$url = U ( 'syc_openid', $param2 );
-		$this->success ( '同步用户OpenID中，请勿关闭', $url );
+		$this->jump ( $url, '同步用户OpenID中，请勿关闭' );
 	}
 	
 	// 第二步：同步用户信息
@@ -475,8 +474,7 @@ class UserCenterController extends AddonsController {
 		$list = M ( 'public_follow' )->where ( $map )->field ( 'uid,openid' )->limit ( 100 )->select ();
 		
 		if (empty ( $list )) {
-			$this->success ( '用户分组信息同步中', U ( 'syc_user_group' ) );
-			exit ();
+			$this->jump ( U ( 'syc_user_group' ), '用户分组信息同步中' );
 		}
 		
 		foreach ( $list as $vo ) {
@@ -532,8 +530,7 @@ class UserCenterController extends AddonsController {
 				}
 			}
 			M ( 'public_follow' )->where ( $map2 )->setField ( 'syc_status', 1 );
-			$this->success ( '同步用户数据中，请勿关闭', U ( 'syc_user' ) );
-			exit ();
+			$this->jump ( U ( 'syc_user' ), '同步用户数据中，请勿关闭' );
 		}
 		// addWeixinLog($countdata,'syc_userlistscount2');
 		
@@ -570,7 +567,7 @@ class UserCenterController extends AddonsController {
 		// M ( 'public_follow' )->where ( $map2 )->setField ( 'has_subscribe', 1 );
 		// }
 		
-		$this->success ( '同步用户数据中，请勿关闭', U ( 'syc_user?uid=' . $uid ) );
+		$this->jump ( U ( 'syc_user?uid=' . $uid ), '同步用户数据中，请勿关闭' );
 	}
 	// 第三步：同步用户组信息
 	function syc_user_group() {
@@ -583,8 +580,7 @@ class UserCenterController extends AddonsController {
 		$uids = M ( 'public_follow' )->where ( $map )->limit ( 100 )->getFields ( 'uid' );
 		
 		if (empty ( $uids )) {
-			$this->success ( '用户分组信息同步完毕', U ( 'lists' ) );
-			exit ();
+			$this->jump ( U ( 'lists' ), '用户分组信息同步完毕' );
 		}
 		
 		$user_map ['uid'] = $map2 ['uid'] = array (
@@ -638,7 +634,7 @@ class UserCenterController extends AddonsController {
 		// exit ();
 		M ( 'public_follow' )->where ( $map2 )->setField ( 'syc_status', 2 );
 		
-		$this->success ( '用户分组信息同步中，请勿关闭', U ( 'syc_user_group?uid=' . $uid ) );
+		$this->jump ( U ( 'syc_user_group?uid=' . $uid ), '用户分组信息同步中，请勿关闭' );
 	}
 	function set_remark() {
 		$map ['uid'] = I ( 'uid', 0, 'intval' );
@@ -724,33 +720,10 @@ class UserCenterController extends AddonsController {
 		M ( 'card_member' )->where ( $cardMap1 )->save ( $savecardlev );
 		echo 1;
 	}
-	function test() {
-		$scoreMap ['token'] = $cardMap ['token'] = $map ['token'] = 'gh_43eafa5ab6da';
-		// $save['level']=16;
-		// M('card_member')->where($map)->save($save);
-		$users = M ( 'public_follow' )->where ( $map )->getFields ( 'uid' );
-		$scoresave ['score'] = 0;
-		$userdao = D ( 'Common/User' );
-		// 每个用户积分清0
-		foreach ( $users as $uid ) {
-			$userdao->updateInfo ( $uid, $scoresave );
-		}
-		// 会员卡等级都设为体验卡
-		$cardMap ['uid'] = array (
-				'in',
-				$users 
-		);
-		$cardlevel ['level'] = 0;
-		M ( 'card_member' )->where ( $cardMap )->save ( $scoresave );
-		
-		// 清除积分记录
-		$scoreMap ['uid'] = array (
-				'in',
-				$users 
-		);
-		M ( 'credit_data' )->where ( $scoreMap )->delete ();
-		// M('user')->where($smap)->save($save);
-		// $udata=M('user')->where($smap)->getFields('uid,score');
-		// dump($udata);
+	function jump($url, $msg) {
+		$this->assign ( 'url', $url );
+		$this->assign ( 'msg', $msg );
+		$this->display ( 'jump' );
+		exit ();
 	}
 }

@@ -180,9 +180,9 @@
 </script>
  <block name="script">
  <link href="{:SITE_URL}/Public/static/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
-  <php>if(C('COLOR_STYLE')=='blue_color') echo '
-    <link href="{:SITE_URL}/Public/static/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
-    ';</php>
+  <php>if(C('COLOR_STYLE')=='blue_color') { </php>
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> } </php>
   <link href="{:SITE_URL}/Public/static/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{:SITE_URL}/Public/static/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
   <script type="text/javascript" src="{:SITE_URL}/Public/static/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
