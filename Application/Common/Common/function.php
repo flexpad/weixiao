@@ -1313,7 +1313,14 @@ function get_list_field($data, $grid, $model) {
 				$publicid = get_token_appinfo ( '', 'id' );
 				$val [] = '<a class="list_copy_link" id="copyLink_' . $data ['id'] . '"   data-clipboard-text="' . urldecode ( U ( $href, $paramArrs ) ) . '&publicid=' . $publicid . '">' . $show . '</a>';
 			} else {
-				$val [] = '<a  target="' . $target . '" href="' . urldecode ( U ( $href, $GLOBALS ['get_param'] ) ) . '">' . $show . '</a>';
+				// 排除GET里的参数影响到已赋值的参数
+				$url_param = array ();
+				foreach ( $GLOBALS ['get_param'] as $key => $gp ) {
+					if (strpos ( $href, $key . '=' ) === false) {
+						$url_param [$key] = $gp;
+					}
+				}
+				$val [] = '<a  target="' . $target . '" href="' . urldecode ( U ( $href, $url_param ) ) . '">' . $show . '</a>';
 			}
 		}
 		$value = implode ( ' ', $val );
@@ -1461,8 +1468,8 @@ function getOpenidByUid($uid, $token = '') {
  */
 function getPaymentOpenid($appId = "", $serect = "") {
 	if (empty ( $appId ) || empty ( $serect )) {
-	   
-		$openid =get_openid ();
+		
+		$openid = get_openid ();
 		return $openid;
 		exit ();
 	}
@@ -1484,8 +1491,6 @@ function get_token($token = NULL) {
 	} elseif (! empty ( $_REQUEST ['publicid'] )) {
 		$publicid = I ( 'publicid' );
 		$token = D ( 'Common/Public' )->getInfo ( $publicid, 'token' );
-		// dump($token);exit;
-		//
 		$token && session ( 'token', $token );
 	}
 	$token = session ( 'token' );
@@ -1494,17 +1499,7 @@ function get_token($token = NULL) {
 	}
 	
 	if (empty ( $token ) || $token == '-1') {
-		// $map ['uid'] = session ( 'mid' );
-		// if ($map ['uid'] > 0) {
-		// $user = get_userinfo ( $map ['uid'] );
-		
-		// $user ['level'] < 2 && $user ['manager_id'] > 0 && $map ['uid'] = $user ['manager_id'];
-		// $token = $user ['level'] < 2 || $user ['has_public'] ? D ( 'Common/Public' )->where ( $map )->getField ( 'token' ) : DEFAULT_TOKEN;
-		
-		// isset ( $user ['has_public'] ) && $token && session ( 'token', $token );
-		// } else {
 		$token = DEFAULT_TOKEN;
-		// }
 	}
 	
 	return $token;
@@ -2290,7 +2285,7 @@ function int_to_string(&$data, $map = array('status'=>array(1=>'正常',-1=>'删
 	return $data;
 }
 function importFormExcel($attach_id, $column, $dateColumn = array()) {
-	$attach_id = intval( $attach_id );
+	$attach_id = intval ( $attach_id );
 	$res = array (
 			'status' => 0,
 			'data' => '' 
@@ -3309,17 +3304,17 @@ function down_media($media_id) {
 	$savePath = SITE_PATH . '/Uploads/Picture/' . time_format ( NOW_TIME, 'Y-m-d' );
 	mkdirs ( $savePath );
 	// 获取图片URL
-	$url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' . get_access_token () . '&media_id=' . $media_id;
-	$picContent = outputCurl ( $url );
+	
+	$url = 'http://api.weixin.qq.com/cgi-bin/media/get?access_token=' . get_access_token () . '&media_id=' . $media_id;
+	$picContent = wp_file_get_contents ( $url );
 	$picjson = json_decode ( $picContent, true );
 	if (isset ( $picjson ['errcode'] ) && $picjson ['errcode'] != 0) {
 		return 0;
 	}
-	// if ($picContent) {
-	$picName = NOW_TIME . '.jpg';
+	
+	$picName = $media_id . '.jpg';
 	$picPath = $savePath . '/' . $picName;
 	$res = file_put_contents ( $picPath, $picContent );
-	// }
 	$cover_id = 0;
 	if ($res) {
 		// 保存记录，添加到picture表里，获取coverid

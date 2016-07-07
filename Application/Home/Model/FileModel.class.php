@@ -42,6 +42,7 @@ class FileModel extends Model{
 	 */
 	public function upload($files, $setting, $driver = 'Local', $config = null){
 		/* 上传文件 */
+	    
 		$setting['callback'] = array($this, 'isFile');
 		$Upload = new \Think\Upload($setting, $driver, $config);
 		$info   = $Upload->upload($files);
