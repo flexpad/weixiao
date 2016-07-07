@@ -42,7 +42,6 @@ abstract class Controller {
 	 * @access public
 	 */
 	public function __construct() {
-	    
 		Hook::listen ( 'action_begin', $this->config );
 		// 实例化视图类
 		$this->view = Think::instance ( 'Think\View' );
@@ -52,9 +51,8 @@ abstract class Controller {
 			
 			$index_3 = strtolower ( MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME );
 			if ($index_3 != 'home/weixin/index') { // 微信客户端请求的用户初始化在home/weixin/index里实现，这里不作处理
-			    $info = $this->initPublic ();
-			   
-				$this->initUser ();
+				$info = $this->initPublic ();
+				$this->initUser ( $info );
 				
 				$GLOBALS ['is_wap'] ? $this->initMoblie ( $info ) : $this->initWeb ( $info );
 				// 权限验证，原则：开放一切未禁止的页面
@@ -474,14 +472,10 @@ abstract class Controller {
 		$jsapiParams = $jssdk->GetsignPackage ();
 		$this->assign ( 'jsapiParams', $jsapiParams );
 		
-		if ($info ['uid'] == $this->mid) {
-			$this->assign ( 'page_title', $info ['public_name'] ); // 用公众号名作为默认的页面标题
-			$this->assign ( 'public_info', $info ); // 通用公众号信息
-		}
 		return $info;
 	}
 	// 初始化用户信息
-	private function initUser() {
+	private function initUser($info) {
 		if (isset ( $_GET ['is_stree'] )) {
 			$suid = $user ['uid'] = rand ( 1, 10000 );
 		} else {
@@ -494,18 +488,18 @@ abstract class Controller {
 			$token = session ( 'token' );
 			$old_openid = session ( 'openid_' . $token );
 			get_openid ( $openid );
-			$is_manager = M('manager')->find($uid);
-			if ( !$is_manager && $old_openid != $openid) {
-			    session ( 'mid', null );
+			$is_manager = M ( 'manager' )->find ( $uid );
+			if (! $is_manager && $old_openid != $openid) {
+				session ( 'mid', null );
 			}
-			if (!$is_manager){
-			    $sreach_arr = array (
-			        '/openid/' . $openid,
-			        '&openid=' . $openid,
-			        '?openid=' . $openid
-			    );
-			    $url = str_replace ( $sreach_arr, '', $_SERVER ['REQUEST_URI'] );
-			    redirect ( $url );
+			if (! $is_manager) {
+				$sreach_arr = array (
+						'/openid/' . $openid,
+						'&openid=' . $openid,
+						'?openid=' . $openid 
+				);
+				$url = str_replace ( $sreach_arr, '', $_SERVER ['REQUEST_URI'] );
+				redirect ( $url );
 			}
 		}
 		
@@ -520,6 +514,7 @@ abstract class Controller {
 			M ( 'config' )->where ( 'name="FOLLOW_YOUKE_UID"' )->setField ( 'value', $youke_uid );
 			session ( 'mid', $youke_uid );
 		}
+		
 		// 当前登录者
 		$GLOBALS ['mid'] = $this->mid = intval ( $uid );
 		$myinfo = get_userinfo ( $this->mid );
@@ -531,6 +526,11 @@ abstract class Controller {
 		$this->assign ( 'mid', $this->mid ); // 登录者
 		$this->assign ( 'uid', $this->uid ); // 访问对象
 		$this->assign ( 'myinfo', $GLOBALS ['myinfo'] ); // 访问对象
+		
+		if ($info ['uid'] == $this->mid) {
+			$this->assign ( 'page_title', $info ['public_name'] ); // 用公众号名作为默认的页面标题
+			$this->assign ( 'public_info', $info ); // 通用公众号信息
+		}
 	}
 	/**
 	 * 系统管理员信息初始化
@@ -584,7 +584,6 @@ abstract class Controller {
 		
 		/* 管理中心的导航 */
 		$menus = D ( 'Common/ManagerMenu' )->get ( $this->mid );
-		
 		$this->assign ( $menus );
 		
 		$this->assign ( 'reg_audit_switch', C ( 'REG_AUDIT' ) );
@@ -791,66 +790,66 @@ abstract class Controller {
 			D ( 'Common/Keyword' )->set ( $_POST ['keyword'], _ADDONS, $id, $_POST ['keyword_type'] );
 		}
 	}
-	//判断奖品库选择器 数量是否大于库存
-	function checkPriceNum($prizeValue){
-	    $data = array();
-	    $prizeData=explode( ',',$prizeValue);
-	    foreach ($prizeData as $key => $value) {
-	        $keyArr = explode(':',$value );
-	        if (empty($keyArr[0]))
-	            continue;
-	        $total_count = 0;
-	        $num = $keyArr[2];
-	        $title = '';
-	        if ($keyArr[0] == 'coupon') {
-	            $pdata = D('Addons://Coupon/Coupon')->getInfo($keyArr[1]);
-	            $title = $pdata['title'];
-	            $total_count= $pdata['num'];
-	        } elseif ($keyArr[0] == 'shopCoupon') {
-	            $pdata = D('Addons://ShopCoupon/Coupon')->getInfo($keyArr[1]);
-	            $title = $pdata['title'];
-	            $total_count = $pdata['num'];
-	        } elseif ($keyArr[0] == 'realPrize') {
-	            $pdata = D('Addons://RealPrize/RealPrize')->getInfo($keyArr[1]);
-	            $total_count = $pdata['prize_count'];
-	            $title = $pdata['prize_name'];
-	        } elseif ($keyArr[0] == 'cardVouchers') {
-	            //无库存，不判断
-	            $title = $pdata['title'];
-	            if (intval($num) <= 0){
-	                $this->error('奖品 “'.$title.'” 的数量不能小于0');
-	            }
-	            continue;
-	        } elseif ($keyArr[0] == 'redBag') {
-	            $pdata = D('Addons://RedBag/RedBag')->getInfo($keyArr[1]);
-	            $title = $pdata['act_name'];
-	            $total_count= $pdata['total_num'];
-	        }elseif ($keyArr[0] == 'points'){
-	            //判断数量是否小于0
-	            $title='积分';
-	            $num= $keyArr[3];
-	            if (intval($num) <= 0){
-	                $this->error('奖品 “'.$title.'” 的数量不能小于0');
-	            }
-	            continue;
-	        }
-	        if (intval($num) <= 0){
-	            $this->error('奖品 “'.$title.'” 的数量不能小于0');
-	        }
-	        if ($num > $total_count){
-	            $this->error('奖品 “'.$title.'” 的数量不能大于库存数量');
-	        }
-	    }
+	// 判断奖品库选择器 数量是否大于库存
+	function checkPriceNum($prizeValue) {
+		$data = array ();
+		$prizeData = explode ( ',', $prizeValue );
+		foreach ( $prizeData as $key => $value ) {
+			$keyArr = explode ( ':', $value );
+			if (empty ( $keyArr [0] ))
+				continue;
+			$total_count = 0;
+			$num = $keyArr [2];
+			$title = '';
+			if ($keyArr [0] == 'coupon') {
+				$pdata = D ( 'Addons://Coupon/Coupon' )->getInfo ( $keyArr [1] );
+				$title = $pdata ['title'];
+				$total_count = $pdata ['num'];
+			} elseif ($keyArr [0] == 'shopCoupon') {
+				$pdata = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $keyArr [1] );
+				$title = $pdata ['title'];
+				$total_count = $pdata ['num'];
+			} elseif ($keyArr [0] == 'realPrize') {
+				$pdata = D ( 'Addons://RealPrize/RealPrize' )->getInfo ( $keyArr [1] );
+				$total_count = $pdata ['prize_count'];
+				$title = $pdata ['prize_name'];
+			} elseif ($keyArr [0] == 'cardVouchers') {
+				// 无库存，不判断
+				$title = $pdata ['title'];
+				if (intval ( $num ) <= 0) {
+					$this->error ( '奖品 “' . $title . '” 的数量不能小于0' );
+				}
+				continue;
+			} elseif ($keyArr [0] == 'redBag') {
+				$pdata = D ( 'Addons://RedBag/RedBag' )->getInfo ( $keyArr [1] );
+				$title = $pdata ['act_name'];
+				$total_count = $pdata ['total_num'];
+			} elseif ($keyArr [0] == 'points') {
+				// 判断数量是否小于0
+				$title = '积分';
+				$num = $keyArr [3];
+				if (intval ( $num ) <= 0) {
+					$this->error ( '奖品 “' . $title . '” 的数量不能小于0' );
+				}
+				continue;
+			}
+			if (intval ( $num ) <= 0) {
+				$this->error ( '奖品 “' . $title . '” 的数量不能小于0' );
+			}
+			if ($num > $total_count) {
+				$this->error ( '奖品 “' . $title . '” 的数量不能大于库存数量' );
+			}
+		}
 	}
 	protected function checkAttr($Model, $model_id) {
 		$fields = get_model_attribute ( $model_id, false );
 		$validate = $auto = array ();
-		foreach ($fields as $key => $attr) {
-            if ($attr['type'] == 'prize' && $_POST[$key]) {
-                //判断奖品库选择器 数量是否大于库存
-                $this->checkPriceNum($_POST[$key]);
-            }
-            if ($attr['is_must']) { // 必填字段
+		foreach ( $fields as $key => $attr ) {
+			if ($attr ['type'] == 'prize' && $_POST [$key]) {
+				// 判断奖品库选择器 数量是否大于库存
+				$this->checkPriceNum ( $_POST [$key] );
+			}
+			if ($attr ['is_must']) { // 必填字段
 				$validate [] = array (
 						$attr ['name'],
 						'require',
@@ -959,7 +958,7 @@ abstract class Controller {
 				// 链接信息
 				$value ['href'] = $val [2];
 				// 搜索链接信息中的字段信息
-				preg_replace_callback ( '/\[([a-z_]+)\]/', function ($match) use(&$fields) {
+				preg_replace_callback ( '/\[([a-z_]+)\]/', function ($match) use (&$fields) {
 					$fields [] = $match [1];
 				}, $value ['href'] );
 			}
