@@ -438,7 +438,7 @@ $(function(){
 		$('img',listPicZoom).attr('src','');
 	})
 })
-var addToBlackBtn;
+var addToBlackBtn,uploadObj;
 function showAddToBlack(x,y,t,url){
 	if(!addToBlackBtn){
 		addToBlackBtn = $("<div id='addToBlackBtn'><a href='javascript:;' style='background:#44b549;color:#fff;padding:2px 4px;' class='btn'>添加至黑名单</a></div>");
@@ -593,11 +593,13 @@ function initUploadImg(opts){
 function uploadImgDialog(obj,opts){
 	var maxCount = parseInt($(obj).data('max'));
 	var field = $(obj).attr('rel');
+	uploadObj = obj;
 	$uploadHtml = '<div><div class="upload_dialog" style="height:520px;overflow-y:hidden;overflow-x:hidden;"><div><iframe id="goodsIframe" name="goodsIframe" style="height:520px;width:100%; border:none" border="0" src="'+UPLOAD_DIALOG_URL+'&max='+maxCount+'&field='+field+'"></iframe></div></div></div>';
 	$.Dialog.open("上传图片",{width:800,height:560},$uploadHtml);
-	
-	
 }
+
+
+
 //上传附件组件
 function initUploadFile(callback){
 	$(".upload_file").each(function(index, obj) {
@@ -794,7 +796,14 @@ function simpleColorPicker(_this,callback){
 	}
 	/* 选择图文素材 */
 	function openSelectAppMsg(dataUrl,callback,title){
-		var $contentHtml = $('<div class="appmsg_dialog" style="padding:10px; max-height:560px;overflow-y:auto;overflow-x:hidden;"><ul class="mt_10"><center><br/><br/><br/><img src="'+IMG_PATH+'/loading.gif"/></center></ul></div>');
+		var count=1;
+		if(count==1){
+			dataUrl = dataUrl+'&isAjax=ajax&isRadio=1';
+		}else{
+			dataUrl = dataUrl+'&isAjax=1';
+		}
+		var $contentHtml = $('<div class="appmsg_dialog" style="padding:10px; max-height:560px;overflow-y:auto;overflow-x:hidden;">'+
+			'<iframe id="usersIframe" name="usersIframe" style="height:530px;width:100%; border:none" border="0" src="'+dataUrl+'"><ul class="mt_10"><center><br/><br/><br/><img src="'+IMG_PATH+'/loading.gif"/></center></ul></iframe></div>');
 		$.Dialog.open(title?title:"选择图文素材",{width:1000,height:640},$contentHtml);
 		$.ajax({
 			url:dataUrl,
@@ -808,9 +817,11 @@ function simpleColorPicker(_this,callback){
 					itemSelector : '.appmsg_li'
 					//columnWidth : 308
 				  });
-				$('li',$contentHtml).on('click',function(){
+				$('iframe').load(function () {
+				$("iframe").contents().find("li").on('click',function(){
 					callback(this);
 				});
+			});
 			}
 		})
 	}
@@ -855,6 +866,7 @@ function simpleColorPicker(_this,callback){
 		  } );
 		} );
 	}
+	/*
 	function uploadImgDialog(maxNum,callback){
 		var $contentHtml = $('<div class="upload_img_dialog"><div class="mult_imgs">'+
                 '<div class="upload-img-view" id="mutl_picture_temp_upload">'+
@@ -901,6 +913,7 @@ function simpleColorPicker(_this,callback){
 			$.Dialog.close();
 		})
 	}
+	*/
 	/* 选择商品 */
 	function openSelectGoods(dataUrl,callback){
 		var $contentHtml = $('<div><div class="goods_dialog" style="padding:10px; height:530px;overflow-y:hidden;overflow-x:hidden;"><div class="mt_10"><iframe id="goodsIframe" name="goodsIframe" style="height:530px;width:100%; border:none" border="0" src="'+dataUrl+'&isAjax=ajax"></iframe></div></div><div class="btn_bar"><a href="javascript:;" class="btn confirm_btn">确定</a>&nbsp;&nbsp;<a href="javascript:;" class="border-btn cancel_btn">取消</a></div></div>');

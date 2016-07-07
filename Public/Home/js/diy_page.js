@@ -26,7 +26,7 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 		$scope.activeModules = JSON.parse(activeModels);
 		//console.log($scope.activeModules );
 	}else{
-		$scope.activeModules = [{"id":"header","name":"\u5fae\u9875\u9762\u6807\u9898","params":{"title":"","description":"","bgColor":"#fff",'is_show':0,'is_index':0},"issystem":1,"index":0,"displayorder":"0"}];
+		$scope.activeModules = [{"id":"header","name":"\u5fae\u9875\u9762\u6807\u9898","params":{"title":title,"description":"","bgColor":"#fff",'is_show':0,'is_index':0},"issystem":1,"index":0,"displayorder":"0"}];
 		if(useFor=="goodsDetail"){
 			$scope.activeModules.push({"id":"goodsdetail","name":"商品详情页","params":{},"issystem":1,"index":1,"disable":1,"displayorder":"0"});
 		}else if(useFor=="userCenter"){
@@ -173,9 +173,7 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 				tempModules.push($scope.activeModules[placeIndex]);
 				tempIndex++;
 			}
-			
 		});
-		
 		$.post(url,
 			{	
 				id:id,
@@ -245,19 +243,23 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 	
 	//添加幻灯片
 	$scope.addBanner = function(){
+		var str = RandomString(10);
 		var obj = new Object();
 		obj.pic = IMG_PATH+"/no_cover_pic_s.png";
 		obj.picId = 0;
 		obj.title = "";
 		obj.url = "";
+		obj.rel="banner_"+str;
 		$scope.activeItem.params.banner_list.push(obj);
 	}
 	$scope.addBannerPic = function(obj){
-		$.WeiPHP.uploadImgDialog(1,function(data){
-			obj.pic = data[0].src;
-			obj.picId = data[0].id;
-			$('.temp_click').click();
-		})
+		//console.log($scope.activeItem.params);
+		$.WeiPHP.uploadImgDialog(obj);
+//		$.WeiPHP.uploadImgDialog(1,function(data){
+//			obj.pic = data[0].src;
+//			obj.picId = data[0].id;
+//			$('.temp_click').click();
+//		})
 	}
 	$scope.deleteBanner = function(obj){
 		$scope.activeItem.params.banner_list.remove(obj);
@@ -302,20 +304,23 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 }).controller('picListController', function($scope) {
 	//添加图片
 	$scope.addPicList = function(){
+		var str = RandomString(10);
 		var obj = new Object();
 		obj.pic = IMG_PATH+"/no_cover_pic_s.png";
 		obj.picId = 0;
 		obj.title = "";
 		obj.url = "";
+		obj.rel="piclist_"+str;
 		$scope.activeItem.params.pic_list.push(obj);
 	}
 	$scope.addPicListPic = function(obj){
-		$.WeiPHP.uploadImgDialog(1,function(data){
-			obj.pic = data[0].src;
-			obj.picId = data[0].id;
-			$('.temp_click').click();
-			//console.log($scope.activeItem.params.pic_list);
-		})
+		$.WeiPHP.uploadImgDialog(obj);
+//		$.WeiPHP.uploadImgDialog(1,function(data){
+//			obj.pic = data[0].src;
+//			obj.picId = data[0].id;
+//			$('.temp_click').click();
+//			//console.log($scope.activeItem.params.pic_list);
+//		})
 	}
 	$scope.deletePicListPic = function(obj){
 		$scope.activeItem.params.pic_list.remove(obj);
@@ -332,32 +337,38 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 	}
 }).controller('picNavController',function($scope){
 	$scope.addPicNav = function(){
+		var str = RandomString(10);
 		var obj = new Object();
 		obj.title = "";
 		obj.url = "";
 		obj.pic = IMG_PATH+"/no_cover_pic_s.png";
 		obj.picId = 0;
+		obj.rel = "picNav_"+str;
 		$scope.activeItem.params.pic_nav_list.push(obj);
 	}
 	$scope.addPicNavPic = function(obj){
-		$.WeiPHP.uploadImgDialog(1,function(data){
-			obj.pic = data[0].src;
-			obj.picId = data[0].id;
-			$('.temp_click').click();
-			//console.log($scope.activeItem.params.pic_list);
-		})
+		$.WeiPHP.uploadImgDialog(obj);
+//		$.WeiPHP.uploadImgDialog(1,function(data){
+//			obj.pic = data[0].src;
+//			obj.picId = data[0].id;
+//			$('.temp_click').click();
+//			//console.log($scope.activeItem.params.pic_list);
+//		})
 	}
 	$scope.deletePicNav = function(b){
 		$scope.activeItem.params.pic_nav_list.remove(b);
 	}
 }).controller('caseController',function($scope){
 	$scope.addCasePic = function(obj){
-		$.WeiPHP.uploadImgDialog(1,function(data){
-			obj.pic = data[0].src;
-			obj.picId = data[0].id;
-			$('.temp_click').click();
-			//console.log($scope.activeItem.params.pic_list);
-		})
+		var str = RandomString(10);
+		obj.rel="case_"+str;
+		$.WeiPHP.uploadImgDialog(obj);
+//		$.WeiPHP.uploadImgDialog(1,function(data){
+//			obj.pic = data[0].src;
+//			obj.picId = data[0].id;
+//			$('.temp_click').click();
+//			//console.log($scope.activeItem.params.pic_list);
+//		})
 	}
 }).controller('mutipicBannerController',function($scope){
 	$scope.changeCol = function(obj){
@@ -374,11 +385,13 @@ var app = angular.module('app', []).controller('commonCtrl', function($scope) {
 	}
 	$scope.addMutiBanner = function(){
 		//console.log('aaa')
+		var str = RandomString(10);
 		var obj = new Object();
 		obj.pic = IMG_PATH+"/no_cover_pic_s.png";
 		obj.picId = 0;
 		obj.title = "";
 		obj.url = "";
+		obj.rel = "mutibanner_"+str;
 		$scope.activeItem.params.banner_list.push(obj);
 		//var conId = 'mutipic_banner_'+$scope.activeItem.index;
 	    //var col = $scope.activeItem.params.col;
@@ -410,3 +423,9 @@ app.filter('to_trusted', ['$sce', function($sce){
 	};
 }]);
 angular.bootstrap(document, ['app']);
+
+function RandomString(length) {
+	var str = '';
+	for ( ; str.length < length; str += Math.random().toString(36).substr(2) );
+	return str.substr(0, length);
+}
