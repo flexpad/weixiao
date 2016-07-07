@@ -46,6 +46,8 @@
 		<th class="">登录次数</th>
 		<th class="">最后登录时间</th>
 		<th class="">最后登录IP</th>
+		<th class="">注册时间</th>
+		<th class="">审核时间</th>
 		<th class="">状态</th>
         <th class="">审核</th>
 		<th class="">操作</th>
@@ -60,12 +62,14 @@
 			<td>{$vo.nickname}</td>
             <td>{$vo.group}</td>
 <!--            <td>{$vo.admin_public_count}</td>
-            <td>{$vo.public_count}</td>-->
+            <td>{$vo.public_count}</td> -->
 			<td>{$vo.score}</td>
             <td>{$vo.experience}</td>
 			<td>{$vo.login_count|intval}</td>
 			<td><span>{$vo.last_login_time|time_format}</span></td>
 			<td><span>{:long2ip($vo['last_login_ip'])}</span></td>
+			<td><span>{$vo.reg_time|time_format}</span></td>
+			<td><span>{$vo.audit_time|time_format}</span></td>
 			<td><eq name="vo.status" value="1">
 				<a href="{:U('User/changeStatus?method=forbidUser&id='.$vo['uid'])}" class="ajax-get">{$vo.status_text}</a>
 				<else/>
@@ -81,7 +85,7 @@
                 <a href="{:U('AuthManager/public_count?uid='.$vo['uid'])}">公众号设置</a>
                 <a href="{:U('ManagerMenu/lists',array('uid'=>$vo['uid']))}">导航管理</a>
             </if>    
-                <a href="{:U('AuthManager/group?uid='.$vo['uid'])}" class="confirm ajax-get">删除</a>
+                <a href="{:U('changeStatus?method=deleteUser&id='.$vo['uid'])}" class="confirm ajax-get">删除</a>
                 </td>
 		</tr>
 		</volist>
