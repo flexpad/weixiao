@@ -67,7 +67,7 @@
 <input type="hidden" name="material_{$name}_text_id" value="{$text_id}"/>
 	<div class='text_material' id='text_material'>
       <a class="select_text" href="javascript:;" onClick="$.WeiPHP.openSelectAppText('{:U('/Home/Material/text_lists')}',selectTextCallback)">选择文本</a>
-      <div class="text_wrap" style="height:auto;"></div>
+      <div class="text_wrap" style="height:auto;padding:15px 0;"></div>
       <a class="delete" href="javascript:;" style="left: 310px;">删除</a>
 	</div>
 </div>
@@ -151,7 +151,7 @@ function changeOption(){
 			var text_html='';
 			$.post("{:U('Home/Material/ajax_text_by_id')}",{'text_id':text_id},function(content){
 				if(content){
-					text_html='<div class="appmsg_item">'+content+'</div>';
+					text_html=content;
 					$('.text_wrap').html(text_html).show();
 					$('.select_text').hide();
 					$('.showtext .delete').show();
