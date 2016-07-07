@@ -114,16 +114,14 @@ var WeiPHP_RAND_COLOR = ["#ff6600","#ff9900","#99cc00","#33cc00","#0099cc","#339
 	function gallery(container,slideContainer){
 		var screenWidth = $('.container').width();
 		var count = $(container).find('li').size();
-		var picWidth = screenWidth/5*3;
-		var paddingleft = screenWidth/5;
-		$(container).find('ul').width(picWidth*count);
-		$(container).find('ul').css('padding-left',paddingleft);
-		$(container).find('ul').height(screenWidth/2);
-		$(container).height(picWidth);
-		$(container).find('li').css({'padding':10,width:picWidth-20,height:picWidth-20});
+		$(container).find('ul').width(screenWidth*count);		
+		$(container).find('ul').height(screenWidth);
+		$(container).height(screenWidth);
+		$(container).find('li').css({width:screenWidth,height:screenWidth});
 		$(container).find('li img').width("100%").height("100%");
+		if ($('.identify em').size()==1) {$('.identify em').hide()}
 		var flipsnap = Flipsnap(slideContainer,{
-			distance: picWidth
+			distance: screenWidth
 		});
 		flipsnap.element.addEventListener('fstouchend', function(ev) {
 			$(container).find('.identify em').eq(ev.newPoint).addClass('cur').siblings().removeClass('cur');
@@ -316,7 +314,6 @@ var WeiPHP_RAND_COLOR = ["#ff6600","#ff9900","#99cc00","#33cc00","#0099cc","#339
 			isShowProgressTips: 0, // 默认为1，显示进度提示
 			success: function (res) {
 				$('textarea').val();
-				
 				$.get(SITE_URL+"/index.php?s=/Home/Weixin/downloadPic/media_id/"+res.serverId+".html",function(data){
 					$.Dialog.close();
 					if(data.result=="success"){
@@ -331,6 +328,8 @@ var WeiPHP_RAND_COLOR = ["#ff6600","#ff9900","#99cc00","#33cc00","#0099cc","#339
 						if(localIds.length>0){
 							wxUploadImg(localIds,name,target);
 						}
+					}else{
+						alert('上传图片失败，请通知管理员处理');
 					}
 				})
 			}
@@ -509,7 +508,7 @@ var WeiPHP_RAND_COLOR = ["#ff6600","#ff9900","#99cc00","#33cc00","#0099cc","#339
 			pageIds = opts.pageids;
 			domClass = opts.domClass || "contentItem";
 			domContainer = opts.domContainer || "container";
-			$(window).scroll( function() { 
+			$(window).scroll( function() {
 				if(!isLoading && hasMore){
 					if(loadType==0){
 						lastId++; 
