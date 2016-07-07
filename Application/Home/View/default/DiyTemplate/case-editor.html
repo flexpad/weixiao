@@ -34,7 +34,7 @@
 		<div class="form_item">
 			<div class="iput wput">
 				<div class="sub_edit_item" ng-repeat="b in activeItem.params.pic_list">
-                    <a class="add_pic_btn" href="javascript:;" ng-click="addCasePic(b)"><img ng-show="b.pic" src="{{b.pic}}"/></a>
+                    <a class="add_pic_btn" href="javascript:;" ng-click="addCasePic(b)"><img ng-show="b.pic" src="{{b.pic}}" rel="{{b.rel}}" id="cover_id_{{b.rel}}" data-callback="callbackimg" data-max=1 /></a>
                     <div class="s_i_p">
                         <input type="text" placeholder="填写标题" ng-model="b.title"/><br/>
                         <input type="text" placeholder="填写链接" ng-model="b.url"/>

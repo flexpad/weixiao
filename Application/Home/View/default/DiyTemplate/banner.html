@@ -1,8 +1,10 @@
-<div class="default_div" ng-show="!module.params.banner_list.length">请幻灯片图片</div>
+<div class="default_div" ng-show="!module.params.banner_list.length">请添加幻灯片图片</div>
 <section class="banner" ng-show="module.params.banner_list.length" id="banner{{module.index}}">
     <ul>
     	<li ng-repeat="b in module.params.banner_list" on-finish-render-filters>
+<!--             <a href="{{b.url}}"><img src="{{b.pic}}"/></a> -->
             <a href="{{b.url}}"><img src="{{b.pic}}"/></a>
+                    
             <span ng-show="module.params.show_title" class="title">{{b.title}}</span>
         </li>
     </ul>

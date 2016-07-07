@@ -420,4 +420,9 @@ class IndexController extends HomeController {
 		$html = $this->fetch ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/TemplateFooter/' . $temp . '/footer.html' );
 		echo $html;
 	}
+	//跳转页面
+	function jump(){
+		$this->display ();
+
+	}
 }

@@ -272,7 +272,9 @@ class PublicController extends HomeController {
 		if (empty ( $data ) || $data ['uid'] != $this->mid) {
 			$this->error ( '非法操作' );
 		}
-		$is_audit = $data ['is_audit'];
+		
+		$user = D ( 'Common/User' )->find ( $this->mid );
+		$is_audit = $user ['is_audit'];
 		$this->assign ( 'is_audit', $is_audit );
 		if (IS_POST) {
 			// 更新缓存

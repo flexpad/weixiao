@@ -253,7 +253,8 @@ class AdminController extends HomeController {
 				$error = '手机号被占用！';
 				break;
 			default :
-				$error = '未知错误';
+// 				$error = '未知错误';
+			    $error = '用户名被占用！';
 		}
 		return $error;
 	}

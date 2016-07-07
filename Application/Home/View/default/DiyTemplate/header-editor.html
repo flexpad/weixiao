@@ -5,7 +5,7 @@
         <div class="form_item">
             <label>页面名称</label>
             <div class="iput">
-                <input type="text" ng-model="activeItem.params.title" placeholder="微页面标题"/>
+                <input type="text" ng-model="activeItem.params.title" placeholder="微页面标题" />
             </div>
         </div>
         <div class="form_item">
@@ -22,17 +22,31 @@
                 <span class="tips">背景颜色只在手机端显示</span>
             </div>
         </div>
-        
-   
+ 		<if condition="!$_GET['use'] || $_GET['use']=='page'">
         <div style="padding: 15px 25px;">
-        <span ><lable>是否显示底部导航：</lable></span>
-        <span ><input checked type='radio' name='is_show' value="0"  ng-model="activeItem.params.is_show"/> <label  for="is_show_0">不显示</label></span>
-        <span><input type ='radio' name='is_show' value="1"  ng-model="activeItem.params.is_show"/><label  for="is_show_1"> 显示<lable></span>
+        <span ><lable>是否显示底部导航  ：</lable></span>
+        <span ><input <eq name="data.is_show" value="0"> checked</eq> type='radio' name='is_show' value="0"  ng-model="activeItem.params.is_show" id="is_show_0"/> <label  for="is_show_0">不显示</label></span>
+        <span><input <eq name="data.is_show" value="1"> checked</eq> type ='radio' name='is_show' value="1"  ng-model="activeItem.params.is_show" id="is_show_1"/><label  for="is_show_1"> 显示<lable></span>
          </div>
-        <div style="padding: 15px 25px;">
+        <div style="padding: 15px 25px;" id="is_index_id">
         <span ><lable>设置为首页：</lable></span>
-        <span ><input type='radio' name='is_index' value="0" ng-model="activeItem.params.is_index" /> <label  for="is_index_0">否</label></span>
-        <span><input ng-model="activeItem.params.is_index" type ='radio' name='is_index' value='1' /><label  for="is_index_1">是</label></span>
+        <span ><input type='radio' name='is_index' value="0" ng-model="activeItem.params.is_index" id="is_index_0" <eq name="data.is_index" value="0"> checked</eq> /> <label  for="is_index_0">否</label></span>
+        <span><input ng-model="activeItem.params.is_index" type ='radio' name='is_index' value='1' id="is_index_1" <eq name="data.is_index" value="1"> checked</eq>  /><label  for="is_index_1">是</label></span>
         </div>
+        </if>
     </div>
 </div>
+<script type="text/javascript">
+   var v=$("input[name='is_show']:checked").val();
+   is_show_index(v);
+	$("input[name='is_show']").click(function(){
+		is_show_index($(this).val())
+	});
+	function is_show_index(vv){
+		if(vv == '1'){
+			$("#is_index_id").show();
+		}else{
+			$("#is_index_id").hide();
+		}
+	}
+</script>

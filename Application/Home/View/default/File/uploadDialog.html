@@ -21,7 +21,7 @@
     <div class="tab_content load_piclist_box" id="tab2" style="padding:20px;"></div>
 	<div class="tab_content load_piclist_box" id="tab3" style="padding:20px;"></div>
   </section>
-  <div class="upload_dialog_bar"><a class="btn" href="javascript:;" onClick="confirmImage();">确定</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="border-btn" href="javascript:;" onClick="window.parent.$.Dialog.close();">取消</a></div>
+  <div class="upload_dialog_bar"><a id="conBtn" class="btn" href="javascript:;" onClick="confirmImage();">确定</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="border-btn" href="javascript:;" onClick="window.parent.$.Dialog.close();">取消</a></div>
 </body>
 <script type="text/javascript">
 var maxCount = parseInt("{$_GET['max']}");
@@ -123,6 +123,7 @@ function confirmImage(){
 			window.parent.$('#cover_id_'+fieldName).val(picId);
 			window.parent.$('.weixin-cover-pic').attr('src',src);
 			var callback = window.parent.$('#cover_id_'+fieldName).data('callback');
+			
 			if(callback){
 				eval('window.parent.'+callback+'("'+fieldName+'",'+picId+',"'+src+'")');
 			}

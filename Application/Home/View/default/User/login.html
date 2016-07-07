@@ -136,13 +136,17 @@
 				$(this).parent().find('.fa').css('color','#aaa');
 				})
 		});
+		
+<php>if(C('SCAN_LOGIN')) { </php>		
 	setInterval(function(){
 		$.post("{:U('login')}",{},function(res){
 			if(res==1){
 				window.location.href = "{:U('home/index/main')}";
 			}
 		});
-	},3000);	
+	},3000);
+<php> } </php>
+
 	$('#login_body').height($(window).height());	
 	</script>
 </block>
