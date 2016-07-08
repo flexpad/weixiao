@@ -220,7 +220,7 @@ class ModelController extends AdminController {
 		$return_sql || $data = M ( parse_name ( $name, true ) )->select ();
 		$name = strtolower ( $name );
 		if ($type == 1) {
-			$sql = "DELETE FROM `{$px}attribute` WHERE model_id = (SELECT id FROM {$px}model WHERE `name`='{$model['name']}' ORDER BY id DESC LIMIT 1);\r\n";
+			$sql = "DELETE FROM `{$px}attribute` WHERE `model_name`='{$model['name']}';\r\n";
 			$sql .= "DELETE FROM `{$px}model` WHERE `name`='{$model['name']}' ORDER BY id DESC LIMIT 1;\r\n";
 			$sql .= "DROP TABLE IF EXISTS `{$px}" . strtolower ( $name ) . "`;";
 			$path = $is_all ? RUNTIME_PATH . 'uninstall/' . $model ['name'] . '.sql' : RUNTIME_PATH . 'uninstall.sql';
@@ -314,7 +314,8 @@ sql;
 				}
 				$sql .= 'INSERT INTO `' . $px . 'attribute` (' . rtrim ( $field, ',' ) . ') VALUES (' . rtrim ( $value, ',' ) . ');' . "\r\n";
 			}
-			$sql .= 'UPDATE `' . $px . 'attribute` SET model_id= (SELECT MAX(id) FROM `' . $px . 'model`) WHERE model_id=0;';
+			
+			$sql .= 'UPDATE `' . $px . 'attribute` a, ' . $px . 'model m SET a.model_id = m.id WHERE a.model_name=m.`name`;';
 			
 			$path = $is_all ? RUNTIME_PATH . 'install/' . $model ['name'] . '.sql' : RUNTIME_PATH . 'install.sql';
 		}
