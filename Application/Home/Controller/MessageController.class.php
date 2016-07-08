@@ -558,10 +558,20 @@ class MessageController extends HomeController {
 		// $map ['FromUserName'] = I ( 'openid' );
 		$map ['ToUserName'] = get_token ();
 		$map ['manager_id'] = $this->mid;
-		$list = M ( 'custom_sendall' )->where ( $map )->order ( 'id desc' )->group ( 'diff' )->selectPage ();
+// 		$list = M ( 'custom_sendall' )->where ( $map )->order ( 'id desc' )->group ( 'diff' )->selectPage ();
 		// dump($shibai);
 		// dump($chenggong);
-		
+		$page = I ( 'p', 1, 'intval' );
+		$row = 20;
+		$ids= M ( 'custom_sendall' )->where ( $map )->field('MAX(id) as mid')->group('diff')->page($page,$row)->select();
+		foreach ($ids as $vv){
+		    $arr[]=$vv['mid'];
+		}
+		if (!empty($arr)){
+		    $map['id']=array('in',$arr);
+		    // 		    $list ['list_data'] = M('weixin_message')->where($map)->order('is_read ASC,id DESC')->page($page,$row)->select();
+		    $list = M ( 'custom_sendall' )->where ( $map )->order ( 'id desc' )->selectPage ();
+		}
 		$dao = D ( 'Common/User' );
 		foreach ( $list ['list_data'] as &$v ) {
 			$countData = M ( 'custom_sendall' )->where ( array (
