@@ -147,7 +147,7 @@ class UserModel extends Model {
 			$this->error = '没有超级管理员权限，不能登录！';
 			return false;
 		}
-		if (is_array ( $user ) && intval ( $user ['status'] ) == 1) {
+		if (is_array ( $user ) && intval ( $user ['status'] ) > 0) {
 			/* 验证用户密码 */
 			if (think_weiphp_md5 ( $password ) === $user ['password']) {
 				// 记录行为
