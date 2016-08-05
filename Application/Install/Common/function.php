@@ -77,9 +77,11 @@ function check_dirfile(){
                     $val[2] = 'error';
                     session('error', true);
                 } else {
-                    $val[1] = '不存在';
-                    $val[2] = 'error';
-                    session('error', true);
+                    if(!mkdir($item, 0777, true)){
+                        $val[1] = '不存在';
+                        $val[2] = 'error';
+                        session('error', true);
+                    }
                 }
             }
         } else {
