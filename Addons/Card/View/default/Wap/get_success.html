@@ -27,11 +27,11 @@
             <empty name='is_error'><div class="card_get_mark">填写会员资料，即可升级会员卡！</div><else/><div class="card_get_error">{$is_error}</div></empty>
         </div>
         <div class="m_15">
-        <notempty name='cardInfo'>
+        	<notempty name="info.title">
         	<div class="write_tips_content">
-            	<h6>{$cardInfo.title}</h6>
-                <!-- 开卡寄送提示语  -->
-           		<p>{$cardInfo.content}</p>
+            	<h6>{$info.title}</h6>
+                开卡寄送提示语 
+           		<p>{$info.content}</p>
             </div>
             </notempty>
             <empty name='is_error'> <a class="btn" href="{:addons_url('Card://Wap/writeCardInfo')}">完善会员资料</a><else/><a class="btn" href="{:addons_url('Card://Wap/index')}">返回</a></empty>
