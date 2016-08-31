@@ -41,6 +41,13 @@ use Common\Controller\Addon;
 		public function documentEditFormContent($data){
 			$this->assign('addons_data', $data);
 			$this->assign('addons_config', $this->getConfig());
+			$uploadDriver = strtolower(C("EDITOR_PICTURE_UPLOAD_DRIVER"));
+			if ($uploadDriver == 'qiniu') {
+			    $driverfile = 'ueditor_qiniu';
+			} else {
+			    $driverfile = 'ueditor';
+			}
+			$this->assign('driver_file', $driverfile);
 			$this->display('content');
 		}
 
