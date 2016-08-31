@@ -44,7 +44,7 @@ class FollowModel extends Model {
 		$user2 = getWeixinUserInfo ( $openid );
 		
 		$user = array_merge ( $user, $user2 );
-		
+		$user['headimgurl']=str_replace('http:', '', $user['headimgurl']);
 		$data ['uid'] = D ( 'Common/User' )->add ( $user );
 		
 		if ($has_subscribe !== false) {
