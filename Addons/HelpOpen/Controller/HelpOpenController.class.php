@@ -206,6 +206,9 @@ class HelpOpenController extends AddonsController {
 	}
 	// 获取代金券列表
 	function _get_shop_coupon() {
+	    if (!is_install("ShopCoupon")){
+	        return false;
+	    }
 		$list = D ( 'Addons://ShopCoupon/Coupon' )->getSelectList ();
 		$this->assign ( 'shop_conpon_list', $list );
 	}
@@ -568,9 +571,11 @@ class HelpOpenController extends AddonsController {
 				$vo ['content'] = '核销优惠券： ' . $info ['title'] . ', 奖项名： ' . $prize ['name'];
 				$vo ['money'] = '0.0';
 			} else {
-				$info = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $prize ['coupon_id'] );
-				$vo ['content'] = '核销代金券： ' . $info ['title'] . ', 奖项名： ' . $prize ['name'];
-				$vo ['money'] = $vo ['prize_title'];
+                if (is_install("ShopCoupon")) {
+                    $info = D('Addons://ShopCoupon/Coupon')->getInfo($prize['coupon_id']);
+                    $vo['content'] = '核销代金券： ' . $info['title'] . ', 奖项名： ' . $prize['name'];
+                    $vo['money'] = $vo['prize_title'];
+                }
 			}
 		}
 		/* 查询记录总数 */
@@ -651,9 +656,11 @@ class HelpOpenController extends AddonsController {
 				$vo ['content'] = '核销优惠券： ' . $info ['title'] . ', 奖项名： ' . $prize ['name'];
 				$vo ['money'] = '0.0';
 			} else {
-				$info = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $prize ['coupon_id'] );
-				$vo ['content'] = '核销代金券： ' . $info ['title'] . ', 奖项名： ' . $prize ['name'];
-				$vo ['money'] = $vo ['prize_title'];
+                if (is_install("ShopCoupon")) {
+                    $info = D('Addons://ShopCoupon/Coupon')->getInfo($prize['coupon_id']);
+                    $vo['content'] = '核销代金券： ' . $info['title'] . ', 奖项名： ' . $prize['name'];
+                    $vo['money'] = $vo['prize_title'];
+                }
 			}
 			
 			$dataArr [$k + 1] = array (

@@ -208,14 +208,16 @@ class UserCenterController extends AddonsController {
 				$this->error ( '该账号已经存在，请更换后再试' );
 			}
 			// 手工升级会员时，用户经历值也增加到该会员级别的条件经历值
-			$membership_condition = M ( 'shop_membership' )->where ( array (
-					'id' => $_POST ['membership'] 
-			) )->getField ( 'condition' );
-			$user_experience = get_userinfo ( $map ['uid'], 'experience' );
-			if ($user_experience < $membership_condition) {
-				$save ['experience'] = $membership_condition;
-			}
-			
+			if (is_install("Shop")) {
+                $membership_condition = M('shop_membership')->where(array(
+                    'id' => $_POST['membership']
+                ))->getField('condition');
+                $user_experience = get_userinfo($map['uid'], 'experience');
+                if ($user_experience < $membership_condition) {
+                    $save['experience'] = $membership_condition;
+                }
+            }
+
 			$save ['leven'] = 1;
 			$save ['manager_id'] = $this->mid;
 			$save ['is_audit'] = 1;
@@ -258,12 +260,15 @@ class UserCenterController extends AddonsController {
 		$map ['token'] = get_token ();
 		$uid = I ( 'uid' );
 		$userExperience = get_userinfo ( $uid, 'experience' );
-		$list = M ( 'shop_membership' )->where ( $map )->select ();
-		foreach ( $list as $v ) {
-			if ($v ['condition'] >= $userExperience) {
-				$extra .= $v ['id'] . ':' . $v ['membership'] . "\r\n";
-			}
-		}
+		$extra='';
+		if (is_install("Shop")) {
+            $list = M('shop_membership')->where($map)->select();
+            foreach ($list as $v) {
+                if ($v['condition'] >= $userExperience) {
+                    $extra .= $v['id'] . ':' . $v['membership'] . "\r\n";
+                }
+            }
+        }
 		return $extra;
 	}
 	

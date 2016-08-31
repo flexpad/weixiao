@@ -145,7 +145,7 @@ class WapController extends AddonsController {
 					if ($couponinfo ['max_num'] > 0 && $my_count >= $couponinfo ['max_num']) {
 						$flat = false;
 					}
-				} elseif ($vv ['prize_type'] == 2) { // 代金券 TM00483 获得代金券通知
+				} elseif ($vv ['prize_type'] == 2 && is_install("ShopCoupon")) { // 代金券 TM00483 获得代金券通知
 					// 金额
 					$scouponinfo = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $vv ['shop_coupon_id'] );
 					$snMap['target_id']=$vv ['shop_coupon_id'];
@@ -259,7 +259,7 @@ class WapController extends AddonsController {
 			$data ['addon'] = 'Coupon';
 			$data ['prize_title'] = $prize ['name'];
 			
-		} elseif ($prize ['prize_type'] == 2) { // 代金券 TM00483 获得代金券通知
+		} elseif ($prize ['prize_type'] == 2 && is_install("ShopCoupon")) { // 代金券 TM00483 获得代金券通知
 			$content = "恭喜您获得代金券大礼包，已发到您会员账号，<a href='$url'>点击查看我的礼包</a>";
 			$data ['target_id'] = $prize ['shop_coupon_id'];
 			$data ['addon'] = 'ShopCoupon';
@@ -305,7 +305,7 @@ class WapController extends AddonsController {
 		}else if($prize ['prize_type'] == 2){
 		    
 		    $remark = "礼包已发到您的会员卡个人中心的代金券处，点击详情查看我的礼包";
-		    if ($config['is_close']==0){
+		    if ($config['is_close']==0 && is_install("ShopCoupon")){
 		    	D ( 'Common/TemplateMessage' )->replyShopCouponSuccess($uid, $data ['prize_title'],time_format($info['end_time'],'Y-m-d'),$remark,$first='恭喜您获得代金券大礼包',$url,$config['daijinjuan']) ;
 		    }
 		   
@@ -424,7 +424,7 @@ class WapController extends AddonsController {
 				) );
 				$vo ['time'] = $this->_time ( $info ['use_start_time'], $info ['over_time'] );
 				$vo ['is_use'] = $sn ['is_use'];
-			} elseif ($prize ['prize_type'] == '2') {
+			} elseif ($prize ['prize_type'] == '2' && is_install("ShopCoupon")) {
 				$info = M ( 'shop_coupon' )->find ( $prize ['shop_coupon_id'] );
 				$vo ['url'] = addons_url ( 'ShopCoupon://Wap/show', array (
 						'id' => $prize ['shop_coupon_id'],

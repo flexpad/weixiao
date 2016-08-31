@@ -558,16 +558,18 @@ class CustomMenuController extends AddonsController {
 				) );
 				break;
 			case 'ShopCoupon' :
-				if ($jumpType == 0) {
-					$url = addons_url ( 'ShopCoupon://Wap/index', array (
-							'publicid' => $public_info ['id'],
-							'id' => $id 
-					) );
-				} else {
-					$url = addons_url ( 'ShopCoupon://Wap/lists', array (
-							'publicid' => $public_info ['id'] 
-					) );
-				}
+			    if (is_install('ShopCoupon')){
+			        if ($jumpType == 0) {
+			            $url = addons_url ( 'ShopCoupon://Wap/index', array (
+			                'publicid' => $public_info ['id'],
+			                'id' => $id
+			            ) );
+			        } else {
+			            $url = addons_url ( 'ShopCoupon://Wap/lists', array (
+			                'publicid' => $public_info ['id']
+			            ) );
+			        }
+			    }
 				break;
 			case 'Coupon' :
 				if ($jumpType == 0) {

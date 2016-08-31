@@ -400,7 +400,7 @@ class WapController extends AddonsController {
 								'id' => $awardInfo ['coupon_id'],
 								'sn_id' => $res ['sn_id'] 
 						) );
-					} else if ($res ['other'] == 3) {
+					} else if ($res ['other'] == 3 && is_install("ShopCoupon")) {
 						$jumpUrl = addons_url ( 'ShopCoupon://Wap/show', array (
 								'id' => $awardInfo ['coupon_id'],
 								'sn_id' => $res ['sn_id'] 
@@ -498,7 +498,9 @@ class WapController extends AddonsController {
 				$data ['state'] = 1;
 				$data ['djtime'] = time ();
 				$res ['other'] = 3;
-				$res1 = D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $awardInfo ['coupon_id'], $this->mid );
+				if (is_install("ShopCoupon")) {
+                    $res1 = D('Addons://ShopCoupon/Coupon')->sendCoupon($awardInfo['coupon_id'], $this->mid);
+                }
 				$res ['sn_id'] = $res1;
 				// 代金券
 				break;
@@ -607,7 +609,7 @@ class WapController extends AddonsController {
 				if ($info ['max_num'] > 0 && $my_count >= $info ['max_num']) {
 					$flat = false;
 				}
-			} else if ($awardInfo ['award_type'] == 3) {
+			} else if ($awardInfo ['award_type'] == 3 && is_install("ShopCoupon")) {
 				$info = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $awardInfo ['coupon_id'] );
 				if ($info ['collect_count'] >= $info ['num']) {
 					$flat = false;
