@@ -84,6 +84,9 @@ return array(
 				'exts' => 'jpg,gif,png,jpeg', // 允许上传的文件后缀
 				'rootPath' => './Uploads/Editor/' 
 		),
+		//编辑器上传服务器
+		// Local--本地  Qiniu --七牛（若配置为Qiniu，须在Public/static/ueditor_qiniu/php/conf.php 文件配置$QINIU_ACCESS_KEY，$QINIU_SECRET_KEY，$BUCKET，$HOST四个变量参数）
+		'EDITOR_PICTURE_UPLOAD_DRIVER' => 'Local',
 		
 		// 文件上传相关配置
 		'DOWNLOAD_UPLOAD' => array (

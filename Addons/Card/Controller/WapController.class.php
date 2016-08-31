@@ -608,7 +608,7 @@ class WapController extends BaseController {
 				) 
 		);
 		$map1['score']=array('neq',0);
-		$isERP=is_ERP();
+		$isERP=false;//is_ERP();
 		if ($isERP){
 			$openid=get_openid();
 			$detail=D ( 'Common/Server' )->getMarksUsageDetail ( $openid );

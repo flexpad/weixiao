@@ -805,7 +805,7 @@ abstract class Controller {
 				$pdata = D ( 'Addons://Coupon/Coupon' )->getInfo ( $keyArr [1] );
 				$title = $pdata ['title'];
 				$total_count = $pdata ['num'];
-			} elseif ($keyArr [0] == 'shopCoupon') {
+			} elseif ($keyArr [0] == 'shopCoupon' && is_install("ShopCoupon")) {
 				$pdata = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $keyArr [1] );
 				$title = $pdata ['title'];
 				$total_count = $pdata ['num'];
@@ -920,7 +920,14 @@ abstract class Controller {
 		
 		// 读取模型数据列表
 		
-		empty ( $fields ) || in_array ( 'id', $fields ) || array_push ( $fields, 'id' );
+		if ($model['name'] != 'user'){
+		    empty ( $fields ) || in_array ( 'id', $fields ) || array_push ( $fields, 'id' );
+		   
+		}else{
+		    empty ( $fields ) || in_array ( 'uid', $fields ) || array_push ( $fields, 'uid' );
+		    $order='uid desc';
+		}
+		
 		$name = parse_name ( get_table_name ( $model ['id'] ), true );
 		$data = M ( $name )->field ( empty ( $fields ) ? true : $fields )->where ( $map )->order ( $order )->page ( $page, $row )->select ();
 		

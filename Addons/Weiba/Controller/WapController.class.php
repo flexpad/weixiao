@@ -10,15 +10,15 @@ class WapController extends AddonsController {
 		$db_prefix = C ( 'DB_PREFIX' );
 		$token = get_token ();
 		/*
-		$header = $this->fetch ( $this->getAddonTemplate ( 'header' ) );
-		echo $header;
-		
-		if (S ( 'w3g_go_index_' . $token )) {
-			echo S ( 'w3g_go_index_' . $token );
-			echo $this->fetch ( $this->getAddonTemplate ( 'footer' ) );
-			exit ();
-		}
-		*/
+		 * $header = $this->fetch ( $this->getAddonTemplate ( 'header' ) );
+		 * echo $header;
+		 *
+		 * if (S ( 'w3g_go_index_' . $token )) {
+		 * echo S ( 'w3g_go_index_' . $token );
+		 * echo $this->fetch ( $this->getAddonTemplate ( 'footer' ) );
+		 * exit ();
+		 * }
+		 */
 		// 剔除不符合版块ID
 		$fwid = D ( 'weiba' )->where ( 'is_del=1 OR status=0 AND token="' . $token . '"' )->order ( $order )->select ();
 		$fids = getSubByKey ( $fwid, 'id' );
@@ -64,12 +64,12 @@ class WapController extends AddonsController {
 		$this->_assignUserInfo ( $uids );
 		$this->assign ( 'list', $list );
 		/*
-		$body = $this->fetch ( $this->getAddonTemplate ( 'index_body' ) );
-		S ( 'w3g_go_index_' . $token, $body, 1800 );
-		echo $body;
-		echo $this->fetch ( $this->getAddonTemplate ( 'footer' ) );
-		*/
-		$this -> display();
+		 * $body = $this->fetch ( $this->getAddonTemplate ( 'index_body' ) );
+		 * S ( 'w3g_go_index_' . $token, $body, 1800 );
+		 * echo $body;
+		 * echo $this->fetch ( $this->getAddonTemplate ( 'footer' ) );
+		 */
+		$this->display ();
 	}
 	public function forum() {
 		// if (!($weibacate = S ( 'weiba_cate_list' ))) {
@@ -79,30 +79,35 @@ class WapController extends AddonsController {
 			$val ['weibalist'] = D ( 'weiba' )->where ( "cid={$val['id']} AND is_del=0 and status=1 and token='" . $token . "'" )->order ( 'recommend desc,follower_count desc,thread_count' )->select ();
 		}
 		$this->assign ( 'weibacate', $weibacate );
+		
+		// 获取无分类的内容
+		$list = D ( 'weiba' )->where ( "cid=0 AND is_del=0 and status=1 and token='" . $token . "'" )->order ( 'recommend desc,follower_count desc,thread_count' )->select ();
+		$this->assign ( 'weibalist', $list );
+		
 		$this->display ();
 	}
 	public function detail() {
 		$weiba_id = intval ( $_GET ['weiba_id'] );
-		//dump($weiba_id);exit;
+		// dump($weiba_id);exit;
 		$weiba_detail = $this->_top_link ( $weiba_id );
 		// 吧主
-		//dump($weiba_id);exit;
- 		$map ['weiba_id'] = $weiba_id;
-// 		$map ['level'] = array (
-// 				'in',
-// 				'2,3' 
-// 		);
-		//dump($map);exit;
+		// dump($weiba_id);exit;
+		$map ['weiba_id'] = $weiba_id;
+		// $map ['level'] = array (
+		// 'in',
+		// '2,3'
+		// );
+		// dump($map);exit;
 		$weiba_master = D ( 'weiba_follow' )->where ( $map )->order ( 'level desc,id' )->field ( 'follower_uid,level' )->select ();
-	    //dump($weiba_master);
-		//$where['uid']=$weiba_master[0]['follower_uid'];
-		$uid =M('weiba')->where($map)->getField('admin_uid');
-		//dump($where);
-		$nickname =get_nickname($uid);
-		//dump($nickname);
+		// dump($weiba_master);
+		// $where['uid']=$weiba_master[0]['follower_uid'];
+		$uid = M ( 'weiba' )->where ( $map )->getField ( 'admin_uid' );
+		// dump($where);
+		$nickname = get_nickname ( $uid );
+		// dump($nickname);
 		
 		$this->assign ( 'weiba_master', $weiba_master );
-		$this->assign('nickname',$nickname);
+		$this->assign ( 'nickname', $nickname );
 		// 帖子
 		$maps ['is_del'] = 0;
 		
@@ -135,7 +140,6 @@ class WapController extends AddonsController {
 		) )->select ();
 		$this->assign ( 'tagList', $tagList );
 		
-		
 		if ($_GET ['type'] == 'digest') {
 			$maps ['digest'] = 1;
 		}
@@ -145,36 +149,36 @@ class WapController extends AddonsController {
 			$this->assign ( 'tag_id', $maps ['tag_id'] );
 			$this->assign ( 'tag_name', $tagInfo ['name'] );
 		}
-		$list = D ( 'weiba_post')->where ( $maps )->order ( $order )->selectpage ( 20, false, array (), true ); 
+		$list = D ( 'weiba_post' )->where ( $maps )->order ( $order )->selectpage ( 20, false, array (), true );
 		/*
-		! $topPostList && $topPostList = array ();
-		! $innerTop && $innerTop = array ();
-		! $list ['data'] && $list ['data'] = array ();
-		$list ['data'] = array_merge ( $topPostList, $innerTop, $list ['data'] );
-		foreach ( $list ['data'] as &$v ) {
-			$images = matchImages ( $v ['content'] );
-			if ($images) {
-				foreach ( $images as $img ) {
-					$imgInfo = getThumbImage ( $img, 200, 200, true, false, true );
-					if (! strpos ( $imgInfo ['dirname'], 'um/dialogs/emotion' ) && $imgInfo ['width'] > 50) {
-						$v ['image'] [] = $imgInfo ['is_http'] ? $imgInfo ['src'] : UPLOAD_URL . $imgInfo ['src'];
-					}
-				}
-				$v ['is_img'] = 1;
-			}
-			if ($v ['tag_id']) {
-				$tagInfo = D ( 'weiba_tag' )->find ( $v ['tag_id'] );
-				$v ['tag_name'] = $tagInfo ['name'];
-			}
-			// 活动
-			if ($v ['is_event']) {
-				$event_detail = D ( 'WeibaEvent' )->where ( array (
-						'post_id' => $v ['post_id'] 
-				) )->find ();
-				$v ['event'] = $event_detail;
-			}
-		}
-		*/
+		 * ! $topPostList && $topPostList = array ();
+		 * ! $innerTop && $innerTop = array ();
+		 * ! $list ['data'] && $list ['data'] = array ();
+		 * $list ['data'] = array_merge ( $topPostList, $innerTop, $list ['data'] );
+		 * foreach ( $list ['data'] as &$v ) {
+		 * $images = matchImages ( $v ['content'] );
+		 * if ($images) {
+		 * foreach ( $images as $img ) {
+		 * $imgInfo = getThumbImage ( $img, 200, 200, true, false, true );
+		 * if (! strpos ( $imgInfo ['dirname'], 'um/dialogs/emotion' ) && $imgInfo ['width'] > 50) {
+		 * $v ['image'] [] = $imgInfo ['is_http'] ? $imgInfo ['src'] : UPLOAD_URL . $imgInfo ['src'];
+		 * }
+		 * }
+		 * $v ['is_img'] = 1;
+		 * }
+		 * if ($v ['tag_id']) {
+		 * $tagInfo = D ( 'weiba_tag' )->find ( $v ['tag_id'] );
+		 * $v ['tag_name'] = $tagInfo ['name'];
+		 * }
+		 * // 活动
+		 * if ($v ['is_event']) {
+		 * $event_detail = D ( 'WeibaEvent' )->where ( array (
+		 * 'post_id' => $v ['post_id']
+		 * ) )->find ();
+		 * $v ['event'] = $event_detail;
+		 * }
+		 * }
+		 */
 		// dump($list['data']);
 		
 		$post_uids = getSubByKey ( $list ['data'], 'post_uid' );
@@ -195,10 +199,10 @@ class WapController extends AddonsController {
 		$this->display ();
 	}
 	public function postDetail() {
-		$this->assign('is_post_detail',1);
+		$this->assign ( 'is_post_detail', 1 );
 		$post_id = intval ( $_GET ['post_id'] );
 		$post_detail = D ( 'weiba_post' )->where ( 'is_del=0 and id=' . $post_id )->find ();
-		//dump($post_detail);exit;
+		// dump($post_detail);exit;
 		$weiba_detail = $this->_top_link ( $post_detail ['weiba_id'], true );
 		if (! $post_detail || $weiba_detail ['is_del'])
 			$this->error ( '帖子不存在或已被删除' );
@@ -206,21 +210,21 @@ class WapController extends AddonsController {
 			$post_detail ['favorite'] = 1;
 		}
 		/*
-		if ($post_detail ['attach']) {
-			$attachids = unserialize ( $post_detail ['attach'] );
-			$attachinfo = model ( 'Attach' )->getAttachByIds ( $attachids );
-			foreach ( $attachinfo as $ak => $av ) {
-				$_attach = array (
-						'attach_id' => $av ['attach_id'],
-						'attach_name' => $av ['name'],
-						'attach_url' => getImageUrl ( $av ['save_path'] . $av ['save_name'] ),
-						'extension' => $av ['extension'],
-						'size' => $av ['size'] 
-				);
-				$post_detail ['attachInfo'] [$ak] = $_attach;
-			}
-		}
-		*/
+		 * if ($post_detail ['attach']) {
+		 * $attachids = unserialize ( $post_detail ['attach'] );
+		 * $attachinfo = model ( 'Attach' )->getAttachByIds ( $attachids );
+		 * foreach ( $attachinfo as $ak => $av ) {
+		 * $_attach = array (
+		 * 'attach_id' => $av ['attach_id'],
+		 * 'attach_name' => $av ['name'],
+		 * 'attach_url' => getImageUrl ( $av ['save_path'] . $av ['save_name'] ),
+		 * 'extension' => $av ['extension'],
+		 * 'size' => $av ['size']
+		 * );
+		 * $post_detail ['attachInfo'] [$ak] = $_attach;
+		 * }
+		 * }
+		 */
 		/*
 		 * if($post_detail ['img_ids']){
 		 * $imgIds = explode(',', $post_detail ['img_ids']);
@@ -234,30 +238,30 @@ class WapController extends AddonsController {
 			$post_detail ['tag_name'] = $tagInfo ['name'];
 		}
 		$this->_assignFollowState ( $post_detail ['weiba_id'] );
-		//dump($post_detail);
+		// dump($post_detail);
 		$this->assign ( 'post_detail', $post_detail );
 		// 活动
 		/*
-		if ($post_detail ['is_event']) {
-			$event_detail = D ( 'WeibaEvent' )->where ( array (
-					'post_id' => $post_detail ['post_id'] 
-			) )->find ();
-			$event_detail ['attrs'] = M ( 'weiba_event_attr' )->where ( array (
-					'event_id' => $event_detail ['event_id'] 
-			) )->select ();
-			foreach ( $event_detail ['attrs'] as &$v ) {
-				$v ['extra'] = explode ( '\r\n', $v ['extra'] );
-			}
-			// dump($event_detail);
-			$this->assign ( 'event_detail', $event_detail );
-			$isJoin = M ( 'weiba_event_user' )->where ( array (
-					'event_id' => $event_detail ['event_id'],
-					'uid' => $this->mid,
-					'is_refuse' => 0 
-			) )->find ();
-			$this->assign ( 'isJoin', $isJoin );
-		}
-		*/
+		 * if ($post_detail ['is_event']) {
+		 * $event_detail = D ( 'WeibaEvent' )->where ( array (
+		 * 'post_id' => $post_detail ['post_id']
+		 * ) )->find ();
+		 * $event_detail ['attrs'] = M ( 'weiba_event_attr' )->where ( array (
+		 * 'event_id' => $event_detail ['event_id']
+		 * ) )->select ();
+		 * foreach ( $event_detail ['attrs'] as &$v ) {
+		 * $v ['extra'] = explode ( '\r\n', $v ['extra'] );
+		 * }
+		 * // dump($event_detail);
+		 * $this->assign ( 'event_detail', $event_detail );
+		 * $isJoin = M ( 'weiba_event_user' )->where ( array (
+		 * 'event_id' => $event_detail ['event_id'],
+		 * 'uid' => $this->mid,
+		 * 'is_refuse' => 0
+		 * ) )->find ();
+		 * $this->assign ( 'isJoin', $isJoin );
+		 * }
+		 */
 		// dump($post_detail);
 		$this->_addPostReadCount ( $post_id );
 		$weiba_name = $weiba_detail ['weiba_name'];
@@ -273,10 +277,10 @@ class WapController extends AddonsController {
 		$weiba_admin = getSubByKey ( D ( 'weiba_follow' )->where ( $map )->order ( 'level desc' )->field ( 'follower_uid' )->select (), 'follower_uid' );
 		$weiba_manage = false;
 		/*
-		if (CheckWeibaPermission ( $weiba_admin, 0, 'weiba_global_top' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_top' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_recommend' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_edit' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_del' )) {
-			$weiba_manage = true;
-		}
-		*/
+		 * if (CheckWeibaPermission ( $weiba_admin, 0, 'weiba_global_top' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_top' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_recommend' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_edit' ) || CheckWeibaPermission ( $weiba_admin, 0, 'weiba_del' )) {
+		 * $weiba_manage = true;
+		 * }
+		 */
 		$this->assign ( 'weiba_manage', $weiba_manage );
 		$this->assign ( 'weiba_admin', $weiba_admin );
 		
@@ -287,12 +291,12 @@ class WapController extends AddonsController {
 		unset ( $map );
 		$map ['post_id'] = $post_id;
 		$postcomment = M ( 'weiba_reply' )->where ( $map )->order ( 'ctime desc' )->selectPage ( 20 );
-		//dump($postcomment['list_data']);
+		// dump($postcomment['list_data']);
 		foreach ( $postcomment ['list_data'] as $k => $v ) {
 			$postcomment ['list_data'] [$k] ['user_info'] = getUserInfo ( $v ['uid'] );
-			//$postcomment ['list_data'] [$k] ['replyuser'] = getUserInfo ( $v ['to_uid'] );
+			// $postcomment ['list_data'] [$k] ['replyuser'] = getUserInfo ( $v ['to_uid'] );
 		}
-		//dump($postcomment['list_data']);
+		// dump($postcomment['list_data']);
 		$this->assign ( 'postcomment', $postcomment );
 		// $this->_assignFollowUidState ( array (
 		// $post_detail ['post_uid']
@@ -306,8 +310,8 @@ class WapController extends AddonsController {
 		
 		$is_digg = M ( 'weiba_post_digg' )->where ( 'post_id=' . $post_id . ' and uid=' . $this->mid )->find ();
 		$this->assign ( 'is_digg', $is_digg ? 1 : 0 );
-		$userInfo = getUserInfo ( $post_detail['post_uid'] );
-		$this->assign('userInfo',$userInfo);
+		$userInfo = getUserInfo ( $post_detail ['post_uid'] );
+		$this->assign ( 'userInfo', $userInfo );
 		
 		// isweixin
 		$isWeixin = isMobile ();
@@ -348,7 +352,7 @@ class WapController extends AddonsController {
 			$user_info [$uid] = getUserInfo ( $uid );
 		}
 		$this->assign ( 'user_info', $user_info );
-		//dump($user_info);exit;
+		// dump($user_info);exit;
 	}
 	
 	/**
@@ -413,12 +417,12 @@ class WapController extends AddonsController {
 	 */
 	public function doPost() {
 		/*
-		$this->need_login ();
-		
-		if (! CheckPermission ( 'weiba_normal', 'weiba_post' )) {
-			$this->error ( '对不起，您没有权限进行该操作！', true );
-		}
-		*/
+		 * $this->need_login ();
+		 *
+		 * if (! CheckPermission ( 'weiba_normal', 'weiba_post' )) {
+		 * $this->error ( '对不起，您没有权限进行该操作！', true );
+		 * }
+		 */
 		$weibaid = intval ( $_POST ['weiba_id'] );
 		$tag_id = intval ( $_POST ['tag_id'] );
 		if (! $weibaid) {
@@ -426,48 +430,48 @@ class WapController extends AddonsController {
 		}
 		$weiba = D ( 'weiba', 'weiba' )->where ( 'id=' . $weibaid )->find ();
 		/*
-		if (! CheckPermission ( 'core_admin', 'admin_login' )) {
-			switch ($weiba ['who_can_post']) {
-				case 1 :
-					$map ['weiba_id'] = $weibaid;
-					$map ['follower_uid'] = $this->mid;
-					$res = D ( 'weiba_follow' )->where ( $map )->find ();
-					if (! $res && ! CheckPermission ( 'core_admin', 'admin_login' )) {
-						$this->error ( '对不起，您没有发帖权限，请关注该版块！', true );
-					}
-					break;
-				case 2 :
-					$map ['weiba_id'] = $weibaid;
-					$map ['level'] = array (
-							'in',
-							'2,3' 
-					);
-					$weiba_admin = D ( 'weiba_follow' )->where ( $map )->order ( 'level desc' )->field ( 'follower_uid' )->select ();
-					if (! in_array ( $this->mid, getSubByKey ( $weiba_admin, 'follower_uid' ) ) && ! CheckPermission ( 'core_admin', 'admin_login' )) {
-						$this->error ( '对不起，您没有发帖权限，仅限管理员发帖！', true );
-					}
-					break;
-				case 3 :
-					$map ['weiba_id'] = $weibaid;
-					$map ['level'] = 3;
-					$weiba_admin = D ( 'weiba_follow' )->where ( $map )->order ( 'level desc' )->field ( 'follower_uid' )->find ();
-					if ($this->mid != $weiba_admin ['follower_uid'] && ! CheckPermission ( 'core_admin', 'admin_login' )) {
-						$this->error ( '对不起，您没有发帖权限，仅限圈主发帖！', true );
-					}
-					break;
-			}
-		}
-		*/
+		 * if (! CheckPermission ( 'core_admin', 'admin_login' )) {
+		 * switch ($weiba ['who_can_post']) {
+		 * case 1 :
+		 * $map ['weiba_id'] = $weibaid;
+		 * $map ['follower_uid'] = $this->mid;
+		 * $res = D ( 'weiba_follow' )->where ( $map )->find ();
+		 * if (! $res && ! CheckPermission ( 'core_admin', 'admin_login' )) {
+		 * $this->error ( '对不起，您没有发帖权限，请关注该版块！', true );
+		 * }
+		 * break;
+		 * case 2 :
+		 * $map ['weiba_id'] = $weibaid;
+		 * $map ['level'] = array (
+		 * 'in',
+		 * '2,3'
+		 * );
+		 * $weiba_admin = D ( 'weiba_follow' )->where ( $map )->order ( 'level desc' )->field ( 'follower_uid' )->select ();
+		 * if (! in_array ( $this->mid, getSubByKey ( $weiba_admin, 'follower_uid' ) ) && ! CheckPermission ( 'core_admin', 'admin_login' )) {
+		 * $this->error ( '对不起，您没有发帖权限，仅限管理员发帖！', true );
+		 * }
+		 * break;
+		 * case 3 :
+		 * $map ['weiba_id'] = $weibaid;
+		 * $map ['level'] = 3;
+		 * $weiba_admin = D ( 'weiba_follow' )->where ( $map )->order ( 'level desc' )->field ( 'follower_uid' )->find ();
+		 * if ($this->mid != $weiba_admin ['follower_uid'] && ! CheckPermission ( 'core_admin', 'admin_login' )) {
+		 * $this->error ( '对不起，您没有发帖权限，仅限圈主发帖！', true );
+		 * }
+		 * break;
+		 * }
+		 * }
+		 */
 		$checkContent = str_replace ( '&nbsp;', '', $_POST ['content'] );
 		$checkContent = str_replace ( '<br />', '', $checkContent );
 		$checkContent = str_replace ( '<p>', '', $checkContent );
 		$checkContent = str_replace ( '</p>', '', $checkContent );
 		$checkContents = preg_replace ( '/<img(.*?)src=/i', 'img', $checkContent );
 		$checkContents = preg_replace ( '/<embed(.*?)src=/i', 'img', $checkContents );
-		if (get_str_length (  $_POST ['title'] )  < 4 || get_str_length (  $_POST ['title']  ) > 30) { // 汉字和字母都为一个字
+		if (get_str_length ( $_POST ['title'] ) < 4 || get_str_length ( $_POST ['title'] ) > 30) { // 汉字和字母都为一个字
 			$this->error ( '帖子标题限制4~30个字!', true );
 		}
-		if (strlen (  $checkContents  ) == 0)
+		if (strlen ( $checkContents ) == 0)
 			$this->error ( '帖子内容不能为空', true );
 		if ($_POST ['attach_ids']) {
 			$attach = explode ( '|', $_POST ['attach_ids'] );
@@ -488,8 +492,8 @@ class WapController extends AddonsController {
 		$data ['last_reply_uid'] = $this->mid;
 		$data ['last_reply_time'] = $data ['post_time'];
 		$data ['tag_id'] = $tag_id;
-		//$data ['img_ids'] =implode(',',$_POST ['img_ids']) ;
-
+		// $data ['img_ids'] =implode(',',$_POST ['img_ids']) ;
+		
 		$imgIds = explode ( ',', $_POST ['imageIds'] );
 		foreach ( $imgIds as $imgId ) {
 			$imgId = intval ( $imgId );
@@ -503,8 +507,10 @@ class WapController extends AddonsController {
 		
 		$res = D ( 'weiba_post' )->add ( $data );
 		if ($res) {
-			D('weiba')->where('id='.$data['weiba_id'])->setInc('thread_count');
-			$this->success ( '发布成功', addons_url('Weiba://Wap/postDetail',array('post_id'=>intval($res))) );
+			D ( 'weiba' )->where ( 'id=' . $data ['weiba_id'] )->setInc ( 'thread_count' );
+			$this->success ( '发布成功', addons_url ( 'Weiba://Wap/postDetail', array (
+					'post_id' => intval ( $res ) 
+			) ) );
 		} else {
 			$this->error ( '发布失败', true );
 		}
@@ -540,10 +546,10 @@ class WapController extends AddonsController {
 		if (D ( 'weiba_favorite' )->add ( $data )) {
 			
 			// 添加积分
-			//model ( 'Credit' )->setUserCredit ( $this->mid, 'collect_topic' );
-			//model ( 'Credit' )->setUserCredit ( $data ['post_uid'], 'collected_topic' );
+			// model ( 'Credit' )->setUserCredit ( $this->mid, 'collect_topic' );
+			// model ( 'Credit' )->setUserCredit ( $data ['post_uid'], 'collected_topic' );
 			
-			//model ( 'UserData' )->setCountByStep ( $data ['uid'], 'favorite_count' );
+			// model ( 'UserData' )->setCountByStep ( $data ['uid'], 'favorite_count' );
 			echo 1;
 		} else {
 			echo 0;
@@ -559,7 +565,7 @@ class WapController extends AddonsController {
 		$map ['post_id'] = intval ( $_POST ['post_id'] );
 		$map ['uid'] = $this->mid;
 		if (D ( 'weiba_favorite' )->where ( $map )->delete ()) {
-			//model ( 'UserData' )->setCountByStep ( $map ['uid'], 'favorite_count', - 1 );
+			// model ( 'UserData' )->setCountByStep ( $map ['uid'], 'favorite_count', - 1 );
 			echo 1;
 		} else {
 			echo 0;
@@ -570,8 +576,8 @@ class WapController extends AddonsController {
 	 * 我的
 	 */
 	public function my() {
-		//$this->need_login ();
-		$profile = getUserInfo($this->mid);
+		// $this->need_login ();
+		$profile = getUserInfo ( $this->mid );
 		$this->assign ( 'profile', $profile );
 		$weiba_arr = getSubByKey ( D ( 'weiba', 'weiba' )->where ( 'is_del=0 and status=1' )->field ( 'id' )->select (), 'id' ); // 未删除且通过审核的版块
 		$map ['weiba_id'] = array (
@@ -579,7 +585,7 @@ class WapController extends AddonsController {
 				$weiba_arr 
 		);
 		$map ['is_del'] = 0;
-		$type = in_array ( $_GET ['type'] , array (
+		$type = in_array ( $_GET ['type'], array (
 				'myPost',
 				'myReply',
 				'myWeiba',
@@ -587,23 +593,23 @@ class WapController extends AddonsController {
 				'myFollowing',
 				'myFavoriteEvent',
 				'myJoinEvent' 
-		) ) ? ( $_GET ['type'] ) : 'index';
+		) ) ? ($_GET ['type']) : 'index';
 		switch ($type) {
 			case 'myPost' :
 				$map ['post_uid'] = $this->mid;
 				$map ['is_event'] = 0;
-				$post_list = D ( 'weiba_post')->where ( $map )->order ( 'last_reply_time desc' )->selectPage ( 20 );
-				//model ( 'UserData' )->setKeyValue ( $this->mid, 'unread_comment', 0 );
+				$post_list = D ( 'weiba_post' )->where ( $map )->order ( 'last_reply_time desc' )->selectPage ( 20 );
+				// model ( 'UserData' )->setKeyValue ( $this->mid, 'unread_comment', 0 );
 				break;
 			case 'myReply' :
-				$myreply = D ( 'weiba_reply')->where ( 'uid=' . $this->mid )->order ( 'ctime desc' )->field ( 'post_id' )->select ();
+				$myreply = D ( 'weiba_reply' )->where ( 'uid=' . $this->mid )->order ( 'ctime desc' )->field ( 'post_id' )->select ();
 				$map ['id'] = array (
 						'in',
 						array_unique ( getSubByKey ( $myreply, 'post_id' ) ) 
 				);
 				$map ['is_event'] = 0;
 				$post_list = D ( 'weiba_post' )->where ( $map )->order ( 'last_reply_time desc' )->selectPage ( 20 );
-				//model ( 'UserData' )->setKeyValue ( $this->mid, 'unread_reply_comment', 0 );
+				// model ( 'UserData' )->setKeyValue ( $this->mid, 'unread_reply_comment', 0 );
 				break;
 			case 'myFavorite' :
 				$myFavorite = D ( 'weiba_favorite', 'weiba' )->where ( 'uid=' . $this->mid )->order ( 'favorite_time desc' )->select ();
@@ -683,16 +689,16 @@ class WapController extends AddonsController {
 			$post_list ['list_data'] [$k] ['user'] = getUserInfo ( $v ['post_uid'] );
 			$post_list ['list_data'] [$k] ['replyuser'] = getUserInfo ( $v ['last_reply_uid'] );
 			/*
-			$images = matchImages ( $v ['content'] );
-			if ($images) {
-				foreach ( $images as $img ) {
-					$imgInfo = getThumbImage ( $img, 200, 200, true, false, true );
-					if (! strpos ( $imgInfo ['dirname'], 'um/dialogs/emotion' ) && $imgInfo ['width'] > 50) {
-						$post_list ['list_data'] [$k] ['image'] [] = $imgInfo ['is_http'] ? $imgInfo ['src'] : UPLOAD_URL . $imgInfo ['src'];
-					}
-				}
-			}
-			*/
+			 * $images = matchImages ( $v ['content'] );
+			 * if ($images) {
+			 * foreach ( $images as $img ) {
+			 * $imgInfo = getThumbImage ( $img, 200, 200, true, false, true );
+			 * if (! strpos ( $imgInfo ['dirname'], 'um/dialogs/emotion' ) && $imgInfo ['width'] > 50) {
+			 * $post_list ['list_data'] [$k] ['image'] [] = $imgInfo ['is_http'] ? $imgInfo ['src'] : UPLOAD_URL . $imgInfo ['src'];
+			 * }
+			 * }
+			 * }
+			 */
 			// $image = getEditorImages($v['content']);
 			// !empty($image) && $post_list['data'][$k]['image'] = array($image);
 			// dump($post_list['data'][$k]['image']);
@@ -709,8 +715,8 @@ class WapController extends AddonsController {
 				$post_list ['data'] [$k] ['event'] = $event_detail;
 			}
 		}
-		//dump($post_list);
-				
+		// dump($post_list);
+		
 		$this->assign ( 'post_list', $post_list );
 		$this->assign ( 'type', $type );
 		$this->assign ( 'nav', 'myweiba' );
@@ -785,7 +791,7 @@ class WapController extends AddonsController {
 	private function _assignFollowState($weiba_ids) {
 		// 批量获取uid与版块的关注状态
 		$follow_state = D ( 'weiba' )->getFollowStateByWeibaids ( $this->mid, $weiba_ids );
-		//dump($follow_state);exit;
+		// dump($follow_state);exit;
 		$this->assign ( 'follow_state', $follow_state );
 	}
 	public function reply() {
@@ -1003,22 +1009,22 @@ class WapController extends AddonsController {
 	public function profile() {
 		$uid = intval ( $_GET ['uid'] ) ? intval ( $_GET ['uid'] ) : $this->mid;
 		// 判断隐私设置
-		//$userPrivacy = $this->privacy ( $uid );
-		//$isAllowed = 0;
-		//$isMessage = 1;
-		//($userPrivacy ['space'] == 1) && $isMessage = 0;
-		//$this->assign ( 'sendmsg', $isMessage );
+		// $userPrivacy = $this->privacy ( $uid );
+		// $isAllowed = 0;
+		// $isMessage = 1;
+		// ($userPrivacy ['space'] == 1) && $isMessage = 0;
+		// $this->assign ( 'sendmsg', $isMessage );
 		
-		//if ($userPrivacy === true || $userPrivacy ['space'] == 0) {
-		//	$isAllowed = 1;
-		//}
-		//$this->assign ( 'isAllowed', $isAllowed );
+		// if ($userPrivacy === true || $userPrivacy ['space'] == 0) {
+		// $isAllowed = 1;
+		// }
+		// $this->assign ( 'isAllowed', $isAllowed );
 		$this->assign ( 'uid', $uid );
 		// 获取我的个人信息
 		// $user = getUserInfo($uid);
 		$data ['user_id'] = $uid;
 		$data ['page'] = 1;
-		$profile = getUserInfo($uid);
+		$profile = getUserInfo ( $uid );
 		// dump($profile);exit;
 		// if(!$profile['uname']){
 		// redirect(U('w3g/Public/home'), 3, '参数错误');
@@ -1029,220 +1035,228 @@ class WapController extends AddonsController {
 		} else {
 			$this->assign ( 'datatitle', '用户资料' );
 		}
-		//他的帖子
-		$weiba_arr = getSubByKey(D('weiba')->where('is_del=0 and status=1')->field('id')->select(),'id');  //未删除且通过审核的版块
-		$map['weiba_id'] = array('in',$weiba_arr);
-		$map['is_del'] = 0;
-		$map['post_uid'] = $uid;
-		$post_list = D('weiba_post')->where($map)->order('post_time desc')->selectPage(20);
-		$weiba_ids = getSubByKey($post_list['data'], 'weiba_id');
-		$nameArr = $this->_getWeibaName($weiba_ids);
-		foreach($post_list['list_data'] as $k=>$v){
-			$post_list['list_data'][$k]['weiba'] = $nameArr[$v['weiba_id']];
-			$post_list['list_data'][$k]['user'] = getUserInfo( $v['post_uid'] );
-			$post_list['list_data'][$k]['replyuser'] = getUserInfo( $v['last_reply_uid'] );
-			 $images = matchImages($v['content']);
-			 if($images){
-				 foreach($images as $img){
-					$imgInfo = getThumbImage($img,200,200,true,false,true);
-					if(!strpos($imgInfo['dirname'],'um/dialogs/emotion') && $imgInfo['width']>50){
-				 		$post_list['list_data'][$k]['image'][] = $imgInfo['is_http']?$imgInfo['src']:UPLOAD_URL.$imgInfo['src'];
+		// 他的帖子
+		$weiba_arr = getSubByKey ( D ( 'weiba' )->where ( 'is_del=0 and status=1' )->field ( 'id' )->select (), 'id' ); // 未删除且通过审核的版块
+		$map ['weiba_id'] = array (
+				'in',
+				$weiba_arr 
+		);
+		$map ['is_del'] = 0;
+		$map ['post_uid'] = $uid;
+		$post_list = D ( 'weiba_post' )->where ( $map )->order ( 'post_time desc' )->selectPage ( 20 );
+		$weiba_ids = getSubByKey ( $post_list ['data'], 'weiba_id' );
+		$nameArr = $this->_getWeibaName ( $weiba_ids );
+		foreach ( $post_list ['list_data'] as $k => $v ) {
+			$post_list ['list_data'] [$k] ['weiba'] = $nameArr [$v ['weiba_id']];
+			$post_list ['list_data'] [$k] ['user'] = getUserInfo ( $v ['post_uid'] );
+			$post_list ['list_data'] [$k] ['replyuser'] = getUserInfo ( $v ['last_reply_uid'] );
+			$images = matchImages ( $v ['content'] );
+			if ($images) {
+				foreach ( $images as $img ) {
+					$imgInfo = getThumbImage ( $img, 200, 200, true, false, true );
+					if (! strpos ( $imgInfo ['dirname'], 'um/dialogs/emotion' ) && $imgInfo ['width'] > 50) {
+						$post_list ['list_data'] [$k] ['image'] [] = $imgInfo ['is_http'] ? $imgInfo ['src'] : UPLOAD_URL . $imgInfo ['src'];
 					}
-				 }
-			 }
-			if($v['tag_id']){
-				$tagInfo = D('weiba_tag')->find($v['tag_id']);
-				$post_list['list_data'][$k]['tag_name']=$tagInfo['name'];
+				}
+			}
+			if ($v ['tag_id']) {
+				$tagInfo = D ( 'weiba_tag' )->find ( $v ['tag_id'] );
+				$post_list ['list_data'] [$k] ['tag_name'] = $tagInfo ['name'];
 			}
 		}
-		//查找赞数
-		$map2['uid'] = $uid;
-		$map2['is_del'] = 0;
-		$praiseCount = D('weiba_post','weiba')->where($map)->sum('praise');
-		$praiseCommentCount = D('weiba_reply','weiba')->where($map2)->sum('digg_count');
-		$this->assign('praiseCount',$praiseCount+$praiseCommentCount);
+		// 查找赞数
+		$map2 ['uid'] = $uid;
+		$map2 ['is_del'] = 0;
+		$praiseCount = D ( 'weiba_post', 'weiba' )->where ( $map )->sum ( 'praise' );
+		$praiseCommentCount = D ( 'weiba_reply', 'weiba' )->where ( $map2 )->sum ( 'digg_count' );
+		$this->assign ( 'praiseCount', $praiseCount + $praiseCommentCount );
 		
-		$this->assign('post_list',$post_list);
+		$this->assign ( 'post_list', $post_list );
 		
 		$this->display ();
 	}
 	// 通知数目
 	public function MCount() {
 		/*
-		if(!($this->mid>0)){
-			echo json_encode ( array () );
-			exit;
-		}
-		// $amap['uid'] = $this->mid;
-		$mcount = D ( 'UserCount' )->getUnreadCount ( $this->mid );
-		$this->assign ( 'mcount', $mcount );
-		*/
-		$mcount  = array();
+		 * if(!($this->mid>0)){
+		 * echo json_encode ( array () );
+		 * exit;
+		 * }
+		 * // $amap['uid'] = $this->mid;
+		 * $mcount = D ( 'UserCount' )->getUnreadCount ( $this->mid );
+		 * $this->assign ( 'mcount', $mcount );
+		 */
+		$mcount = array ();
 		echo json_encode ( $mcount );
 	}
-	//关注微吧
-	public function followWeiba(){
-		$weiba_id = intval($_GET['weiba_id']);
-		$is_follow = $_POST['is_follow'];
-		if($is_follow){
-			$res = D('weiba')->unFollowWeiba($this->mid,$weiba_id);
-		}else{
-			$res = D('weiba')->doFollowWeiba($this->mid,$weiba_id);
+	// 关注微吧
+	public function followWeiba() {
+		$weiba_id = intval ( $_GET ['weiba_id'] );
+		$is_follow = $_POST ['is_follow'];
+		if ($is_follow) {
+			$res = D ( 'weiba' )->unFollowWeiba ( $this->mid, $weiba_id );
+		} else {
+			$res = D ( 'weiba' )->doFollowWeiba ( $this->mid, $weiba_id );
 		}
-		if($res){
-			$this->success($is_follow?'取消关注成功':'关注成功');
-		}else{
-			$this->error('操作失败');
+		if ($res) {
+			$this->success ( $is_follow ? '取消关注成功' : '关注成功' );
+		} else {
+			$this->error ( '操作失败' );
 		}
 	}
 	/**
-     * 添加帖子回复的操作
-     * @return array 评论添加状态和提示信息
-     */
-    public function addReply(){
-     //   echo $_POST['post_id'];exit;
-     	//if( !$this->mid || !CheckPermission('weiba_normal','weiba_reply')){
-     	//	return;
-     	//}
-     	$is_lock = M('weiba_blacklist')->where('weiba_id='.intval($_POST['weiba_id']).' and uid='.intval($_POST['post_uid']))->find();
-     	if($is_lock){
-     		$return['status'] = 0;
-     		$return['data'] = '您是黑名单用户没有发帖权限！';
-     		exit(json_encode($return));
-     	}
-        $return = array('status'=>0,'data'=>L('PUBLIC_CONCENT_IS_ERROR'));
-        $data['weiba_id'] = intval($_POST['weiba_id']);
-        $data['post_id'] = intval($_POST['post_id']);
-        $data['post_uid'] = intval($_POST['post_uid']);
-        $data['to_reply_id'] = intval($_POST['to_reply_id']);
-        $data['to_uid'] = intval($_POST['to_uid']);
-        $data['uid'] = $this->mid;
-        $data['ctime'] = time();
-        $data['content'] = safe($_POST['content']);
-        $data['attach_id'] = intval($_POST['attach_id']);
-
-       // $filterContentStatus = filter_words($data['content']);
-        //if (!$filterContentStatus['status']) {
-       //   exit(json_encode(array('status'=>0, 'data'=>$filterContentStatus['data'])));
-       // }
-       // $data['content'] = $filterContentStatus['data'];
-
-        if(isSubmitLocked()){
-          $return['status'] = 0;
-          $return['data'] = '发布内容过于频繁，请稍后再试！';
-          exit(json_encode($return));
-        }
-		$data['comment_id'] = 0;
-        if($data['reply_id'] = D('weiba_reply')->add($data)){
-
-            // 锁定发布
-            lockSubmit();
-
-            // 更新版块今日新帖
-            D('Weiba')->setNewcount($data['weiba_id']);
-            
-            //添加积分
-          //  model('Credit')->setUserCredit(intval($_POST['post_uid']),'comment_topic');
-           // model('Credit')->setUserCredit($data['to_uid'],'commented_topic');
-
-            $map['last_reply_uid'] = $this->mid;
-            $map['last_reply_time'] = $data['ctime'];
-            $map ['reply_count'] = array (
-            		'exp',
-            		"reply_count+1"
-            );
-            $map ['reply_all_count'] = array (
-            		'exp',
-            		"reply_all_count+1"
-            );
-            D('weiba_post')->where('id='.$data['post_id'])->save($map);
-            //同步到分享评论
-            //$feed_id = intval($_POST['feed_id']);
-            $datas['app'] = 'weiba';
-            $datas['table'] = 'feed';
-            $datas['content'] = safe($data['content']);
-            $datas['app_uid'] = intval($_POST['post_uid']);
-			$datas['is_event'] = intval($_POST['is_event']);
-            $datas['row_id'] = intval($_POST['feed_id']);
-            $datas['to_comment_id'] = $data['to_reply_id']?D('weiba_reply')->where('reply_id='.$data['to_reply_id'])->getField('comment_id'):0;
-            $datas['to_uid'] = intval($_POST['to_uid']);
-            $datas['uid'] = $this->mid;
-            $datas['ctime'] = time();
-            $datas['client_type'] = 0;
-            $data['cancomment'] = 1;
-            $data['list_count'] = intval($_POST['list_count']);
-            // 解锁
-            unlockSubmit();
-			
-           // if($comment_id = model('Comment')->addComment($datas)){
-                //$data1['comment_id'] = $comment_id;
-                // $data1['storey'] = model('Comment')->where('comment_id='.$comment_id)->getField('storey');
-              //  D('weiba_reply','weiba')->where('reply_id='.$data['reply_id'])->save($data1); 
-                // 给应用UID添加一个未读的评论数
-				/*
-                if($GLOBALS['ts']['mid'] != $datas['app_uid'] && $datas['app_uid'] != '') {
-                    !$notCount && model('UserData')->updateKey('unread_comment', 1, true, $datas['app_uid']);
-                }
-				if (! empty ( $datas ['to_uid'] )) {
-					model ( 'UserData' )->updateKey ( 'unread_reply_comment', 1, true, $datas ['to_uid'] );
-				}
-				*/
-                //model('Feed')->cleanCache($datas['row_id']);
-          //  }
-            //转发到我的分享
-			/*
-            if($_POST['ifShareFeed'] == 1) {
-                $commentInfo  = model('Source')->getSourceInfo($datas['table'], $datas['row_id'], false, $datas['app']);
-                $oldInfo = isset($commentInfo['sourceInfo']) ? $commentInfo['sourceInfo'] : $commentInfo; 
-                // 根据评论的对象获取原来的内容
-                $s['sid'] = $data['post_id'];
-                $s['app_name'] = 'weiba';
-        				if (!empty ( $data ['to_comment_id'] )) {
-        					$replyInfo = model ( 'Comment' )->init ( $data ['app'], $data ['table'] )->getCommentInfo ( $data ['to_comment_id'], false );
-        					$data ['content'] .= $replyInfo ['content'];
-        				}
-        				$s ['body'] = $data ['content'];
-                $s['type']      = 'weiba_post';
-                $s['comment']   = $data['comment_old'];
-                // 去掉回复用户@
-                $lessUids = array();
-                if(!empty($data['to_uid'])) {
-                    $lessUids[] = $data['to_uid'];
-                }
-                // 如果为原创分享，不给原创用户发送@信息
-                if($oldInfo['feedtype'] == 'post' && empty($data['to_uid'])) {
-                    $lessUids[] = $oldInfo['uid'];
-                }
-                unlockSubmit();
-                model('Share')->shareFeed($s,'comment', $lessUids);
-            }
-			*/
-            $data['feed_id'] = $datas['row_id'];
-            $data['comment_id'] = $comment_id;
-            $data['storey'] = $data1['storey'];
-			
-			/*
-            $data['attach_info'] = model('Attach')->getAttachById($data['attach_id']);
-            if ($data['attach_info']['attach_type'] == 'weiba_comment_image' || $data['attach_info']['attach_type'] == 'feed_image') {
-                $data['attach_info']['attach_url'] = getImageUrl($data['attach_info']['save_path'].$data['attach_info']['save_name'], 590);
-            }
-			*/
-            $return['status'] = 1 ;
-           // $return['data'] = $this->parseReply($data);
-        }
+	 * 添加帖子回复的操作
+	 *
+	 * @return array 评论添加状态和提示信息
+	 */
+	public function addReply() {
+		// echo $_POST['post_id'];exit;
+		// if( !$this->mid || !CheckPermission('weiba_normal','weiba_reply')){
+		// return;
+		// }
+		$is_lock = M ( 'weiba_blacklist' )->where ( 'weiba_id=' . intval ( $_POST ['weiba_id'] ) . ' and uid=' . intval ( $_POST ['post_uid'] ) )->find ();
+		if ($is_lock) {
+			$return ['status'] = 0;
+			$return ['data'] = '您是黑名单用户没有发帖权限！';
+			exit ( json_encode ( $return ) );
+		}
+		$return = array (
+				'status' => 0,
+				'data' => L ( 'PUBLIC_CONCENT_IS_ERROR' ) 
+		);
+		$data ['weiba_id'] = intval ( $_POST ['weiba_id'] );
+		$data ['post_id'] = intval ( $_POST ['post_id'] );
+		$data ['post_uid'] = intval ( $_POST ['post_uid'] );
+		$data ['to_reply_id'] = intval ( $_POST ['to_reply_id'] );
+		$data ['to_uid'] = intval ( $_POST ['to_uid'] );
+		$data ['uid'] = $this->mid;
+		$data ['ctime'] = time ();
+		$data ['content'] = safe ( $_POST ['content'] );
+		$data ['attach_id'] = intval ( $_POST ['attach_id'] );
 		
-    	echo json_encode($return);exit();
-    }	
-
-    /**
-     * 删除回复(在分享评论删除中同步删除版块回复)
-     * @return bool true or false
-     */
-    public function delReply(){
-    	//if ( !CheckPermission('core_admin','comment_del') ){
-        $map['reply_id'] = intval($_POST['reply_id']);
-		D('weiba_reply')->where( $map)->delete();
-        echo 1;
-    }
+		// $filterContentStatus = filter_words($data['content']);
+		// if (!$filterContentStatus['status']) {
+		// exit(json_encode(array('status'=>0, 'data'=>$filterContentStatus['data'])));
+		// }
+		// $data['content'] = $filterContentStatus['data'];
+		
+		if (isSubmitLocked ()) {
+			$return ['status'] = 0;
+			$return ['data'] = '发布内容过于频繁，请稍后再试！';
+			exit ( json_encode ( $return ) );
+		}
+		$data ['comment_id'] = 0;
+		if ($data ['reply_id'] = D ( 'weiba_reply' )->add ( $data )) {
+			
+			// 锁定发布
+			lockSubmit ();
+			
+			// 更新版块今日新帖
+			D ( 'Weiba' )->setNewcount ( $data ['weiba_id'] );
+			
+			// 添加积分
+			// model('Credit')->setUserCredit(intval($_POST['post_uid']),'comment_topic');
+			// model('Credit')->setUserCredit($data['to_uid'],'commented_topic');
+			
+			$map ['last_reply_uid'] = $this->mid;
+			$map ['last_reply_time'] = $data ['ctime'];
+			$map ['reply_count'] = array (
+					'exp',
+					"reply_count+1" 
+			);
+			$map ['reply_all_count'] = array (
+					'exp',
+					"reply_all_count+1" 
+			);
+			D ( 'weiba_post' )->where ( 'id=' . $data ['post_id'] )->save ( $map );
+			// 同步到分享评论
+			// $feed_id = intval($_POST['feed_id']);
+			$datas ['app'] = 'weiba';
+			$datas ['table'] = 'feed';
+			$datas ['content'] = safe ( $data ['content'] );
+			$datas ['app_uid'] = intval ( $_POST ['post_uid'] );
+			$datas ['is_event'] = intval ( $_POST ['is_event'] );
+			$datas ['row_id'] = intval ( $_POST ['feed_id'] );
+			$datas ['to_comment_id'] = $data ['to_reply_id'] ? D ( 'weiba_reply' )->where ( 'reply_id=' . $data ['to_reply_id'] )->getField ( 'comment_id' ) : 0;
+			$datas ['to_uid'] = intval ( $_POST ['to_uid'] );
+			$datas ['uid'] = $this->mid;
+			$datas ['ctime'] = time ();
+			$datas ['client_type'] = 0;
+			$data ['cancomment'] = 1;
+			$data ['list_count'] = intval ( $_POST ['list_count'] );
+			// 解锁
+			unlockSubmit ();
+			
+			// if($comment_id = model('Comment')->addComment($datas)){
+			// $data1['comment_id'] = $comment_id;
+			// $data1['storey'] = model('Comment')->where('comment_id='.$comment_id)->getField('storey');
+			// D('weiba_reply','weiba')->where('reply_id='.$data['reply_id'])->save($data1);
+			// 给应用UID添加一个未读的评论数
+			/*
+			 * if($GLOBALS['ts']['mid'] != $datas['app_uid'] && $datas['app_uid'] != '') {
+			 * !$notCount && model('UserData')->updateKey('unread_comment', 1, true, $datas['app_uid']);
+			 * }
+			 * if (! empty ( $datas ['to_uid'] )) {
+			 * model ( 'UserData' )->updateKey ( 'unread_reply_comment', 1, true, $datas ['to_uid'] );
+			 * }
+			 */
+			// model('Feed')->cleanCache($datas['row_id']);
+			// }
+			// 转发到我的分享
+			/*
+			 * if($_POST['ifShareFeed'] == 1) {
+			 * $commentInfo = model('Source')->getSourceInfo($datas['table'], $datas['row_id'], false, $datas['app']);
+			 * $oldInfo = isset($commentInfo['sourceInfo']) ? $commentInfo['sourceInfo'] : $commentInfo;
+			 * // 根据评论的对象获取原来的内容
+			 * $s['sid'] = $data['post_id'];
+			 * $s['app_name'] = 'weiba';
+			 * if (!empty ( $data ['to_comment_id'] )) {
+			 * $replyInfo = model ( 'Comment' )->init ( $data ['app'], $data ['table'] )->getCommentInfo ( $data ['to_comment_id'], false );
+			 * $data ['content'] .= $replyInfo ['content'];
+			 * }
+			 * $s ['body'] = $data ['content'];
+			 * $s['type'] = 'weiba_post';
+			 * $s['comment'] = $data['comment_old'];
+			 * // 去掉回复用户@
+			 * $lessUids = array();
+			 * if(!empty($data['to_uid'])) {
+			 * $lessUids[] = $data['to_uid'];
+			 * }
+			 * // 如果为原创分享，不给原创用户发送@信息
+			 * if($oldInfo['feedtype'] == 'post' && empty($data['to_uid'])) {
+			 * $lessUids[] = $oldInfo['uid'];
+			 * }
+			 * unlockSubmit();
+			 * model('Share')->shareFeed($s,'comment', $lessUids);
+			 * }
+			 */
+			$data ['feed_id'] = $datas ['row_id'];
+			$data ['comment_id'] = $comment_id;
+			$data ['storey'] = $data1 ['storey'];
+			
+			/*
+			 * $data['attach_info'] = model('Attach')->getAttachById($data['attach_id']);
+			 * if ($data['attach_info']['attach_type'] == 'weiba_comment_image' || $data['attach_info']['attach_type'] == 'feed_image') {
+			 * $data['attach_info']['attach_url'] = getImageUrl($data['attach_info']['save_path'].$data['attach_info']['save_name'], 590);
+			 * }
+			 */
+			$return ['status'] = 1;
+			// $return['data'] = $this->parseReply($data);
+		}
+		
+		echo json_encode ( $return );
+		exit ();
+	}
 	
+	/**
+	 * 删除回复(在分享评论删除中同步删除版块回复)
+	 *
+	 * @return bool true or false
+	 */
+	public function delReply() {
+		// if ( !CheckPermission('core_admin','comment_del') ){
+		$map ['reply_id'] = intval ( $_POST ['reply_id'] );
+		D ( 'weiba_reply' )->where ( $map )->delete ();
+		echo 1;
+	}
 }

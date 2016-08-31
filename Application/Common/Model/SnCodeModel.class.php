@@ -191,6 +191,9 @@ class SnCodeModel extends Model {
 		return $res;
 	}
 	function getSnCount($type = '') {
+	    if (!is_install("ShopCoupon")){
+	        return 0;
+	    }
 		$count = 0;
 		$mid = get_mid ();
 		$list = $this->getMyAll ( $mid, 'ShopCoupon' );

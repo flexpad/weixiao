@@ -20,9 +20,35 @@
     <div class="mainWeiba">
       
       <div class="weiba_forumlist">
-      	 <php>if(empty($weibacate)):</php>
+      	 <php>if(empty($weibacate) && empty($weibalist)):</php>
          	<div class="empty_list">暂时没有版块!</div>
          <php>endif;</php>
+         <php>if(!empty($weibalist)) { </php>
+           <div class="section">
+                <div class="slc clearfix">
+                  <div class="bklist">
+                    <volist name="weibalist" id="vo">
+                    	<a class="bk" href="{:addons_url('Weiba://Wap/detail',array('weiba_id'=>$vo['id']))}">
+                        <dl>
+                          <dt>
+                            <span>
+                              <img class="w-h-img" width="100%" height="auto" src="{$vo.logo|get_cover_url}">
+                            <span>
+                          </dt>
+                          <dd>
+                            <h3>
+                              <span title="{$vo.weiba_name}" >   {$vo.weiba_name}
+                              </span>
+                            </h3>
+                            <p class="intro">{$vo.intro}</p>
+                          </dd>
+                        </dl>
+                        </a>
+                    </volist>
+                  </div>
+                </div>
+              </div>
+         <php> } </php>              
          <volist name="weibacate" id="cate">
          <php>if(empty($cate['weibalist'])):continue;endif;</php>
               <div class="section">
