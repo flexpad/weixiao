@@ -77,9 +77,11 @@ function check_dirfile(){
                     $val[2] = 'error';
                     session('error', true);
                 } else {
-                    $val[1] = '不存在';
-                    $val[2] = 'error';
-                    session('error', true);
+                    if(!mkdir($item, 0777, true)){
+                        $val[1] = '不存在';
+                        $val[2] = 'error';
+                        session('error', true);
+                    }
                 }
             }
         } else {
@@ -90,7 +92,7 @@ function check_dirfile(){
                     session('error', true);
                 }
             } else {
-                if(!is_writable(dirname($item))) {
+                if(!touch(dirname($item))) {
                     $val[1] = '不存在';
                     $val[2] = 'error';
                     session('error', true);
