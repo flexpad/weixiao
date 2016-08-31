@@ -164,7 +164,7 @@ class CustomController extends BaseController {
 		);
 		$map ['token'] = get_token ();
 		
-		$list = M ( 'shop_coupon' )->where ( $map )->field ( 'id,title' )->order ( 'id desc' )->select ();
+		$list = M ( 'coupon' )->where ( $map )->field ( 'id,title' )->order ( 'id desc' )->select ();
 		$this->assign ( 'shop_conpon_list', $list );
 	}
 	function _card_level() {
