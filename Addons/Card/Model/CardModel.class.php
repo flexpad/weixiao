@@ -43,6 +43,12 @@ class CardModel extends Model {
 	        $dataMap ['openid'] = $openid;
 	        $uid = M ( 'public_follow' )->where ( $dataMap )->getField ( 'uid' );
 	    }
+	    if ($uid <= 0){
+	        $uid =get_uid_by_openid(true,$openid);
+	    }
+	    if ($uid <= 0){
+	        return  0;
+	    }
 	    //判断是否已用会员卡号
 	    $map['token']=$token;
 	    $map['uid']=$uid;
@@ -118,7 +124,9 @@ class CardModel extends Model {
 	            $credit ['score'] = intval ( $event_info ['score'] );
 	            add_credit ( 'card_reward', 0, $credit );
 	        } else { // 送代金券
-	            D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $event_info ['coupon_id'], $uid );
+	            if (is_install("ShopCoupon")) {
+                    D('Addons://ShopCoupon/Coupon')->sendCoupon($event_info['coupon_id'], $uid);
+                }
 	        }
 	    }
 	     
