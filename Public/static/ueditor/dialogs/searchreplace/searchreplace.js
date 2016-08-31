@@ -53,10 +53,7 @@ function switchTab( tabParentId ) {
         }
     }
 }
-$G('searchtab').onmousedown = function(){
-    $G('search-msg').innerHTML = '';
-    $G('replace-msg').innerHTML = ''
-}
+
 //是否区分大小写
 function getMatchCase(id) {
     return $G(id).checked ? true : false;
@@ -73,11 +70,7 @@ $G("nextFindBtn").onclick = function (txt, dir, mcase) {
         casesensitive:getMatchCase("matchCase")
     };
     if (!frCommond(obj)) {
-        var bk = editor.selection.getRange().createBookmark();
-        $G('search-msg').innerHTML = lang.getEnd;
-        editor.selection.getRange().moveToBookmark(bk).select();
-
-
+        alert(lang.getEnd);
     }
 };
 $G("nextReplaceBtn").onclick = function (txt, dir, mcase) {
@@ -103,7 +96,7 @@ $G("preFindBtn").onclick = function (txt, dir, mcase) {
         casesensitive:getMatchCase("matchCase")
     };
     if (!frCommond(obj)) {
-        $G('search-msg').innerHTML = lang.getStart;
+        alert(lang.getStart);
     }
 };
 $G("preReplaceBtn").onclick = function (txt, dir, mcase) {
@@ -154,7 +147,7 @@ $G("repalceAllBtn").onclick = function () {
     };
     var num = frCommond(obj);
     if (num) {
-        $G('replace-msg').innerHTML = lang.countMsg.replace("{#count}", num);
+        alert(lang.countMsg.replace("{#count}", num));
     }
 };
 //执行

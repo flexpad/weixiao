@@ -1,13 +1,7 @@
-body{
-    overflow: hidden;
-    width: 540px;
-}
 .wrapper {
     margin: 10px auto 0;
     font-size: 12px;
     overflow: hidden;
-    width: 520px;
-    height: 315px;
 }
 
 .clear {
@@ -21,13 +15,13 @@ body{
 
 .wrapper .right {
     float: right;
+    margin-right: 10px;
     border-left: 2px dotted #EDEDED;
     padding-left: 15px;
 }
 
 .section {
-    margin-bottom: 15px;
-    width: 240px;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
@@ -42,13 +36,10 @@ body{
 .section ul {
     list-style: none;
     overflow: hidden;
-    clear: both;
-
 }
 
 .section li {
     float: left;
-    width: 120px;;
 }
 
 .section .tone {
