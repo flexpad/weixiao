@@ -52,9 +52,13 @@ class AuthGroupController extends HomeController {
 		foreach ($list_data['list_data'] as $dd){
 			$groupidArr[$dd['id']]=$dd['id'];
 		}
-		$gmap['group_id']=array('in',$groupidArr);
-		//获取关注用户的分组数量
-		$uidsArr = M ( 'auth_group_access' )->where ( $gmap )->select();
+		
+		if (!empty($groupidArr)){
+		    $gmap['group_id']=array('in',$groupidArr);
+		    //获取关注用户的分组数量
+		    $uidsArr = M ( 'auth_group_access' )->where ( $gmap )->select();
+		}
+		
 		foreach ($uidsArr as $uu){
 		    if ($uu['uid'] >0){
 		    	$group_uid[$uu['group_id']][]=$uu['uid'];
@@ -131,6 +135,17 @@ class AuthGroupController extends HomeController {
 		}
 	}
     function checkTitle($title,$id=0){
+        $tLen = strlen($title);
+        if ($tLen > 30) {
+            $this->error('分组名称不能超过30个字符，或10个汉字！');
+        }
+        $zStr = preg_replace('/[^\x{4e00}-\x{9fa5}]/u', '', $title);
+        $zLen=strlen($zStr);
+        $zStr = preg_replace('/[^A-Za-z0-9]/u', '', $title);
+        $yLen=strlen($zStr);
+        if ($zLen + $yLen != $tLen){
+            $this->error('分组名称不能有特殊字符！');
+        }
         $map['title']=$title;
         $map['manager_id']=$this->mid;
         $map['token']=get_token();
@@ -248,17 +263,21 @@ class AuthGroupController extends HomeController {
 		$map ['type'] = 1;
 		$group_list = M ( 'auth_group' )->where ( $map )->field ( 'id,title,wechat_group_id,wechat_group_name,wechat_group_count' )->select ();
 		foreach ( $group_list as $g ) {
-			$groups [$g ['wechat_group_id']] = $g;
+			if ($g['wechat_group_id']==-1){
+			    $ournew[]=$g;
+			}else{
+			    $groups [$g ['wechat_group_id']] = $g;
+			}
 		}
 		$url = 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token=' . get_access_token ();
 		$data = wp_file_get_contents ( $url );
 		$data = json_decode ( $data, true );
-		if (!isset($data['errcode'])){
+		if (!isset($data['errcode']) && $data){
 		    foreach ( $data ['groups'] as $d ) {
 		        $save ['wechat_group_id'] = $map ['wechat_group_id'] = $d ['id'];
 		        $save ['wechat_group_name'] = $d ['name'];
 		        $save ['wechat_group_count'] = $d ['count'];
-
+		        	
 		        if (isset ( $groups [$d ['id']] )) {
 		            // 更新本地数据
 		            $old = $groups [$d ['id']];
@@ -284,13 +303,33 @@ class AuthGroupController extends HomeController {
 		            M ( 'auth_group' )->add ( $save );
 		        }
 		    }
-		    foreach ( $groups as $v ) {
+		    foreach ($ournew as $v){
 		        $map2 ['id'] = $map3 ['group_id'] = $v ['id'];
+		        // 增加微信端的数据
+		        $url = 'https://api.weixin.qq.com/cgi-bin/groups/create?access_token=' . get_access_token ();
+		        if(strlen($v['title'])>30){
+		            $v['title']=substr($v ['title'], 0, 30);
+		            $save['title']=$v['title'];
+		        }
+		        $param ['group'] ['name'] = $v ['title'];
+		        // 		            $param = JSON ( $param );
+		        $res = post_data ( $url, $param );
+		        if (! empty ( $res ['group'] ['id'] )) {
+		            $info ['wechat_group_id'] = $save ['wechat_group_id'] = $res ['group'] ['id'];
+		            $save ['wechat_group_name'] = $res ['group'] ['name'];
+		            M ( 'auth_group' )->where ( $map2 )->save ( $save );
+		        }
+		    }
+		    foreach ( $groups as $v ) {
+		         $map2 ['id'] =  $map3 ['group_id'] = $v ['id'];
 		        $wechat_group_id = intval ( $v ['wechat_group_id'] );
 		        if ($wechat_group_id == -1) {
-		            // 增加微信端的数据
+// 		            // 增加微信端的数据
 		            $url = 'https://api.weixin.qq.com/cgi-bin/groups/create?access_token=' . get_access_token ();
-
+    		         if(strlen($v['title'])>30){
+    		            $v['title']=substr($v ['title'], 0, 30);
+    		            $save['title']=$v['title'];
+    		        }
 		            $param ['group'] ['name'] = $v ['title'];
 // 		            $param = JSON ( $param );
 		            $res = post_data ( $url, $param );
