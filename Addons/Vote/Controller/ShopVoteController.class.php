@@ -277,8 +277,26 @@ class ShopVoteController extends AddonsController {
 	            $map['uid']=0;
 	        }
 	    }
-
-
+	    $searchTitle=I('title');
+	    if ($searchTitle){
+	        $omap ['truename'] = array (
+	            'like',
+	            '%' . htmlspecialchars ($searchTitle) . '%'
+	        );
+	        $omap['vote_id']=$vote_id;
+	        $omap['token']=get_token();
+	        $opids=M('shop_vote_option')->where($omap)->getFields('id');
+            if (! empty($opids)) {
+                $map['option_id'] = array(
+                    'in',
+                    $opids
+                );
+            }else{
+                $map['option_id']=0;
+            }
+	    }
+	    
+	    
 	    session ( 'common_condition', $map );
 // 	    $shopVote=D('Addons://Vote/ShopVote')->getInfo($vote_id);
 
@@ -291,6 +309,7 @@ class ShopVoteController extends AddonsController {
 	        $shopOption=D('Addons://Vote/ShopVoteOption')->getInfo($vo['option_id']);
 	        $vo['option_id']=$shopOption['truename'];
 	    }
+	    $this->assign('placeholder','请输入投票选项');
 	    $this->assign ( $list_data );
 	    $this->display ('lists'  );
 	}
