@@ -1,11 +1,13 @@
 <?php
-
+ini_set ( 'display_errors', false );
+error_reporting ( E_ERROR );
+$config = require_once '../../../../Application/Common/Conf/config.php';
 /*
  * @description   文件上传方法
  * @author widuu  http://www.widuu.com
  * @mktime 08/01/2014
  */
-
+ 
 global $QINIU_ACCESS_KEY;
 global $QINIU_SECRET_KEY;
 
@@ -14,17 +16,17 @@ $QINIU_RS_HOST	= 'http://rs.qbox.me';
 $QINIU_RSF_HOST	= 'http://rsf.qbox.me';
 
 //配置$QINIU_ACCESS_KEY和$QINIU_SECRET_KEY 为你自己的key
-$QINIU_ACCESS_KEY	= '';
-$QINIU_SECRET_KEY	= '';
+$QINIU_ACCESS_KEY	= $config['UPLOAD_QINIU_CONFIG']['accessKey'];
+$QINIU_SECRET_KEY	= $config['UPLOAD_QINIU_CONFIG']['secrectKey'];
 
 //配置bucket为你的bucket
-$BUCKET = "";
+$BUCKET = $config['UPLOAD_QINIU_CONFIG']['bucket'];
 
 //配置你的域名访问地址
-$HOST  = "";
+$HOST  = $config['UPLOAD_QINIU_CONFIG']['domain'];
 
 //上传超时时间
-$TIMEOUT = "3600";
+$TIMEOUT = $config['UPLOAD_QINIU_CONFIG']['timeout'];
 
 //保存规则
 $SAVETYPE = "date";
