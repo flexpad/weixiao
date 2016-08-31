@@ -8,11 +8,11 @@
                       可用积分
                 </span>
                 <empty name='has_log'>
-                 <a class="signintop_mid" onClick="doSign()">
+                 <a class="signintop_mid" onClick="doSign(0)">
                          签到
                 </a>
                 <else/>
-                 <a class="signintop_mid" >
+                  <a class="signintop_mid" onClick="doSign(1)">
                          已签到
                 </a>
                 </empty>
@@ -79,11 +79,21 @@
  </div>
 <script type="text/javascript" src="__STATIC__/jquery.calendar-widget.js"></script>
 <script type="text/javascript">
-function doSign(){
+var thelog = 0;
+function doSign(log){
+	
+	if(log==1 || thelog ==1){
+		var msg="{$has_msg}";
+		if(msg != ""){
+			$.Dialog.confirm('提示',msg);
+		}
+		return false;
+	}
 	$.Dialog.loading('正在签到...');
 	var url="{:addons_url('Card://Wap/do_signin')}";
 	$.post(url,function(data){
 		if(data.status==1){
+			thelog = 1;
 			$.Dialog.confirm('提示',data.msg);
 			setTimeout(function(){
 				window.location.reload();
