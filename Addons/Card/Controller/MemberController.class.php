@@ -123,10 +123,10 @@ class MemberController extends BaseController {
 				$recharge = I ( 'recharge' );
 				$map1 ['id'] = $member_id = $_POST ['member_id'];
 				M ( 'card_member' )->where ( $map1 )->setInc ( 'recharge', $recharge );
-				
-				// 充值赠送活动
-				$this->_send_reward ( I ( 'event_id' ), $member_id, 'card_recharge_condition', 'recharge_reward' );
-				
+				if (is_install("ShopReward")) {
+                    // 充值赠送活动
+                    $this->_send_reward(I('event_id'), $member_id, 'card_recharge_condition', 'recharge_reward');
+                }
 				$this->success ( '保存' . $model ['title'] . '成功！', U ( 'lists?model=' . $this->model ['name'],$this->get_param ) );
 			} else {
 				$this->error ( $Model->getError () );
@@ -189,9 +189,13 @@ class MemberController extends BaseController {
 				$data ['event_id'] = $event_info ['id'];
 				$data ['event_title'] = $event_info ['title'];
 			} elseif ($type == 1) { // 获取消费赠送活动信息
-				$event_info = M ( 'shop_reward' )->where ( $map )->order ( 'id desc' )->find ();
-				$data ['event_id'] = $event_info ['id'];
-				$data ['event_title'] = $event_info ['title'];
+			    if (is_install("ShopReward")) {
+                    $event_info = M('shop_reward')->where($map)
+                        ->order('id desc')
+                        ->find();
+                    $data['event_id'] = $event_info['id'];
+                    $data['event_title'] = $event_info['title'];
+                }
 			}
 		}
 		echo json_encode ( $data );
@@ -236,10 +240,10 @@ class MemberController extends BaseController {
 				if ($_POST ['sn_id']) {
 					D ( 'Common/SnCode' )->set_use ( $_POST ['sn_id'] );
 				}
-				
-				// 消费赠送活动
-				$this->_send_reward ( I ( 'event_id' ), $member_id, 'shop_reward_condition', 'shop_reward' );
-				
+                if (is_install("ShopReward")) {
+                    // 消费赠送活动
+                    $this->_send_reward(I('event_id'), $member_id, 'shop_reward_condition', 'shop_reward');
+                }
 				$this->success ( '保存' . $model ['title'] . '成功！', U ( 'lists?model=' . $this->model ['name'],$this->get_param ) );
 			} else {
 				$this->error ( $Model->getError () );
@@ -247,45 +251,45 @@ class MemberController extends BaseController {
 		} else {
 			$map ['manager_id'] = $this->mid;
 			$map2 ['token'] = $map ['token'] = get_token ();
-			$branch = M ( 'coupon_shop' )->where ( $map )->getFields ( 'id,name' );
 			$data ['member_id'] = I ( 'id' );
 			if (empty ( $data ['member_id'] )) {
 				$map2 ['token'] = get_token ();
 				$allNumber = M ( 'card_member' )->where ( $map2 )->getFields ( 'id,number' );
 				$this->assign ( 'all_number', $allNumber );
 			}
-			
 			$cardMember = M ( 'card_member' )->find ( $data ['member_id'] );
-			$map2 ['uid'] = $cardMember ['uid'];
-			$map2 ['addon'] = 'ShopCoupon';
-			$map2 ['can_use'] = 1;
-			
-			$snCode = M ( 'sn_code' )->where ( $map2 )->getFields ( 'id,sn,target_id,prize_title' );
-			if ($snCode) {
-				foreach ( $snCode as $s ) {
-					$conponArr [$s ['target_id']] = $s ['target_id'];
-				}
-				$map3 ['id'] = array (
-						'in',
-						$conponArr 
-				);
-				$conpons = M ( 'shop_coupon' )->where ( $map3 )->getFields ( 'id,title,member' );
-				foreach ( $snCode as $v ) {
-				    if ($conpons[$v['target_id']]){
-				        $memberArr=explode(',', $conpons[$v['target_id']]['member']);
-				        if (in_array(0, $memberArr) || in_array(-1, $memberArr) || in_array($cardMember['level'], $memberArr)){
-				            $codeArr ['coupon_title'] = $conpons [$v ['target_id']];
-				            $couponData[$v['target_id']]=$conpons[$v['target_id']]['title'];
-				        }
-				    }
-					
-				}
-				
-				$this->assign ( 'coupon', $couponData );
+			if(is_install('ShopCoupon')){
+			    $branch = M ( 'coupon_shop' )->where ( $map )->getFields ( 'id,name' );
+			    $map2 ['uid'] = $cardMember ['uid'];
+			    $map2 ['addon'] = 'ShopCoupon';
+			    $map2 ['can_use'] = 1;
+			    $snCode = M ( 'sn_code' )->where ( $map2 )->getFields ( 'id,sn,target_id,prize_title' );
+			    if ($snCode) {
+			        foreach ( $snCode as $s ) {
+			            $conponArr [$s ['target_id']] = $s ['target_id'];
+			        }
+			        $map3 ['id'] = array (
+			            'in',
+			            $conponArr
+			        );
+			        $conpons = M ( 'shop_coupon' )->where ( $map3 )->getFields ( 'id,title,member' );
+			        foreach ( $snCode as $v ) {
+			            if ($conpons[$v['target_id']]){
+			                $memberArr=explode(',', $conpons[$v['target_id']]['member']);
+			                if (in_array(0, $memberArr) || in_array(-1, $memberArr) || in_array($cardMember['level'], $memberArr)){
+			                    $codeArr ['coupon_title'] = $conpons [$v ['target_id']];
+			                    $couponData[$v['target_id']]=$conpons[$v['target_id']]['title'];
+			                }
+			            }
+			            	
+			        }
+			    
+			        $this->assign ( 'coupon', $couponData );
+			    }
+			    $this->assign ( 'shop', $branch );
 			}
 			
 			$this->assign ( 'data', $data );
-			$this->assign ( 'shop', $branch );
 		}
 		
 		$this->display ();
@@ -540,6 +544,9 @@ class MemberController extends BaseController {
 	
 	// 活动赠送
 	function _send_reward($event_id, $member_id, $table, $credit_type) {
+	    if (!is_install("ShopReward")) {
+	        return false;
+	    }
 		if (empty ( $event_id )) {
 			return false;
 		}
@@ -561,7 +568,7 @@ class MemberController extends BaseController {
 			$credit ['score'] = intval ( $reward ['score_param'] );
 			add_credit ( $credit_type, 0, $credit );
 		}
-		if ($reward ['shop_coupon']) { // 送优惠券
+		if ($reward ['shop_coupon'] && is_install("ShopCoupon")) { // 送优惠券
 			D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $reward ['shop_coupon_param'], $this->mid );
 		}
 	}
