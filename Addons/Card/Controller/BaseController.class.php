@@ -20,11 +20,14 @@ class BaseController extends AddonsController {
 		$res ['class'] = $controller == 'member' ? 'current' : '';
 		$nav [] = $res;
 		
-		$res ['title'] = '实体店会员管理';
-		$res ['url'] = addons_url ( 'Card://ShopMember/lists' ,array('mdm'=>I('mdm')));
-		$res ['class'] = $controller == 'shopmember' ? 'current' : '';
-		$nav [] = $res;
-		
+		if (is_install("Shop")) {
+            $res['title'] = '实体店会员管理';
+            $res['url'] = addons_url('Card://ShopMember/lists', array(
+                'mdm' => I('mdm')
+            ));
+            $res['class'] = $controller == 'shopmember' ? 'current' : '';
+            $nav[] = $res;
+        }
 		$res ['title'] = '会员交易';
 		$res ['url'] = addons_url ( 'Card://MemberTransition/lists' ,array('mdm'=>I('mdm')));
 		$res ['class'] = $controller == 'membertransition' ? 'current' : '';
@@ -43,20 +46,21 @@ class BaseController extends AddonsController {
 		$nav [] = $res;
 		
 		$this->assign ( 'nav', $nav );
-		if ($controller == wap){
+		if ($controller == 'wap'){
 			$uid=$this->mid;
+			$token = get_token();
 			//获取通知数
-			$key='cardnotic_'.get_token().'_'.$uid;
+			$key='cardnotic_'.$token.'_'.$uid;
 			$rrs=S($key);
 			if($rrs === false){
 				$beforetime=7 * 24 * 60 * 60;
 				$thetime=strtotime(time_format(time(),'Y-m-d'))-$beforetime;
-				$cmap ['token'] = get_token ();
+				$cmap ['token'] = $token;
 				$cmap ['uid']= $uid;
 				$cardMember=M('card_member')->where($cmap)->find();
 				if (!empty($cardMember['level'])){
 					$map['cTime']=array('egt',$thetime);
-					$map['token']=get_token();
+					$map['token']=$token;
 						
 					$notices =M('card_notice')->where($map)->select();
 					foreach ($notices as $v){
