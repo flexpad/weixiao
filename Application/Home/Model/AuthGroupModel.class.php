@@ -39,7 +39,7 @@ class AuthGroupModel extends Model {
 		
 		$group = $this->find ( $group_id );
 		// 同步到微信端
-		if (C ( 'USER_GROUP' ) && ! empty ( $group ['wechat_group_id'] )) {
+		if (C ( 'USER_GROUP' ) && ! is_null ( $group ['wechat_group_id'] ) && $group ['wechat_group_id'] != -1) {
 			
 			$url = 'https://api.weixin.qq.com/cgi-bin/groups/members/update?access_token=' . get_access_token ();
 			
@@ -53,6 +53,7 @@ class AuthGroupModel extends Model {
 				$param ['to_groupid'] = $group ['wechat_group_id'];
 				$param = JSON ( $param );
 				$res = post_data ( $url, $param );
+				unset($param);
 			}
 		}
 		
