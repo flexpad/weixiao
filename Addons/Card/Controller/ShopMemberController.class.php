@@ -7,6 +7,10 @@ use Addons\Card\Controller\BaseController;
 class ShopMemberController extends BaseController {
 	var $model;
 	function _initialize() {
+	    if (!is_install("Shop")){
+	        $this->error('找不到页面');
+	        exit();
+	    }
 		$this->model = $this->getModel ( 'shop_card_member' );
 		parent::_initialize ();
 	}
