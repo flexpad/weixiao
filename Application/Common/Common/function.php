@@ -3695,7 +3695,7 @@ function get_prize_detail($prizeValue) {
 			$title = $pdata ['title'];
 			$imgurl = $pdata ['background'];
 			$total_count = $pdata ['num'];
-		} elseif ($keyArr [0] == 'shopCoupon') {
+		} elseif ($keyArr [0] == 'shopCoupon' && is_install("ShopCoupon")) {
 			$pdata = D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $keyArr [1] );
 			$typeName = '代金卷';
 			$title = $pdata ['title'];
@@ -3752,6 +3752,6 @@ function getThumbImage($filename, $width = 100, $height = 'auto', $cut = false, 
 }
 // 判断微信插件是否已经安装
 function is_install($addon_name) {
-	$list = D ( 'home/Addons' )->getList ();
+	$list = D ( 'Home/Addons' )->getList ();
 	return isset ( $list [$addon_name] );
 }
