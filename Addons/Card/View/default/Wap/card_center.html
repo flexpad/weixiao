@@ -49,8 +49,10 @@
             <div class="h_item_line"></div>
             <a class="h_item" href="{:addons_url('Coupon://Wap/lists')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/ticket.png"/> 领取优惠券<em></em></a>
             <div class="h_item_line"></div>
+            <if condition='is_install("ShopCoupon")'>
             <a class="h_item" href="{:addons_url('ShopCoupon://Wap/lists')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/money_ticket.png"/> 领取代金券<em></em></a>
             <div class="h_item_line"></div>
+            </if>
             <a class="h_item" href="{:U('score_exchange')}"><img style="vertical-align: -7px;" width="20" src="{:ADDON_PUBLIC_PATH}/gift.png"/>&nbsp;&nbsp;积分兑换<em></em></a>
             <div class="h_item_line"></div>
             <a class="h_item" href="{:addons_url('Card://Wap/score_rule')}" ><img style="vertical-align: -5px;" width="22" src="{:ADDON_PUBLIC_PATH}/score_method_gray.png"/>&nbsp;&nbsp;积分规则<em></em></a>
@@ -111,6 +113,7 @@
                     </select>
                  </div>
            </div>
+           <if condition='is_install("ShopCoupon")'>
            <div class="form-item cf">
                 <div class="controls">
                   <select  maxlength="30" name="coupon_id">
@@ -123,6 +126,7 @@
                   </select>
                  </div>
            </div>
+           </if>
            <div class="form-item cf">
                 <div class="controls">
                   <select maxlength="30" name="pay_type">

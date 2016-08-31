@@ -30,38 +30,39 @@ class WapController extends BaseController {
 			$model=$this->getModel('buy_log');
 	     	$map['manager_id']= session ( 'manager_id');
 			$map2['token']=$map['token']=get_token();
-			$branch=M('coupon_shop')->where($map)->getFields('id,name');
+			
 			$data['member_id']= $this->mid;
 			if (empty($data['member_id'])){
 				$map2['token']=get_token();
 				$allNumber=M('card_member')->where($map2)->getFields('id,number');
 				$this->assign('all_number',$allNumber);
 			}
-			$cardMember=M('card_member')->find($data['member_id']);
-			$map2['uid']=$this->mid;
-			$map2['addon']='ShopCoupon';
-			$map2['can_use']=1;
-			
-			$snCode=M('sn_code')->where($map2)->getFields('id,sn,target_id,prize_title');
-			if ($snCode){
-				foreach ($snCode as $s){
-					$conponArr[$s['target_id']]=$s['target_id'];
-				}
-				$map3['id']=array('in',$conponArr);
-				$conpons=M('shop_coupon')->where($map3)->getFields('id,title,member');
-				foreach ($snCode as &$v){
-
-				    $memberArr=explode(',', $conpons[$v['target_id']]['member']);
-				    if (in_array(0, $memberArr)|| in_array(-1, $memberArr) || in_array($cardMember['lev'], $memberArr)){
-				        $v['target_name']=$conpons[$v['target_id']]['title'];
-				        $codeArr['coupon_title']=$conpons[$v['target_id']]['title'];
-				        $couponData[$v['id']]=$v;
-				    }
-				}
-				$this->assign('coupon',$couponData);
+			if (is_install('ShopCoupon')){
+			    $branch=M('coupon_shop')->where($map)->getFields('id,name');
+			    $cardMember=M('card_member')->find($data['member_id']);
+			    $map2['uid']=$this->mid;
+			    $map2['addon']='ShopCoupon';
+			    $map2['can_use']=1;
+			    $snCode=M('sn_code')->where($map2)->getFields('id,sn,target_id,prize_title');
+			    if ($snCode){
+			        foreach ($snCode as $s){
+			            $conponArr[$s['target_id']]=$s['target_id'];
+			        }
+			        $map3['id']=array('in',$conponArr);
+			        $conpons=M('shop_coupon')->where($map3)->getFields('id,title,member');
+			        foreach ($snCode as &$v){
+			    
+			            $memberArr=explode(',', $conpons[$v['target_id']]['member']);
+			            if (in_array(0, $memberArr)|| in_array(-1, $memberArr) || in_array($cardMember['lev'], $memberArr)){
+			                $v['target_name']=$conpons[$v['target_id']]['title'];
+			                $codeArr['coupon_title']=$conpons[$v['target_id']]['title'];
+			                $couponData[$v['id']]=$v;
+			            }
+			        }
+			        $this->assign('coupon',$couponData);
+			    }
+			    $this->assign('shops',$branch);
 			}
-		    
-			$this->assign('shops',$branch);
 		}
 		else if($info['number'] && !$info['phone'] && $info['status']==2){
 		    //status: 2 体验卡， 1：正常， 0：冻结
@@ -109,7 +110,9 @@ class WapController extends BaseController {
 				if ($_POST['sn_id']){
 					D ( 'Common/SnCode' )->set_use ( $_POST['coupon_id'] );
 				}
-				$this->_send_reward (  $_POST['member_id'], 'shop_reward_condition', 'shop_reward' ,$_POST['pay']);
+				if (is_install("ShopReward")) {
+                    $this->_send_reward($_POST['member_id'], 'shop_reward_condition', 'shop_reward', $_POST['pay']);
+                }
 				$this->success ( '消费成功' );
 				redirect (U('index',$this->get_param));
 			} else {
@@ -118,6 +121,9 @@ class WapController extends BaseController {
 	}
 	// 活动赠送
 	function _send_reward( $member_id, $table, $credit_type,$recharge) {
+	    if (!is_install("ShopReward")) {
+	        return false;
+	    }
 	    $map ['start_time'] = array (
 	        'lt',
 	        NOW_TIME
@@ -151,7 +157,7 @@ class WapController extends BaseController {
 	        $credit ['score'] = intval ( $reward ['score_param'] );
 	        add_credit ( $credit_type, 0, $credit );
 	    }
-	    if ($reward ['shop_coupon']) { // 送优惠券
+	    if ($reward ['shop_coupon'] && is_install("ShopCoupon")) { // 送优惠券
 	        D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $reward ['shop_coupon_param'], $this->mid );
 	    }
 	}
@@ -160,6 +166,7 @@ class WapController extends BaseController {
 		$map['start_time'] = array('elt',time()); 
 		$map['end_time'] = array('egt',time());
 		$map['token'] = get_token();
+		$map['is_show']=1;
 		$info = M('card_reward')->where($map)->find();
 		$this -> assign('info',$info);
 		$map1['uid']=$this->mid;
@@ -175,6 +182,11 @@ class WapController extends BaseController {
 //                $this->assign('is_error','ERP同步保存错误！');
 // 		    }
 		    $cardInfo=M('card_member')->find($cardid);
+		}
+		
+		if (empty($cardInfo)){
+		    $this->error('领取失败');
+		    $this->assign('is_error','领取失败');
 		}
 		$this->assign('card_info',$cardInfo);
 		$this -> display();
@@ -447,7 +459,9 @@ class WapController extends BaseController {
 	            $credit ['score'] = intval ( $event_info ['score'] );
 	            add_credit ( 'card_reward', 0, $credit );
 	        } else { // 送代金券
-	            D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $event_info ['coupon_id'], $this->mid );
+	            if (is_install("ShopCoupon")) {
+                    D('Addons://ShopCoupon/Coupon')->sendCoupon($event_info['coupon_id'], $this->mid);
+                }
 	        }
 	    }
 	    
@@ -461,6 +475,12 @@ class WapController extends BaseController {
 		$this->display ( 'bind_card' );
 	}
 	function do_bind_card() {
+	    if (!is_install("Shop")){
+	        $returnData['status']=0;
+	        $returnData['msg']='绑定失败 ！';
+	        $this->ajaxReturn($returnData);
+	        exit();
+	    }
 	    $phone=I('phone');
 	    $cardNumber=I('card_number');
 	    if ($cardNumber){
@@ -544,7 +564,9 @@ class WapController extends BaseController {
 			            $credit ['score'] = intval ( $event_info ['score'] );
 			            add_credit ( 'card_reward', 0, $credit );
 			        } else { // 送代金券
-			            D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $event_info ['coupon_id'], $this->mid );
+			            if (is_install("ShopCoupon")) {
+                            D('Addons://ShopCoupon/Coupon')->sendCoupon($event_info['coupon_id'], $this->mid);
+                        }
 			        }
 			    }
 			    add_credit ( 'card_bind' );
@@ -1051,14 +1073,16 @@ class WapController extends BaseController {
 	        $nocount=0;
 	        $map1['card_score_id']=$v['id'];
 	        $logs=M('score_exchange_log')->where($map1)->count();
-	        if ($v['coupon_type']==0){
-	            $info=D ( 'Addons://ShopCoupon/Coupon' )->getInfo ( $v['coupon_id'] );
-	            $list = D ( 'Common/SnCode' )->getMyList ( $map['uid'], $v['coupon_id'], 'ShopCoupon' );
-	            $my_count = count ( $list );
-	            if ($info ['limit_num'] > 0 && $my_count >= $info ['limit_num']) {
-	                $nocount=1;
-	            }
-	            $v['coupon']='代金券：'.$info['title'];
+	        if ($v['coupon_type']==0 ){
+	            if (is_install("ShopCoupon")) {
+                    $info = D('Addons://ShopCoupon/Coupon')->getInfo($v['coupon_id']);
+                    $list = D('Common/SnCode')->getMyList($map['uid'], $v['coupon_id'], 'ShopCoupon');
+                    $my_count = count($list);
+                    if ($info['limit_num'] > 0 && $my_count >= $info['limit_num']) {
+                        $nocount = 1;
+                    }
+                    $v['coupon'] = '代金券：' . $info['title'];
+                }
 // 	            $v['coupon']=M('shop_coupon')->find($v['coupon_id']);
 	        }else {
 	            $info=D ( 'Addons://Coupon/Coupon' )->getInfo ( $v['coupon_id'] );
@@ -1095,7 +1119,9 @@ class WapController extends BaseController {
 	    $card_score=M('card_score')->find($id);
 	    $coupon_id=I('get.coupon_id');
 	    if ($card_score['coupon_type']==0){
-	       $res= D ( 'Addons://ShopCoupon/Coupon' )->sendCoupon ( $coupon_id, $this->mid );
+	        if (is_install("ShopCoupon")) {
+                $res = D('Addons://ShopCoupon/Coupon')->sendCoupon($coupon_id, $this->mid);
+            }
 	    }else {
 	       $res=D ( 'Addons://Coupon/Coupon' )->sendCoupon ( $coupon_id, $this->mid );
 	    }

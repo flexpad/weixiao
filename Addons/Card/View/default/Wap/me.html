@@ -9,7 +9,9 @@
             <p class="level"><a href="{:U('level_intro')}"><img src="{:ADDON_PUBLIC_PATH}/king.png" width="16"/> <notempty name="levelInfo[level]"> {$levelInfo.level}<else/>体验卡</notempty></a></p>
             <div class="my_card_nav">
             	<a href="{:addons_url('Coupon://Wap/personal')}&use=1">优惠券<br/>{$coupon_count}</a>
+                <if condition='is_install("ShopCoupon")'>
                 <a href="{:addons_url('ShopCoupon://Wap/personal')}&use=1">代金券<br/>{$shop_coupon_count}</a>
+                </if>
                 <a href="{:addons_url('Card://Wap/score')}">积分<br/>{$userInfo.score}</a>
                 <a href="{:addons_url('Card://Wap/recharge')}">余额<br/>{$info.recharge}</a>
             </div>
@@ -18,14 +20,17 @@
          <div class="h_item_container">
             <a class="h_item" href="{:addons_url('Coupon://Wap/personal')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/ticket.png"/> 我的优惠券 <span class="colorless">({$coupon_count})</span><em></em></a>
             <div class="h_item_line"></div>
+             <if condition='is_install("ShopCoupon")'>
              <a class="h_item" href="{:addons_url('ShopCoupon://Wap/personal')}"><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/money_ticket.png"/> 我的代金券 <span class="colorless">({$shop_coupon_count})</span><em></em></a>
             <div class="h_item_line"></div>
+            </if>
 <!--             <a class="h_item" href="{:addons_url('Coupon://Wap/personal')}"><img style="vertical-align: -6px;" width="18" src="{:ADDON_PUBLIC_PATH}/gift.png"/>&nbsp;&nbsp;我的礼品券 <span class="colorless">({$couponCount|intval})</span><em></em></a> 
 <div class="h_item_line"></div>-->
             
             <a class="h_item" href="{:addons_url('Card://Wap/recharge')}" ><img style="vertical-align: -5px;" width="24" src="{:ADDON_PUBLIC_PATH}/money.png"/> 我的账单<em></em></a>
             
         </div>
+        <if condition='is_install("Shop")'>
           	<empty name='info.is_bind'>
         <div class="h_item_container">
       
@@ -37,6 +42,7 @@
 <!--         	<a style="padding-right:10px;" class="h_item" href="{:U('writeCardInfo')}&edit=1"><img style="vertical-align: -5px;" width="12" src="{:ADDON_PUBLIC_PATH}/phone_1.png"/>   {$info.phone} <span class="btn fr" style="display:inline; width:auto; height:14px; line-height:14px; padding:4px 10px;">绑定新号码</span></a> -->
         </div>
         </empty>
+        </if>
         <p class="copyright">{$system_copy_right}</p>
     </div>
     <nav class="bottom_nav">

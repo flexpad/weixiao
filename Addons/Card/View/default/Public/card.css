@@ -42,7 +42,7 @@ body{ min-height:100%;}
 .v_nav .single_address{ line-height:24px; padding:10px 70px 10px 20px; color:#888}
 .v_nav .single_address .title{ font-size:16px; color:#444;}
 .v_nav .single_address em{ width:60px; height:40px; background:url(phone.png) center center no-repeat; background-size:40px 40px; border-left:1px solid #ccc;}
-.v_nav .single_address a{   white-space: nowrap;overflow: hidden;display: block;text-overflow: ellipsis; font-size:13px;}
+.v_nav .single_address a{   /* white-space: nowrap; overflow: hidden;text-overflow: ellipsis; */display: block;font-size:13px;}
 
 
 .card_info{ margin-top:60px}

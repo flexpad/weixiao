@@ -75,12 +75,14 @@
                  </div>    
                  <br/>
                  <br/>
+                 <if condition='is_install("Shop")'>
                  <empty name='isEdit'>
                  <p style="color: darkgray;">（若已是实体店会员，可直接 绑定实体店会员卡）</p>
                  <div class="form-item pt_10">
                 	<button class="home_btn submit-btn mb_10 flex_1 yellow_btn" type="button" id='bind_card' >绑定实体店会员卡</button>
                  </div>
-                 </empty>            
+                 </empty>      
+                 </if>      
           	</div>
             </form>
         </div>

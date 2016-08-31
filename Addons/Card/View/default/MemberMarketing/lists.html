@@ -21,13 +21,14 @@
      <strong>优惠券</strong>
      </div>
      </a>
-     
+     <if condition='is_install("ShopCoupon")'>
      <a class="tile tile_themed" href="{:addons_url('ShopCoupon://ShopCoupon/lists')}&mdm={$_GET['mdm']}">
      <i class="i_ticket"></i>
      <div class="div_info">
      <strong>代金券</strong>
      </div>
      </a>
+     </if>
       </div>
       
       
@@ -51,19 +52,22 @@
      <strong>积分兑换</strong>
      </div>
      </a>
+    
      <a class="tile tile_themed" href="{:addons_url('Card://Recharge/lists')}&mdm={$_GET['mdm']}">
      <i class="i_chongzhi"></i>
      <div class="div_info">
      <strong>充值赠送</strong>
      </div>
      </a>
+     
+      <if condition='is_install("ShopReward")'>
      <a class="tile tile_themed" href="{:addons_url('ShopReward://ShopReward/lists')}&mdm={$_GET['mdm']}">
      <i class="i_shopping"></i>
      <div class="div_info">
      <strong>消费赠送</strong>
      </div>
      </a>
-     
+     </if>
  
       </div>
       
