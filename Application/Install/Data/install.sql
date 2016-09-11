@@ -4099,7 +4099,7 @@ CREATE TABLE `wp_public_auth` (
   `type_1` tinyint(1) DEFAULT '0' COMMENT '微信认证订阅号的开关',
   `type_2` tinyint(1) DEFAULT '0' COMMENT '普通服务号的开关',
   `type_3` tinyint(1) DEFAULT '0' COMMENT '微信认证服务号的开关',
-  PRIMARY KEY (`name`,`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
