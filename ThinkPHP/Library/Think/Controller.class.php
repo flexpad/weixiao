@@ -883,7 +883,7 @@ abstract class Controller {
 						3,
 						'function' 
 				);
-			} elseif ('datetime' == $attr ['type']) { // 日期型
+			} elseif ('datetime' == $attr ['type']) { // 时间型
 				$auto [] = array (
 						$attr ['name'],
 						'strtotime',
@@ -894,6 +894,13 @@ abstract class Controller {
 				$auto [] = array (
 						$attr ['name'],
 						'strtotime',
+						3,
+						'function' 
+				);
+			} elseif ('mult_picture' == $attr ['type']) { // 多图片
+				$auto [] = array (
+						$attr ['name'],
+						'arr2str',
 						3,
 						'function' 
 				);
