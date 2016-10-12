@@ -356,7 +356,7 @@ CREATE TABLE `wp_attribute` (
   `auto_type` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `model_id` (`model_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11369 DEFAULT CHARSET=utf8 COMMENT='模型属性表';
+) ENGINE=MyISAM AUTO_INCREMENT=11371 DEFAULT CHARSET=utf8 COMMENT='模型属性表';
 
 -- ----------------------------
 -- Records of wp_attribute
@@ -435,7 +435,7 @@ INSERT INTO `wp_attribute` VALUES ('75', 'interface_url', '接口地址', 'varch
 INSERT INTO `wp_attribute` VALUES ('76', 'headface_url', '公众号头像', 'varchar(255) NULL', 'picture', '', '', '1', '', '6', 'public', '0', '1', '1429847363', '1391576300', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('77', 'area', '地区', 'varchar(50) NULL', 'string', '', '', '0', '', '6', 'public', '0', '1', '1392946934', '1391576435', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('78', 'addon_config', '插件配置', 'text NULL', 'textarea', '', '', '0', '', '6', 'public', '0', '1', '1391576537', '1391576537', '', '3', '', 'regex', '', '3', 'function');
-INSERT INTO `wp_attribute` VALUES ('79', 'addon_status', '插件状态', 'text NULL', 'textarea', '', '', '0', '111:帐号配置\r\n93:互动游戏\r\n18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '6', 'public', '0', '1', '1391576571', '1391576571', '', '3', '', 'regex', '', '3', 'function');
+INSERT INTO `wp_attribute` VALUES ('79', 'addon_status', '插件状态', 'text NULL', 'textarea', '', '', '0', '18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n111:帐号配置\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n93:互动游戏\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '6', 'public', '0', '1', '1391576571', '1391576571', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('11363', 'truename', '收货人姓名', 'varchar(100) NULL', 'string', '', '', '1', '', '1154', 'shop_address', '1', '1', '1423477690', '1423477548', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('80', 'type', '公众号类型', 'char(10) NULL', 'radio', '0', '', '1', '0:普通订阅号\r\n1:认证订阅号/普通服务号\r\n2:认证服务号', '6', 'public', '0', '1', '1416904702', '1393718575', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('81', 'appid', 'AppID', 'varchar(255) NULL', 'string', '', '应用ID', '1', '', '6', 'public', '0', '1', '1416904750', '1393718735', '', '3', '', 'regex', '', '3', 'function');
@@ -450,11 +450,11 @@ INSERT INTO `wp_attribute` VALUES ('89', 'GammaSecret', 'GammaSecret', 'varchar(
 INSERT INTO `wp_attribute` VALUES ('90', 'public_copy_right', '版权信息', 'varchar(255) NULL', 'string', '', '', '1', '', '6', 'public', '0', '1', '1431141576', '1431141576', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('91', 'domain', '自定义域名', 'varchar(30) NULL', 'string', '', '', '0', '', '6', 'public', '0', '1', '1439698931', '1439698931', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('92', 'title', '等级名', 'varchar(50) NULL', 'string', '', '', '1', '', '7', 'public_group', '0', '1', '1393724854', '1393724854', '', '3', '', 'regex', '', '3', 'function');
-INSERT INTO `wp_attribute` VALUES ('93', 'addon_status', '插件权限', 'text NULL', 'checkbox', '', '', '1', '111:帐号配置\r\n93:互动游戏\r\n18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '7', 'public_group', '0', '1', '1393731903', '1393725072', '', '3', '', 'regex', '', '3', 'function');
+INSERT INTO `wp_attribute` VALUES ('93', 'addon_status', '插件权限', 'text NULL', 'checkbox', '', '', '1', '18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n111:帐号配置\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n93:互动游戏\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '7', 'public_group', '0', '1', '1393731903', '1393725072', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('94', 'uid', '管理员UID', 'int(10) NULL ', 'admin', '', '', '1', '', '8', 'public_link', '1', '1', '1447215599', '1398933236', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('95', 'mp_id', '公众号ID', 'int(10) unsigned NOT NULL ', 'num', '', '', '4', '', '8', 'public_link', '1', '1', '1398933300', '1398933300', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('96', 'is_creator', '是否为创建者', 'tinyint(2) NULL', 'bool', '0', '', '0', '0:不是\r\n1:是', '8', 'public_link', '0', '1', '1398933380', '1398933380', '', '3', '', 'regex', '', '3', 'function');
-INSERT INTO `wp_attribute` VALUES ('97', 'addon_status', '插件权限', 'text NULL', 'checkbox', '', '', '1', '111:帐号配置\r\n93:互动游戏\r\n18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '8', 'public_link', '0', '1', '1398933475', '1398933475', '', '3', '', 'regex', '', '3', 'function');
+INSERT INTO `wp_attribute` VALUES ('97', 'addon_status', '插件权限', 'text NULL', 'checkbox', '', '', '1', '18:欢迎语\r\n19:微信用户中心\r\n56:自定义菜单\r\n111:帐号配置\r\n101:微信卡券\r\n39:微官网\r\n42:微信宣传页\r\n48:自定义回复\r\n50:微调研\r\n91:微邀约\r\n93:互动游戏\r\n97:微抢答\r\n100:通用表单\r\n106:微信红包\r\n107:竞猜\r\n108:微贺卡\r\n110:实物奖励\r\n126:开发者工具箱\r\n128:微名片\r\n130:自动回复\r\n133:支付通\r\n134:投票\r\n137:评论互动\r\n140:没回答的回复\r\n141:工作授权\r\n142:优惠券\r\n143:帮拆礼包\r\n144:会员卡\r\n145:签到\r\n146:微预约\r\n151:短信服务\r\n152:微考试\r\n153:微测试\r\n162:微社区\r\n163:扫码管理\r\n156:比赛抽奖\r\n164:一键绑定公众号\r\n', '8', 'public_link', '0', '1', '1398933475', '1398933475', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('11362', 'uid', '用户ID', 'int(10) NULL', 'num', '', '', '0', '', '1154', 'shop_address', '1', '1', '1429522999', '1423477509', '', '3', '', 'regex', 'get_mid', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('98', 'is_use', '是否为当前管理的公众号', 'tinyint(2) NULL', 'bool', '0', '', '0', '0:不是\r\n1:是', '8', 'public_link', '0', '1', '1398996982', '1398996975', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('99', 'attach', '上传文件', 'int(10) unsigned NOT NULL ', 'file', '', '支持xls,xlsx两种格式', '1', '', '9', 'import', '1', '1', '1407554177', '1407554177', '', '3', '', 'regex', '', '3', 'function');
@@ -1622,6 +1622,8 @@ INSERT INTO `wp_attribute` VALUES ('11365', 'city', '城市', 'varchar(255) NULL
 INSERT INTO `wp_attribute` VALUES ('11366', 'address', '具体地址', 'varchar(255) NULL', 'string', '', '', '1', '', '1154', 'shop_address', '1', '1', '1423477681', '1423477681', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('11367', 'is_use', '是否设置为默认', 'tinyint(2) NULL', 'bool', '0', '', '1', '0:否\r\n1:是', '1154', 'shop_address', '0', '1', '1423536697', '1423477729', '', '3', '', 'regex', '', '3', 'function');
 INSERT INTO `wp_attribute` VALUES ('11368', 'update_time', 'update_time', 'int(10) NULL', 'datetime', '0', '', '0', '', '17', null, '0', '1', '1467798632', '1467798632', '', '3', '', 'regex', '', '3', 'function');
+INSERT INTO `wp_attribute` VALUES ('11369', 'cTime', '增加时间', 'int(10) NULL', 'num', '', '', '0', '', '6', null, '0', '1', '1476244716', '1476244716', '', '3', '', 'regex', '', '3', 'function');
+INSERT INTO `wp_attribute` VALUES ('11370', 'authorizer_refresh_token', '一键绑定的refresh_token', 'varchar(100) NULL', 'string', '', '', '0', '', '6', null, '0', '1', '1476244752', '1476244752', '', '3', '', 'regex', '', '3', 'function');
 
 -- ----------------------------
 -- Table structure for `wp_auth_extend`
@@ -4079,6 +4081,8 @@ CREATE TABLE `wp_public` (
   `tips_url` varchar(255) DEFAULT NULL COMMENT '提示关注公众号的文章地址',
   `domain` varchar(30) DEFAULT NULL COMMENT '自定义域名',
   `is_bind` tinyint(2) DEFAULT '0' COMMENT '是否为微信开放平台绑定账号',
+  `cTime` int(10) DEFAULT NULL COMMENT '增加时间',
+  `authorizer_refresh_token` varchar(100) DEFAULT NULL COMMENT '一键绑定的refresh_token',
   PRIMARY KEY (`id`),
   KEY `token` (`token`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -4100,7 +4104,7 @@ CREATE TABLE `wp_public_auth` (
   `type_2` tinyint(1) DEFAULT '0' COMMENT '普通服务号的开关',
   `type_3` tinyint(1) DEFAULT '0' COMMENT '微信认证服务号的开关',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wp_public_auth
