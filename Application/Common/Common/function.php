@@ -3755,3 +3755,54 @@ function is_install($addon_name) {
 	$list = D ( 'Home/Addons' )->getList ();
 	return isset ( $list [$addon_name] );
 }
+
+    /*
+ * 上传图片到微信获取url
+ * 上传图文消息内的图片获取URL 请注意，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。
+ * 图片仅支持jpg/png格式，大小必须在1MB以下。
+ */
+function uploadimg($path)
+{
+    if (preg_match('#^(http|https)://mmbiz.qpic.cn/#i', $path)) {
+        return $path;
+    }
+    $filePath = '';
+    if (! file_exists($path)) {
+        $filePath = './Uploads/' . think_weiphp_md5($path) . '.jpg';
+        getImg($path, $filePath);
+        $path = $filePath;
+    }
+    $url = 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=' . get_access_token();
+    $param['type'] = 'image';
+    if (class_exists('\CURLFile')) { // 关键是判断curlfile,官网推荐php5.5或更高的版本使用curlfile来实例文件
+        $param['media'] = new \CURLFile(realpath($path));
+    } else {
+        $param['media'] = '@' . realpath($path);
+    }
+    $res = post_data($url, $param, true);
+    unlink($filePath);//删除本地创建的图片
+    return empty($res['url']) ? '' : $res['url'];
+}
+
+/*
+ * @通过curl方式获取指定的图片到本地
+ * @ 完整的图片地址
+ * @ 要存储的文件名
+ */
+function getImg($url = "", $filename = "")
+{
+    // 去除URL连接上面可能的引号
+    // $url = preg_replace( '/(?:^['"]+|['"/]+$)/', '', $url );
+    $hander = curl_init();
+    $fp = fopen($filename, 'wb');
+    curl_setopt($hander, CURLOPT_URL, $url);
+    curl_setopt($hander, CURLOPT_FILE, $fp);
+    curl_setopt($hander, CURLOPT_HEADER, 0);
+    curl_setopt($hander, CURLOPT_FOLLOWLOCATION, 1);
+    // curl_setopt($hander,CURLOPT_RETURNTRANSFER,false);//以数据流的方式返回数据,当为false是直接显示出来
+    curl_setopt($hander, CURLOPT_TIMEOUT, 10);
+    curl_exec($hander);
+    curl_close($hander);
+    fclose($fp);
+    Return true;
+}

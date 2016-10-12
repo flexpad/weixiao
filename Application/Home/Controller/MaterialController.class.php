@@ -58,8 +58,6 @@ class MaterialController extends HomeController {
 		);
 		$data = json_decode ( $_POST ['dataStr'], true );
 		// dump ( $_POST );
-		// dump ( $data );
-		// exit ();
 		$ids = array ();
 		$group_id = I ( 'get.group_id', 0, 'intval' );
 		foreach ( $data as $key => $vo ) {
@@ -309,13 +307,13 @@ class MaterialController extends HomeController {
 			$data ['content_source_url'] = ! empty ( $vo ['link'] ) ? $vo ['link'] : U ( 'news_detail', array (
 					'id' => $vo ['id'] 
 			) );
-			
+			$vo ['content']  = $this->getNewContent($vo ['content'] );
 			$data ['content'] = str_replace ( '"', '\'', $vo ['content'] );
+			
 			empty ( $data ['content'] ) && $data ['content'] = $data ['content_source_url'];
 			! empty ( $media_id ) && $data ['media_id'] = $media_id;
 			$news [] = $data;
 		}
-		
 		$update_url = 'https://api.weixin.qq.com/cgi-bin/material/update_news?access_token=' . get_access_token ();
 		$add_url = 'https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=' . get_access_token ();
 		
@@ -418,6 +416,7 @@ class MaterialController extends HomeController {
 					$data ['title'] = $vo ['title'];
 					$data ['author'] = $vo ['author'];
 					$data ['intro'] = $vo ['digest'];
+					$vo['content']=preg_replace('#data-src#i','src',$vo['content']);
 					$data ['content'] = $vo ['content'];
 					$data ['url'] = $vo ['url'];
 					$data ['update_time'] = $item ['content'] ['update_time'];
@@ -456,6 +455,7 @@ class MaterialController extends HomeController {
 					$data ['title'] = $vo ['title'];
 					$data ['author'] = $vo ['author'];
 					$data ['intro'] = $vo ['digest'];
+					$vo['content']=preg_replace('#data-src#i','src',$vo['content']);
 					$data ['content'] = $vo ['content'];
 					$data ['thumb_media_id'] = $vo ['thumb_media_id'];
 					$data ['media_id'] = $media_id;
@@ -1502,4 +1502,24 @@ class MaterialController extends HomeController {
 			}
 		}
 	}
+
+    //图文消息的内容图片，上传到微信并获取新的链接覆盖
+    function getNewContent($content)
+    {
+        if (! $content)
+            return;
+        $newUrl = array();
+        // 获取文章中图片img标签
+//         $match=$this->getImgSrc($content);
+        preg_match_all('#<img.*?src="([^"]*)"[^>]*>#i', $content, $match);
+        foreach ($match[1] as $mm) {
+            $newUrl[$mm] = uploadimg($mm);
+        }
+        if (count($newUrl)){
+            $content_new = strtr($content, $newUrl);
+        }
+        return empty($content_new) ? $content : $content_new;
+    }
+    
+    
 }
