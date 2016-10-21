@@ -508,7 +508,6 @@ class UserCenterController extends AddonsController {
 			$countdata ['listopenid'] = $param;
 			$countdata ['wp_op'] = $data;
 			$countdata ['access_token'] = get_access_token ();
-			// addWeixinLog($countdata,'syc_userlistscount3');
 			foreach ( $param ['user_list'] as $p ) {
 				$single_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . get_access_token () . '&openid=' . $p ['openid'] . '&lang=zh_CN';
 				$tempArr = json_decode ( file_get_contents ( $single_url ), true );

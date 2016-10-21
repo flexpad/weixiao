@@ -16,10 +16,10 @@ class WxPayConfig
 	 * APPSECRET：公众帐号secert（仅JSAPI支付的时候需要配置）
 	 * @var string
 	 */
-	const APPID = 'wx9e088eb8b3152ae2';
-	const MCHID = '10065170';
-	const KEY = '05152015yuanmengyunweiphpwei0610';
-	const APPSECRET = '54dc0129e6ce775614e51b0bb7b94314';
+	const APPID = '';
+	const MCHID = '';
+	const KEY = '';
+	const APPSECRET = '';
 	
 	//=======【证书路径设置】=====================================
 	/**
@@ -27,8 +27,8 @@ class WxPayConfig
 	 * 证书路径,注意应该填写绝对路径（仅退款、撤销订单时需要）
 	 * @var path
 	 */
-	const SSLCERT_PATH = 'http://project.weiphp.cn/weishi/WxpayAPI/cert/apiclient_cert.pem';
-	const SSLKEY_PATH = 'http://project.weiphp.cn/weishi/WxpayAPI/cert/apiclient_key.pem';
+	const SSLCERT_PATH = 'Cert/apiclient_cert.pem';
+	const SSLKEY_PATH = 'Cert/apiclient_key.pem';
 	
 	//=======【curl代理设置】===================================
 	/**

@@ -82,7 +82,9 @@ class PublicBindController extends AddonsController {
 			$data ['type'] += 1;
 		}
 		$data ['appid'] = $public_info ['authorization_info'] ['authorizer_appid'];
-		$data ['uid'] = $this->mid;
+		if($this->mid>0) {
+			$data ['uid'] = $this->mid;
+		}
 		$data ['is_bind'] = 1;
 		$data ['encodingaeskey'] = 'DfEqNBRvzbg8MJdRQCSGyaMp6iLcGOldKFT0r8I6Tnp';
 		$data ['cTime'] = NOW_TIME;
@@ -91,6 +93,7 @@ class PublicBindController extends AddonsController {
 		$info = M ( 'public' )->where ( $map )->find ();
 		if ($info) {
 			M ( 'public' )->where ( $map )->save ( $data );
+			D('Common/Public')->clear($info['id']);
 			$url = U ( 'Home/Public/lists' );
 		} else {
 			

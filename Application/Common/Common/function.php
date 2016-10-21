@@ -1054,7 +1054,6 @@ function get_cover($cover_id, $field = null) {
 }
 function get_cover_url($cover_id, $width = '', $height = '') {
 	$info = get_cover ( $cover_id );
-	
 	if ($width > 0 && $height > 0) {
 		$thumb = "?imageMogr2/thumbnail/{$width}x{$height}";
 	} elseif ($width > 0) {
@@ -1062,13 +1061,26 @@ function get_cover_url($cover_id, $width = '', $height = '') {
 	} elseif ($height > 0) {
 		$thumb = "?imageMogr2/thumbnail/x{$height}";
 	}
-	if ($info ['url'])
-		return $info ['url'] . $thumb;
+	if ($width || $height){
+	    $path = '';
+	    if ($info['url']){
+	        $path =   mk_rule_image($info['url'], $width, $height);
+	    }else {
+	        if (empty (  $info ['path'] ))
+	            return '';
+	        $path =  mk_rule_image($info['path'], $width, $height);
+	    }
+	    return $path.$thumb;
+	}else{
+	    if ($info ['url'])
+	        return $info ['url'] . $thumb;
+	    
+	    $url = $info ['path'];
+	    if (empty ( $url ))
+	        return '';
+	    return SITE_URL . $url . $thumb;
+	}
 	
-	$url = $info ['path'];
-	if (empty ( $url ))
-		return '';
-	return SITE_URL . $url . $thumb;
 }
 function get_square_url($cover_id, $width = '') {
 	$info = get_cover ( $cover_id );
@@ -3805,4 +3817,70 @@ function getImg($url = "", $filename = "")
     curl_close($hander);
     fclose($fp);
     Return true;
+}
+
+// 获取显示确定规格图片
+/*
+ * http://img.baidu.com/hi/jx2/j_0002.gif
+ * http://img1.gtimg.com/auto/pics/hv1/156/84/2125/138199701.jpg
+ * /Uploads/Editor/gh_dd85ac50d2dd/2016-08-26/57bfa4a23fba5.png
+ */
+function mk_rule_image($imgurl, $w, $h) {
+   
+    if (preg_match ( '#^/Uploads/Picture/#i', $imgurl ) || preg_match ( '#^/Public/static/icon/#i', $imgurl )) { // 内部图片
+        $imgurl = '.' . $imgurl;
+        $filename = basename ( $imgurl );
+        $filename_ex = explode ( '.', $filename );
+        $dirname = dirname ( $imgurl );
+        $dirname_new = $dirname . '/' . $filename_ex [0] . "_$w" . "X$h." . $filename_ex [1];
+        if (file_exists ( $dirname_new )) {
+            return str_replace ( './Uploads', SITE_URL . '/Uploads', $dirname_new );
+        }
+
+        file_exists ( $imgurl ) && $imginfo = getimagesize ( $imgurl ); // 图片存在并获取到信息
+
+        if ($imginfo) { // 规格图片存在
+            if ($imginfo [0] > $w || $imginfo ['1'] > $h) {
+                $img_model || $img_model = new \Think\Image ();
+                //生成缩略图
+                $re = $img_model->open ( $imgurl );
+
+                $res = $img_model->thumb ( $w, $h )->save ( $dirname_new );
+            }else{
+                return SITE_URL . $imgurl;
+            }
+        }
+        return str_replace ( './Uploads', SITE_URL . '/Uploads', $dirname_new );
+    }
+    if (preg_match ( '#^(http|https)://#i', $imgurl )) { // 外部
+        $imgurl1=$imgurl;
+        $imginfo = getimagesize ( $imgurl ); // 图片存在并获取到信息
+        // dump($imginfo);
+        $url_info = parse_url ( $imgurl );
+        $filename = basename ( $url_info ['path'] );
+        $filename_ex = explode ( '.', $filename );
+        $dirname = './Uploads/Picture';
+        $dirname_new = $dirname . '/' . think_weiphp_md5 ( $filename_ex [0] . $url_info ['query'] ) . "_$w" . "X$h." . 'jpg'; // $filename_ex[1];
+        $imgurl = SITE_URL . '/Uploads/Picture/' . think_weiphp_md5 ( $filename_ex [0] . $url_info ['query'] ) . "_$w" . "X$h." . 'jpg';
+        if (file_exists ( $dirname_new )) {
+            return $imgurl;
+        }
+        if ($imginfo) { // 规格图片存在
+            if ($imginfo [0] > $w || $imginfo [1] > $h) {
+                $img_model || $img_model = new \Think\Image ();
+
+                $save_filename = './Uploads/Picture/' . $filename;
+                $res = getImg ( $imgurl1, $save_filename );
+
+                $re = $img_model->open ( $save_filename );
+
+                $res = $img_model->thumb ( $w, $h)->save ( $dirname_new );
+                unlink ( $save_filename );
+            }else{
+                getImg ( $imgurl1, $dirname_new );
+                $imgurl = SITE_URL .$dirname_new;
+            }
+        }
+        return $imgurl;
+    }
 }

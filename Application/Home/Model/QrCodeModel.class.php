@@ -35,7 +35,9 @@ class QrCodeModel extends Model {
 	// 增加二维码
 	function add_qr_code($action_name = 'QR_SCENE', $addon = '', $aim_id = '', $extra_int = '', $extra_text = '') {
 		set_time_limit ( 30 );
-		
+
+		if(!$this->appID) return 0;
+
 		$data ['scene_id'] = $this->get_scene_id ( $action_name );
 		if (! $data ['scene_id']) {
 			return - 1; // 场景值已满

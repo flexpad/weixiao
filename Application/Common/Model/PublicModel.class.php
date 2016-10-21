@@ -53,5 +53,18 @@ class PublicModel extends Model {
 	}
 	function addPublic() {
 	}
+	function updateRefreshToken($appid, $refresh_token){
+		$map['appid'] = $appid;
+		$info = $this->where($map)->field('id')->find();
+		if(!$info){
+			return false;
+		}
+
+		$save['authorizer_refresh_token'] = $refresh_token;
+		$res = $this->where($map)->save($save);
+		if($res){
+			$this->clear($info['id']);
+		}
+	}
 }
 ?>
