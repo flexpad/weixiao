@@ -213,8 +213,6 @@ class PublicController extends HomeController {
 			$_POST ['group_id'] = intval ( C ( 'DEFAULT_PUBLIC_GROUP_ID' ) );
 			$_POST ['uid'] = $this->mid;
 			
-			// 更新缓存
-			D ( 'Common/Public' )->clear ( $id );
 			session ( 'token', $_POST ['token'] );
 			
 			$map2 ['uid'] = $this->mid;
@@ -231,7 +229,9 @@ class PublicController extends HomeController {
 					$data ['mp_id'] = $id;
 					$data ['is_creator'] = 1;
 					M ( 'public_link' )->add ( $data );
-					
+					// 更新缓存
+			        D ( 'Common/Public' )->clear ( $id );
+
 					$url = U ( 'step_1?id=' . $id );
 					
 					$this->success ( '添加基本信息成功！', $url );
@@ -242,6 +242,9 @@ class PublicController extends HomeController {
 				$_POST ['id'] = $id;
 				$url = U ( 'step_1?id=' . $id );
 				$Model->create () && $res = $Model->save ();
+				// 更新缓存
+			    D ( 'Common/Public' )->clear ( $id );
+
 				if ($res) {
 					$this->success ( '保存基本信息成功！', $url );
 				} elseif ($res === 0) {
