@@ -481,6 +481,8 @@ abstract class Controller {
 		} else {
 			$uid = session ( 'mid' );
 		}
+		//var_dump($uid);
+		//exit();
 		// 重新跳转，去掉URL中的openid参数，以防分享出去的地址带有openid参数
 		$openid = I ( 'get.openid' );
 		
@@ -599,10 +601,19 @@ abstract class Controller {
 	// 公众号粉丝信息初始化
 	private function initMoblie($info) {
 		// 绑定配置
+		/*if (IS_GET) {
+			Cookie ( '__forward__', $_SERVER ['REQUEST_URI'] );
+			redirect ( addons_url ( 'UserCenter://Wap/bind' ) );
+		}
+		*/
+
 		$config = getAddonConfig ( 'UserCenter' );
 		$userNeed = ($GLOBALS ['myinfo'] ['uid'] > 0 && $GLOBALS ['myinfo'] ['status'] < 2) || empty ( $GLOBALS ['myinfo'] );
+		//var_dump($GLOBALS);
+		//var_dump($userNeed);
 		$is_need_bind = $config ['need_bind'] == 1 && $config ['bind_start'] != 1 && strtolower ( $_REQUEST ['_addons'] ) != 'usercenter';
 		if (IS_GET && ! (defined ( 'IN_WEIXIN' ) && IN_WEIXIN) && $is_need_bind && $userNeed && C ( 'USER_OAUTH' )) {
+			//var_dump($is_need_bind);
 			Cookie ( '__forward__', $_SERVER ['REQUEST_URI'] );
 			redirect ( addons_url ( 'UserCenter://Wap/bind' ) );
 		}

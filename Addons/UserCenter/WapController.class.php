@@ -17,12 +17,10 @@ class WapController extends AddonsController {
 		$info = get_token_appinfo ();
 		$param ['appid'] = $info ['appid'];
 		$callback = U ( 'bind' );
-		//var_dump($callback);
-		//exit();
 		//$this->error ( $info );
 		//var_dump($info);
-		//var_dump($_GET);
-		//return 1;
+		var_dump($_GET);
+		return 1;
 		if ($_GET ['state'] != 'weiphp') {
 			$param ['redirect_uri'] = $callback;
 			$param ['response_type'] = 'code';

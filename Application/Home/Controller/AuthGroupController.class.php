@@ -412,9 +412,11 @@ class AuthGroupController extends HomeController {
 		$dataArr [0] = $ht;
 		$dataArr = array_merge ( $dataArr, ( array ) $data );
 // 		dump($dataArr);
-		outExcel ( $dataArr, $map ['module'] );
-// 		vendor ( 'out-csv' );
-// 		export_csv ( $dataArr, 'user_export' );
+//		dump($map);
+//		exit();
+//		outExcel ( $dataArr, $map ['module'] );
+ 		vendor ( 'out-csv' );
+ 		export_csv ( $dataArr, 'user_export' );
 	}
 
 	// 移动用户到所在分组

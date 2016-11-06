@@ -17,7 +17,7 @@ class IndexController extends HomeController {
 	// 系统首页
 	public function index() {
 		if ($this->mid <= 0) {
-			redirect ( U ( 'Home/User/login', array (
+			redirect ( U ( 'Home/Public/User/login', array ( //User/login
 					'from' => 1
 			) ) );
 		}

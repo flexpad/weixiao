@@ -146,7 +146,7 @@ class WeiSiteController extends BaseController {
 			} else {
 				
 				$page = I ( 'p', 1, 'intval' );
-				$row = isset ( $_REQUEST ['list_row'] ) ? intval ( $_REQUEST ['list_row'] ) : 20;
+				$row = isset ( $_REQUEST ['list_row'] ) ? intval ( $_REQUEST ['list_row'] ) : 8;
 				
 				$data = M ( 'custom_reply_news' )->where ( $map )->order ( 'sort asc, id DESC' )->page ( $page, $row )->select ();
 				if (empty ( $data )) {

@@ -13,20 +13,19 @@
  */
 return array(
 		// 数据库配置
-		'DB_TYPE' => 'mysql', // 数据库类型		
-		'DB_HOST' => 'localhost', // 服务器地址
-		'DB_NAME' => 'weiphp3.0', // 数据库名
-		'DB_USER' => 'root', // 用户名
-		'DB_PWD' => '', // 密码
-		
-		'DB_PORT' => '3306', // 端口
-		'DB_PREFIX' => 'wp_', // 数据库表前缀
+        'DB_TYPE'   => 'mysql', // 数据库类型
+        'DB_HOST'   => '127.0.0.1', // 服务器地址
+        'DB_NAME'   => 'weiphp', // 数据库名
+        'DB_USER'   => 'wxy', // 用户名
+        'DB_PWD'    => 'wxy!@4b17',  // 密码
+        'DB_PORT'   => '3306', // 端口
+        'DB_PREFIX' => 'wp_', // 数据库表前缀
 		'DB_PARAMS' => array (
 				\PDO::ATTR_CASE => \PDO::CASE_NATURAL 
 		),
 		
 		// 系统数据加密设置
-		'DATA_AUTH_KEY' => '-<S]=hnKDfI+wRZCesP3OQz#.diq!A@94>}xV%y/', // 默认数据加密KEY
+		'DATA_AUTH_KEY' => 'ZbK8_W[S+&lx#eAUsi;kf$!vIt-"]RJ@(G)`*3y{', // 默认数据加密KEY
 		                                                               
 		// 调试配置
 		'SHOW_PAGE_TRACE' => false,
@@ -86,7 +85,7 @@ return array(
 		),
 		//编辑器上传服务器
 		// Local--本地  Qiniu --七牛
-		'EDITOR_PICTURE_UPLOAD_DRIVER' => 'Local',
+		'EDITOR_PICTURE_UPLOAD_DRIVER' => 'Local',		
 		
 		// 文件上传相关配置
 		'DOWNLOAD_UPLOAD' => array (
