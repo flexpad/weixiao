@@ -1,0 +1,131 @@
+<extend name="Base/common" />
+<block name="body">
+  <script type="text/javascript" src="__STATIC__/qrcode/qrcode.js"></script>
+  <script type="text/javascript" src="__STATIC__/qrcode/jquery.qrcode.js"></script>
+  <style type="text/css">
+#phone {
+	margin: 0 auto;
+	width: 510px;
+	height: 814px;
+	background: url(__IMG__/preview_phone.jpg) no-repeat;
+}
+#frame {
+	margin: 100px 0 0 97px;
+	width: 320px;
+	border: 2px solid #333;
+}
+#qrcode {
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	margin-left: 230px;
+	width: 200px;
+	height: 300px;
+	text-align: center;
+	line-height: 30px;
+}
+</style>
+  <div class="setting_step app_setting content_step" style="margin-top:20px;">
+         <a class="step " href="{:addons_url('WeiSite://Template/index',array('mdm'=>I('mdm')))}">1.选择模板</a>
+       	 <a class="step " href="{:addons_url('WeiSite://Slideshow/lists',array('mdm'=>I('mdm')))}">2.幻灯片配置</a>
+         <a class="step step_cur" href="{:addons_url('WeiSite://Category/lists',array('mdm'=>I('mdm')))}">3.栏目配置</a> 
+         <a class="step step_cur_1" href="{:addons_url('WeiSite://WeiSite/preview',array('mdm'=>I('mdm')))}">4.效果预览</a>
+  </div>
+  <div class="tab-content">
+   
+    <form method="post" class="form-horizontal" action="{:U('config',array('from'=>'preview'))}">
+      <div class="form-item cf">
+        <label class="item-label"> 背景图: </label>
+        <php>$data['show_background'] = intval($data['show_background']);</php>
+        <div class="controls">
+          <div class="check-item">
+            <input type="radio" name="config[show_background]" value="0" class="select_bg" <eq name="data[show_background]" value="0">checked="checked"</eq> class="regular-radio" id="config[show_background]_0">
+            <label for="config[show_background]_0"></label>
+            使用默认背景图 </div>
+          <div class="check-item">
+            <input type="radio" name="config[show_background]" value="1" class="select_bg" <eq name="data[show_background]" value="1">checked="checked"</eq> class="regular-radio" id="config[show_background]_1">
+            <label for="config[show_background]_1"></label>
+            使用自定义背景图 </div>
+        </div>
+      </div>
+      <div class="form-item cf" id="upload_bg" style="display:none">
+        <label class="item-label"> 自定义背景图: <span class="check-tips">为空时不显示背景图片，最佳尺寸：640X1008,或上传比例为640X1008的更大尺寸图片</span> </label>
+<!--         <div class="controls uploadrow2" title="点击修改图片" rel="background"> -->
+<!--           <input type="file" id="upload_picture_background"> -->
+<!--           <input type="hidden" name="config[background]" id="cover_id_background" value="{$data['background']}"/> -->
+<!--           <div class="upload-img-box"> -->
+<!--             <notempty name="data['background']"> -->
+<!--               <div class="upload-pre-item2"><img width="100" height="100" src="{$data['background']|get_cover_url}"/></div> -->
+<!--               <em class="edit_img_icon">&nbsp;</em> </notempty> -->
+<!--           </div> -->
+<!--         </div> -->
+			 <div class="mult_imgs">
+                                <div class="upload-img-view" id='mutl_picture_background'>
+                                  <notempty name="data[background_arr]">
+                                  	<volist name="data[background_arr]" id="vo">
+                                    <div class="upload-pre-item22">
+                                    <img width="100" height="100" src="{$vo|get_cover_url}"/>
+                                    <input type="hidden" name="background[]" value="{$vo}"/>
+                                    <em>&nbsp;</em>
+                                    </div>
+                                    </volist>
+                                  </notempty>
+                                </div>
+                                <div class="controls uploadrow2" data-max="9" title="点击上传图片" rel="background">
+                                  <input type="file" id="upload_picture_background">
+                                </div>
+                            </div>
+<!-- 			 <div class="mult_imgs"> -->
+<!--                                 <div class="upload-img-view" id='mutl_picture_background'> -->
+<!--                                   <notempty name="data.background_arr"> -->
+<!--                                   	<volist name="data.background_arr" id="vo"> -->
+<!--                                     <div class="upload-pre-item22"> -->
+<!--                                     <img width="100" height="100" src="{$vo|get_cover_url}"/> -->
+<!--                                     <input type="hidden" name="background[]" value="{$vo}"/> -->
+<!--                                     <em>&nbsp;</em> -->
+<!--                                     </div> -->
+<!--                                     </volist> -->
+<!--                                   </notempty> -->
+<!--                                 </div> -->
+<!--                                 <div class="controls uploadrow2 mult" title="点击上传图片" rel="background"> -->
+<!--                                   <input type="file" id="upload_picture_background"> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+
+      </div>
+      <button style="margin-top:20px;" type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+    </form>
+  </div>
+  <div style="margin:20px; clear:both;position:relative; border-top:1px solid #ddd; padding:20px 0;">
+  <div id="phone" style="margin:0 0 80px">
+    <iframe id="frame" src="{$url}" height="565" width="320" frameborder="0"></iframe>
+  </div>
+  <div id="qrcode" style="top:50px; left:360px;">
+    <div id="canvas" style="height:200px; width:200px;"></div>
+    用微信扫一扫预览 </div>
+    </div>
+</block>
+<block name="script">
+  <script type="text/javascript">
+    	var url = "{$url}&publicid={$public_info.id}";
+        $('#canvas').qrcode({width:200,height:200,text:url}); 
+
+	$(function(){
+		//初始化上传图片插件
+		initUploadImg();
+		
+		show_bg();
+		$('.select_bg').click(function(){ show_bg(); });
+	})
+	
+	function show_bg(){
+		var val = $('input[name="config[show_background]"]:checked').val();
+// 		console.log(val);
+		if(val==0){
+			$('#upload_bg').hide();
+		}else{
+			$('#upload_bg').show();
+		}
+	}
+</script>
+</block>

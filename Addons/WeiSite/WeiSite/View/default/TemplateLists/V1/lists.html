@@ -9,6 +9,8 @@
 .identify em{ display:inline-block; margin:10px 5px;-webkit-border-radius: 6px;-moz-border-radius: 6px;
 border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 .identify em.cur{ background-color:#090}
+.identify .fl{ float:left}
+.identify .fr{ float:right}
 .small_pic_list li{ border-top:1px solid #fff; border-bottom:1px solid #ccc; height:80px; overflow:hidden}
 .small_pic_list li a{ display:block; padding:10px 10px 10px 80px; position:relative; min-height:60px; color:#333}
 .small_pic_list li a:active{ background-color:#CCC}
@@ -18,15 +20,35 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 </style>
 <body id="weisite">
 <div class="container">
-    
+ <if condition="!empty($slide_data)">
+    <notempty name="slide_data">
+    <section class="banner">
+	<ul>
+        <volist name="slide_data" id="vo">
+        	<li>
+            	<a href="{$vo.url}"><img src="{$vo.cover|get_cover_url=900,450}"/></a>
+            	<span class="title">{$vo.title}</span>
+            </li>
+         </volist>
+        </ul>
+        <span class="identify">
+            <span class="pointer">
+            <volist name="slide_data" id="vo">
+                <em></em>
+             </volist> 
+             </span>       
+        </span>
+
+    </section>
+    </notempty>
     <ul class="small_pic_list">
     <volist name="lists" id="vo">
     	<li>
         	<a href="{$vo.url}">
-            	<notempty name="vo.cover"><img src="{$vo.coverurl}"/></notempty>
+            	<notempty name="vo.cover"><img src="{$vo.cover|get_square_url=200}"/></notempty>
                 <h6>{$vo.title}</h6>
                 <p>{$vo.intro}</p>
-                <span class="colorless">{$vo.fcTime}</span>
+                <span class="colorless">{$vo.cTime|time_format}</span>
             </a>
         </li>
         </volist>
@@ -48,46 +70,9 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 </notempty>
 </body>
 <script type="text/javascript">
-    $(function(){
-        var winH = $(window).height(); //页面可视区域高度
-        var i = 1; //设置当前页数
-        var href = window.location.href;
-        $(window).scroll(function() {
-            var pageH = $(document.body).height();
-            var scrollT = $(window).scrollTop(); //滚动条top
-            var aa = (pageH-winH-scrollT)/winH;
-            var str = "";
-            var sstr = "";
-            var json;
-            if (aa<0.02){
-                i++;
-                $.post(href,{ajax:1, page:i},function(data){
-                    json = JSON.parse(data);
-                    if (json){
-                        $.each(json, function(index, array){
-                            if (array.cover)
-                                sstr = '<img src="' + array.coverurl + '"/>';
-                            else
-                                sstr = "";
-                            str =  '<li><a href=\"'+array.url+'\">'+sstr+'<h6>'+array.title+'</h6>'+'<p>'+array.intro+'</p>'+'<span class="colorless">'+array.fcTime+'</span></a></li>';
-                            $(".small_pic_list").append(str);
-                        });
-
-
-                    } else{
-                        //str = '<li>已经到底</li>';
-                        //$(".small_pic_list").append(str);
-                        return false;
-                    }
-                }, 'text');
-            }
-        });
-    });
-/*
 $(function(){
-	//$.WeiPHP.initBanner(true,5000);
+	$.WeiPHP.initBanner(true,5000,9/5);
 })
-*/
 
 </script>
 </html>
