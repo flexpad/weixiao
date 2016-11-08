@@ -17,6 +17,7 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 .small_pic_list li a img{ position:absolute; left:10px; top:10px; width:60px; height:60px;}
 .small_pic_list li a h6{ font-size:18px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .small_pic_list li a p{ color:#999; font-size:13px; line-height:22px;}
+.p{text-align: center}
 </style>
 <body id="weisite">
 <div class="container">
@@ -42,15 +43,15 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
     </section>
     </notempty>
     <ul class="small_pic_list">
-    <volist name="lists" id="vo">
-    	<li>
-        	<a href="{$vo.url}">
-            	<notempty name="vo.cover"><img src="{$vo.cover|get_square_url=200}"/></notempty>
-                <h6>{$vo.title}</h6>
-                <p>{$vo.intro}</p>
-                <span class="colorless">{$vo.cTime|time_format}</span>
-            </a>
-        </li>
+        <volist name="lists" id="vo">
+            <li>
+                <a href="{$vo.url}">
+                    <notempty name="vo.cover"><img src="{$vo.cover|get_square_url=200}"/></notempty>
+                    <h6>{$vo.title}</h6>
+                    <p>{$vo.intro}</p>
+                    <span class="colorless">{$vo.cTime|time_format}</span>
+                </a>
+            </li>
         </volist>
     </ul>
      <p class="p"></p>
@@ -73,7 +74,6 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 <script type="text/javascript">
 $(function(){
 	$.WeiPHP.initBanner(true,5000,9/5);
-    console.log("图文列表V1");
 })
 </script>
 <!--新增====================================================================-->
@@ -107,7 +107,7 @@ $(function(){
 
 
                     } else{
-                        str = '<h3>已经到底</h3>';
+                        str = '已经到底';
                         $(".p").html(str);
                         return false;
                     }
