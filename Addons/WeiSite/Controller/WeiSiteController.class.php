@@ -149,7 +149,7 @@ class WeiSiteController extends BaseController {
 				$page = I ( 'p', 1, 'intval' );
                 if (IS_AJAX) $page = intval(I('post.page'));
 				//else var_dump($page);
-				$row = isset ( $_REQUEST ['list_row'] ) ? intval ( $_REQUEST ['list_row'] ) : 8;
+				$row = isset ( $_REQUEST ['list_row'] ) ? intval ( $_REQUEST ['list_row'] ) : 15;
 				
 				$data = M ( 'custom_reply_news' )->where ( $map )->order ( 'sort asc, id DESC' )->page ( $page, $row )->select ();
 				if (empty ( $data )) {

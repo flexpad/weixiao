@@ -18,19 +18,19 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 </style>
 <body id="weisite">
 <div class="container">
-    
     <ul class="small_pic_list">
-    <volist name="lists" id="vo">
-    	<li>
-        	<a href="{$vo.url}">
-            	<notempty name="vo.cover"><img src="{$vo.coverurl}"/></notempty>
-                <h6>{$vo.title}</h6>
-                <p>{$vo.intro}</p>
-                <span class="colorless">{$vo.fcTime}</span>
-            </a>
-        </li>
+        <volist name="lists" id="vo">
+            <li>
+                <a href="{$vo.url}">
+                    <notempty name="vo.cover"><img src="{$vo.coverurl}"/></notempty>
+                    <h6>{$vo.title}</h6>
+                    <p>{$vo.intro}</p>
+                    <span class="colorless">{$vo.fcTime}</span>
+                </a>
+            </li>
         </volist>
     </ul>
+    <p class="p"></p>
     <!-- 分页 -->
     <div class="page"> {$_page|default=''} </div>
 </div>
@@ -46,7 +46,6 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 {$tongji_code}
 </p>
 </notempty>
-</body>
 <script type="text/javascript">
     $(function(){
         var winH = $(window).height(); //页面可视区域高度
@@ -58,44 +57,31 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
             var aa = (pageH-winH-scrollT)/winH;
             var str = "";
             var sstr = "";
-            console.log(aa);
+            var json;
             if (aa<0.02){
                 i++;
-                console.log(i);
-                $.post(href,{ajax:1, page:i},function(json){
-                    //console.log(json);
-                    var data = JSON.stringify(json);
-                    //var data = json;
-                    console.log(data);
-                    if (data){
-                        $.each(JSON.parse(data), function(index, array){
-                            //alert(array['coverurl']);
+                $.post(href,{ajax:1, page:i},function(data){
+                    json = JSON.parse(data);
+                    if (json){
+                        $.each(json, function(index, array){
                             if (array.cover)
                                 sstr = '<img src="' + array.coverurl + '"/>';
                             else
                                 sstr = "";
                             str =  '<li><a href=\"'+array.url+'\">'+sstr+'<h6>'+array.title+'</h6>'+'<p>'+array.intro+'</p>'+'<span class="colorless">'+array.fcTime+'</span></a></li>';
-                            //alert('str');
-                            //str = '<li>已经到底</li>';
                             $(".small_pic_list").append(str);
                         });
 
 
                     } else{
-                        //$("#nodata").show().html("已经到底了…");
-                        str = '<li>已经到底</li>';
-                        $(".small_pic_list").append(str);
+                        str = '<h3>已经到底</h3>';
+                        $(".p").html(str);
                         return false;
                     }
                 }, 'text');
             }
         });
     });
-/*
-$(function(){
-	//$.WeiPHP.initBanner(true,5000);
-})
-*/
-
 </script>
+</body>
 </html>

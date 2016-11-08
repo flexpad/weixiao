@@ -53,6 +53,7 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
         </li>
         </volist>
     </ul>
+     <p class="p"></p>
     <!-- 分页 -->
     <div class="page"> {$_page|default=''} </div>
 </div>
@@ -72,7 +73,53 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
 <script type="text/javascript">
 $(function(){
 	$.WeiPHP.initBanner(true,5000,9/5);
+    console.log("图文列表V1");
 })
+</script>
+<!--新增====================================================================-->
+<script type="text/javascript">
+    $(function(){
+         var winH = $(window).height(); //页面可视区域高度
+        var i = 1; //设置当前页数
+        var href = window.location.href;
+        $(window).scroll(function() {
+            var pageH = $(document.body).height();
+            var scrollT = $(window).scrollTop(); //滚动条top
+            var aa = (pageH-winH-scrollT)/winH;
+            var str = "";
+            var sstr = "";
+            var json;
+            if (aa<0.02){
+                console.log("1");
+                i++;
+                $.post(href,{ajax:1, page:i},function(data){
+                    console.log("2");
+                    json = JSON.parse(data);
+                    if (json){
+                        $.each(json, function(index, array){
+                            if (array.cover)
+                                sstr = '<img src="' + array.coverurl + '"/>';
+                            else
+                                sstr = "";
+                            str =  '<li><a href=\"'+array.url+'\">'+sstr+'<h6>'+array.title+'</h6>'+'<p>'+array.intro+'</p>'+'<span class="colorless">'+array.fcTime+'</span></a></li>';
+                            $(".small_pic_list").append(str);
+                        });
+
+
+                    } else{
+                        str = '<h3>已经到底</h3>';
+                        $(".p").html(str);
+                        return false;
+                    }
+                }, 'text');
+            }
+        });
+    });
+    /*
+     $(function(){
+     //$.WeiPHP.initBanner(true,5000);
+     })
+     */
 
 </script>
 </html>
