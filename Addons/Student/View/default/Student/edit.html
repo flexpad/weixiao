@@ -49,8 +49,8 @@
                   		<label class="item-label"><span class="need_flag">*</span>封面图片<span class="check-tips">图片高度控制在200px-400px之间</span></label>
                 		<div class="controls uploadrow2" data-max="1" title="点击修改图片" rel="cover">
                             <input type="file" id="upload_picture_cover">
-                            <input type="hidden" name="cover" id="cover_id_cover" value="{$data.cover}"/>
-                            <div class="upload-img-box" rel="img">
+                            <input type="hidden" name="file" id="cover_id_cover" value="{$data.file}"/>
+                            <div class="upload_file" rel="file">
                               <notempty name="data[cover]">
                                 <div class="upload-pre-item2"><img width="100" height="100" src="{$data.cover|get_cover_url}"/></div>
                                 <em class="edit_img_icon">&nbsp;</em>
@@ -218,7 +218,7 @@ $('#submit').click(function(){
 });
 
 $(function(){
-	initUploadImg();
+    initUploadFile();
 	
     $('.time').datetimepicker({
         format: 'yyyy-mm-dd hh:ii',
