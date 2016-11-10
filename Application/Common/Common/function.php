@@ -2334,7 +2334,7 @@ function importFormExcel($attach_id, $column, $dateColumn = array()) {
 			$objReader = \PHPExcel_IOFactory::createReader ( $format );
 			break;
 		default :
-			$format = 'excel2007';
+			$format = 'Excel2007';
 			$objReader = \PHPExcel_IOFactory::createReader ( $format );
 	}
 	
