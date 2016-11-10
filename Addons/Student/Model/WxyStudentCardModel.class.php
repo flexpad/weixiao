@@ -4,7 +4,7 @@ namespace Addons\Student\Model;
 use Think\Model;
 
 /**
- * Student模型
+ * Student_Card模型
  */
 class WxyStudentCardModel extends Model{
     public function addStudent($data){
@@ -18,5 +18,14 @@ class WxyStudentCardModel extends Model{
             $res = $this->add ( $data );
             return $res;   
         }           
+    }
+    
+    public function verify($map) {
+        $data = $this->where($map)->find();
+        if ($data != NULL) {
+            return $data;
+        }
+        else
+            return false;
     }
 }

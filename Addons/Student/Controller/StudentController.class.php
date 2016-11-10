@@ -98,7 +98,6 @@ class StudentController extends AddonsController{
         $token = $this->token;
         //$file_id = 7;
         //$data = $this->import_data_from_excel($file_id);
-
         if ($uid == 0) redirect(U('/Home/Public'));
         if (IS_POST) {
             $data['uid'] = $uid;
@@ -109,7 +108,7 @@ class StudentController extends AddonsController{
             $import_model = D('WxyStudentimport');
             $import_model->addImport($data);
             if ($this->import_data_from_excel($data['file'])) //import student data from uploaded Excel file.
-                $this->success('保存成功！', U ( 'import?model=' . $model ['name'], $this->get_param ), 600);
+                $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
         }

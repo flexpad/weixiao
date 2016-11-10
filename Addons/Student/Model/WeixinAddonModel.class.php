@@ -23,7 +23,7 @@ class WeixinAddonModel extends WeixinModel{
 		$param ['_id'] = $info ['id'];
 		$param ['token'] = get_token ();
 		$param ['openid'] = get_openid ();
-		$url = addons_url ( 'Student://Student/bind', $param );
+		$url = addons_url ( 'Student://Wap/index', $param );
 
 		//组装微信需要的图文数据，格式是固定的
 		$articles [0] = array (
