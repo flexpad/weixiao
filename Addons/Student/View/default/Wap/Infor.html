@@ -1,0 +1,51 @@
+<!-- 学生详情-->
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<style>
+    .informationUl{
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    .informationUl li{
+        margin: 5px;
+    }
+    .weui-btn_primary {
+        background-color: #337ab7;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+</style>
+<body>
+<div class="panel-group" id="accordion">
+    <volist name="list" id="vo">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$vo.sid}">{$vo.name}详细信息</a>
+                </h4>
+            </div>
+            <div id="collapse{$vo.sid}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <ul class="informationUl">
+                        <li>学号：{$vo.studentno}</li>
+                        <li>性别：{$vo.gender}</li>
+                        <li>来自学校：{$vo.school}</li>
+                        <li>年级：{$vo.grade}</li>
+                        <li>家长联系电话：{$vo.phone}</li>
+                        <li>
+                            <a href="{$vo.performance}" class="weui-btn weui-btn_primary weui-btn_mini">成绩查询</a>
+                            <a href="{$vo.attendance}" class="weui-btn weui-btn_primary weui-btn_mini">考勤查询</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </volist>
+</div>
+<script src="../Public/jquery-3.1.1.min.js"></script>
+<script src="../Public/bootstrap3.3.7/js/bootstrap.min.js"></script>
+</body>

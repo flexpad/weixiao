@@ -9,6 +9,7 @@
 
 namespace Addons\Student\Controller;
 
+use Addons\Student\Model\WxyStudentCareViewModel;
 use Home\Controller\AddonsController;
 
 class WapController extends AddonsController {
@@ -68,7 +69,7 @@ class WapController extends AddonsController {
                 $follow_data['syc_status'] = 0;
                 $follow_data['remark'] = 'added by student bind';
                 $follow_model->add($follow_data); //Add a record for new follower.
-                //Need adduser here also TBD.
+                //Need add user data here also TBD.
             }
             else if ($data == NULL && $userdata['subscribe'] == 0)
                 $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind'));
@@ -101,9 +102,13 @@ class WapController extends AddonsController {
         }
         else {
             $public_id = intval(I('publicid'));
+            $public_id = ($public_id > 0) ? $public_id:1;
+
             $map['id'] = $public_id;
             $data = M('public')->where($map)->find();
-            $this->token = $data['token'];
+            if ($this->token == NULL)
+                $this->token = $data['token'];
+
             //var_dump($public_id);
             //var_dump($this->token);
             $map2['openid'] = $openid;
@@ -113,105 +118,41 @@ class WapController extends AddonsController {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->display('bind_student');
-        /*
-        $this->model = $this->getModel ( 'forms_value' );
-        $this->forms_id = I ( 'forms_id', 0 );
-        $id = I ( 'id' );
+    }
 
-        $forms = M ( 'forms' )->find ( $this->forms_id );
-        $forms ['cover'] = ! empty ( $forms ['cover'] ) ? get_cover_url ( $forms ['cover'] ) : ADDON_PUBLIC_PATH . '/background.png';
-        $forms ['intro'] = str_replace ( chr ( 10 ), '<br/>', $forms ['intro'] );
-        $this->assign ( 'forms', $forms );
+    public function infor() {
+        $public_id = intval(I('publicid'));
+        $public_id = ($public_id > 0) ? $public_id:1;
 
-        if (! empty ( $id )) {
-            $act = 'save';
+        $map['id'] = $public_id;
+        $data = M('public')->where($map)->find();
 
-            $data = M ( get_table_name ( $this->model ['id'] ) )->find ( $id );
-            $data || $this->error ( '数据不存在！' );
+        if ($this->token == NULL)
+            $this->token = $data['token'];
 
-            // dump($data);
-            $value = unserialize ( htmlspecialchars_decode ( $data ['value'] ) );
-            // dump ( $value );
-            unset ( $data ['value'] );
-            $data = array_merge ( $data, $value );
-            $this->assign ( 'data', $data );
-            // dump($data);
-        } else {
-            $act = 'add';
-            if ($this->mid != 0 && $this->mid != '-1') {
-                $map ['uid'] = $this->mid;
-                $map ['forms_id'] = $this->forms_id;
+        //var_dump($public_id);
+        //var_dump($data);
 
-                $data = M ( get_table_name ( $this->model ['id'] ) )->where ( $map )->find ();
-                if ($data ) {
-                    $id = $data['id'];
-                    redirect (U('index',array('forms_id'=>$this->forms_id,'id'=>$id)));
-                }
-            }
+        unset($map);
+        unset($data);
+        $studentcare_view = D('WxyStudentCareView');
+        $map['token'] = $this->token;
+        //var_dump($studentcare_view);
+        if ($this->uid) {
+            $map['uid'] = $this->uid;
         }
-
-        // dump ( $forms );
-        $map ['forms_id'] = $this->forms_id;
-        $map ['token'] = get_token ();
-        $fields = M ( 'forms_attribute' )->where ( $map )->order ( 'sort asc, id asc' )->select ();
-
-        if (IS_POST) {
-            foreach ( $fields as $vo ) {
-                $error_tip = ! empty ( $vo ['error_info'] ) ? $vo ['error_info'] : '请正确输入' . $vo ['title'] . '的值';
-                $value = $_POST [$vo ['name']];
-                if ($vo['type'] == 'radio' || $vo['type'] == 'checkbox'){
-                    if (($vo ['is_must'] &&  is_null ( $value )) || (! empty ( $vo ['validate_rule'] ) && ! M ()->regex ( $value, $vo ['validate_rule'] ))) {
-                        $this->error ( $error_tip );
-                        exit ();
-                    }
-                }else {
-                    if (($vo ['is_must'] &&  empty ( $value )) || (! empty ( $vo ['validate_rule'] ) && ! M ()->regex ( $value, $vo ['validate_rule'] ))) {
-                        $this->error ( $error_tip );
-                        exit ();
-                    }
-                }
-
-
-                $post [$vo ['name']] = $vo ['type'] == 'datetime' ? strtotime ( $_POST [$vo ['name']] ) : $_POST [$vo ['name']];
-                unset ( $_POST [$vo ['name']] );
-            }
-
-            $_POST ['value'] = serialize ( $post );
-            $act == 'add' && $_POST ['uid'] = $this->mid;
-            // dump($_POST);exit;
-            $Model = D ( parse_name ( get_table_name ( $this->model ['id'] ), 1 ) );
-
-            // 获取模型的字段信息
-            $Model = $this->checkAttr ( $Model, $this->model ['id'], $fields );
-
-            if ($Model->create () && $res = $Model->$act ()) {
-                // 增加积分
-                add_credit ( 'forms' );
-
-                $param ['forms_id'] = $this->forms_id;
-                $param ['id'] = $act == 'add' ? $res : $id;
-                $param ['model'] = $this->model ['id'];
-                $url = empty ( $forms ['jump_url'] ) ? U ( 'index', $param ) : $forms ['jump_url'];
-
-                $tip = ! empty ( $forms ['finish_tip'] ) ? $forms ['finish_tip'] : '提交成功，谢谢参与';
-                $this->success ( $tip, $url, 5 );
-            } else {
-                $this->error ( $Model->getError () );
-            }
-            exit ();
+        else {
+            $map['openid'] = get_openid();
         }
+        $map['is_audit'] = 1;
+        $data = $studentcare_view->where($map)->select();
+        //var_dump($data);
 
-        $fields [] = array (
-            'is_show' => 4,
-            'name' => 'forms_id',
-            'value' => $this->forms_id
-        );
-        $this->assign ( 'fields', $fields );
-
-        $this->display ();
-        */
+        $this->assign('list', $data);
+        $this->display('Infor');
     }
 
 }

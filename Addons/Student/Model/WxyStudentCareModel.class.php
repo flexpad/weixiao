@@ -17,7 +17,7 @@ class WxyStudentCareModel extends Model{
         $student = $studentcard_model->verify($student);
         if ($student == NULL) return false;
 
-        $data['sid'] = $student['sid'];
+        $data['sid'] = $student['sid']; // To see changed to $student['id']
         $data['studentno'] = $student['studentno'];
         $data['uid'] = $user['uid'];
         $data['openid'] = $user['openid'];
@@ -42,4 +42,23 @@ class WxyStudentCareModel extends Model{
         }
 
     }
+    /*
+    public function getInfor($uid, $openid) {
+        $studentcard_model = D('WxyStudentCard');
+        if ($uid) {
+            $map['uid'] = $uid;
+            $data = $this->where($map)->select();
+        }
+        else {
+            $map['openid'] = $openid;
+            $data = $this->where($map)->select();
+        }
+
+        foreach ($data as $index => $vo) {
+
+        }
+        return $data;
+
+    }
+    */
 }
