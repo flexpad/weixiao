@@ -85,9 +85,14 @@ class StudentController extends AddonsController{
 
         $this->display();
     }
+    /*
+    public function edit(){
 
+        $this->display();
+    }
+    */
     public function add(){
-        $this->display('edit');
+        $this->display('add');
     }
 
     public function import(){

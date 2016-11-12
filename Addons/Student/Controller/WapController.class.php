@@ -35,20 +35,21 @@ class WapController extends AddonsController {
 
     }
     public function bind() {
+        $openid = get_openid();
+        $studentcare_model = D('WxyStudentCare');
         if (IS_POST) {
             $follow_data = array();
             $studentcare = array();
-            $studentcare_model = D('WxyStudentCare');
             $studentcard_model = D('WxyStudentCard');
             $studentno = trim(I('studentno'));
             $name = trim(I('post.name'));
             $phone = trim(I('post.mobile'));
 
-            $map['openid'] = $user['openid'] = get_openid();
+            $map['openid'] = $user['openid'] = $openid;
             $user['uid'] = $this->uid;
 
             $follow_model = M('public_follow');
-            $data = $follow_model->where($map)->select();
+            $data = $follow_model->where($map)->find();
 
             if ($this->token == NULL || $user['openid'] == NULL)
                 $this->error("请在微信中打开！");
@@ -57,7 +58,8 @@ class WapController extends AddonsController {
             $suburl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $access_token . '&openid=' . $user ['openid'] . '&lang=zh_CN';
             $userdata = file_get_contents ( $suburl );
             $userdata = json_decode ( $userdata, true );
-
+            //var_dump($userdata);
+            //exit();
             if ($data == NULL && $userdata['subscribe'] == 1) {
                 $follow_data['uid'] = 0;
                 $follow_data['openid'] = $map['openid'];
@@ -66,28 +68,49 @@ class WapController extends AddonsController {
                 $follow_data['syc_status'] = 0;
                 $follow_data['remark'] = 'added by student bind';
                 $follow_model->add($follow_data); //Add a record for new follower.
+                //Need adduser here also TBD.
             }
             else if ($data == NULL && $userdata['subscribe'] == 0)
-                $this->error("请关注我们的微信公号后再绑定学生！！！");
+                $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind'));
             else if ($data != NULL) {
-                $student['studentno'] = $studentno;
-                $student['name'] = $name;
-                $student['phone'] = $phone;
-                $student['token'] = $this->token;
-                //$student = $studentcard_model->verify($student);
-                $res = $studentcare_model->approve($student, $user, $this->token);
-                if ($res == 2) {
-                    $this->success("已绑定学号为：". $student['studentno']. "的学生！", U('bind'));
+                $data['has_subscribe'] = $userdata['subscribe'];
+                if ($userdata['subscribe'] == 0) {
+                    $follow_model->where($map)->save($data);
+                    $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind'));
                 }
-                else
-                    if ($res == 1)
-                        $this->error("已绑定过：". $student['studentno']. "号学生！", U('bind'));
-                    else 
-                        $this->error("学生信息有误，请返回重新输入！", U('bind'));
+                else {
+                    $follow_model->where($map)->save($data);
+                    $student['studentno'] = $studentno;
+                    $student['name'] = $name;
+                    $student['phone'] = $phone;
+                    $student['token'] = $this->token;
+                    //$student = $studentcard_model->verify($student);
+                    $res = $studentcare_model->approve($student, $user, $this->token);
+                    if ($res == 2) {
+                        $this->success("已绑定学号为：". $student['studentno']. "的学生！", U('bind'));
+                    }
+                    else
+                        if ($res == 1)
+                            $this->error("已绑定过：". $student['studentno']. "号学生！", U('bind'));
+                        else
+                            $this->error("学生信息有误，请返回重新输入！", U('bind'));
+
+                }
             }
             $this->error("学生信息有误，请返回重新输入！");
         }
-        else $this->display('bind_student');
+        else {
+            $public_id = intval(I('publicid'));
+            $map['id'] = $public_id;
+            $data = M('public')->where($map)->find();
+            $this->token = $data['token'];
+            //var_dump($public_id);
+            //var_dump($this->token);
+            $map2['openid'] = $openid;
+            $this->assign('care_count', $studentcare_model->where($map2)->count());
+            $this->assign('oid', $data['public_name']);
+            $this->display('bind_student');
+        }
     }
 
     public function index() {

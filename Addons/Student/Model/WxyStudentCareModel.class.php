@@ -36,6 +36,7 @@ class WxyStudentCareModel extends Model{
             return 1;
         } else {
             $data['is_audit'] = 1;
+            $data['is_init'] = 1;
             $this->add ($data);
             return 2;
         }
