@@ -30,7 +30,7 @@ class MailModel {
 		require_once (VENDOR_PATH . '/phpmailer/class.pop3.php');
 		require_once (VENDOR_PATH . '/phpmailer/class.smtp.php');
 		
-		$this->option = array (
+		/*$this->option = array (
 				'email_sendtype' => C ( 'email_sendtype' ),
 				'email_host' => C ( 'email_host' ),
 				'email_port' => C ( 'email_port' ),
@@ -41,6 +41,7 @@ class MailModel {
 				'email_sender_email' => C ( 'email_sender_email' ),
 				'email_reply_account' => C ( 'email_sender_email' ) 
 		);
+		*/
 	}
 	
 	/**
@@ -51,7 +52,9 @@ class MailModel {
 	 * @return boolean 是否发送成功
 	 */
 	public function test_email($sendto_email) {
-		return $this->send_email ( $sendto_email, '测试邮件', '这是一封测试邮件' );
+		$sender_info['email_sender_name'] = $this->option['email_sender_name'];
+		$sender_info['email_account'] = $this->option['email_account'];		
+		return $this->send_email ( $sendto_email, '测试邮件', '这是一封测试邮件', $sender_info );
 	}
 	
 	/**
@@ -95,20 +98,19 @@ class MailModel {
 		} else {
 			$mail->Mailer = "mail";
 		}
-		
-		$mail->Sender = $this->option ['email_account']; // 真正的发件邮箱
-		
-		$mail->SetFrom ( $sender_email, $sender_name, 0 ); // 设置发件人信息
+
+		$mail->From = $this->option['email_account'];
+		$mail->FromName = $this->option ['email_sender_name']; // 真正的发件邮箱
+		//$mail->SetFrom ( $sender_email, $sender_name, 0 ); // 设置发件人信息
 		
 		$mail->CharSet = "UTF-8"; // 这里指定字符集！
 		$mail->Encoding = "base64";
-		
 		if (is_array ( $sendto_email )) {
 			foreach ( $sendto_email as $v ) {
-				$mail->AddAddress ( $v );
+				$mail->addAddress ( $v );
 			}
 		} else {
-			$mail->AddAddress ( $sendto_email );
+			$mail->addAddress ( $sendto_email );
 		}
 		
 		// 以HTML方式发送
@@ -117,11 +119,9 @@ class MailModel {
 		$mail->Body = $body; // 邮件内容
 		$mail->AltBody = "text/html";
 		$mail->SMTPDebug = false;
-		
-		$result = $mail->Send ();
-		
+		$result = $mail->send();
+
 		$this->setMessage ( $mail->ErrorInfo );
-		
 		return $result;
 	}
 	public function setMessage($message) {
