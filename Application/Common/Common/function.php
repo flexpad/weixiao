@@ -1301,10 +1301,12 @@ function get_list_field($data, $grid, $model) {
 			$href = str_replace ( array (
 					'[DELETE]',
 					'[EDIT]',
+					'[SEND]',
 					'[MODEL]' 
 			), array (
 					'del?id=[id]&model=[MODEL]',
 					'edit?id=[id]&model=[MODEL]',
+					'send?id=[id]&model=[MODEL]',
 					$model ['id'] 
 			), $href );
 			
@@ -1353,8 +1355,8 @@ function get_name_by_status($val, $name, $model_id) {
 				'!=""' 
 		);
 		$map ['model_id'] = $model_id;
-		$list = M ( 'attribute' )->where ( $map )->select ();
-		foreach ( $list as $attr ) {
+        $list = M ( 'attribute' )->where ( $map )->select ();
+        foreach ( $list as $attr ) {
 			if (empty ( $attr ['extra'] ))
 				continue;
 			
