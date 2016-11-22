@@ -1,0 +1,101 @@
+<extend name="Base/common" />
+<block name="body">
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+        <ul class="tab-nav nav">
+            <li class=""><a href="{:U('lists')}">考勤列表<b class="arrow fa fa-sort-up"></b></a></li>
+            <li class="current"><a href="{:U('import')}">考勤导入<b class="arrow fa fa-sort-up"></b></a></li>
+        </ul>
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <form id="form" action="{:U('import?model='.$model['id'])}" method="post" class="form-horizontal">
+            <div class="row">
+            <div class="form-item cf col-md-9">
+                    <label class="item-label"><span class="need_flag">*</span>学生考勤Excel文件上传<span class="check-tips">请选择符合格式的.xls或.xlsx文件</span></label>
+                    <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
+                        <input type="file" id="upload_file_file">
+                        <input type="hidden" name="file" value="{$data.file}"/>
+                        <div class="upload-img-box"><present name="data[$field['name']]">
+                            <div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]|get_table_field=###,'id','name','File'}</div>
+                        </present>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="form-item col-md-3">
+                  <input type="hidden" name="id" value="{$data.id}">
+                  <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            </div>
+            </div>
+            <!-- <div class="form_bh"> </div> -->
+        </form>
+          <!-- 数据列表 -->
+
+          <div class="data-table">
+              <div class="table-striped">
+                  <table cellpadding="0" cellspacing="1">
+                      <thead>
+                      <tr>
+                          <th class="row-selected row-selected"> <input class="check-all" type="checkbox">
+                          </th>
+                          <volist name="list_grids" id="field">
+                              <th>{$field.title}</th>
+                          </volist>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <volist name="list_data" id="data">
+                          <tr>
+                              <td><input class="ids" type="checkbox" value="{$data['id']}" name="ids[]"></td>
+                              <volist name="list_grids" id="grid">
+                                  <td>{:get_list_field($data,$grid,$model)}</td>
+                              </volist>
+                          </tr>
+                      </volist>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="page"> {$_page|default=''} </div>
+
+      </div>
+
+
+</div>
+</section>
+</div>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+$('#submit').click(function(){
+    $('#form').submit();
+});
+
+$(function(){
+    initUploadFile();
+	
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    showTab();
+	hide_move();
+	
+	$('.select_type').each(function(){ select_type(this); });
+	$('.select_type').change(function(){ select_type(this); });
+});
+
+</script>
+</block>

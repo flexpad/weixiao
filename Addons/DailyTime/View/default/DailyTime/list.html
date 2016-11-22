@@ -4,6 +4,7 @@
         <section id="contents">
             <ul class="tab-nav nav">
                 <li class="current"><a href="{:U('lists')}">考勤列表<b class="arrow fa fa-sort-up"></b></a></li>
+                <li class=""><a href="{:U('import')}">考勤导入<b class="arrow fa fa-sort-up"></b></a></li>
             </ul>
 
             <div class="table-bar">
@@ -18,7 +19,7 @@
                 <div class="search-form fr cf">
                     <div class="sleft">
                         <php>empty($search_key) && $search_key=$model['search_key'];empty($search_key) && $search_key='title';</php>
-                        <input type="text" name="{$search_key}" class="search-input" value="{:I($search_key)}" placeholder="请输入投票标题">
+                        <input type="text" name="{$search_key}" class="search-input" value="{:I($search_key)}" placeholder="请输入查询学号">
                         <a class="sch-btn" href="javascript:;" id="search" url="{:U('lists','model='.$model['name'],false)}"><i class="btn-search"></i></a> </div>
                 </div>
             </div>
