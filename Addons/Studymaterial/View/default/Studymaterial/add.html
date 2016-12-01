@@ -1,0 +1,170 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left:2px;
+}
+.cf{
+	margin-left:20px;
+}
+</style>
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      <ul class="tab-nav nav">
+        <li class=""><a href="{:U('lists')}">学习资料</a></li>
+        <li class="current"><a href="javascript:;">学生资料编辑<b class="arrow fa fa-sort"></b></a></li>
+      </ul>
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <form id="form" action="{:U('add?model='.$model['id'], $get_param)}" method="post" class="form-horizontal">
+            <div class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>阶段（小学、初中、高中或通用）{$token}<span class="check-tips"></span></label>
+                    <div class="controls">
+                        <select name="stage">
+                            <option value="小学">小学</option>
+                            <option value="初中">初中</option>
+                            <option value="高中">高中</option>
+                            <option value="政策">政策</option>
+                            <option value="通用">通用</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>科目<span class="check-tips"></span></label>
+
+                    <select name="subject">
+                        <option value="语文">语文</option>
+                        <option value="数学">数学</option>
+                        <option value="英语">英语</option>
+                        <option value="理综">理综</option>
+                        <option value="物理">物理</option>
+                        <option value="化学">化学</option>
+                        <option value="生物">生物</option>
+                        <option value="历史">历史</option>
+                        <option value="地理">地理</option>
+                        <option value="思想政治">思想政治</option>
+                        <option value="其他">其他</option>
+                    </select>
+            </div>
+            <div class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>标题<span class="check-tips"></span></label>
+                    <div class="controls">
+                      <input type="text" class="text input-large" name="title" value="{$data.title}">
+                    </div>
+                  </div>  
+            <div class="form-item cf">
+                  		<label class="item-label"><span class="need_flag">*</span>资料文件<span class="check-tips">文件大小控制在5M以内</span></label>
+                        <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
+                            <input type="file" id="upload_file_file">
+                            <input type="hidden" name="file" value="{$data.fileid}"/>
+                            <div class="upload-img-box"><present name="data[$field['name']]">
+                                <div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]|get_table_field=###,'id','name','File'}</div>
+                            </present>
+                            </div>
+                        </div>
+
+                  </div>
+                  
+            <div class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>描述<span class="check-tips"></span></label>
+                    <div class="controls">
+                      <label class="textarea input-large">
+                      <textarea class="text input-large" name="description" >{$data.description}</textarea>
+                      </label>
+                    </div>
+                  </div> 
+            <div class="form-item cf toggle-prize_type" style="display:none">
+              			<label class="item-label"><span class="need_flag">*</span>是否允许编辑<span class="check-tips"></span></label>
+              			<div class="controls">
+                        	<select name="can_edit">
+                                <volist name=":parse_field_attr($fields['type']['extra'])" id="vo">
+                               		<option value="{$key}" <eq name="data[type]" value="$key">selected="selected"</eq>>{$vo|clean_hide_attr} </option>
+                                </volist> 
+                            </select>       
+                        </div>
+            </div>
+
+    <div class="form-item form_bh">
+      <input type="hidden" name="id" value="{$data.id}">
+      <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+    </div>
+  </form>
+
+
+</div>
+</section>
+</div>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+$('#submit').click(function(){
+    $('#form').submit();
+});
+
+$(function(){
+    initUploadFile();
+	
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    showTab();
+	hide_move();
+	
+	$('.select_type').each(function(){ select_type(this); });
+	$('.select_type').change(function(){ select_type(this); });
+});
+
+function show_more(_this){	
+	var obj = $(_this).parent();
+	
+	var value = obj.find('.value').val();
+	var remark = obj.find('.remark').val();
+	var validate_rule = obj.find('.validate_rule').val();
+	var error_info = obj.find('.error_info').val();
+	
+	var html = $('#default_more_html').html().replace("[value]", value).replace("[remark]", remark).replace("[validate_rule]", validate_rule).replace("[error_info]", error_info);
+	$contentHtml = $(html);
+	  
+	
+	$.Dialog.open("高级设置",{width:500,height:500},$contentHtml);
+	
+	$('.cancel_btn',$contentHtml).click(function(){
+		$.Dialog.close();
+	})
+	$('.confirm_btn',$contentHtml).click(function(){
+		obj.find('.value').val( $('#open_value',$contentHtml).val() );
+		obj.find('.remark').val( $('#open_remark',$contentHtml).val() );
+		obj.find('.validate_rule').val( $('#open_validate_rule',$contentHtml).val() );
+		obj.find('.error_info').val( $('#open_error_info',$contentHtml).val() );
+		
+		$.Dialog.close();
+	})
+}
+</script>
+</block>
