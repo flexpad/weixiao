@@ -44,12 +44,25 @@
             <!--<p class="bind_tips">手机号码仅用于验证身份，不会被公开，请放心输入。</p>-->
         </div>
     </form>
-    <if condition="($care_count gt 1)">
+    <if condition="($care_count gt 0)">
         <div style="text-align: center;margin-top: 20px">
             <p>您已经绑定了<span>{$care_count}</span>位学生</p>
+            <p><a href ="{:addons_url('Student://Wap/infor')}">查看已绑定学生信息</a></p>
         </div>
     </if>
 </div>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
 <block name="script">
     <script type="text/javascript">
         var reSentTime = 60;

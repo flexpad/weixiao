@@ -19,6 +19,6 @@ class WxyStudentCareViewModel extends ViewModel
                                 'school' => 'school',
                                 'grade'  => 'grade',
                                 'phone'  => 'phone',
-                                '_on'=>'WxyStudentCare.sid = WxyStudentCard.sid'), // To see changed to WxyStudentCard.id
+                                '_on'=>'WxyStudentCare.sid = WxyStudentCard.id'), // To see changed to WxyStudentCard.id
     );
 }

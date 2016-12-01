@@ -1,0 +1,121 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<title></title>
+<style>
+    .informationUl{
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    .informationUl li{
+        margin: 5px;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+
+    .attendance_head,.informationUl{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    .attendance-hd-lb{
+        width: 15%;display: inline-block;
+    }
+    .attendance-lb{
+        margin-left: 15px;margin-top: -30px;
+    }
+    .attendance-bd{
+        display: inline-block;width: 80%;
+    }
+</style>
+
+<body>
+<div class="attendance_head">
+    <div class="institution_name">
+        <img src="{:ADDON_PUBLIC_PATH}/A7.png" alt="" width="90px" height="50px">
+        <p  class="attendance_head_p">考&nbsp;&nbsp;勤</p>
+    </div>
+    <div>
+        <p class="attendance_left">学号：{$data['studentno']}</p>
+        <p class="attendance_right">姓名：{$data['student_name']}</p>
+    </div>
+</div>
+<div class="weui-cell">
+    <div class="weui-cell__hd attendance-hd-lb" >
+        <label for="" class="weui-label attendance-lb" >日期</label>
+    </div>
+    <div class="weui-cell__bd attendance-bd" >
+        <input class="weui-input" type="date" value="" style="padding:8px;"/>
+    </div>
+</div>
+<div class="panel-group" id="accordion">
+    <volist name="data" id="vo">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$i}">
+                        <div>
+                            <p class="attendance_left">{$data['course_name']}</p>
+                            <p class="attendance_right">{$data['teacher']}</p>
+                        </div>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse{$i}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <ul class="informationUl">
+                        <li>
+                            <p class="attendance_left">到达时间：</p>
+                            <p class="attendance_right">{$data['arriveTime']}</p>
+                        </li>
+                        <li>
+                            <p class="attendance_left">离开时间：</p>
+                            <p class="attendance_right">{$data['leaveTime']}</p>
+                        </li>
+                        <li>
+                            <p class="attendance_left">状态：</p>
+                            <p class="attendance_right">{$data['state']}</p>
+                        </li>
+                        <li>
+                            <p class="attendance_left">备注：</p>
+                            <p class="attendance_right">{$data['description']}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </volist>
+
+</div>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+</body>

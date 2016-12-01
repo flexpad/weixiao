@@ -1,0 +1,151 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<title></title>
+<style>
+    .informationUl{
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    .informationUl li{
+        margin: 5px;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+
+    .attendance_head,.informationUl{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    .attendance-hd-lb{
+        width: 15%;display: inline-block;
+    }
+    .attendance-lb{
+        margin-left: 15px;margin-top: -30px;
+    }
+    .attendance-bd{
+        display: inline-block;width: 80%;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    .omit_show{
+        width: 100%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+    }
+    .collapse_left{
+        display:inline-block;
+        margin-left: 15px;
+        margin-bottom: 0px;
+    }
+    .collapse_right{
+        display:inline-block;
+        position: absolute;
+        right: 30px;
+        margin-bottom: 0px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+</style>
+
+<body>
+<div class="attendance_head">
+    <div class="institution_name">
+        <img src="{:ADDON_PUBLIC_PATH}/A0.png" alt="" width="90px" height="50px">
+        <p  class="attendance_head_p">成绩和表现</p>
+    </div>
+    <div>
+        <p class="attendance_left">学号：{$studentno}</p>
+        <p class="attendance_right">姓名：{$student_name}</p>
+    </div>
+</div>
+<div class="weui-cell">
+    <div class="weui-cell__hd attendance-hd-lb" >
+        <label for="" class="weui-label attendance-lb" >日期</label>
+    </div>
+    <div class="weui-cell__bd attendance-bd" >
+        <input class="weui-input" type="date" value="" style="padding:8px;"/>
+    </div>
+</div>
+<div class="panel-group" id="accordion">
+    <volist name="data" id="vo">
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$i}">
+                    <div>
+                        <p class="omit_show">课程：{$vo.course_name}</p>
+                        <p  class="collapse_left">{$vo.classdate}</p>
+                        <p  class="collapse_right">{$vo.teacher}</p>
+                    </div>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse{$i}" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="informationUl">
+                    <li>
+                        <p class="attendance_left">课堂表现（70分）：</p>
+                        <p class="attendance_right">{$vo.score1}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">出勤情况（10分）：</p>
+                        <p class="attendance_right">{$vo.score2}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">作业完成（20分）：</p>
+                        <p class="attendance_right">{$vo.score3}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">总分：</p>
+                        <p class="attendance_right">{$vo.score}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">小测试：</p>
+                        <p class="attendance_right">{$vo.exmscore}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </volist>
+</div>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+</body>

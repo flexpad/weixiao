@@ -6,6 +6,7 @@ class CareController extends AddonsController
 {
     protected $model;
     protected $token;
+    protected $school;
 
     public function __construct() {
         if (_ACTION == 'show') {
@@ -15,6 +16,8 @@ class CareController extends AddonsController
         parent::__construct ();
         $this->model = $this->getModel('WxyStudentCare'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
+        $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
+
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
 

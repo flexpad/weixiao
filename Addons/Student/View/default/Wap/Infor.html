@@ -18,34 +18,80 @@
         background-color:#d9edf7;
         color: #31708f;
     }
+
+    .attendance_head{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
 </style>
 <body>
 <div class="panel-group" id="accordion">
-    <volist name="list" id="vo">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$vo.sid}">{$vo.name}详细信息</a>
-                </h4>
-            </div>
-            <div id="collapse{$vo.sid}" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <ul class="informationUl">
-                        <li>学号：{$vo.studentno}</li>
-                        <li>性别：{$vo.gender}</li>
-                        <li>来自学校：{$vo.school}</li>
-                        <li>年级：{$vo.grade}</li>
-                        <li>家长联系电话：{$vo.phone}</li>
-                        <li>
-                            <a href="{$vo.performance}" class="weui-btn weui-btn_primary weui-btn_mini">成绩查询</a>
-                            <a href="{$vo.attendance}" class="weui-btn weui-btn_primary weui-btn_mini">考勤查询</a>
-                        </li>
-                    </ul>
+
+    <div class="attendance_head">
+        <div class="institution_name">
+            <img src="{:ADDON_PUBLIC_PATH}/A37.png" alt="" >
+            <p  class="attendance_head_p">学生详情</p>
+        </div>
+    </div>
+
+    <IF>
+        <volist name="list" id="vo">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$vo.sid}">{$vo.name}详细信息</a>
+                    </h4>
+                </div>
+                <div id="collapse{$vo.sid}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="informationUl">
+                            <li>学号：{$vo.studentno}</li>
+                            <li>性别：{$vo.gender}</li>
+                            <li>来自学校：{$vo.school}</li>
+                            <li>年级：{$vo.grade}</li>
+                            <li>家长联系电话：{$vo.phone}</li>
+                            <li>
+                                <a href="{:U('addon/Student/Wap/score', array('publicid'=>$public_id, 'studentno' => $vo[studentno]))}" class="weui-btn weui-btn_primary weui-btn_mini">成绩查询</a>
+                                <a href="{:U('addon/Student/Wap/score', array('publicid'=>$public_id, 'studentno' => $vo[studentno]))}" class="weui-btn weui-btn_primary weui-btn_mini">考勤查询</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </volist>
+        </volist>
+    </IF>
+
 </div>
-<script src="../Public/jquery-3.1.1.min.js"></script>
-<script src="../Public/bootstrap3.3.7/js/bootstrap.min.js"></script>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
 </body>

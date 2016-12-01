@@ -1,0 +1,186 @@
+<extend name="Base/common" />
+<block name="body">
+  
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      <include file="Addons/_nav" />
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <php>$post_url || $post_url = U('edit?id='.$data['id'] . '&model='.$model['id'], $get_param);</php>
+        <form id="form" action="{$post_url}" method="post" class="form-horizontal form-center">
+
+            <div class="form-item cf">
+                <label class="item-label">*</span>学号<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="number" class="text" name="studentno" value="{$data['studentno']}">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>姓名<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="name" value="{$data['name']}">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>性别<span class="check-tips"></span></label>
+                <div class="controls">
+                    <select name="gender" value="$data['gender']">
+                        <if condition="$data['gender'] eq 2">
+                            <option selected>女生</option>
+                            <else />
+                            <option >女生</option>
+                        </if>
+                        <if condition="$data['gender'] eq 1">
+                            <option selected>男生</option>
+                            <else />
+                            <option >男生</option>
+                        </if>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-item cf">
+                <label class="item-label">*</span>来自学校<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="school" value="{$data['school']}">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>年级<span class="check-tips"></span></label>
+                <div class="controls">
+                    <select name="grade" value="$data['grade']">
+                        <if condition="$data['grade'] eq 1">
+                            <option selected>一年级</option>
+                        <else />
+                            <option >一年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 2">
+                            <option selected>二年级</option>
+                            <else />
+                            <option >二年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 3">
+                            <option selected>三年级</option>
+                            <else />
+                            <option >三年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 4">
+                            <option selected>四年级</option>
+                            <else />
+                            <option >四年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 5">
+                            <option selected>五年级</option>
+                            <else />
+                            <option >五年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 6">
+                            <option selected>六年级</option>
+                            <else />
+                            <option >六年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 7">
+                            <option selected>初中一年级</option>
+                            <else />
+                            <option >初中一年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 8">
+                            <option selected>初中二年级</option>
+                            <else />
+                            <option >初中二年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 9">
+                            <option selected>初中三年级</option>
+                            <else />
+                            <option >初中三年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 10">
+                            <option selected>高中一年级</option>
+                            <else />
+                            <option >高中一年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 11">
+                            <option selected>高中二年级</option>
+                            <else />
+                            <option >高中二年级</option>
+                        </if>
+                        <if condition="$data['grade'] eq 12">
+                            <option selected>高中三年级</option>
+                            <else />
+                            <option >高中三年级</option>
+                        </if>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>联系电话<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="phone" value="{$data['phone']}">
+                </div>
+            </div>
+
+        <div class="form-item form_bh" style="text-align:center">
+            <notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"></notempty>
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+          </div>
+      </form>
+      </div>
+    </section>
+  </div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php>if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    ';</php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+  $(function(){
+	var UploadFileExts = "{$UploadFileExts}";
+	initUploadImg();
+	if(UploadFileExts!=""){
+		initUploadFile(function(){},UploadFileExts);
+	}else{
+		initUploadFile();
+	}
+   
+   $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });	
+    showTab();
+	
+	$('.toggle-data').each(function(){
+		var data = $(this).attr('toggle-data');
+		if(data=='') return true;		
+		
+	     if($(this).is(":selected") || $(this).is(":checked")){
+			 change_event(this)
+		 }
+	});
+	
+	$('.toggle-data').bind("click",function(){ change_event(this) });
+	$('select').change(function(){
+		$('.toggle-data').each(function(){
+			var data = $(this).attr('toggle-data');
+			if(data=='') return true;		
+			
+			 if($(this).is(":selected") || $(this).is(":checked")){
+				 change_event(this)
+			 }
+		});
+	});
+});
+</script> 
+</block>

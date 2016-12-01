@@ -6,6 +6,7 @@ use Home\Controller\AddonsController;
 class StudentController extends AddonsController{
     protected $model;
     protected $token;
+    protected $school;
     public function __construct() {
         if (_ACTION == 'show') {
             $GLOBALS ['is_wap'] = true;
@@ -14,6 +15,8 @@ class StudentController extends AddonsController{
         parent::__construct ();
         $this->model = $this->getModel('WxyStudentCard'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
+        $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
+
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
 
@@ -95,6 +98,25 @@ class StudentController extends AddonsController{
         $this->display('add');
     }
 
+    public function edit() {
+        if (I('id') == NULL) $this->error("学生ID未输入！");
+        $sid  = intval(I('id'));
+        //var_dump($sid);
+
+        $model = D('WxyStudentCard');
+        $map['id'] = $sid;
+        $data = $model->where($map)->find();
+        /*
+        $grade = ['','一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级', '高一', '高二', '高三'];
+        $gender = ['','女生','男生'];
+        $data['gender'] = $gender[intval($data['gender'])];
+        $data['grade'] = $grade[intval($data['grade'])];
+        */
+        $this->assign('data', $data);
+        //var_dump($data);
+        $this->display('edit');
+    }
+
     public function import(){
 
         //var_dump($this->uid);
@@ -110,6 +132,7 @@ class StudentController extends AddonsController{
             $data['file'] = I('post.file');
             $data['date'] = date('Y-m-d h:i:sa');
             $data['comment'] = I('post.comment');
+            if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = D('WxyStudentimport');
             $import_model->addImport($data);
             if ($this->import_data_from_excel($data['file'])) //import student data from uploaded Excel file.

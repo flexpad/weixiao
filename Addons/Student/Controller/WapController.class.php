@@ -13,8 +13,30 @@ use Addons\Student\Model\WxyStudentCareViewModel;
 use Home\Controller\AddonsController;
 
 class WapController extends AddonsController {
+    var $config;
+    function _initialize() {
+        parent::_initialize ();
+        $this->assign('nav',null);
+        $config = getAddonConfig ( 'WeiSite' );
+        $config ['cover_url'] = get_cover_url ( $config ['cover'] );
+        $config['background_arr']=explode(',', $config['background']);
+        $config ['background_id'] = $config ['background_arr'][0];
+        $config ['background'] = get_cover_url ( $config ['background_id'] );
+        $this->config = $config;
+        $this->assign ( 'config', $config );
+        //dump ( $config );
+        // dump(get_token());
+
+        // 定义模板常量
+        $act = strtolower ( _ACTION );
+        $temp = $config ['template_' . $act];
+        $act = ucfirst ( $act );
+        $this->assign ( 'page_title', $config ['title'] );
+        define ( 'CUSTOM_TEMPLATE_PATH', ONETHINK_ADDON_PATH . 'WeiSite/View/default/Template' );
+    }
     var $model;
     var $token;
+    var $school;
     //var $openid;
     //var $uid;
     public function __construct() {
@@ -25,6 +47,7 @@ class WapController extends AddonsController {
         parent::__construct ();
         $this->model = $this->getModel('WxyStudentCare'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
+        $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
 
@@ -114,6 +137,7 @@ class WapController extends AddonsController {
             $map2['openid'] = $openid;
             $this->assign('care_count', $studentcare_model->where($map2)->count());
             $this->assign('oid', $data['public_name']);
+            $this->_footer();
             $this->display('bind_student');
         }
     }
@@ -148,11 +172,108 @@ class WapController extends AddonsController {
             $map['openid'] = get_openid();
         }
         $map['is_audit'] = 1;
+        //var_dump($map);
         $data = $studentcare_view->where($map)->select();
-        //var_dump($data);
+        //var_dump($studentcare_view->_sql());
 
         $this->assign('list', $data);
+        $this->assign('public_id', $public_id);
+        $this->_footer();
         $this->display('Infor');
+    }
+
+    public function score(){
+        // retrieve db table get: course, bind, dailytime, score.
+        // filter by courseid.
+        $public_id = I('public_id', 0, 'intval');
+        empty ($public_id) && $public_id = I('publicid', 0, 'intval');
+        $public_id = ($public_id > 0) ? $public_id:1;
+
+        $studentno = I('studentno');
+        if ($studentno == NULL) $this->error("学号错误，请输入正确的学号！");
+
+        //$map['id'] = $public_id;
+        $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+        //unset($map);
+        //$map['token'] = $this->token;
+
+        $map['studentno'] = $studentno;
+        $map['openid'] = get_openid();
+        $model = D('WxyStudentPerformView');
+
+        $data = $model->where($map)->select();
+        if ($data == NULL)
+            $this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
+
+        /*
+        $i = 1;
+        foreach ($data as $key => $vo) {
+            $vo['sid'] = strval($key);
+            $vo['public_name'] = D('Common/Public')->getinfo($public_id, 'public_name');
+        }
+        */
+        $student_name = $data[0]['student_name'];
+
+        //var_dump($model->_sql());
+        //var_dump($data);
+        $this->assign('studentno', $studentno);
+        $this->assign('student_name', $student_name);
+
+        $this->assign('data', $data);
+        //var_dump($data);
+        $this->_footer();
+        $this->display('score');
+
+    }
+
+    // 3G页面底部导航
+    function _footer($temp_type = 'weiphp') {
+        if ($temp_type == 'pigcms') {
+            $param ['token'] = $token = get_token ();
+            $param ['temp'] = $this->config ['template_footer'];
+            $url = U ( 'Home/Index/getFooterHtml', $param );
+            $html = wp_file_get_contents ( $url );
+            // dump ( $url );
+            // dump ( $html );
+            $file = RUNTIME_PATH . $token . '_' . $this->config ['template_footer'] . '.html';
+            if (! file_exists ( $file ) || true) {
+                file_put_contents ( $file, $html );
+            }
+
+            $this->assign ( 'cateMenuFileName', $file );
+        } else {
+            $list = D ( 'Addons://WeiSite/Footer' )->get_list ();
+            //var_dump($list);
+
+            foreach ( $list as $k => $vo ) {
+                if ($vo ['pid'] != 0)
+                    continue;
+
+                $one_arr [$vo ['id']] = $vo;
+                unset ( $list [$k] );
+            }
+
+            foreach ( $one_arr as &$p ) {
+                $two_arr = array ();
+                foreach ( $list as $key => $l ) {
+                    if ($l ['pid'] != $p ['id'])
+                        continue;
+
+                    $two_arr [] = $l;
+                    unset ( $list [$key] );
+                }
+
+                $p ['child'] = $two_arr;
+            }
+            $this->assign ( 'footer', $one_arr );
+            if (empty ( $this->config ['template_footer'] )) {
+                $this->config ['template_footer'] = 'V2';
+            }
+            //define ('CUSTOM_TEMPLATE_PATH',  './Addons/Weisite/View/default/Template');
+            $html = $this->fetch ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/TemplateFooter/' . $this->config ['template_footer'] . '/footer.html' );
+            $this->assign ( 'footer_html', $html );
+        }
     }
 
 }

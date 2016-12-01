@@ -17,7 +17,7 @@ class WxyStudentCareModel extends Model{
         $student = $studentcard_model->verify($student);
         if ($student == NULL) return false;
 
-        $data['sid'] = $student['sid']; // To see changed to $student['id']
+        $data['sid'] = $student['id']; // To see changed to $student['id']
         $data['studentno'] = $student['studentno'];
         $data['uid'] = $user['uid'];
         $data['openid'] = $user['openid'];
