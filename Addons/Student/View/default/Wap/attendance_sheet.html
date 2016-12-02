@@ -53,8 +53,8 @@
         <p  class="attendance_head_p">考&nbsp;&nbsp;勤</p>
     </div>
     <div>
-        <p class="attendance_left">学号：{$data['studentno']}</p>
-        <p class="attendance_right">姓名：{$data['student_name']}</p>
+        <p class="attendance_left">学号：{$studentNo}</p>
+        <p class="attendance_right">姓名：{$studentName}</p>
     </div>
 </div>
 <div class="weui-cell">
@@ -71,31 +71,35 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$i}">
+
                         <div>
-                            <p class="attendance_left">{$data['course_name']}</p>
+
+                            <p class="attendance_left">第{$i}天考勤记录</p>
+                            <!--
                             <p class="attendance_right">{$data['teacher']}</p>
+                            -->
                         </div>
-                    </a>
-                </h4>
-            </div>
+                     </a>
+                 </h4>
+             </div>
             <div id="collapse{$i}" class="panel-collapse collapse">
                 <div class="panel-body">
                     <ul class="informationUl">
                         <li>
                             <p class="attendance_left">到达时间：</p>
-                            <p class="attendance_right">{$data['arriveTime']}</p>
+                            <p class="attendance_right">{$vo['arriveTime']}</p>
                         </li>
                         <li>
                             <p class="attendance_left">离开时间：</p>
-                            <p class="attendance_right">{$data['leaveTime']}</p>
+                            <p class="attendance_right">{$vo['leaveTime']}</p>
                         </li>
                         <li>
                             <p class="attendance_left">状态：</p>
-                            <p class="attendance_right">{$data['state']}</p>
+                            <p class="attendance_right">{$vo['state']}</p>
                         </li>
                         <li>
                             <p class="attendance_left">备注：</p>
-                            <p class="attendance_right">{$data['description']}</p>
+                            <p class="attendance_right">{$vo['description']}</p>
                         </li>
                     </ul>
                 </div>
