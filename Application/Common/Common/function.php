@@ -1302,11 +1302,13 @@ function get_list_field($data, $grid, $model) {
 					'[DELETE]',
 					'[EDIT]',
 					'[SEND]',
+					'[COMMENT]',
 					'[MODEL]' 
 			), array (
 					'del?id=[id]&model=[MODEL]',
 					'edit?id=[id]&model=[MODEL]',
 					'send?id=[id]&model=[MODEL]',
+					'comment?id=[id]&model=[MODEL]',
 					$model ['id'] 
 			), $href );
 			
@@ -2671,7 +2673,7 @@ function get_uid_by_openid($init = true, $openid = '') {
 	if (! $init)
 		return 0;
 		
-		// 不存在就初始化
+	// 不存在就初始化，添加此用户在public_Follow表中:
 	$uid = D ( 'Common/Follow' )->init_follow ( $openid, $map ['token'] );
 	return $uid;
 }
