@@ -53,7 +53,7 @@
          
 			<script type="text/javascript">
 				$('textarea[name="{$addons_data.name}"]').attr('id', 'editor_id_{$addons_data.name}');
-				window.UEDITOR_HOME_URL = "__STATIC__/{$driver_file}";
+				window.UEDITOR_HOME_URL = "__STATIC__/{$driver_file}/";
 				window.UEDITOR_CONFIG.initialFrameHeight = parseInt('{$addons_config.editor_height}');
 				window.UEDITOR_CONFIG.scaleEnabled = <eq name="addons_config.editor_resize_type" value="1">true<else />false</eq>;
 				window.UEDITOR_CONFIG.imageUrl = '{:addons_url("EditorForAdmin://Upload/ue_upimg")}';

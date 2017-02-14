@@ -12,7 +12,6 @@ namespace Admin\Controller;
  * 主要用于下载模型的文件上传和下载
  */
 class FileController extends AdminController {
-
     /* 文件上传 */
     public function upload(){
 		$return  = array('status' => 1, 'info' => '上传成功', 'data' => '');

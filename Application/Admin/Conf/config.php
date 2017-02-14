@@ -27,7 +27,17 @@ return array (
 				'__IMG__' => __ROOT__ . '/Public/' . MODULE_NAME . '/images',
 				'__CSS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/css',
 				'__JS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/js' 
-		) 
+		),
+		'email_sendtype' => 'smtp',
+		'email_host' => 'smtp.qq.com',
+		'email_port' => 465,
+		'email_ssl'  => true,
+		'email_account' => '5811751@qq.com',
+		'email_password' => 'cuctjvnkxrtkbjei',
+		'email_sender_name' => '微学校（家长能随时掌握的学校）',
+		'email_sender_email' => '5811751@qq.com',
+		//'DOWNLOAD_UPLOAD_DRIVER' => 'LOCAL',
+
 ); 
 
 

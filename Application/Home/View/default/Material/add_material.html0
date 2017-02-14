@@ -101,7 +101,7 @@
                                 <label class="item-label">正文<span class="check-tips">图片命名不能有特殊符号</span></label>
                                 <div class="controls">
                                   <label class="textarea">
-                                  <textarea id="p_content" style="width:405px; height:200px;" name="p_content"></textarea>
+                                  <textarea style="width:405px; height:200px;" name="p_content" ></textarea>
                                   {:hook('adminArticleEdit', array('name'=>'p_content','value'=>''))} </label>
                                   </label>
                                 </div>
@@ -127,7 +127,6 @@
   </div>
 </block>
 <block name="script">
-
   <script type="text/javascript">
 $('#submit').click(function(){
     var postUrl = $('#form').attr('action');
@@ -271,9 +270,10 @@ function initForm(_item){
 	$('input[name="p_title"]').val(title);
 	$('input[name="p_author"]').val(author);
 	$('input[name="p_link"]').val(link);
-    $('textarea[name="p_intro"]').val(intro);
-    //$("#p_content").val(content);
-	if(!content)content=" ";
+	$('textarea[name="p_intro"]').val(intro);
+    $('textarea[name="p_content"]').val(content);
+
+    if(!content)content=" ";
 	if(content){
 		imageEditor.setContent(content);
 	}

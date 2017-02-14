@@ -231,6 +231,7 @@ class WeixinController extends HomeController {
 		}
 		// 加载相应的插件来处理并反馈信息
 		require_once ONETHINK_ADDON_PATH . $addons [$key] . '/Model/WeixinAddonModel.class.php';
+
 		$model = D ( 'Addons://' . $addons [$key] . '/WeixinAddon' );
 		$model->reply ( $data, $keywordArr );
 	}

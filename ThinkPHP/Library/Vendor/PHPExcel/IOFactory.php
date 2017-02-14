@@ -166,7 +166,6 @@ class PHPExcel_IOFactory
 		foreach (self::$_searchLocations as $searchLocation) {
 			if ($searchLocation['type'] == $searchType) {
 				$className = str_replace('{0}', $readerType, $searchLocation['class']);
-
 				$instance = new $className();
 				if ($instance !== NULL) {
 					return $instance;

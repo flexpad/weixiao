@@ -52,9 +52,7 @@ class MailModel {
 	 * @return boolean 是否发送成功
 	 */
 	public function test_email($sendto_email) {
-		$sender_info['email_sender_name'] = $this->option['email_sender_name'];
-		$sender_info['email_account'] = $this->option['email_account'];		
-		return $this->send_email ( $sendto_email, '测试邮件', '这是一封测试邮件', $sender_info );
+		return $this->send_email ( $sendto_email, '测试邮件', '这是一封测试邮件' );
 	}
 	
 	/**
@@ -70,7 +68,7 @@ class MailModel {
 	 *        	发件人信息 array('email_sender_name'=>'发件人姓名', 'email_account'=>'发件人Email地址')
 	 * @return boolean 是否发送邮件成功
 	 */
-	public function send_email($sendto_email, $subject, $body, $senderInfo = '', $attachment = NULL, $attach_name = NULL ) {
+	public function send_email($sendto_email, $subject, $body, $senderInfo = '') {
 		$mail = new PHPMailer ();
 		if (empty ( $senderInfo )) {
 			$sender_name = $this->option ['email_sender_name'];
@@ -98,20 +96,20 @@ class MailModel {
 		} else {
 			$mail->Mailer = "mail";
 		}
-
-		$mail->From = $this->option['email_account'];
-		//$mail->Sender = $this->option['email_sender_name'];
-		$mail->FromName = $this->option ['email_sender_name']; // 真正的发件邮箱
-		//$mail->SetFrom ( $sender_email, $sender_name, 0 ); // 设置发件人信息
+		
+		$mail->Sender = $this->option ['email_account']; // 真正的发件邮箱
+		
+		$mail->SetFrom ( $sender_email, $sender_name, 0 ); // 设置发件人信息
 		
 		$mail->CharSet = "UTF-8"; // 这里指定字符集！
 		$mail->Encoding = "base64";
+		
 		if (is_array ( $sendto_email )) {
 			foreach ( $sendto_email as $v ) {
-				$mail->addAddress ( $v );
+				$mail->AddAddress ( $v );
 			}
 		} else {
-			$mail->addAddress ( $sendto_email );
+			$mail->AddAddress ( $sendto_email );
 		}
 		
 		// 以HTML方式发送
@@ -120,11 +118,11 @@ class MailModel {
 		$mail->Body = $body; // 邮件内容
 		$mail->AltBody = "text/html";
 		$mail->SMTPDebug = false;
-		if ($attachment)
-			$rel = $mail->addAttachment($attachment, $attach_name);
-		$result = $mail->send();
-
+		var_dump($mail);
+		$result = $mail->Send ();
+		
 		$this->setMessage ( $mail->ErrorInfo );
+		
 		return $result;
 	}
 	public function setMessage($message) {

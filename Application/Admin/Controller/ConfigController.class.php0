@@ -162,22 +162,9 @@ class ConfigController extends AdminController {
 		if (IS_POST) {
 			require_once (VENDOR_PATH . '/phpmailer/MailModel.class.php');
 			$mail = new \MailModel ();
-			$mail->option = array (
-                'email_sendtype' => C ( 'email_sendtype' ),
-                'email_host' => C ( 'email_host' ),
-                'email_port' => C ( 'email_port' ),
-                'email_ssl' => C ( 'email_ssl' ),
-                'email_account' => C ( 'email_account' ),
-                'email_password' => C ( 'email_password' ),
-                'email_sender_name' => C ( 'email_sender_name' ),
-                'email_sender_email' => C ( 'email_sender_email' ),
-                'email_reply_account' => C ( 'email_sender_email' )
-            );
-            $result = $mail->test_email ( $_POST ['config'] ['EMAIL_TEST_EMAIL'] );
-            //var_dump($mail->option);
-            //var_dump($_POST['config']['EMAIL_TEST_EMAIL']);
-
-            if ($result === false) {
+			$result = $mail->test_email ( $_POST ['config'] ['EMAIL_TEST_EMAIL'] );
+            $var_dump($mail->option);
+			if ($result === false) {
 				$this->error ( $mail->message );
 			} else {
 				$this->success ( '发送成功' );

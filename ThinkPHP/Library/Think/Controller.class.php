@@ -471,7 +471,6 @@ abstract class Controller {
 		$jssdk = new \JSSDK ( $info ['appid'], $info ['secret'] );
 		$jsapiParams = $jssdk->GetsignPackage ();
 		$this->assign ( 'jsapiParams', $jsapiParams );
-		
 		return $info;
 	}
 	// 初始化用户信息
@@ -479,16 +478,16 @@ abstract class Controller {
 		if (isset ( $_GET ['is_stree'] )) {
 			$suid = $user ['uid'] = rand ( 1, 10000 );
 		} else {
+			// Get $uid from session named "mid":
 			$uid = session ( 'mid' );
 		}
-		//var_dump($uid);
-		//exit();
 		// 重新跳转，去掉URL中的openid参数，以防分享出去的地址带有openid参数
-		$openid = I ( 'get.openid' );
-		
-		if (! empty ( $openid ) && $openid != '-1' && $openid != '-2' && IS_GET) {
+		$openid = I ( 'get.openid' ); //In most URL from client, the $openid is 0;
+
+		if ( !empty ( $openid ) && $openid != '-1' && $openid != '-2' && IS_GET) {
 			$token = session ( 'token' );
 			$old_openid = session ( 'openid_' . $token );
+			// Get openid from Weixin auth:
 			get_openid ( $openid );
 			$is_manager = M ( 'manager' )->find ( $uid );
 			if (! $is_manager && $old_openid != $openid) {
@@ -504,19 +503,21 @@ abstract class Controller {
 				redirect ( $url );
 			}
 		}
-		
+
+		//In case of $uid cannot be gotten from session, i.e. session "mid" is null:
 		if ((! $uid || $uid <= 0) && $GLOBALS ['is_wap']) {
+			//Reget uid according $openid, if $openid == 0 reget openid also from Weixin auth:
 			$uid = get_uid_by_openid ();
 			$uid > 0 && session ( 'mid', $uid );
 		}
-		
+
 		if (! $uid) {
 			$youke_uid = M ( 'config' )->where ( 'name="FOLLOW_YOUKE_UID"' )->getField ( 'value' ) - 1;
 			$user ['uid'] = $youke_uid;
 			M ( 'config' )->where ( 'name="FOLLOW_YOUKE_UID"' )->setField ( 'value', $youke_uid );
 			session ( 'mid', $youke_uid );
 		}
-		
+
 		// 当前登录者
 		$GLOBALS ['mid'] = $this->mid = intval ( $uid );
 		$myinfo = get_userinfo ( $this->mid );
@@ -718,7 +719,7 @@ abstract class Controller {
 				'in',
 				$ids 
 		);
-		
+        
 		// 插件里的操作自动加上Token限制
 		$token = get_token ();
 		if (defined ( 'ADDON_PUBLIC_PATH' ) && ! empty ( $token )) {
