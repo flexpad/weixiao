@@ -217,6 +217,7 @@ class WapController extends AddonsController {
 
         //var_dump($model->_sql());
         //var_dump($data);
+        $this->assign('public_id',$public_id);
         $this->assign('studentno', $studentno);
         $this->assign('student_name', $student_name);
 
@@ -276,4 +277,135 @@ class WapController extends AddonsController {
         }
     }
 
+    public function show_attendance()
+    {
+
+        $public_id = I('public_id', 0, 'intval');
+        empty ($public_id) && $public_id = I('publicid', 0, 'intval');
+        $public_id = ($public_id > 0) ? $public_id:1;
+
+        $studentno = I('studentno');
+        if ($studentno == NULL) $this->error("学号错误，请输入正确的学号！");
+
+        //$map['id'] = $public_id;
+        $stuCard_map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($stuCard_map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+
+
+        $stuCard_map['studentno'] = $studentno;
+        $stu_model = D('WxyStudentCard');
+
+        $stu_data = $stu_model->where($stuCard_map)->find();
+        if ($stu_data == NULL)
+            $this->error("没有此学号（%s)的学生",$studentno);
+
+        //var_dump(stu_data);
+        $search_start_date = I('search_start_date');
+        $search_end_date = I('search_end_date');
+        if (($search_end_date == NULL) || ($search_start_date==NULL))
+        {
+            //show all
+        }
+        else
+        {
+            $timeBegin = strtotime($search_start_date);
+            $timeEnd = strtotime($search_end_date);
+            $attend_map['arriveTime'] = array('BETWEEN',array($timeBegin,$timeEnd));
+        }
+        $attend_map['studentID'] = $studentno;
+        $attend_map['Token'] = $stuCard_map ['token'];
+
+        $attend_model = D('WxyDailyTime');
+        $data = $attend_model->where($attend_map)->select();
+        //var_dump($data);
+        $this->assign('public_id',$public_id);
+        $this->assign('studentName',$stu_data['name']);
+        $this->assign('studentNo',$studentno);
+        $state = ['正常','迟到','早退','缺席'];
+        foreach ($data as $key=>$vo) {
+            if ($vo['arriveTime'] != 0)
+                $data[$key]['arriveTime'] = date('Y-m-d H:i:s',$vo['arriveTime']);
+            else
+                $data[$key]['arriveTime'] = '-------------';
+            if ($vo['leaveTime'] != 0)
+                $data[$key]['leaveTime'] = date('Y-m-d H:i:s',$vo['leaveTime']);
+            else
+                $data[$key]['leaveTime'] = '-------------';
+            $data[$key]['state'] = $state[(int)$data[$key]['state']];
+        }
+        $this->assign('data', $data);
+        $this->display('attendance_sheet');
+    }
+
+    public function attendace_ajax_show()
+    {
+        if (!IS_POST) $this->error("请在表单中提交！");
+
+        $public_id = I('public_id');
+        $stuCard_map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($stuCard_map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+
+        $studentNo = I('studentNo');
+
+        $data = NULL;
+        if ((I('search_start_date')) == '' || (I('search_end_date')) == '')
+        {
+            $this->ajaxReturn($data,'JSON');
+            return;
+        }
+        $str_start = (I('search_start_date')).' 00:00:00';
+        $str_end = (I('search_end_date')).' 23:59:59';
+        //var_dump($str_start);
+        //var_dump($str_end);
+        $start_date = strtotime($str_start);
+        $end_date = strtotime($str_end);
+        $attend_map['arriveTime'] = array('BETWEEN',array($start_date,$end_date));
+
+        $attend_map['studentID'] = $studentNo;
+        $attend_map['Token'] = $stuCard_map ['token'];
+        $attend_model = D('WxyDailyTime');
+        $data = $attend_model->where($attend_map)->select();
+        $state = ['正常','迟到','早退','缺席'];
+        foreach ($data as $key=>$vo) {
+
+            if ($vo['arriveTime'] != 0)
+                $data[$key]['arriveTime'] = date('Y-m-d H:i:s',$vo['arriveTime']);
+            else
+                $data[$key]['arriveTime'] = '-------------';
+            if ($vo['leaveTime'] != 0)
+                $data[$key]['leaveTime'] = date('Y-m-d H:i:s',$vo['leaveTime']);
+            else
+                $data[$key]['leaveTime'] = '-------------';
+            $data[$key]['state'] = $state[(int)$data[$key]['state']];
+        }
+        $this->ajaxReturn($data,'JSON');
+    }
+
+    public function score_ajax_show()
+    {
+        if (!IS_POST) $this->error("请在表单中提交！");
+
+        $public_id = I('public_id');
+        $stuCard_map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($stuCard_map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+
+        $studentNo = I('studentNo');
+        $start_date = (I('search_start_date'));
+        $end_date = (I('search_end_date'));
+        //var_dump($str_start);
+        //var_dump($str_end);
+        if ($end_date || ($start_date == NULL && $end_date == NULL))
+            $map['classdate'] = array('BETWEEN',array($start_date,$end_date));
+        $map['token'] = $stuCard_map ['token'];
+        $map['studentno'] = $studentNo;
+        $map['openid'] = get_openid();
+        $model = D('WxyStudentPerformView');
+
+        $data = $model->where($map)->select();
+        if ($data == NULL)
+            $this->ajaxReturn(NULL,'JSON');
+            //$this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
+        
+        $this->ajaxReturn($data,'JSON');
+    }
 }

@@ -4,8 +4,13 @@
   <!-- 标签页导航 -->
   <div class="span9 page_message">
     <section id="contents">
-      <include file="Addons/_nav" />
-      <div class="tab-content"> 
+    <ul class="tab-nav nav">
+        <li class=""><a href="{:U('lists')}">学生列表</a></li>
+        <li class="current"><a href="javascript:;">编辑学生资料<b class="arrow fa fa-sort"></b></a></li>
+        <li class=""><a href="{:U('import')}">学生资料导入</a></li>
+    </ul>
+      <!--<include file="Addons/_nav" />-->
+    <div class="tab-content">
         <!-- 表单 -->
         <php>$post_url || $post_url = U('edit?id='.$data['id'] . '&model='.$model['id'], $get_param);</php>
         <form id="form" action="{$post_url}" method="post" class="form-horizontal form-center">
@@ -27,14 +32,14 @@
                 <div class="controls">
                     <select name="gender" value="$data['gender']">
                         <if condition="$data['gender'] eq 2">
-                            <option selected>女生</option>
+                            <option selected value = "2">女生</option>
                             <else />
-                            <option >女生</option>
+                            <option value = "2">女生</option>
                         </if>
                         <if condition="$data['gender'] eq 1">
-                            <option selected>男生</option>
+                            <option selected value = "1">男生</option>
                             <else />
-                            <option >男生</option>
+                            <option value = "1">男生</option>
                         </if>
                     </select>
                 </div>
@@ -51,64 +56,64 @@
                 <div class="controls">
                     <select name="grade" value="$data['grade']">
                         <if condition="$data['grade'] eq 1">
-                            <option selected>一年级</option>
+                            <option selected value = "1">一年级</option>
                         <else />
-                            <option >一年级</option>
+                            <option value = "1">一年级</option>
                         </if>
                         <if condition="$data['grade'] eq 2">
-                            <option selected>二年级</option>
+                            <option selected value = "2">二年级</option>
                             <else />
-                            <option >二年级</option>
+                            <option value = "2">二年级</option>
                         </if>
                         <if condition="$data['grade'] eq 3">
-                            <option selected>三年级</option>
+                            <option selected value = "3">三年级</option>
                             <else />
-                            <option >三年级</option>
+                            <option value = "3">三年级</option>
                         </if>
                         <if condition="$data['grade'] eq 4">
-                            <option selected>四年级</option>
+                            <option selected value = "4">四年级</option>
                             <else />
-                            <option >四年级</option>
+                            <option value = "4">四年级</option>
                         </if>
                         <if condition="$data['grade'] eq 5">
-                            <option selected>五年级</option>
+                            <option selected value = "5">五年级</option>
                             <else />
-                            <option >五年级</option>
+                            <option value = "5">五年级</option>
                         </if>
                         <if condition="$data['grade'] eq 6">
-                            <option selected>六年级</option>
+                            <option selected value = "6">六年级</option>
                             <else />
-                            <option >六年级</option>
+                            <option value = "6">六年级</option>
                         </if>
                         <if condition="$data['grade'] eq 7">
-                            <option selected>初中一年级</option>
+                            <option selected value = "7">初中一年级</option>
                             <else />
-                            <option >初中一年级</option>
+                            <option value = "7">初中一年级</option>
                         </if>
                         <if condition="$data['grade'] eq 8">
-                            <option selected>初中二年级</option>
+                            <option selected value = "8">初中二年级</option>
                             <else />
-                            <option >初中二年级</option>
+                            <option value = "8">初中二年级</option>
                         </if>
                         <if condition="$data['grade'] eq 9">
-                            <option selected>初中三年级</option>
+                            <option selected value = "9">初中三年级</option>
                             <else />
-                            <option >初中三年级</option>
+                            <option value = "9">初中三年级</option>
                         </if>
                         <if condition="$data['grade'] eq 10">
-                            <option selected>高中一年级</option>
+                            <option selected value = "10">高中一年级</option>
                             <else />
-                            <option >高中一年级</option>
+                            <option value = "10">高中一年级</option>
                         </if>
                         <if condition="$data['grade'] eq 11">
-                            <option selected>高中二年级</option>
+                            <option selected value = "11">高中二年级</option>
                             <else />
-                            <option >高中二年级</option>
+                            <option value = "11">高中二年级</option>
                         </if>
                         <if condition="$data['grade'] eq 12">
-                            <option selected>高中三年级</option>
+                            <option selected value = "12">高中三年级</option>
                             <else />
-                            <option >高中三年级</option>
+                            <option value = "12">高中三年级</option>
                         </if>
                     </select>
                 </div>
@@ -125,7 +130,7 @@
             <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
           </div>
       </form>
-      </div>
+    </div>
     </section>
   </div>
 </block>

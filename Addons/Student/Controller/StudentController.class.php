@@ -99,22 +99,91 @@ class StudentController extends AddonsController{
     }
 
     public function edit() {
-        if (I('id') == NULL) $this->error("学生ID未输入！");
-        $sid  = intval(I('id'));
         //var_dump($sid);
-
         $model = D('WxyStudentCard');
-        $map['id'] = $sid;
-        $data = $model->where($map)->find();
-        /*
-        $grade = ['','一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级', '高一', '高二', '高三'];
-        $gender = ['','女生','男生'];
-        $data['gender'] = $gender[intval($data['gender'])];
-        $data['grade'] = $grade[intval($data['grade'])];
-        */
-        $this->assign('data', $data);
-        //var_dump($data);
-        $this->display('edit');
+
+        if (IS_POST) {
+            $data = I('post.data');
+            $sid = I('post.id');
+            //var_dump($data);
+
+            $data['gender'] = I('post.gender');
+            $data['grade'] = I('post.grade');
+            $data['name'] = I('post.name');
+            $data['phone'] = I('post.phone');
+            $data['school'] = I('post.school');
+
+            $map['id'] = $sid;
+            $map['token'] = $this->token;
+            $model->where($map)->save($data);
+            $this->success("学生资料更新成功！");
+        }
+        else {
+            if (I('id') == NULL) $this->error("学生ID未输入！");
+            $sid  = intval(I('id'));
+            $map['id'] = $sid;
+            $data = $model->where($map)->find();
+            $this->assign('data', $data);
+            //var_dump($data);
+            $this->display('edit');
+        }
+    }
+    
+    public function comment() {
+        $studnetModel = D('WxyStudentCard');
+        $scoreModel = M('wxy_score');
+        $commentModel = M('wxy_course_comments');
+
+
+        if (IS_POST) {
+            $data = I('post.data');
+            $sid = I('post.id');
+            //var_dump($data);
+
+            $data['gender'] = I('post.gender');
+            $data['grade'] = I('post.grade');
+            $data['name'] = I('post.name');
+            $data['phone'] = I('post.phone');
+
+            $map['id'] = $sid;
+            $studnetModel->where($map)->save($data);
+            $this->success("学生资料更新成功！");
+        }
+        else {
+            if (I('id') == NULL) $this->error("学生ID未输入！");
+            $sid  = intval(I('id'));
+            $map['id'] = $sid;
+            $map['token'] = $this->token;
+            /*var_dump($map);*/
+            $student = $studnetModel->where($map)->find();
+            /*var_dump($student);*/
+            unset($map);
+            $map['studentno'] = $student['studentno'];
+            $map['token'] = $this->token;
+            $courseData = $scoreModel->where($map)->select();
+
+            foreach($courseData as $key => $value) {
+                $course[$value['courseid']] = $value['courseid'];
+                /*echo $key."=>".$value['courseid']."\n";*/
+            }
+            $i = 0;
+            foreach($course as $key => $value) {
+                $couresSelected[$i] = M('wxy_course')->where('id ='.$value )->find();
+                /*var_dump($value);*/
+                /*var_dump($couresSelected[$i]);*/
+                $i++;
+            }
+            /*var_dump($couresSelected);*/
+            /*var_dump($course);*/
+
+            $this->assign('couresSelected', $couresSelected);
+            $this->assign('student', $student);
+            $this->display('comment');
+            /*$data = $studnetModel->where($map)->find();
+            $this->assign('data', $data);
+            //var_dump($data);
+            $this->display('edit');*/
+        }
     }
 
     public function import(){
