@@ -1,0 +1,137 @@
+<extend name="Base/common" />
+<block name="body">
+  
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      <include file="Addons/_nav" />
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <php>$post_url || $post_url = U('edit?model='.$model['id'], $get_param);</php>
+        <form id="form" action="{$post_url}" method="post" class="form-horizontal form-center">
+
+            <div class="form-item cf">
+                <label class="item-label">*</span>学号<span class="check-tips"></span></label>
+                <div class="controls">
+                    <span>{$data['studentID']}</span>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>姓名<span class="check-tips"></span></label>
+                <div class="controls">
+                    <span>{$student_name}</span>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>到达时间<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="datetime" name="arriveTime" class="text time" value="{$data['arriveTime']}" placeholder="请选择时间" />
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>离开时间<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="datetime" name="leaveTime" class="text time" value="{$data['leaveTime']}" placeholder="请选择时间" />
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>状态<span class="check-tips"></span></label>
+                <div class="controls">
+                    <select name="state" value="{$data['state']}">
+                        <if condition="$data['state'] eq 1">
+                            <option selected>正常</option>
+                            <else />
+                            <option >正常</option>
+                        </if>
+                        <if condition="$data['state'] eq 2">
+                            <option selected>迟到</option>
+                            <else />
+                            <option >迟到</option>
+                        </if>
+                        <if condition="$data['state'] eq 3">
+                            <option selected>早退</option>
+                            <else />
+                            <option >早退</option>
+                        </if>
+                        <if condition="$data['state'] eq 4">
+                            <option selected>缺席</option>
+                            <else />
+                            <option >缺席</option>
+                        </if>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">*</span>备注<span class="check-tips"></span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="description" value="{$data['description']}">{$data['description']}</textarea>
+                    </label>
+                </div>
+            </div>
+
+
+        <div class="form-item form_bh" style="text-align:center">
+            <notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"></notempty>
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+          </div>
+      </form>
+      </div>
+    </section>
+  </div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php>if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    ';</php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+  $(function(){
+	var UploadFileExts = "{$UploadFileExts}";
+	initUploadImg();
+	if(UploadFileExts!=""){
+		initUploadFile(function(){},UploadFileExts);
+	}else{
+		initUploadFile();
+	}
+   
+   $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });	
+    showTab();
+	
+	$('.toggle-data').each(function(){
+		var data = $(this).attr('toggle-data');
+		if(data=='') return true;		
+		
+	     if($(this).is(":selected") || $(this).is(":checked")){
+			 change_event(this)
+		 }
+	});
+	
+	$('.toggle-data').bind("click",function(){ change_event(this) });
+	$('select').change(function(){
+		$('.toggle-data').each(function(){
+			var data = $(this).attr('toggle-data');
+			if(data=='') return true;		
+			
+			 if($(this).is(":selected") || $(this).is(":checked")){
+				 change_event(this)
+			 }
+		});
+	});
+});
+</script> 
+</block>
