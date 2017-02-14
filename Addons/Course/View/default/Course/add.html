@@ -88,20 +88,21 @@
                           {:hook('adminArticleEdit', array('name'=>'intro','value'=>$data.intro))}
                       </label>
                     </div>
-                  </div> 
+                  </div>
 
-
+            <div class="form-item form_bh">
+                <input type="hidden" name="id" value="{$data.id}">
+                <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            </div>
+        </form>
     </div>
-    <div class="form-item form_bh">
-      <input type="hidden" name="id" value="{$data.id}">
-      <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
-    </div>
-  </form>
+    </section>
+</div>
 
+<!--
 </div>
-</section>
 </div>
-</div>
+-->
 </block>
 <block name="script">
   <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
