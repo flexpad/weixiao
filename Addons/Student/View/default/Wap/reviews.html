@@ -25,7 +25,7 @@
     }
     .institution_name{
         text-align: center;
-        margin: 40px auto 20px;
+        margin: 20px auto 20px;
     }
     .attendance_left{
         display:inline-block;
@@ -39,6 +39,12 @@
     .attendance_head_p{
         margin-top: 10px;
     }
+    select{
+        padding: 0px;
+    }
+    .weui-cells{
+        margin-top: 0px;
+    }
 </style>
 <body>
 <div class="attendance_head">
@@ -47,19 +53,38 @@
         <p  class="attendance_head_p">老师评语</p>
     </div>
     <div>
-        <p class="attendance_left">学号：</p>
-        <p class="attendance_right">姓名：</p>
+        <p class="attendance_left">学号：<span class="studentNo">{$studentno}</span></p>
+        <p class="attendance_right">姓名：{$student_name}</p>
+    </div>
+</div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select">
+        <div class="weui-cell__bd">
+            <select class="weui-select" name="select1">
+                <option selected="" value="1">微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号</option>
+                <option value="2">QQ号</option>
+                <option value="3">Email</option>
+            </select>
+        </div>
     </div>
 </div>
 <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
-    <li class="am-panel">
-        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
-            <i class="am-icon-users am-margin-left-sm"></i> 课程名称 <i class="am-icon-angle-right am-fr am-margin-right"></i>
-        </a>
-        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
-            <li><a href="#/userAdd">添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员 </a></li>
-        </ul>
-    </li>
+    <assign name="courseid" value="0" />
+    <volist name="data" id="vo" key="key">
+        <if condition="($vo.courseid neq $courseid)">
+            <li class="am-panel">
+
+                <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$key}'}">
+                    <i class="am-icon-users am-margin-left-sm"></i>{$vo.course_name} 【{$vo.classdate}】<i class="am-icon-angle-right am-fr am-margin-right"></i>
+                </a>
+
+            <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$key}">
+                <li><a>{$vo.comments_txt}</a></li>
+            </ul>
+            </li>
+        </if>
+        <assign name="courseid" value="$vo.courseid" />
+    </volist>
 </ul>
 <!-- 底部导航 -->
 {$footer_html}
