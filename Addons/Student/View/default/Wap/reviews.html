@@ -71,7 +71,7 @@
         </div>
         <div class="weui-cell__bd">
             <assign name="courseid" value="0" />
-            <select class="weui-select" name="select1">
+            <select class="weui-select" name="select1" id="cl">
                 <volist name="data" id="vo" key="key">
                     <if condition="($vo.courseid neq $courseid)">
                         <option value="{$vo.courseid}">{$vo.course_name}</option>
@@ -85,22 +85,18 @@
 <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
     <assign name="courseid" value="0" />
     <volist name="data" id="vo" key="key">
-
         <if condition="($vo.courseid neq $courseid) AND $courseid neq 0">
             </ul>
             </li>
         </if>
         <if condition="($vo.courseid neq $courseid)">
-            <li class="am-panel">
-
-                <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$key}'}">
+            <li class="am-panel" id="ap_{$vo.courseid}">
+                <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$vo.courseid}'}">
                     <span class="omit_show">{$vo.course_name} </span><span>【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
                 </a>
-
-            <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$key}">
+            <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$vo.courseid}">
         </if>
-                <li><a>{$vo.comments_txt}</a></li>
-
+                <li><a>时间：{$vo.timestamp}<br>内容：{$vo.comments_txt}</a></li>
         <assign name="courseid" value="$vo.courseid" />
     </volist>
     </ul>
@@ -123,4 +119,13 @@
 <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
 <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.ie8polyfill.min.js"></script>
 <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.widgets.helper.min.js"></script>
+<script>
+    $(function(){
+        $("select").change(function () {
+            var nJindex=document.getElementById("cl").selectedIndex;
+            console.log(nJindex);
+        });
+
+    })
+</script>
 </body>
