@@ -45,6 +45,13 @@
     .weui-cells{
         margin-top: 0px;
     }
+    .omit_show{
+        display: inline-block;
+        width: 55%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+    }
+    .am-list>li>a{
+        line-height: 1;
+    }
 </style>
 <body>
 <div class="attendance_head">
@@ -58,12 +65,19 @@
     </div>
 </div>
 <div class="weui-cells">
-    <div class="weui-cell weui-cell_select">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label class="weui-label">课程筛选</label>
+        </div>
         <div class="weui-cell__bd">
+            <assign name="courseid" value="0" />
             <select class="weui-select" name="select1">
-                <option selected="" value="1">微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号微信号</option>
-                <option value="2">QQ号</option>
-                <option value="3">Email</option>
+                <volist name="data" id="vo" key="key">
+                    <if condition="($vo.courseid neq $courseid)">
+                        <option value="{$vo.courseid}">{$vo.course_name}</option>
+                    </if>
+                    <assign name="courseid" value="$vo.courseid" />
+                </volist>
             </select>
         </div>
     </div>
@@ -71,20 +85,26 @@
 <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
     <assign name="courseid" value="0" />
     <volist name="data" id="vo" key="key">
+
+        <if condition="($vo.courseid neq $courseid) AND $courseid neq 0">
+            </ul>
+            </li>
+        </if>
         <if condition="($vo.courseid neq $courseid)">
             <li class="am-panel">
 
                 <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$key}'}">
-                    <i class="am-icon-users am-margin-left-sm"></i>{$vo.course_name} 【{$vo.classdate}】<i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    <span class="omit_show">{$vo.course_name} </span><span>【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
                 </a>
 
             <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$key}">
-                <li><a>{$vo.comments_txt}</a></li>
-            </ul>
-            </li>
         </if>
+                <li><a>{$vo.comments_txt}</a></li>
+
         <assign name="courseid" value="$vo.courseid" />
     </volist>
+    </ul>
+    </li>
 </ul>
 <!-- 底部导航 -->
 {$footer_html}
