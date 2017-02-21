@@ -31,14 +31,6 @@ class WxyStudentPerformViewModel extends ViewModel {
             '_on' => 'WxyStudentCard.studentno = WxyScore.studentno AND WxyStudentCard.token = WxyScore.token'
         ),
 
-        'WxyCourseComments' => array (
-            'courseid' => 'courseid',
-            'comments_txt' => 'comments_txt',
-            'comments_voice' => 'comments_voice',
-            'timestamp' => 'timestamp',
-            '_on' => 'WxyStudentCard.studentno = WxyCourseComments.studentno AND WxyStudentCard.token = WxyCourseComments.token'
-        ),
-
         'WxyCourse' => array (
             'name' => 'course_name',
             'teacher' => 'teacher',
