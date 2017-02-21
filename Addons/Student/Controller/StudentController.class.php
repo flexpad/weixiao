@@ -205,7 +205,7 @@ class StudentController extends AddonsController{
             $data['uid'] = $uid;
             $data['token'] = $token;
             $data['file'] = I('post.file');
-            $data['date'] = date('Y-m-d h:i:sa');
+            $data['date'] = date('Y-m-d');
             $data['comment'] = I('post.comment');
             if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = D('WxyStudentimport');
