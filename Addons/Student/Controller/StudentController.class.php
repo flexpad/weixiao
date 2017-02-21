@@ -133,21 +133,26 @@ class StudentController extends AddonsController{
         $studnetModel = D('WxyStudentCard');
         $scoreModel = M('wxy_score');
         $commentModel = M('wxy_course_comments');
-
+        $page = I('request.p');
 
         if (IS_POST) {
-            $data = I('post.data');
-            $sid = I('post.id');
-            //var_dump($data);
+            
+            $data['sid'] = I('post.id');
+            /*var_dump(strstr(I('post.course'), '.', true));
+            var_dump(intval(strstr(I('post.course'), '.', true)));*/
 
-            $data['gender'] = I('post.gender');
-            $data['grade'] = I('post.grade');
+            $data['courseid'] = intval(strstr(I('post.course'),'.', true));
+            $data['studentno'] = I('post.studentno');
+            $data['comments_txt'] = I('post.comment_txt');
             $data['name'] = I('post.name');
-            $data['phone'] = I('post.phone');
+            //$data['phone'] = I('post.phone');
+            $data['token'] = $this->token;
+            $data['timestamp'] = date("Y-m-d H:i:s");
 
-            $map['id'] = $sid;
-            $studnetModel->where($map)->save($data);
-            $this->success("学生资料更新成功！");
+            $commentModel->add($data);
+            //var_dump($data);
+            //var_dump(I('request.p'));
+            $this->success("学生评语已经添加！", U('addon/Student/Student/lists'. '/p/'. $page ));
         }
         else {
             if (I('id') == NULL) $this->error("学生ID未输入！");
@@ -190,10 +195,11 @@ class StudentController extends AddonsController{
 
         //var_dump($this->uid);
         //var_dump($this->mid);
+        //U('edit', array('id'=>I('request.id')));
         $uid = $this->uid;
         $token = $this->token;
         //$file_id = 7;
-        //$data = $this->import_data_from_excel($file_id);
+        //$data = $this->import_student_data_from_excel($file_id);
         if ($uid == 0) redirect(U('/Home/Public'));
         if (IS_POST) {
             $data['uid'] = $uid;
@@ -204,7 +210,7 @@ class StudentController extends AddonsController{
             if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = D('WxyStudentimport');
             $import_model->addImport($data);
-            if ($this->import_data_from_excel($data['file'])) //import student data from uploaded Excel file.
+            if ($this->import_student_data_from_excel($data['file'])) //import student data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -214,7 +220,7 @@ class StudentController extends AddonsController{
         }
     }
     
-    private function import_data_from_excel($file_id) {
+    private function import_student_data_from_excel($file_id) {
         $data = array();
         $column = array (
             'A' => 'sid',
@@ -249,4 +255,5 @@ class StudentController extends AddonsController{
         }
         else return false;
     }
+    
 }

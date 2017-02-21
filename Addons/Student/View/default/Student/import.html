@@ -26,9 +26,12 @@
   <div class="span9 page_message">
     <section id="contents">
       <ul class="tab-nav nav">
-        <li class=""><a href="{:U('lists')}">学生中心</a></li>
-        <li class=""><a href="{:U('add')}">添加学生资料<b class="arrow fa fa-sort"></b></a></li>
-        <li class="current"><a href="{:U('import')}">学生资料导入<b class="arrow fa fa-sort"></b></a></li>
+          <li class=""><a href="{:U('lists')}">学生列表</a></li>
+          <li class=""><a href="{:U('edit', array('id'=>I('request.id')))}">编辑学生资料</a></li>
+          <li class=""><a href="{:U('comment', array('id'=>I('request.id')))}">学生评语录入</a></li>
+          <li class="current"><a href="{:U('import', array('id'=>I('request.id')))}">学生资料导入<b class="arrow fa fa-sort"></b></a></li>
+          <!--<li class=""><a href="{:U('comments_import', array('id'=>I('request.id')))}">学生评语导入</a></li>-->
+
       </ul>
       <div class="tab-content"> 
         <!-- 表单 -->

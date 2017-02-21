@@ -7,7 +7,10 @@
     <ul class="tab-nav nav">
         <li class=""><a href="{:U('lists')}">学生列表</a></li>
         <li class="current"><a href="javascript:;">编辑学生资料<b class="arrow fa fa-sort"></b></a></li>
-        <li class=""><a href="{:U('import')}">学生资料导入</a></li>
+        <li class=""><a href="{:U('comment', array('id'=>$data['id']))}">学生评语录入</a></li>
+        <li class=""><a href="{:U('import', array('id'=>$data['id']))}">学生资料导入</a></li>
+        <!--<li class=""><a href="{:U('comments_import', array('id'=>$data['id']))}">学生评语导入</a></li>-->
+
     </ul>
       <!--<include file="Addons/_nav" />-->
     <div class="tab-content">
