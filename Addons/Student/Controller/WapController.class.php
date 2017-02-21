@@ -228,6 +228,51 @@ class WapController extends AddonsController {
 
     }
 
+    public function comment(){
+        // retrieve db table get: course, bind, dailytime, score.
+        // filter by courseid.
+        $public_id = I('public_id', 0, 'intval');
+        empty ($public_id) && $public_id = I('publicid', 0, 'intval');
+        $public_id = ($public_id > 0) ? $public_id:1;
+
+        $studentno = I('studentno');
+        if ($studentno == NULL) $this->error("学号错误，请输入正确的学号！");
+
+        //$map['id'] = $public_id;
+        $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+        //unset($map);
+        //$map['token'] = $this->token;
+
+        $map['studentno'] = $studentno;
+        $map['openid'] = get_openid();
+        $model = D('WxyStudentCommentsView');
+
+        $data = $model->where($map)->order('courseid')->select();
+        if ($data == NULL)
+            $this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
+
+        /*
+        $i = 1;
+        foreach ($data as $key => $vo) {
+            $vo['sid'] = strval($key);
+            $vo['public_name'] = D('Common/Public')->getinfo($public_id, 'public_name');
+        }
+        */
+        $student_name = $data[0]['student_name'];
+
+        //var_dump($model->_sql());
+        //var_dump($data);
+        $this->assign('public_id',$public_id);
+        $this->assign('studentno', $studentno);
+        $this->assign('student_name', $student_name);
+
+        $this->assign('data', $data);
+        $this->_footer();
+        $this->display('reviews');
+
+    }
+
     // 3G页面底部导航
     function _footer($temp_type = 'weiphp') {
         if ($temp_type == 'pigcms') {
