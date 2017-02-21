@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="detail">
     	<h6 class="title">{$info.name}</h6>
-        <p class="info"><span class="colorless">开课时间：{$info.sdate|time_format}，课时数：{$info.length}</span></p>
+        <p class="info"><span class="colorless">开课时间：{$info.sdate}，课时数：{$info.length}</span></p>
         <section class="content">
                 <notempty name="info.cover"><p><img src="{$info.cover|get_cover_url}"/></p></notempty>
                 {$info.intro|htmlspecialchars_decode}

@@ -264,6 +264,7 @@ class WapController extends AddonsController
 
             // dump($info);exit;
             $data = M('WxyCourse')->where($map)->find();
+            //var_dump($data);
             $this->assign('info', $data);
             $this->_footer();
             $this->display(ONETHINK_ADDON_PATH . 'Course/View/default/Wap/TemplateDetail/' . /*$this->config ['template_detail']*/'V2'. '/detail.html');

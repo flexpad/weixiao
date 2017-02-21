@@ -170,6 +170,63 @@ class CourseController extends AddonsController{
         }
     }
 
+    public function comment() {
+        $id = I('id');
+        $model = M('WxyCourse');
+
+        if (IS_POST) {
+            $data['file'] = I('post.file');
+            $data['courseid'] = ltrim(strstr(I('post.course'), '.', true));
+            $data['comment'] = I('post.comment');
+            $data['token'] = $this->token;
+            if (!intval($data['file'])) $this->error("数据文件未上传！");
+            $import_model = M('wxy_course_commentsimport');
+            $import_model->add($data);
+            if ($this->import_comments_from_excel($data['file'], $data['courseid'], $data['classdate'])) //import student data from uploaded Excel file.
+                $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
+            else
+                $this->error('请检查文件格式');
+        }
+        else {
+            if ($id) $map['id'] = $id;
+            $map['token'] = $this->token;
+            $data = $model->where($map)->select();
+            $this->assign('lists', $data);
+            $this->display('commentimport');
+        }
+    }
+
+    private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
+        if ($courseid == NULL) return false;
+        $data = array();
+        $column = array (
+            'A' => 'studentno',
+            /*
+            'B' => 'uid',
+            'C' => 'token',
+            'D'=>'oid',
+            */
+            'B'=>'comments_txt',
+            /*'C'=>'score2',
+            'D'=>'score3',
+            'E'=>'score',
+            'F'=>'exmscore',
+            'G'=>'comment'*/
+        );
+        $data = importFormExcel($file_id, $column);
+        $score_model = D('WxyCourseComments');
+        //var_dump($student_model);
+        if ($data['status']) {
+            foreach  ($data['data'] as $row) {
+                $row['token'] = $this->token;
+                $row['courseid'] = $courseid;
+                $score_model->addComments($row);
+            }
+            return true;
+        }
+        else return false;
+    }
+
     private function import_data_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
         if ($courseid == NULL) return false;
         $data = array();
@@ -188,10 +245,7 @@ class CourseController extends AddonsController{
             'G'=>'comment'
         );
         $data = importFormExcel($file_id, $column);
-        //var_dump($data);
-        //exit();
         $score_model = D('WxyScore');
-        //var_dump($student_model);
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
@@ -203,6 +257,7 @@ class CourseController extends AddonsController{
         }
         else return false;
     }
+
 
     private function dateDiff($date_1 , $date_2 , $differenceFormat = '%a' )
     {
