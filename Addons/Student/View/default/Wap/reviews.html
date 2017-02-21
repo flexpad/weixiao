@@ -1,0 +1,81 @@
+<!--学生查看评语-->
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
+<title></title>
+<style>
+    *+p{
+        margin-top: 0px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+    .attendance_head{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+</style>
+<body>
+<div class="attendance_head">
+    <div class="institution_name">
+        <img src="{:ADDON_PUBLIC_PATH}/A0.png" alt="" width="90px" height="50px">
+        <p  class="attendance_head_p">老师评语</p>
+    </div>
+    <div>
+        <p class="attendance_left">学号：</p>
+        <p class="attendance_right">姓名：</p>
+    </div>
+</div>
+<ul class="am-list admin-sidebar-list" id="collapase-nav-1">
+    <li class="am-panel">
+        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+            <i class="am-icon-users am-margin-left-sm"></i> 课程名称 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+        </a>
+        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+            <li><a href="#/userAdd">添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员添加人员 </a></li>
+        </ul>
+    </li>
+</ul>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.ie8polyfill.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.widgets.helper.min.js"></script>
+</body>
