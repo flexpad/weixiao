@@ -34,7 +34,8 @@ class WxyCourseCommentsModel extends Model{
             }
         }
         $data['timestamp'] = date("Y-m-d H:i:s");
-        $data ['name'] = $student['name'];
+        $data['name'] = $student['name'];
+        $data['sid'] = $student['id'];
         $res = $this->add ( $data );
         return $res;
 
