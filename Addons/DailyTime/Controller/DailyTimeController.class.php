@@ -35,6 +35,48 @@ class DailyTimeController extends AddonsController
         $ids = I('ids');
         parent::del($Model,$ids);
     }
+    public function add()
+    {
+        $Model = $this->model;
+        parent::add($Model);
+    }
+
+    public function edit()
+    {
+        $data = NULL;
+
+        if (IS_POST) {
+            $Model = $this->model;
+            $data = I('post.data');
+            parent::edit($Model,$data);
+        }
+        else {
+            if (I('id') == NULL) $this->error("学生ID未输入！");
+            $attend_id = intval(I('id'));
+
+            $map['id'] = $attend_id;
+            $attend_Model = D('WxyDailyTime');
+            $data = $attend_Model->where($map)->find();
+        }
+        $stu_model = D('WxyStudentCard');
+        $stu_map['studentno'] = $data['studentID'];
+        $stu_data = $stu_model->where($stu_map)->find();
+
+        if ($data['arriveTime'] != 0)
+            $data['arriveTime'] = date('Y-m-d H:i:s', $data['arriveTime']);
+        else
+            $data['arriveTime'] = '-------------';
+        if ($data['leaveTime'] != 0)
+            $data['leaveTime'] = date('Y-m-d H:i:s', $data['leaveTime']);
+        else
+            $data['leaveTime'] = '-------------';
+
+        $this->assign('student_name', $stu_data['name']);
+        $this->assign('data', $data);
+
+        $this->display('edit');
+    }
+
     /**
      * 显示指定模型列表数据
      */
@@ -77,7 +119,20 @@ class DailyTimeController extends AddonsController
         //var_dump($data);
         /* 查询记录总数 */
         $count = M('WxyDailyTime')->where($map)->count();
-        $state = ['正常','异常','缺席'];
+        $state = ['正常','迟到','早退','缺席'];
+
+        foreach ($data as $key=>$vo) {
+            if ($vo['arriveTime'] != 0)
+                $data[$key]['arriveTime'] = date('Y-m-d H:i:s',$vo['arriveTime']);
+            else
+                $data[$key]['arriveTime'] = '-------------';
+            if ($vo['leaveTime'] != 0)
+                $data[$key]['leaveTime'] = date('Y-m-d H:i:s',$vo['leaveTime']);
+            else
+                $data[$key]['leaveTime'] = '-------------';
+            $data[$key]['state'] = $state[(int)$data[$key]['state']];
+        }
+        /*
         for($x = 0; $x < $count && $x < $row; $x++)
         {
             if($data[$x]['arriveTime'] != '0')
@@ -97,6 +152,7 @@ class DailyTimeController extends AddonsController
 
             $data[$x]['state'] = $state[(int)$data[$x]['state']];
         }
+        */
         //var_dump($data);
         //var_dump($list_data);
         //var_dump($grids);
@@ -152,7 +208,7 @@ class DailyTimeController extends AddonsController
 
         /* 查询记录总数 */
         $count = M('WxyAttendanceimport')->where($map)->count();
-
+        var_dump($count);
         if ($count > $row) {
             $page = new \Think\Page ($count, $row);
             $page->setConfig('theme', '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
@@ -199,7 +255,8 @@ class DailyTimeController extends AddonsController
             'A' => 'studentID',
             'B'=>'arriveTime',
             'C'=>'leaveTime',
-            'D' =>'description',
+            'D'=>'state',
+            'E' =>'description',
         );
         $data = importFormExcel($file_id, $column);
         //var_dump($data);
@@ -209,19 +266,7 @@ class DailyTimeController extends AddonsController
             foreach  ($data['data'] as $row) {
                 $row['Token'] = $this->token;
                 $row['studentID'] = strval($row['studentID']);
-                if(($row['arriveTime'] != '' && $row['leaveTime'] == '')
-                    || ($row['arriveTime'] == '' && $row['leaveTime'] != ''))
-                {
-                    $row['state'] = 1;
-                }
-                else if($row['arriveTime'] == '' && $row['leaveTime'] == '')
-                {
-                    $row['state'] = 2;
-                }
-                else
-                {
-                    $row['state'] = 0;
-                }
+
                 if($row['arriveTime'] != '')
                 {
                     $row['arriveTime'] = strtotime($row['arriveTime']);

@@ -250,7 +250,7 @@ class WapController extends AddonsController {
 
         $data = $model->where($map)->order('courseid')->select();
         if ($data == NULL)
-            $this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
+            $this->error("改学生上课的评语还未上传，请关注Q群通知，敬请期待！");
 
         /*
         $i = 1;

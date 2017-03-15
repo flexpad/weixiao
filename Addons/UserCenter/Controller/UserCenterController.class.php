@@ -65,7 +65,7 @@ class UserCenterController extends AddonsController {
 		// 读取模型数据列表
 		$px = C ( 'DB_PREFIX' );
 		$data = M ()->table ( $px . 'public_follow as f' )->join ( $px . 'user as u ON f.uid=u.uid' )->field ( 'u.uid,f.openid' )->where ( $map )->order ( $order )->page ( $page, $row )->select ();
-		
+
 		foreach ( $data as $k => $d ) {
 			$user = getUserInfo ( $d ['uid'] );
 			$user ['openid'] = $d ['openid'];
@@ -75,7 +75,7 @@ class UserCenterController extends AddonsController {
 		}
 		/* 查询记录总数 */
 		$count = M ()->table ( $px . 'public_follow as f' )->join ( $px . 'user as u ON f.uid=u.uid' )->where ( $map )->count ();
-		
+
 		$list_data ['list_data'] = $data;
 		
 		// 分页
