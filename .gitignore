@@ -11,3 +11,13 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+.idea
+Runtime
+Uploads
+Runtime
+Uploads
+/*.gitignore
+*
+*
+Runtime
+Uploads
