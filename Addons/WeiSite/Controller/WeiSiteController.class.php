@@ -8,12 +8,12 @@ class WeiSiteController extends BaseController {
 	function config() {
 		$public_info = get_token_appinfo ();
 		$normal_tips = '在微信里回复“微官网”即可以查看效果,也可以点击：<a href="' . addons_url ( 'WeiSite://WeiSite/index', array (
-				'publicid' => $public_info ['id'] 
+				'publicid' => $public_info ['id']
 		) ) . '">预览</a>， <a id="copyLink" data-clipboard-text="' . addons_url ( 'WeiSite://WeiSite/index', array (
-				'publicid' => $public_info ['id'] 
+				'publicid' => $public_info ['id']
 		) ) . '">复制链接</a><script type="application/javascript">$.WeiPHP.initCopyBtn("copyLink");</script>';
 		$this->assign ( 'normal_tips', $normal_tips );
-		
+
 		$config = D ( 'Common/AddonConfig' )->get ( _ADDONS );
 		// dump(_ADDONS);
 		if (IS_POST) {
@@ -47,13 +47,13 @@ class WeiSiteController extends BaseController {
 			$map1 ['token'] = $map ['token'] = get_token ();
 			$map1 ['is_show'] = $map ['is_show'] = 1;
 			$map ['pid'] = 0; // 获取一级分类
-			                  
+
 			// 分类
 			$category = M ( 'weisite_category' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 			foreach ( $category as &$vo ) {
 				$vo ['icon'] = get_cover_url ( $vo ['icon'] );
 				empty ( $vo ['url'] ) && $vo ['url'] = addons_url ( 'WeiSite://WeiSite/lists', array (
-						'cate_id' => $vo ['id'] 
+						'cate_id' => $vo ['id']
 				) );
 			}
 			$this->assign ( 'category', $category );
@@ -63,7 +63,7 @@ class WeiSiteController extends BaseController {
 			foreach ( $slideshow as &$vo ) {
 				$vo ['img'] = get_cover_url ( $vo ['img'] );
 			}
-			
+
 			foreach ( $slideshow as &$data ) {
 				foreach ( $category as $cate ) {
 					if ($data ['cate_id'] == $cate ['id'] && empty ( $data ['url'] )) {
@@ -73,14 +73,14 @@ class WeiSiteController extends BaseController {
 			}
 			$this->assign ( 'slideshow', $slideshow );
 			// dump($slideshow);
-			
+
 			// dump($category);
 			$map2 ['token'] = $map ['token'];
 			$public_info = get_token_appinfo ( $map2 ['token'] );
 			$this->assign ( 'publicid', $public_info ['id'] );
-			
+
 			$this->assign ( 'manager_id', $this->mid );
-			
+
 			$this->_footer ();
 			// $backgroundimg=ONETHINK_ADDON_PATH.'WeiSite/View/default/TemplateIndex/'.$this->config['template_index'].'/icon.png';
 			if ($this->config ['show_background'] == 0) {
@@ -97,7 +97,7 @@ class WeiSiteController extends BaseController {
 		empty ( $cate_id ) && $cate_id = I ( 'classid', 0, 'intval' );
         //var_dump($cate_id);
 		if (file_exists ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_lists'] . '.html' )) {
-			
+
 			$this->pigcms_lists ( $cate_id );
 			$this->display ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_lists'] . '.html' );
 		} else {
@@ -113,17 +113,17 @@ class WeiSiteController extends BaseController {
 				foreach ( $category as &$vo ) {
 					$vo ['icon'] = get_cover_url ( $vo ['icon'] );
 					empty ( $vo ['url'] ) && $vo ['url'] = addons_url ( 'WeiSite://WeiSite/lists', array (
-							'cate_id' => $vo ['id'] 
+							'cate_id' => $vo ['id']
 					) );
 				}
 				$this->assign ( 'category', $category );
 				// 幻灯片
-				
+
 				$slideshow = M ( 'weisite_slideshow' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 				foreach ( $slideshow as &$vo ) {
 					$vo ['img'] = get_cover_url ( $vo ['img'] );
 				}
-				
+
 				foreach ( $slideshow as &$data ) {
 					foreach ( $category as $c ) {
 						if ($data ['cate_id'] == $c ['id']) {
@@ -132,7 +132,7 @@ class WeiSiteController extends BaseController {
 					}
 				}
 				$this->assign ( 'slideshow', $slideshow );
-				
+
 				$this->_footer ();
 				if ($this->config ['template_subcate'] == 'default') {
 					// code...
@@ -150,7 +150,7 @@ class WeiSiteController extends BaseController {
                 if (IS_AJAX) $page = intval(I('post.page'));
 				//else var_dump($page);
 				$row = isset ( $_REQUEST ['list_row'] ) ? intval ( $_REQUEST ['list_row'] ) : 15;
-				
+
 				$data = M ( 'custom_reply_news' )->where ( $map )->order ( 'sort asc, id DESC' )->page ( $page, $row )->select ();
 				if (empty ( $data )) {
 					$cmap ['id'] = $map ['cate_id'] = intval ( $cate_id );
@@ -163,20 +163,20 @@ class WeiSiteController extends BaseController {
 				/* 查询记录总数 */
 				$count = M ( 'custom_reply_news' )->where ( $map )->count ();
 				$list_data ['list_data'] = $data;
-				
+
 				// 分页
 				if ($count > $row) {
 					$page = new \Think\Page ( $count, $row );
 					$page->setConfig ( 'theme', '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%' );
 					$list_data ['_page'] = $page->show ();
 				}
-				
+
 				foreach ( $list_data ['list_data'] as $k => $li ) {
 					if ($li ['jump_url'] && empty ( $li ['content'] )) {
 						$li ['url'] = $li ['jump_url'];
 					} else {
 						$li ['url'] = U ( 'detail', array (
-								'id' => $li ['id'] 
+								'id' => $li ['id']
 						) );
 					}
 					//if (IS_AJAX) $li['url'] = urlencode($li['url']);
@@ -221,15 +221,15 @@ class WeiSiteController extends BaseController {
 			}
 			// dump($info);exit;
 			$this->assign ( 'info', $info );
-			
-			// dump($info);exit;
+			$this->assign ('page_title',$info['title']);
+			//dump($info['title']);
 			M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
-			
+
 			$this->_footer ();
 			$this->display ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/TemplateDetail/' . $this->config ['template_detail'] . '/detail.html' );
 		}
 	}
-	
+
 	// 3G页面底部导航
 	function _footer($temp_type = 'weiphp') {
 		if ($temp_type == 'pigcms') {
@@ -243,29 +243,29 @@ class WeiSiteController extends BaseController {
 			if (! file_exists ( $file ) || true) {
 				file_put_contents ( $file, $html );
 			}
-			
+
 			$this->assign ( 'cateMenuFileName', $file );
 		} else {
 			$list = D ( 'Addons://WeiSite/Footer' )->get_list ();
-			
+
 			foreach ( $list as $k => $vo ) {
 				if ($vo ['pid'] != 0)
 					continue;
-				
+
 				$one_arr [$vo ['id']] = $vo;
 				unset ( $list [$k] );
 			}
-			
+
 			foreach ( $one_arr as &$p ) {
 				$two_arr = array ();
 				foreach ( $list as $key => $l ) {
 					if ($l ['pid'] != $p ['id'])
 						continue;
-					
+
 					$two_arr [] = $l;
 					unset ( $list [$key] );
 				}
-				
+
 				$p ['child'] = $two_arr;
 			}
 			$this->assign ( 'footer', $one_arr );
@@ -288,7 +288,7 @@ class WeiSiteController extends BaseController {
 				'status' => "1",
 				'RadioGroup1' => "0",
 				'vo' => array (),
-				'k' => $k 
+				'k' => $k
 		);
 		return $arr;
 	}
@@ -298,7 +298,7 @@ class WeiSiteController extends BaseController {
 	function tvs1_video() {
 		$this->display ();
 	}
-	
+
 	/*
 	 * 兼容小猪CMS模板
 	 *
@@ -314,12 +314,12 @@ class WeiSiteController extends BaseController {
 		// dump ( 'pigcms_init' );
 		C ( 'TMPL_L_DELIM', '{pigcms:' );
 		// C ( 'TMPL_FILE_DEPR', '_' );
-		
+
 		define ( 'RES', ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/common' );
-		
+
 		$public_info = get_token_appinfo ();
 		$manager = get_userinfo ( $public_info ['uid'] );
-		
+
 		// 站点配置
 		$data ['f_logo'] = get_cover_url ( C ( 'SYSTEM_LOGO' ) );
 		$data ['f_siteName'] = C ( 'WEB_SITE_TITLE' );
@@ -331,7 +331,7 @@ class WeiSiteController extends BaseController {
 		$data ['f_qrcode'] = '';
 		$data ['f_ipc'] = C ( 'WEB_SITE_ICP' );
 		$data ['reg_validDays'] = 30;
-		
+
 		// 用户信息
 		$data ['user'] = array (
 				'id' => $GLOBALS ['myinfo'] ['uid'],
@@ -362,9 +362,9 @@ class WeiSiteController extends BaseController {
 				'wechat_card_num' => 0,
 				'serviceUserNum' => 0,
 				'invitecode' => '',
-				'remark' => '' 
+				'remark' => ''
 		);
-		
+
 		// 微网站配置信息
 		$data ['homeInfo'] = array (
 				'id' => $manager ['uid'],
@@ -379,9 +379,9 @@ class WeiSiteController extends BaseController {
 				'copyright' => $manager ['copy_right'],
 				// 'radiogroup' => "12",
 				// 'advancetpl' => "0"
-				'logo' => get_cover_url ( $this->config ['cover'] ) 
+				'logo' => get_cover_url ( $this->config ['cover'] )
 		);
-		
+
 		// 背景图
 		$bgarr = $this->config ['background_arr'];
 		$data ['flashbgcount'] = count ( $bgarr );
@@ -392,7 +392,7 @@ class WeiSiteController extends BaseController {
 					'img' => get_cover_url ( $bg ),
 					'url' => "javascript:void(0)",
 					'info' => "背景图片",
-					'tip' => '2' 
+					'tip' => '2'
 			);
 		}
 		// $data ['flashbg'] [0] = array (
@@ -415,25 +415,25 @@ class WeiSiteController extends BaseController {
 					'img' => get_cover_url ( $vo ['img'] ),
 					'url' => $vo ['url'],
 					'info' => $vo ['title'],
-					'tip' => '1' 
+					'tip' => '1'
 			);
 		}
 		$data ['num'] = count ( $data ['flash'] );
-		
+
 		// 底部栏
 		$this->_footer ( 'pigcms' );
-		
+
 		// 设置版权信息
 		$data ["iscopyright"] = 0;
 		$data ["copyright"] = $data ["siteCopyright"] = empty ( $manager ['copy_right'] ) ? C ( 'COPYRIGHT' ) : $manager ['copy_right'];
 		// 分享
 		$data ['shareScript'] = '';
-		
+
 		$data ['token'] = $public_info ['token'];
 		$data ['wecha_id'] = $public_info ['wechat'];
-		
+
 		$this->assign ( $data );
-		
+
 		// 模板信息
 		if (file_exists ( ONETHINK_ADDON_PATH . _ADDONS . '/View/default/pigcms/index.Tpl.php' )) {
 			$pigcms_temps = require_once ONETHINK_ADDON_PATH . _ADDONS . '/View/default/pigcms/index.Tpl.php';
@@ -441,7 +441,7 @@ class WeiSiteController extends BaseController {
 				$temps [$vo ['tpltypename']] = $vo;
 			}
 		}
-		
+
 		if (file_exists ( ONETHINK_ADDON_PATH . _ADDONS . '/View/default/pigcms/cont.Tpl.php' )) {
 			$pigcms_temps = require_once ONETHINK_ADDON_PATH . _ADDONS . '/View/default/pigcms/cont.Tpl.php';
 			foreach ( $pigcms_temps as $k => $vo ) {
@@ -479,38 +479,38 @@ class WeiSiteController extends BaseController {
 				// 'freephotocount' => "3",
 				// 'oauth' => "0",
 				'color_id' => 0,
-				
+
 				'tpltypeid' => $temps [$this->config ['template_index']] ['tpltypeid'],
 				'tpltypename' => $this->config ['template_index'],
-				
+
 				'tpllistid' => $temps [$this->config ['template_lists']] ['tpltypeid'],
 				'tpllistname' => $this->config ['template_lists'],
-				
+
 				'tplcontentid' => $temps [$this->config ['template_detail']] ['tpltypeid'],
-				'tplcontentname' => $this->config ['template_detail'] 
+				'tplcontentname' => $this->config ['template_detail']
 		);
 		$this->assign ( 'tpl', $tpl );
 		$this->assign ( 'wxuser', $tpl );
 	}
 	function pigcms_index() {
 		$this->pigcms_init ();
-		
+
 		$cate = $this->_pigcms_cate ( 0 );
 		$this->assign ( 'info', $cate );
 	}
 	function pigcms_lists($cate_id) {
 		$this->pigcms_init ();
-		
+
 		$map ['token'] = get_token ();
 		$cateArr = M ( 'weisite_category' )->where ( $map )->getField ( 'id,title' );
-		
+
 		$thisClassInfo = array ();
 		if ($cate_id) {
 			$map ['cate_id'] = $cate_id;
-			
+
 			$thisClassInfo = $this->_deal_cate ( $cateArr [$cate_id] );
 		}
-		
+
 		$data = M ( 'custom_reply_news' )->where ( $map )->order ( 'sort asc, id DESC' )->select ();
 		foreach ( $data as $vo ) {
 			$info [] = array (
@@ -533,19 +533,19 @@ class WeiSiteController extends BaseController {
 					'title' => $vo ['title'],
 					'usort' => $vo ['sort'],
 					'name' => $vo ['title'],
-					'img' => get_cover_url ( $vo ['cover'] ) 
+					'img' => get_cover_url ( $vo ['cover'] )
 			);
 		}
-		
+
 		$this->assign ( 'info', $info );
 		$this->assign ( 'thisClassInfo', $thisClassInfo );
 	}
 	function pigcms_detail() {
 		$this->pigcms_init ();
-		
+
 		$cate = $this->_pigcms_cate ( 0 );
 		$this->assign ( 'info', $cate );
-		
+
 		$map ['id'] = I ( 'get.id', 0, 'intval' );
 		$res = M ( 'custom_reply_news' )->where ( $map )->find ();
 		if ($res ['is_show'] == 0) {
@@ -554,24 +554,24 @@ class WeiSiteController extends BaseController {
 		$res = $this->_deal_news ( $res, 1 );
 		$this->assign ( 'res', $res );
 		M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
-		
+
 		$map2 ['cate_id'] = $res ['cate_id'];
 		$map2 ['id'] = array (
 				'exp',
-				'!=' . $map ['id'] 
+				'!=' . $map ['id']
 		);
 		$lists = M ( 'custom_reply_news' )->where ( $map2 )->order ( 'id desc' )->limit ( 5 )->select ();
 		foreach ( $lists as &$new ) {
 			$new = $this->_deal_news ( $new );
 		}
-		
+
 		$this->assign ( 'lists', $lists );
 	}
 	function _pigcms_cate($pid = null) {
 		$map ['token'] = get_token ();
 		$map ['is_show'] = 1;
 		$pid === null || $map ['pid'] = $pid; // 获取一级分类
-		
+
 		$category = M ( 'weisite_category' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 		$count = count ( $category );
 		foreach ( $category as $k => $vo ) {
@@ -580,14 +580,14 @@ class WeiSiteController extends BaseController {
 			$pid = intval ( $vo ['pid'] );
 			$res [$pid] [$vo ['id']] = $this->_deal_cate ( $vo, $count - $k );
 		}
-		
+
 		foreach ( $res [0] as $vv ) {
 			if (! empty ( $res [$vv ['id']] )) {
 				$vv ['sub'] = $res [$vv ['id']];
 				unset ( $res [$vv ['id']] );
 			}
 		}
-		
+
 		return $res [0];
 	}
 	function _deal_cate($vo, $key = 1) {
@@ -605,7 +605,7 @@ class WeiSiteController extends BaseController {
 				'conttpid' => 1,
 				'sub' => array (),
 				'key' => $key,
-				'token' => $vo ['token'] 
+				'token' => $vo ['token']
 		);
 	}
 	function _deal_news($vo, $type = 0) {
@@ -630,13 +630,13 @@ class WeiSiteController extends BaseController {
 				'title' => $vo ['title'],
 				'usort' => $vo ['sort'],
 				'name' => $vo ['title'],
-				'img' => get_cover_url ( $vo ['cover'] ) 
+				'img' => get_cover_url ( $vo ['cover'] )
 		);
 	}
 	function _getNewsUrl($info) {
 		$param ['token'] = get_token ();
 		$param ['openid'] = get_openid ();
-		
+
 		if (! empty ( $info ['jump_url'] )) {
 			$url = replace_url ( $info ['jump_url'] );
 		} else {
