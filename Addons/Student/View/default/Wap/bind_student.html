@@ -1,14 +1,27 @@
 <!-- 用户绑定页面 -->
 <include file="Public/mobile_head"/>
 <link href="{:ADDON_PUBLIC_PATH}/bindStudent.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
-
-<body>
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<style>
+    .uicon{border-radius:60px;width: 120px;}
+</style>
+<body style="background-color: #e4e4e4">
 <div id="container" class="container body user_bind_page">
-    <div style="margin:20px auto; text-align:center" class="uicon"><img src="{:ADDON_PUBLIC_PATH}/A1.jpg" width="150px;"/></div>
-    <div style="text-align: center;margin-bottom: 20px">{$oid}</div>
+    <div style="background-color: #fbfbfb ;padding-top: 20px">
+        <div style="margin:0px auto 5px; text-align:center" class="uicon">
+            <img src="{:ADDON_PUBLIC_PATH}/A1.jpg" width="120px"/>
+        </div>
+        <div style="text-align: center;margin-bottom: 20px;padding-bottom: 5px">{$oid}</div>
+    </div>
 
+    <if condition="($care_count gt 0)">
+        <div style="background-color: #fbfbfb ;margin-top: 20px;padding-bottom: 10px;margin-bottom: 20px">
+            <p style="margin-left: 10px;padding-top: 5px">您已经绑定了<span>{$care_count}</span>位学生</p>
+            <a href ="{:addons_url('Student://Wap/infor')}" class="weui-btn weui-btn_primary" style="margin: 10px;height: 40px">查看已绑定学生信息</a>
+        </div>
+    </if>
     <!-- 表单 -->
-    <form class="bind_form form-horizontal" method="post" action="{:addons_url('Student://Wap/bind')}" id="form">
+    <form class="bind_form form-horizontal" method="post" action="{:addons_url('Student://Wap/bind')}" id="form"  style="background-color: #fbfbfb;padding-bottom: 20px">
         <!-- 基础文档模型 -->
         <div class="tab-pane in      tab1" id="tab1">
             <div class="form-item cf">
@@ -39,17 +52,12 @@
                 <div class="alert-content"></div>
             </div>
             <div class="form-item cf">
-                <button class="home_btn submit-btn" id="submit" type="button" target-form="form-horizontal">提交</button>
+                <button class="home_btn submit-btn " id="submit" type="button" target-form="form-horizontal">提交</button>
             </div>
             <!--<p class="bind_tips">手机号码仅用于验证身份，不会被公开，请放心输入。</p>-->
         </div>
     </form>
-    <if condition="($care_count gt 0)">
-        <div style="text-align: center;margin-top: 20px">
-            <p>您已经绑定了<span>{$care_count}</span>位学生</p>
-            <p><a href ="{:addons_url('Student://Wap/infor')}">查看已绑定学生信息</a></p>
-        </div>
-    </if>
+
 </div>
 <!-- 底部导航 -->
 {$footer_html}

@@ -1,0 +1,5 @@
+[ 2017-02-12T16:53:49+08:00 ] ::1 /weiphp3.0/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'wxy'@'localhost' (using password: YES)
+

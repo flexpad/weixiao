@@ -1,0 +1,10 @@
+<?php
+//000000086400a:21:{s:2:"id";s:3:"152";s:4:"name";s:6:"coupon";s:5:"title";s:9:"优惠券";s:6:"extend";s:1:"0";s:8:"relation";s:0:"";s:7:"need_pk";s:1:"1";s:10:"field_sort";s:267:"["title","cover","use_tips","start_time","start_tips","end_time","end_tips","end_img","num","max_num","over_time","empty_prize_tips","pay_password","background","more_button","use_start_time","shop_name","shop_logo","head_bg_color","button_color","template","member"]";s:11:"field_group";s:8:"1:基础";s:14:"attribute_list";s:0:"";s:13:"template_list";s:0:"";s:12:"template_add";s:0:"";s:13:"template_edit";s:0:"";s:9:"list_grid";s:319:"id:优惠券编号
+title:标题
+num:计划发送数
+collect_count:已领取数
+use_count:已使用数
+start_time|time_format:开始时间
+end_time|time_format:结束时间
+ids:操作:[EDIT]|编辑,[DELETE]|删除,lists?target_id=[id]&target=_blank&_controller=Sn|成员管理,preview?id=[id]&target=_blank|预览";s:8:"list_row";s:2:"20";s:10:"search_key";s:5:"title";s:11:"search_list";s:0:"";s:11:"create_time";s:10:"1396061373";s:11:"update_time";s:10:"1447756274";s:6:"status";s:1:"1";s:11:"engine_type";s:6:"MyISAM";s:5:"addon";s:6:"Coupon";}
+?>

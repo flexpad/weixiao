@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
 <title></title>
 <style>
+    body{
+        background-color: #f8f8f8;
+    }
     *+p{
         margin-top: 0px;
     }
@@ -47,10 +50,19 @@
     }
     .omit_show{
         display: inline-block;
-        width: 55%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+        width: 50%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
     }
     .am-list>li>a{
         line-height: 1;
+    }
+    .sp_time{
+        display: inline-block;
+    }
+    .am-list>li>a{
+        background-color: #d9edf7;
+    }
+    .am-panel>.am-list>li>a{
+        background-color: white;
     }
 </style>
 <body>
@@ -67,11 +79,12 @@
 <div class="weui-cells">
     <div class="weui-cell weui-cell_select weui-cell_select-after">
         <div class="weui-cell__hd">
-            <label class="weui-label">课程筛选</label>
+            <label class="weui-label" style="margin-bottom: 0px;">课程筛选:</label>
         </div>
         <div class="weui-cell__bd">
             <assign name="courseid" value="0" />
             <select class="weui-select" name="select1" id="cl">
+                <option value="0" selected="">全部</option>
                 <volist name="data" id="vo" key="key">
                     <if condition="($vo.courseid neq $courseid)">
                         <option value="{$vo.courseid}">{$vo.course_name}</option>
@@ -92,7 +105,7 @@
         <if condition="($vo.courseid neq $courseid)">
             <li class="am-panel" id="ap_{$vo.courseid}">
                 <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$vo.courseid}'}">
-                    <span class="omit_show">{$vo.course_name} </span><span>【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    <span class="omit_show">{$vo.course_name} </span><span class="sp_time">【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
                 </a>
             <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$vo.courseid}">
         </if>
@@ -122,10 +135,22 @@
 <script>
     $(function(){
         $("select").change(function () {
-            var nJindex=document.getElementById("cl").selectedIndex;
-            console.log(nJindex);
-        });
+            var selecy_val=$("select option:selected").val() ;
+            selecy_val="ap_"+selecy_val;
+            $(".am-panel").each(function () {
+                if(selecy_val!="ap_0"){
+                    if(selecy_val!=this.id){
+                        $(this).css("display","none");
+                    }
+                    if(selecy_val==this.id){
+                        $(this).css("display","block");
+                    }
+                }else if(selecy_val=="ap_0"){
+                    $(this).css("display","block");
+                }
 
+            })
+        });
     })
 </script>
 </body>

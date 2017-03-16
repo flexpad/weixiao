@@ -4,6 +4,10 @@
 body{
 	background:#eee url({$config.background}) no-repeat; background-size:100% 100%
 }
+.icon_lists .item:hover {
+    background-color: transparent;
+}
+
 </style>
 <body id="weisite" >
 <div class="container">
@@ -65,6 +69,7 @@ $(function(){
 	var h=$(window).height();
 	$('#weisite').css('min-height',h);
 })
+console.log("C3");
 
 </script>
 <script type="text/javascript">
@@ -88,6 +93,11 @@ $(function(){
         /*item点击事件*/
         $(".item").click(function(){
             $(this).css("background","transparent");
+//            console.log($(this));
+        });
+        $(".item").hover(function(){
+            $(this).css("background","transparent");
+//            console.log($(this));
         });
     })
 </script>

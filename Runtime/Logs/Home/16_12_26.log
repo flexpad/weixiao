@@ -1,0 +1,776 @@
+[ 2016-12-26T13:28:43+08:00 ] 182.254.86.157 /weiphp30/index.php?s=/home/weixin/index/id/2.html&signature=6d3d15cc2838a7d116174b1d4c607e9467b24d2b&timestamp=1482730122&nonce=182279099&openid=oVYbpwGB4JxgXi_O7SGRxiemi2jI
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000925s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001197s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000328s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000386s ]
+NOTIC: [8] Undefined index: doNotInit /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 14 行.
+NOTIC: [8] Undefined index: encrypt_type /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 20 行.
+SQL: INSERT INTO `wp_weixin_log` (`cTime`,`cTime_format`,`data`,`data_post`) VALUES ('1482730123','2016-12-26 13:28:43','a:6:{s:10:\"ToUserName\";s:15:\"gh_ca892028da58\";s:12:\"FromUserName\";s:28:\"oVYbpwGB4JxgXi_O7SGRxiemi2jI\";s:10:\"CreateTime\";s:10:\"1482730122\";s:7:\"MsgType\";s:5:\"event\";s:5:\"Event\";s:11:\"unsubscribe\";s:8:\"EventKey\";s:0:\"\";}','<xml><ToUserName><![CDATA[gh_ca892028da58]]></ToUserName>
+<FromUserName><![CDATA[oVYbpwGB4JxgXi_O7SGRxiemi2jI]]></FromUserName>
+<CreateTime>1482730122</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[unsubscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>') [ RunTime:0.0003s ]
+SQL: SELECT `name`,type_0 as val FROM `wp_public_auth`  [ RunTime:0.0002s ]
+SQL: SELECT `uid` FROM `wp_public_follow` WHERE `token` = 'gh_ca892028da58' AND `openid` = 'oVYbpwGB4JxgXi_O7SGRxiemi2jI' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: headimgurl /home/weiphp30/Application/Common/Model/FollowModel.class.php 第 47 行.
+SQL: INSERT INTO `wp_user` (`experience`,`score`,`reg_ip`,`reg_time`,`last_login_ip`,`last_login_time`,`status`,`is_init`,`is_audit`,`come_from`,`headimgurl`) VALUES ('100','100','3070121629','1482730123','3070121629','1482730123','1','1','1','1','') [ RunTime:0.0002s ]
+SQL: INSERT INTO `wp_public_follow` (`token`,`openid`,`uid`) VALUES ('gh_ca892028da58','oVYbpwGB4JxgXi_O7SGRxiemi2jI','812') [ RunTime:0.0002s ]
+NOTIC: [8] Undefined variable: user /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 301 行.
+NOTIC: [8] Undefined index: Content /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 41 行.
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 46 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined index: appid /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 73 行.
+SQL: SELECT * FROM `wp_custom_menu` WHERE `keyword` = 'unsubscribe' AND `from_type` <> 9 AND `token` = 'gh_ca892028da58' AND `type` = 'click' ORDER BY id desc LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: doNotInit /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 14 行.
+NOTIC: [8] Undefined index: encrypt_type /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 20 行.
+NOTIC: [8] Undefined variable: token /home/weiphp30/Application/Common/Model/FollowModel.class.php 第 85 行.
+NOTIC: [2] Illegal offset type in isset or empty /home/weiphp30/ThinkPHP/Library/Think/Model.class.php 第 542 行.
+SQL: UPDATE `wp_public_follow` SET `has_subscribe`='0' WHERE `openid` = 'oVYbpwGB4JxgXi_O7SGRxiemi2jI' [ RunTime:0.0002s ]
+SQL: SELECT `uid` FROM `wp_public_follow` WHERE `openid` = 'oVYbpwGB4JxgXi_O7SGRxiemi2jI' AND `token` = 'gh_ca892028da58' LIMIT 1   [ RunTime:0.0002s ]
+SQL: INSERT INTO `wp_credit_data` (`credit_name`,`admin_uid`,`uid`,`cTime`,`token`,`experience`,`score`,`credit_title`) VALUES ('unsubscribe','0','812','1482730123','gh_ca892028da58','-100','-100','取消关注公众号') [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wp_user` WHERE `uid` = 812 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `uid`,`has_public`,`headface_url`,`GammaAppId`,`GammaSecret`,`copy_right`,`tongji_code`,`website_logo` FROM `wp_manager` WHERE ( uid='812' ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wp_auth_group_access` [ RunTime:0.0004s ]
+SQL: SELECT a.group_id,g.title,g.type,g.icon FROM wp_auth_group_access a INNER JOIN wp_auth_group g on a.group_id=g.id  WHERE ( a.uid='812' and g.status='1' )  [ RunTime:0.0002s ]
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Common/Model/UserModel.class.php 第 243 行.
+SQL: SELECT `openid`,`token`,`uid`,`has_subscribe`,`syc_status`,`remark` FROM `wp_public_follow` WHERE ( uid='812' )  [ RunTime:0.0003s ]
+NOTIC: [8] Undefined index:  /home/weiphp30/Application/Common/Model/UserModel.class.php 第 271 行.
+NOTIC: [8] Undefined index:  /home/weiphp30/Application/Common/Model/UserModel.class.php 第 272 行.
+SQL: SELECT `tag_id` FROM `wp_user_tag_link` WHERE `uid` = 812  [ RunTime:0.0001s ]
+SQL: UPDATE `wp_user` SET `score`='0',`experience`='0' WHERE `uid` = 812 [ RunTime:0.0001s ]
+SQL: SELECT * FROM `wp_user` WHERE `uid` = 812 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `uid`,`has_public`,`headface_url`,`GammaAppId`,`GammaSecret`,`copy_right`,`tongji_code`,`website_logo` FROM `wp_manager` WHERE ( uid='812' ) LIMIT 1   [ RunTime:0.0001s ]
+SQL: SHOW COLUMNS FROM `wp_auth_group_access` [ RunTime:0.0004s ]
+SQL: SELECT a.group_id,g.title,g.type,g.icon FROM wp_auth_group_access a INNER JOIN wp_auth_group g on a.group_id=g.id  WHERE ( a.uid='812' and g.status='1' )  [ RunTime:0.0002s ]
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Common/Model/UserModel.class.php 第 243 行.
+SQL: SELECT `openid`,`token`,`uid`,`has_subscribe`,`syc_status`,`remark` FROM `wp_public_follow` WHERE ( uid='812' )  [ RunTime:0.0003s ]
+NOTIC: [8] Undefined index:  /home/weiphp30/Application/Common/Model/UserModel.class.php 第 271 行.
+NOTIC: [8] Undefined index:  /home/weiphp30/Application/Common/Model/UserModel.class.php 第 272 行.
+SQL: SELECT `tag_id` FROM `wp_user_tag_link` WHERE `uid` = 812  [ RunTime:0.0001s ]
+SQL: SELECT * FROM `wp_custom_sendall` WHERE `ToUserName` = 'gh_ca892028da58' AND `is_send` = 0 AND `FromUserName` = 'oVYbpwGB4JxgXi_O7SGRxiemi2jI'  [ RunTime:0.0004s ]
+
+[ 2016-12-26T14:00:18+08:00 ] 101.204.247.218 /weiphp30/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000796s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001089s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000298s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000337s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0006s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: HTTP_REFERER /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 139 行.
+SQL: SELECT * FROM `wp_public_link` WHERE `uid` = 1  [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wp_user` WHERE `uid` = 1 LIMIT 1   [ RunTime:0.0003s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0004s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: HTTP_REFERER /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 139 行.
+
+[ 2016-12-26T14:00:18+08:00 ] 101.204.247.218 /weiphp30/index.php?s=/home/index/main.html&mdm=14
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000953s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001251s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000319s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000346s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0006s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: HTTP_REFERER /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 139 行.
+NOTIC: [8] Undefined offset: 1 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 143 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 185 行.
+SQL: SELECT * FROM `wp_public_link` WHERE `uid` = 1  [ RunTime:0.0002s ]
+
+[ 2016-12-26T14:00:18+08:00 ] 101.204.247.218 /weiphp30/index.php?s=/Home/Public/lists/from/2.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000857s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001103s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000273s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000300s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0005s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: HTTP_REFERER /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 139 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 185 行.
+SQL: SELECT * FROM `wp_public_link` WHERE `uid` = 1  [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wp_model` WHERE `name` = 'public' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `mp_id` FROM `wp_public_link` WHERE ( uid='1' )  [ RunTime:0.0002s ]
+SQL: SELECT `mp_id`,count(1) as num FROM `wp_public_link` WHERE `mp_id` IN ('1','2') GROUP BY mp_id  [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wp_model` WHERE `id` = 6 LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined variable: order /home/weiphp30/Application/Home/Controller/PublicController.class.php 第 67 行.
+SQL: SELECT `id`,`uid`,`public_name`,`public_id`,`wechat`,`interface_url`,`headface_url`,`area`,`addon_config`,`addon_status`,`token`,`is_use`,`type`,`appid`,`secret`,`group_id`,`encodingaeskey`,`tips_url`,`domain`,`is_bind`,`cTime`,`authorizer_refresh_token` FROM `wp_public` WHERE `id` IN ('1','2')  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000156s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000192s ]
+NOTIC: [8] Use of undefined constant website_logo - assumed 'website_logo' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 58 行.
+NOTIC: [8] Use of undefined constant mp_id - assumed 'mp_id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 65 行.
+NOTIC: [8] Use of undefined constant headimgurl - assumed 'headimgurl' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 84 行.
+NOTIC: [8] Undefined variable: output /home/weiphp30/Application/Common/Common/function.php 第 1770 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 154 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 155 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 156 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 157 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 154 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 155 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 156 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' /home/weiphp30/Runtime/Cache/Home/47bf96c39d5f0d38e70fc110cfd82d9b.php 第 157 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.013218s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.013247s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000114s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000142s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000357s ]
+INFO: Run Behavior\CronRunBehavior [ RunTime:0.000300s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000711s ]
+
+[ 2016-12-26T17:34:01+08:00 ] 182.254.86.142 /weiphp30/index.php?s=/home/weixin/index/id/2.html&signature=98806a79a6a5befb852c691ca31f9d3ce507a326&timestamp=1482744841&nonce=1257768243&openid=oVYbpwCFAxcPbE7_rf_BES50w8Yw
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.001107s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001416s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000284s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000312s ]
+NOTIC: [8] Undefined index: doNotInit /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 14 行.
+NOTIC: [8] Undefined index: encrypt_type /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 20 行.
+SQL: INSERT INTO `wp_weixin_log` (`cTime`,`cTime_format`,`data`,`data_post`) VALUES ('1482744841','2016-12-26 17:34:01','a:12:{s:10:\"ToUserName\";s:15:\"gh_ca892028da58\";s:12:\"FromUserName\";s:28:\"oVYbpwCFAxcPbE7_rf_BES50w8Yw\";s:10:\"CreateTime\";s:10:\"1482744841\";s:7:\"MsgType\";s:5:\"event\";s:5:\"Event\";s:17:\"MASSSENDJOBFINISH\";s:5:\"MsgID\";s:10:\"1000000096\";s:6:\"Status\";s:12:\"send success\";s:10:\"TotalCount\";s:3:\"215\";s:11:\"FilterCount\";s:3:\"215\";s:9:\"SentCount\";s:3:\"215\";s:10:\"ErrorCount\";s:1:\"0\";s:20:\"CopyrightCheckResult\";s:3:\"
+
+
+\";}','<xml><ToUserName><![CDATA[gh_ca892028da58]]></ToUserName>
+<FromUserName><![CDATA[oVYbpwCFAxcPbE7_rf_BES50w8Yw]]></FromUserName>
+<CreateTime>1482744841</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[MASSSENDJOBFINISH]]></Event>
+<MsgID>1000000096</MsgID>
+<Status><![CDATA[send success]]></Status>
+<TotalCount>215</TotalCount>
+<FilterCount>215</FilterCount>
+<SentCount>215</SentCount>
+<ErrorCount>0</ErrorCount>
+<CopyrightCheckResult><Count>0</Count>
+<ResultList></ResultList>
+<CheckState>0</CheckState>
+</CopyrightCheckResult>
+</xml>') [ RunTime:0.0008s ]
+SQL: SELECT `uid` FROM `wp_public_follow` WHERE `token` = 'gh_ca892028da58' AND `openid` = 'oVYbpwCFAxcPbE7_rf_BES50w8Yw' LIMIT 1   [ RunTime:0.0004s ]
+NOTIC: [8] Undefined variable: user /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 301 行.
+NOTIC: [8] Undefined index: Content /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 41 行.
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 46 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined index: appid /home/weiphp30/Application/Home/Controller/WeixinController.class.php 第 73 行.
+SQL: SELECT * FROM `wp_custom_menu` WHERE `keyword` = 'masssendjobfinish' AND `from_type` <> 9 AND `token` = 'gh_ca892028da58' AND `type` = 'click' ORDER BY id desc LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wp_keyword` WHERE ( token='0' OR token='gh_ca892028da58' ) AND `keyword` = 'masssendjobfinish' AND `keyword_type` = 0 ORDER BY id desc LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT * FROM `wp_keyword` WHERE ( token='0' OR token='gh_ca892028da58' ) AND `keyword` = 'masssendjobfinish' AND `keyword_type` = 5 ORDER BY RAND() LIMIT 1   [ RunTime:0.0005s ]
+SQL: SELECT * FROM `wp_keyword` WHERE ( token='0' OR token='gh_ca892028da58' ) AND `keyword_type` in (1,2,3,4) ORDER BY keyword_length desc, id desc  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wp_keyword` WHERE ( token='0' OR token='gh_ca892028da58' ) AND `keyword` = '*' ORDER BY id desc LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: doNotInit /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 14 行.
+NOTIC: [8] Undefined index: encrypt_type /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 20 行.
+NOTIC: [8] Undefined index: stype /home/weiphp30/Addons/NoAnswer/Model/WeixinAddonModel.class.php 第 14 行.
+NOTIC: [8] Undefined offset: 0 /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 246 行.
+NOTIC: [8] Undefined offset: 0 /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 251 行.
+NOTIC: [8] Undefined offset: 0 /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 254 行.
+NOTIC: [8] Undefined offset: 0 /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 257 行.
+NOTIC: [8] Undefined offset: 0 /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 260 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: config /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 280 行.
+NOTIC: [8] Undefined index: type /home/weiphp30/Application/Home/Model/WeixinModel.class.php 第 282 行.
+
+[ 2016-12-26T18:07:54+08:00 ] 180.153.205.253 /weiphp30/index.php?s%3D/home/index/main.html%26mdm%3D14
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000013s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000958s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001221s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000303s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000332s ]
+SQL: SELECT `value` FROM `wp_config` WHERE ( name="FOLLOW_YOUKE_UID" ) LIMIT 1   [ RunTime:0.0007s ]
+SQL: UPDATE `wp_config` SET `value`='-3675' WHERE ( name="FOLLOW_YOUKE_UID" ) [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+SQL: SHOW COLUMNS FROM `wp_auth_group_access` [ RunTime:0.0007s ]
+SQL: SELECT a.uid,a.group_id,g.title,g.rules FROM wp_auth_group_access a INNER JOIN wp_auth_group g on a.group_id=g.id  WHERE ( a.uid='-3675' and g.status='1' )  [ RunTime:0.0006s ]
+SQL: SELECT `id`,`token` FROM `wp_public`  [ RunTime:0.0005s ]
+NOTIC: [8] Undefined offset: -1 /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 38 行.
+NOTIC: [8] Undefined index: addon_status /home/weiphp30/Application/Common/Model/AddonStatusModel.class.php 第 47 行.
+NOTIC: [8] Undefined index: group_id /home/weiphp30/Application/Common/Model/AddonStatusModel.class.php 第 50 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 0 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0005s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: HTTP_REFERER /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 139 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 185 行.
+SQL: SELECT * FROM `wp_public_link` WHERE `uid` = 0  [ RunTime:0.0004s ]
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 48 行.
+NOTIC: [8] Undefined variable: res /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 52 行.
+
+[ 2016-12-26T18:07:54+08:00 ] 180.153.205.253 /weiphp30/index.php?s=/Home/Public/User/login/from/1.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000905s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001154s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000296s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000324s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+SQL: SHOW COLUMNS FROM `wp_auth_group_access` [ RunTime:0.0007s ]
+SQL: SELECT a.uid,a.group_id,g.title,g.rules FROM wp_auth_group_access a INNER JOIN wp_auth_group g on a.group_id=g.id  WHERE ( a.uid='-3675' and g.status='1' )  [ RunTime:0.0003s ]
+
+[ 2016-12-26T18:07:54+08:00 ] 180.153.205.253 /weiphp30/index.php?s=/home/user/login/from/6.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.001007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001308s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000292s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000320s ]
+NOTIC: [8] Undefined index: uid /home/weiphp30/ThinkPHP/Library/Think/Controller.class.php 第 526 行.
+SQL: SHOW COLUMNS FROM `wp_auth_group_access` [ RunTime:0.0006s ]
+SQL: SELECT a.uid,a.group_id,g.title,g.rules FROM wp_auth_group_access a INNER JOIN wp_auth_group g on a.group_id=g.id  WHERE ( a.uid='-3675' and g.status='1' )  [ RunTime:0.0003s ]
+SQL: SELECT `id`,`token` FROM `wp_public`  [ RunTime:0.0002s ]
+NOTIC: [8] Undefined offset: -1 /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 38 行.
+NOTIC: [8] Undefined index: addon_status /home/weiphp30/Application/Common/Model/AddonStatusModel.class.php 第 47 行.
+NOTIC: [8] Undefined index: group_id /home/weiphp30/Application/Common/Model/AddonStatusModel.class.php 第 50 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = -3675 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wp_manager_menu` WHERE `uid` = 1 AND `is_hide` = 0 ORDER BY sort asc, id asc  [ RunTime:0.0004s ]
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined variable: addons /home/weiphp30/Application/Common/Common/function.php 第 501 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 106 行.
+NOTIC: [8] Undefined offset: 60 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 116 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined index: side /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 179 行.
+NOTIC: [8] Undefined offset: 14 /home/weiphp30/Application/Common/Model/ManagerMenuModel.class.php 第 185 行.
+SQL: SELECT * FROM `wp_public_link` WHERE `uid` = -3675  [ RunTime:0.0002s ]
+NOTIC: [2] Invalid argument supplied for foreach() /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 48 行.
+NOTIC: [8] Undefined variable: res /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 52 行.
+SQL: SELECT `id`,`qr_code`,`addon`,`aim_id`,`cTime`,`token`,`action_name`,`extra_text`,`extra_int`,`request_count`,`scene_id`,`expire_seconds` FROM `wp_qr_code` WHERE `addon` = 'ScanLogin' AND `extra_text` = '5860ebfaaecca' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`token` FROM `wp_public`  [ RunTime:0.0002s ]
+NOTIC: [8] Undefined offset: -1 /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 38 行.
+NOTIC: [8] Undefined index: appid /home/weiphp30/Application/Home/Model/QrCodeModel.class.php 第 28 行.
+NOTIC: [8] Undefined index: secret /home/weiphp30/Application/Home/Model/QrCodeModel.class.php 第 29 行.
+SQL: SELECT `id`,`token` FROM `wp_public`  [ RunTime:0.0002s ]
+NOTIC: [8] Undefined offset: -1 /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 38 行.
+NOTIC: [8] Undefined index: is_bind /home/weiphp30/Application/Common/Common/function.php 第 1568 行.
+NOTIC: [8] Undefined index: appid /home/weiphp30/Application/Common/Common/function.php 第 1571 行.
+NOTIC: [8] Undefined index: secret /home/weiphp30/Application/Common/Common/function.php 第 1571 行.
+SQL: SELECT `id`,`token` FROM `wp_public`  [ RunTime:0.0005s ]
+NOTIC: [8] Undefined offset: -1 /home/weiphp30/Application/Common/Model/PublicModel.class.php 第 38 行.
+NOTIC: [8] Undefined index: is_bind /home/weiphp30/Application/Common/Common/function.php 第 1568 行.
+NOTIC: [8] Undefined index: appid /home/weiphp30/Application/Common/Common/function.php 第 1571 行.
+NOTIC: [8] Undefined index: secret /home/weiphp30/Application/Common/Common/function.php 第 1571 行.
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000117s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000169s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.007781s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007825s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000093s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000116s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000411s ]
+INFO: Run Behavior\CronRunBehavior [ RunTime:0.000368s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000847s ]
+
