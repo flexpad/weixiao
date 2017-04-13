@@ -1,0 +1,87 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <title></title>
+    <style>
+        .informationUl{
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+        }
+        .informationUl li{
+            margin: 5px;
+        }
+        .panel-default>.panel-heading{
+            background-color:#d9edf7;
+            color: #31708f;
+        }
+
+        .attendance_head,.informationUl{
+            position: relative;
+        }
+        .institution_name{
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .attendance_left{
+            display:inline-block;
+            margin-left: 10px;
+        }
+        .attendance_right{
+            display:inline-block;
+            position: absolute;
+            right: 10px;
+        }
+    </style>
+
+<body>
+<div class="attendance_head">
+    <p class="institution_name">{$机构名称}</p>
+    <div>
+        <p class="attendance_left">{$科目}</p>
+        <p class="attendance_right">{$任课老师}</p>
+    </div>
+    <div>
+        <p class="attendance_left">{$学号}</p>
+        <p class="attendance_right">{$学生姓名}</p>
+    </div>
+</div>
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$vo.id}">{$time}日期</a>
+            </h4>
+        </div>
+        <div id="collapse{$vo.id}" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="informationUl">
+                    <li>
+                        <p class="attendance_left">课堂表现（70分）：</p>
+                        <p class="attendance_right">{$A}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">出勤情况（10分）：</p>
+                        <p class="attendance_right">{$B}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">作业完成（20分）：</p>
+                        <p class="attendance_right">{$C}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">总分：</p>
+                        <p class="attendance_right">{$D}</p>
+                    </li>
+                    <li>
+                        <p class="attendance_left">小测试：</p>
+                        <p class="attendance_right">{$E}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+</body>

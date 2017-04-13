@@ -1,0 +1,84 @@
+<extend name="Base/common" />
+<block name="body">
+    <style type="text/css">
+        .label{
+            position: relative;height: 40px;
+        }
+        .label_left{
+            position: absolute;left: 20px;
+        }
+        .label_right{
+            position: absolute;left: 115px
+        }
+        .label_select{
+            width:250px;height: 27px;
+        }
+        .label_input{
+            position:absolute;width:247px;height: 20px;
+        }
+    </style>
+    <div class="label">
+        <div class="label_left">课&nbsp;&nbsp;程</div>
+        <div class="label_right">
+            <select class="label_select" onchange="document.getElementById('class').value=this.value">
+                <volist name="lists" id="vo">
+                    <option>$vo.class}</option>
+                </volist>
+            </select>
+            <input type="text" id="class" style="position:absolute;width:230px;height:20px;left:1px;top:2px;border:0px ;">
+        </div>
+    </div>
+    <div  class="label">
+        <div class="label_left">学&nbsp;&nbsp;号</div>
+        <div class="label_right">
+            <select   class="label_select" onchange="document.getElementById('num').value=this.value">
+                <volist name="lists" id="vo">
+                    <option>{$vo.num}</option>
+                </volist>
+            </select>
+            <input type="text" id="num" name="input" style="position:absolute;width:130px;height:16px;left:1px;top:2px;border:0px ;">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">姓&nbsp;&nbsp;名</div>
+        <div class="label_right">
+            <input type="text" id="name" class="label_input">
+        </div>
+    </div>
+    <div class="label">
+        <div  class="label_left">课堂表现</div>
+        <div class="label_right">
+            <input type="text" class="label_input">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">出勤表现</div>
+        <div class="label_right">
+            <input type="text" class="label_input">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">考勤表现</div>
+        <div class="label_right">
+            <input type="text" class="label_input">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">总&nbsp;&nbsp;分</div>
+        <div class="label_right">
+            <input type="text"  class="label_input">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">测验分数</div>
+        <div class="label_right">
+            <input type="text"  class="label_input">
+        </div>
+    </div>
+    <div  class="label">
+        <div  class="label_left">备&nbsp;&nbsp;注</div>
+        <div class="label_right">
+            <textarea class="label_input"></textarea>
+        </div>
+    </div>
+</block>

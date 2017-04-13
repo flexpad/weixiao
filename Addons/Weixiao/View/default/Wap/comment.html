@@ -1,0 +1,204 @@
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<title></title>
+<style>
+    .informationUl{
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    .informationUl li{
+        margin: 5px;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+
+    .attendance_head,.informationUl{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    .attendance-hd-lb{
+        width: 15%;display: inline-block;
+    }
+    .attendance-lb{
+        margin-left: 15px;margin-top: -30px;
+    }
+    .attendance-bd{
+        display: inline-block;width: 80%;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    .omit_show{
+        width: 100%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+    }
+    .collapse_left{
+        display:inline-block;
+        margin-left: 15px;
+        margin-bottom: 0px;
+    }
+    .collapse_right{
+        display:inline-block;
+        position: absolute;
+        right: 30px;
+        margin-bottom: 0px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+    .weui-cell{
+        padding: 5px 15px;
+    }
+    .weui-cell:before{
+        left: 0px;
+        border-top:0px;
+    }
+</style>
+<body>
+<div class="attendance_head">
+    <div class="institution_name">
+        <img src="{:ADDON_PUBLIC_PATH}/A0.png" alt="" width="90px" height="50px">
+        <p  class="attendance_head_p">教师评语</p>
+    </div>
+    <div>
+        <p class="attendance_left">学号：<span class="studentNo">{$studentno}</span></p>
+        <p class="attendance_right">姓名：{$student_name}</p>
+    </div>
+</div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label  class="weui-label">年 级</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" name="select1" id="class"></select>
+        </div>
+    </div>
+</div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label  class="weui-label">科 目</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" name="select2" id="course"></select>
+        </div>
+    </div>
+</div>
+<div type="submit" onclick="query()" class="weui-btn weui-btn_primary weui-btn_mini "  style="margin-left: 20px">开始查询</div>
+<div class="panel-group" id="accordion">
+    <div id="collapse{$i}" class="panel-collapse collapse">
+        <div class="panel-body">
+
+        </div>
+    </div>
+</div>
+<p class="p" style="text-align: center"></p>
+<input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value="{:U('addon/Student/Wap/score_ajax_show')}" id = 'ajaxPostUrl'>
+
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+<script type="text/javascript">
+    <!---->
+
+    $(function(){
+        var nJ;
+        var course;
+        nJ=$("#class")[0];
+        course=$("#course")[0];
+        nJ[0]=new Option("请选择年级",0);
+        nJ[1]=new Option("四年级",1);
+        nJ[2]=new Option("六年级",2);
+        nJ[3]=new Option("七年级",3);
+        nJ[4]=new Option("八年级",4);
+        nJ[5]=new Option("九年级",5);
+        nJ[6]=new Option("高 一",6);
+        nJ[7]=new Option("高 二",7);
+        course[0]=new Option("请选择科目",0);
+        $("#class").change(function(){
+            var nJindex=document.getElementById("class").selectedIndex;
+            if(nJindex>0){
+                course[1]=new Option("语 文 ",1);
+                course[2]=new Option("数 学",2);
+                if(nJindex>=3){
+                    course[3]=new Option("英 语",3);
+                    if(nJindex>=4){
+                        course[4]=new Option("物 理",4);
+                    };
+                    if(nJindex>=5){
+                        course[5]=new Option("化学",5);
+                    }
+                }
+            }
+        });
+    });
+
+    <!--查询-->
+    function query() {
+        var href = $('#ajaxPostUrl').val();
+        var publicId=$("#publicId").val();
+        var studentNo=$(".studentNo").html();
+        var nJ=$("#class").val();
+        var course=$("#course").val();
+        if(nJ!=0 && course!=0){
+            $.post(href,{search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo},function(data){
+                $(".panel-group").html("");
+                $(".p").html("");
+                var json_data =  JSON.parse(data);
+                var str= " ";
+                if (json_data.length>0){
+                    for(var i=0; i < json_data.length;i++){
+                        str= " <div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'> <a data-toggle='collapse' data-parent='#accordion' href='#collapse"+ i +"'> <div> <p class='collapse_p' >评语</p> </div> </a> </h4> </div> <div id='collapse"+ i +"' class='panel-collapse collapse'> <div class='panel-body'> <p>评语内容</p> </div> </div></div>";
+                        $(".panel-group").append(str);
+                    }
+                } else if(json_data.length==0){
+                    str = '没有考勤数据';
+                    $(".p").html(str);
+                    return false;
+                }
+            }, 'text');
+        }else if(nJ==0 && course!=0){
+            $(".p").html("请选择年级");
+        }else if(nJ!=0 && course==0){
+            $(".p").html("请选择科目");
+        }
+    }
+</script>
+</body>

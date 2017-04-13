@@ -1,0 +1,156 @@
+<!--学生查看评语-->
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
+<title></title>
+<style>
+    body{
+        background-color: #f8f8f8;
+    }
+    *+p{
+        margin-top: 0px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+    .attendance_head{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 20px auto 20px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    select{
+        padding: 0px;
+    }
+    .weui-cells{
+        margin-top: 0px;
+    }
+    .omit_show{
+        display: inline-block;
+        width: 50%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+    }
+    .am-list>li>a{
+        line-height: 1;
+    }
+    .sp_time{
+        display: inline-block;
+    }
+    .am-list>li>a{
+        background-color: #d9edf7;
+    }
+    .am-panel>.am-list>li>a{
+        background-color: white;
+    }
+</style>
+<body>
+<div class="attendance_head">
+    <div class="institution_name">
+        <img src="{:ADDON_PUBLIC_PATH}/A0.png" alt="" width="90px" height="50px">
+        <p  class="attendance_head_p">老师评语</p>
+    </div>
+    <div>
+        <p class="attendance_left">学号：<span class="studentNo">{$studentno}</span></p>
+        <p class="attendance_right">姓名：{$student_name}</p>
+    </div>
+</div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label class="weui-label" style="margin-bottom: 0px;">课程筛选:</label>
+        </div>
+        <div class="weui-cell__bd">
+            <assign name="courseid" value="0" />
+            <select class="weui-select" name="select1" id="cl">
+                <option value="0" selected="">全部</option>
+                <volist name="data" id="vo" key="key">
+                    <if condition="($vo.courseid neq $courseid)">
+                        <option value="{$vo.courseid}">{$vo.course_name}</option>
+                    </if>
+                    <assign name="courseid" value="$vo.courseid" />
+                </volist>
+            </select>
+        </div>
+    </div>
+</div>
+<ul class="am-list admin-sidebar-list" id="collapase-nav-1">
+    <assign name="courseid" value="0" />
+    <volist name="data" id="vo" key="key">
+        <if condition="($vo.courseid neq $courseid) AND $courseid neq 0">
+            </ul>
+            </li>
+        </if>
+        <if condition="($vo.courseid neq $courseid)">
+            <li class="am-panel" id="ap_{$vo.courseid}">
+                <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$vo.courseid}'}">
+                    <span class="omit_show">{$vo.course_name} </span><span class="sp_time">【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
+                </a>
+            <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$vo.courseid}">
+        </if>
+                <li><a>时间：{$vo.timestamp}<br>内容：{$vo.comments_txt}</a></li>
+        <assign name="courseid" value="$vo.courseid" />
+    </volist>
+    </ul>
+    </li>
+</ul>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.ie8polyfill.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.widgets.helper.min.js"></script>
+<script>
+    $(function(){
+        $("select").change(function () {
+            var selecy_val=$("select option:selected").val() ;
+            selecy_val="ap_"+selecy_val;
+            $(".am-panel").each(function () {
+                if(selecy_val!="ap_0"){
+                    if(selecy_val!=this.id){
+                        $(this).css("display","none");
+                    }
+                    if(selecy_val==this.id){
+                        $(this).css("display","block");
+                    }
+                }else if(selecy_val=="ap_0"){
+                    $(this).css("display","block");
+                }
+
+            })
+        });
+    })
+</script>
+</body>

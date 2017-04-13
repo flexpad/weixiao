@@ -1,0 +1,168 @@
+<!-- 教师编辑评语-->
+<include file="Public/mobile_head"/>
+<link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<style>
+    .weui-btn_primary {
+        background-color: #337ab7;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+
+    .attendance_head{
+        position: relative;
+    }
+    .institution_name{
+        text-align: center;
+        margin: 40px auto 20px;
+    }
+    .attendance_head_p{
+        margin-top: 10px;
+    }
+    .remark{
+        float: right;
+        margin-top: 15px;
+        margin-right: 8px;
+    }
+    .weui-cells{
+        margin-top: 0px;
+    }
+    .weui-btn_primary {
+        background-color: #337ab7;
+    }
+    .panel-default>.panel-heading{
+        background-color:#d9edf7;
+        color: #31708f;
+    }
+    .panel-group{
+        margin-bottom: 3px;
+    }
+    .attendance_left{
+        display:inline-block;
+        margin-left: 10px;
+    }
+    .attendance_right{
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+
+</style>
+<body>
+<div class="panel-group" id="accordion">
+
+    <div class="attendance_head">
+        <div class="institution_name">
+            <img src="{:ADDON_PUBLIC_PATH}/A37.png" alt="" >
+            <p  class="attendance_head_p">教师评语</p>
+        </div>
+        <div>
+            <p class="attendance_left">课程：</p>
+            <p class="attendance_right">时间：</p>
+        </div>
+    </div>
+    <IF>
+        <volist name="list" id="vo">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$vo.sid}" class="name">学生：{$vo.name}</a>
+                    </h4>
+                </div>
+                <div id="collapse{$vo.sid}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="weui-cells weui-cells_form">
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">
+                                    <textarea class="weui-textarea" placeholder="请输入点评内容" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <a  class="weui-btn weui-btn_primary weui-btn_mini remark" onclick="addComments(this)">添加评语</a>
+                        <a  class="weui-btn weui-btn_primary weui-btn_mini remark"  onclick="showDialog(this)">查看评语</a>
+                    </div>
+                </div>
+            </div>
+        </volist>
+    </IF>
+</div>
+<!--历史评语-->
+<div id="dialogs">
+    <div class="js_dialog" id="Dialog" style="display:none">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__bd">
+                <table class="table">
+                    <tbody id="comments">
+                    <tr>
+                        <td>
+                            <span>时间：</span>
+                            <span>评语：</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="weui-dialog__ft">
+                <a class="weui-dialog__btn weui-dialog__btn_primary " id="downDialog" onclick="downDialog()">知道了</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 底部导航 -->
+{$footer_html}
+<!-- 统计代码 -->
+<notempty name="config.code">
+    <p class="hide bdtongji">
+        {$config.code}
+    </p>
+    <else />
+    <p class="hide bdtongji">
+        {$tongji_code}
+    </p>
+</notempty>
+<script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
+<script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
+<script type="text/javascript">
+    function addComments(A){
+        console.log($(A).parent().find("textarea").val());//获取textarea里面的内容
+    }
+    function showDialog(B) {
+        console.log($(B).parents(".panel-default").find(".name").html());//得到当前学生姓名
+        var stu_name=$(B).parents(".panel-default").find(".name").html();
+        $.post(href,{},function(data){
+            $("#comments").html("");
+            var json_data = JSON.parse(data);
+            if (json_data.length>0){
+                for(var i=0; i < json_data.length;i++){
+                    var str;
+                    str="<tr> <td> <span>时间：</span> <span>评语：</span> </td> </tr>";
+                    $("#comments").append(str);//要显示的评语内容
+
+                }
+            } else if(json_data.length==0){
+                $("#comments").html("您的教师还没有来得及添加评语");
+                return false;
+            }
+        }, 'text');
+        $("#Dialog").fadeIn(200);
+    }
+    function downDialog(){
+        $("#Dialog").fadeOut(200);
+    }
+</script>
+</body>
