@@ -196,6 +196,10 @@ class CourseController extends AddonsController{
         }
     }
 
+    public function courseimport() {
+        $model = M('WxyClassCourse');
+    }
+
     private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
         if ($courseid == NULL) return false;
         $data = array();

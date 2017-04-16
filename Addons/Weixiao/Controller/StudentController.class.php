@@ -43,6 +43,10 @@ class StudentController extends AddonsController{
         // 关键字搜索
         $map ['token'] = get_token();
         $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'title';
+        
+        /*var_dump($key); // =name
+        var_dump($_REQUEST);*/
+        var_dump($fields);
         if (isset ($_REQUEST [$key])) {
             $map [$key] = array(
                 'like',
@@ -57,6 +61,7 @@ class StudentController extends AddonsController{
             }
         }
 
+        var_dump($map);
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
         // 读取模型数据列表
@@ -84,6 +89,7 @@ class StudentController extends AddonsController{
         }
         $this->assign('list_grids', $grids);
         $this->assign('list_data', $data);
+        $this->assign('search_key', 'name');
         $this->meta_title = $this->model ['title'] . '列表';
 
         $this->display();
@@ -219,22 +225,20 @@ class StudentController extends AddonsController{
             $this->display('import');
         }
     }
-    
+
+    //This function was modified for full time school under Weixiao addon.
     private function import_student_data_from_excel($file_id) {
         $data = array();
         $column = array (
-            'A' => 'sid',
-            /*
-            'B' => 'uid',
-            'C' => 'token',
-            'D'=>'oid',
-            */
-            'E'=>'name',
-            'F'=>'gender',
-            'G'=>'school',
-            'H'=>'grade',
-            'I'=>'studentno',
-            'J'=>'phone'
+            'A' => 'name',  //姓名
+            'B'=>'gender',
+            'C'=>'school',
+            'D'=>'grade',
+            'E'=>'studentno',
+            'F'=>'phone',
+            'G'=>'phone_bck',
+            'H'=>'ent_year',
+            'I'=>'class_id',
         );
         $data = importFormExcel($file_id, $column);
         //var_dump($data);
