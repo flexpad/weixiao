@@ -44,9 +44,6 @@ class StudentController extends AddonsController{
         $map ['token'] = get_token();
         $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'title';
         
-        /*var_dump($key); // =name
-        var_dump($_REQUEST);*/
-        var_dump($fields);
         if (isset ($_REQUEST [$key])) {
             $map [$key] = array(
                 'like',
@@ -61,7 +58,6 @@ class StudentController extends AddonsController{
             }
         }
 
-        var_dump($map);
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
         // 读取模型数据列表
