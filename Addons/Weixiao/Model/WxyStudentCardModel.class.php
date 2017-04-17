@@ -25,7 +25,14 @@ class WxyStudentCardModel extends Model{
         if ($data != NULL) {
             return $data;
         }
-        else
-            return false;
+        else {
+            $map['phone_bck'] = $map['phone'];
+            unset($map['phone']);
+            $data = $this->where($map)->find();
+            if ($data != NULL ) return $data;
+            else
+                return false;
+        }
+
     }
 }

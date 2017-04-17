@@ -37,6 +37,7 @@ class WapController extends AddonsController {
     var $model;
     var $token;
     var $school;
+    var $publicid;
     //var $openid;
     //var $uid;
     public function __construct() {
@@ -48,6 +49,7 @@ class WapController extends AddonsController {
         $this->model = $this->getModel('WxyStudentCare'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
+        $this->publicid = D('Common/Public')->getInfoByToken($this->token, 'id');
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
 
@@ -95,12 +97,12 @@ class WapController extends AddonsController {
                 //Need add user data here also TBD.
             }
             else if ($data == NULL && $userdata['subscribe'] == 0)
-                $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind'));
+                $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind', 'publicid=' . $this->publicid));
             else if ($data != NULL) {
                 $data['has_subscribe'] = $userdata['subscribe'];
                 if ($userdata['subscribe'] == 0) {
                     $follow_model->where($map)->save($data);
-                    $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind'));
+                    $this->error("请关注我们的微信公号后再绑定学生！！！", U('bind', 'publicid=' . $this->publicid));
                 }
                 else {
                     $follow_model->where($map)->save($data);
@@ -110,15 +112,28 @@ class WapController extends AddonsController {
                     $student['token'] = $this->token;
                     //$student = $studentcard_model->verify($student);
                     $res = $studentcare_model->approve($student, $user, $this->token);
-                    if ($res == 2) {
+                    
+                    switch ($res) {
+                        case 2:
+                            $this->success("绑定成功，学号为：". $student['studentno']. "的学生！", U('bind', 'publicid=' . $this->publicid));
+                            break;
+                        case 3:
+                            $this->error("一个微信号最多只能绑定我校五名学生", U('bind', 'publicid=' . $this->publicid));
+                            break;
+                        case 1:
+                            $this->error("已绑定过：". $student['studentno']. "号学生！", U('bind', 'publicid=' . $this->publicid));
+                            break;
+                        default:
+                            $this->error("学生信息有误，请返回重新输入！", U('bind', 'publicid=' . $this->publicid));
+                    }
+                    /*if ($res == 2) {
                         $this->success("已绑定学号为：". $student['studentno']. "的学生！", U('bind'));
                     }
                     else
                         if ($res == 1)
                             $this->error("已绑定过：". $student['studentno']. "号学生！", U('bind'));
                         else
-                            $this->error("学生信息有误，请返回重新输入！", U('bind'));
-
+                            $this->error("学生信息有误，请返回重新输入！", U('bind'));*/
                 }
             }
             $this->error("学生信息有误，请返回重新输入！");

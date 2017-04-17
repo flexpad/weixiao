@@ -26,7 +26,7 @@ class WxyStudentCareModel extends Model{
         $map ['token'] = $data['token'];
         $map ['studentno'] = $data['studentno'];
         $map ['uid'] = $data['uid'];
-        $map ['openid'] = $data['openid'];
+        $map ['openid'] = $data['openid'];        
         $vl = $this->where($map)->select();
         if ($vl != NULL) {
             foreach ($vl as $vo) {
@@ -35,6 +35,11 @@ class WxyStudentCareModel extends Model{
             $this->where($map)->save($data);
             return 1;
         } else {
+            unset($map['studentno']);
+            $vl = $this->where($map)->count();
+            if ($vl >4) {
+                return 3;
+            }
             $data['is_audit'] = 1;
             $data['is_init'] = 1;
             $this->add ($data);
