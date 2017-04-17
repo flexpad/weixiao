@@ -49,11 +49,12 @@
             </div>
 
             <div class="form-item cf">
-                <label class="item-label">*</span>来自学校<span class="check-tips"></span></label>
+                <label class="item-label">*</span>入学年份<span class="check-tips"></span></label>
                 <div class="controls">
-                    <input type="text" class="text input-large" name="school" value="{$data['school']}">
+                    <input type="number" class="text" name="ent_year" value="{$data['ent_year']}">
                 </div>
             </div>
+
             <div class="form-item cf">
                 <label class="item-label">*</span>年级<span class="check-tips"></span></label>
                 <div class="controls">
@@ -121,13 +122,26 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-item cf">
-                <label class="item-label">*</span>联系电话<span class="check-tips"></span></label>
+                <label class="item-label">*</span>所在班<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="number" class="text" name="class_id" value="{$data['class_id']}">
+                </div>
+            </div>
+
+            <div class="form-item cf">
+                <label class="item-label">*</span>主联系电话<span class="check-tips"></span></label>
                 <div class="controls">
                     <input type="text" class="text input-large" name="phone" value="{$data['phone']}">
                 </div>
             </div>
-
+            <div class="form-item cf">
+                <label class="item-label">*</span>备用联系电话<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="phone_bck" value="{$data['phone_bck']}">
+                </div>
+            </div>
         <div class="form-item form_bh" style="text-align:center">
             <notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"></notempty>
             <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>

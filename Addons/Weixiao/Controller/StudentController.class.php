@@ -7,6 +7,7 @@ class StudentController extends AddonsController{
     protected $model;
     protected $token;
     protected $school;
+    protected $schoolType;
     public function __construct() {
         if (_ACTION == 'show') {
             $GLOBALS ['is_wap'] = true;
@@ -16,6 +17,7 @@ class StudentController extends AddonsController{
         $this->model = $this->getModel('WxyStudentCard'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
+        $this->schoolType = D('Common/Public')->getInfoByToken($this->token, 'public_type');
 
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
@@ -64,19 +66,17 @@ class StudentController extends AddonsController{
 
         empty ($fields) || in_array('id', $fields) || array_push($fields, 'id');
         $name = parse_name(get_table_name($this->model ['id']), true);
-        //var_dump($name);
-        //exit();
         $data = M($name)->field(empty ($fields) ? true : $fields)->where($map)->order('id')->page($page, $row)->select();
+
+        foreach ($data as $key => $val) {
+            if ($val['grade'] != NULL) {
+                $data[$key]['grade'] = $this->zh_grade($val['grade']);
+            }
+        }
 
         /* 查询记录总数 */
         $count = M($name)->where($map)->count();
 
-        //var_dump($list_data);
-        //var_dump($data);
-        //var_dump($name);
-        //var_dump($grids);
-        //var_dump($this->model);
-        //exit();
         // 分页
         if ($count > $row) {
             $page = new \Think\Page ($count, $row);
@@ -126,7 +126,6 @@ class StudentController extends AddonsController{
             $map['id'] = $sid;
             $data = $model->where($map)->find();
             $this->assign('data', $data);
-            //var_dump($data);
             $this->display('edit');
         }
     }
@@ -220,6 +219,52 @@ class StudentController extends AddonsController{
         else {
             $this->display('import');
         }
+    }
+
+    private function zh_grade($grade) {
+        $grade = is_string($grade)? intval($grade): $grade;
+
+        switch ($grade) {
+            case 1:
+                $grade = '小学一年级';
+                break;
+            case 2:
+                $grade = '小学二年级';
+                break;
+            case 3:
+                $grade = '小学三年级';
+                break;
+            case 4:
+                $grade = '小学四年级';
+                break;
+            case 5:
+                $grade = '小学五年级';
+                break;
+            case 6:
+                $grade = '小学六年级';
+                break;
+            case 7:
+                $grade = '初中一年级';
+                break;
+            case 8:
+                $grade = '初中二年级';
+                break;
+            case 9:
+                $grade = '初中三年级';
+                break;
+            case 10:
+                $grade = '高中一年级';
+                break;
+            case 11:
+                $grade = '高中二年级';
+                break;
+            case 12:
+                $grade = '高中三年级';
+                break;
+            default:
+
+        }
+        return $grade;
     }
 
     //This function was modified for full time school under Weixiao addon.
