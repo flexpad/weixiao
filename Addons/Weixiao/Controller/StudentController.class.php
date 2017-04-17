@@ -126,6 +126,12 @@ class StudentController extends AddonsController{
             $map['id'] = $sid;
             $data = $model->where($map)->find();
             $this->assign('data', $data);
+
+            if (strpos($this->schoolType, '全日制') !== false) {
+                $this->assign('school_type', 1);
+            }
+            else
+                $this->assign('school_type', 0);
             $this->display('edit');
         }
     }
