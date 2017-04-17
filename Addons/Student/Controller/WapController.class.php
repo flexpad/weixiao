@@ -447,6 +447,7 @@ class WapController extends AddonsController {
         $model = D('WxyStudentPerformView');
 
         $data = $model->where($map)->select();
+        /*var_dump($model->_sql());*/
         if ($data == NULL)
             $this->ajaxReturn(NULL,'JSON');
             //$this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
