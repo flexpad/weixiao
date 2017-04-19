@@ -8,6 +8,7 @@ class ScoreController extends AddonsController{
     protected $token;
     protected $school;
     protected $schooltype;
+    protected $public_id;
     public function __construct() {
         if (_ACTION == 'show') {
             $GLOBALS ['is_wap'] = true;
@@ -18,6 +19,7 @@ class ScoreController extends AddonsController{
         $this->token = get_token();
         $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
         $this->schooltype = D('Common/Public')->getInfoByToken($this->token, 'public_type');
+        $this->public_id = D('Common/Public')->getInfoByToken($this->token, 'id');
         //var_dump($this->model);
     }
 
@@ -137,6 +139,7 @@ class ScoreController extends AddonsController{
                 $this->error('请检查文件格式');
         }
         else {
+            $this->assign('public_id', $this->public_id);
             $this->display('import');
         }
     }
