@@ -132,21 +132,28 @@ class ClassCourseController extends AddonsController{
 
     public function edit() {
         //var_dump($this);
-        //$data['teacher'] = '任老师';
-        //$data['sdate'] = '2017-01-12';
-        //$this->assign('data', $data);
+
+        $model = M('WxyClassCourse');
+
         if (!IS_POST) {
             $map['id'] = I('id');
-            $model = M('WxyClassCourse');
             $data = $model->where($map)->find();
             $this->assign('id', $map['id']);
             $this->assign('data', $data);
             $this->display();
         }
-        else if (IS_POST) {
-            $map['id'] = I('post.id');
-            $data[course_name] = I('post.course_name');
+        else {
+            $data['grade'] = I('post.grade');
+            $data['class_id'] = I('post.class_id');
+            $data['course_type'] = I('post.course_type');
+            $data['course_name'] = I('post.course_name');
+            $data['teacher'] = I('post.teacher');
+            $data['description'] = I('post.description');
 
+            $map['id'] = I('post.id');
+            $map['token'] = $this->token;
+            $model->where($map)->save($data);
+            $this->success("课程更新成功！");
             //To do here.
             
         }
