@@ -3,7 +3,7 @@
 namespace Addons\Weixiao\Controller;
 use Home\Controller\AddonsController;
 
-class CourseController extends AddonsController{
+class ClassCourseController extends AddonsController{
     protected $model;
     protected $token;
     protected $school;
@@ -143,20 +143,21 @@ class CourseController extends AddonsController{
         $this->display('add');
     }
 
-    public function courseimport() {
+    public function import() {
         $id = I('id');
         $model = M('WxyClassCourse');
         
         if (IS_POST) {
             $data['file'] = I('post.file');
             //$data['grade'] = ltrim(strstr(I('post.grade'), '.', true));
-            $data['date'] = I('post.date');
+            $data['valid_date'] = I('post.date');
             $data['comment'] = I('post.comment');
             $data['token'] = $this->token;
             if (!intval($data['file'])) $this->error("数据文件未上传！");
-            $import_model = D('WxyClassCourse');
-            $import_model->addImport($data);
-            if ($this->import_course_data_from_excel($data['file'], $data['date'], $data['comment'])) //import course data from uploaded Excel file.
+            //这里是要用一个单独的表（模型）对导入行为进行记录！
+            $import_model = D('WxyClassCourseimport');
+            $import_model->add($data);
+            if ($this->import_course_data_from_excel($data['file'], $data['valid_date'], $data['comment'])) //import course data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -232,20 +233,21 @@ class CourseController extends AddonsController{
         $data = array();
         $column = array (
             'A' => 'grade',
-            'B'=>'classid',
-            'C'=>'coursetype',
-            'D'=>'coursename',
+            'B'=>'class_id',    // Should be the same as database field name!
+            'C'=>'course_type', // Should be the same as database field name!
+            'D'=>'course_name',
             'E'=>'teacher',
             'F'=>'description',
         );
         $data = importFormExcel($file_id, $column);
-        $course_model = D('WxyClassCourse');
+        $class_course_model = D('WxyClassCourse');
+
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
-                $row['date'] = $date;
+                $row['valid_date'] = $date;
                 $row['comment'] = $comment;
-                $course_model->addCourse($row);
+                $class_course_model->addCourse($row);
             }
             return true;
         }

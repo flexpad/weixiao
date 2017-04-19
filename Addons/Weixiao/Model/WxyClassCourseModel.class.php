@@ -14,8 +14,10 @@ class WxyClassCourseModel extends Model{
 
     public function addCourse($data){
         $map ['token'] = $data['token'];
-        $map ['date'] = $data['date'];
-        $map ['comment'] = $data['comment'];
+        $map ['valid_date'] = $data['date'];
+        $map ['grade'] = $data['grade'];
+        $map ['class_id'] = $data['class_id'];
+        //$map ['comment'] = $data['comment'];
         //$map ['classdate'] = $data['classdate'];
         //var_dump($data);
         //var_dump($this->where[$map]);
