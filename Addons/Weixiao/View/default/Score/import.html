@@ -38,12 +38,29 @@
       <div class="tab-content"> 
         <!-- 表单 -->
         <form id="form" action="{:U('import?model='.$model['id'])}" method="post" class="form-horizontal">
-            <div class="form-item cf">
-                <label class="item-label"><span class="need_flag">*</span>老师姓名<span class="check-tips"></span></label>
+            <!--<div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>考试时间<span class="check-tips"></span></label>
                 <div class="controls">
-                  <input type="text" class="text input-large" name="teacher" placeholder="姓名">
+                    <input id = 'exam_date' type="datetime" name="valid_date" class="text date" value="{$field.valid_date)}" placeholder="请选择日期" />
+
                 </div>
-              </div>
+            </div>-->
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>年级<span class="check-tips"></span></label>
+                <div class="controls">
+                  <input id ='exam_grade' type="text" class="text input-large" name="grade" placeholder="年级">
+                  <input type="hidden" value='{$public_id}' id = 'publicId'>
+                  <input type="hidden" value="{:U('addon/Weixiao/Score/score_ajax_filter')}" id = 'ajaxPostUrl'>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>所在班（请输入数字）<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="class_id" placeholder="所在班">
+                    <button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal">课程筛选</button>
+                </div>
+            </div>
+
             <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>课程（仅列出最近一年的课程，历史数据编辑可从列表项点击进入）<span class="check-tips"></span></label>
                 <div class="controls">
@@ -60,12 +77,7 @@
                     <input type="text" class="text input-large" name="term" placeholder="阶段考试名称（月考，期中...)">
                 </div>
             </div>
-            <div class="form-item cf">
-                <label class="item-label"><span class="need_flag">*</span>考试时间<span class="check-tips"></span></label>
-                <div class="controls">
-                    <input type="datetime" name="classdate" class="text date" value="{$field.classdate)}" placeholder="请选择日期" />
-                </div>
-            </div>
+
             <div class="form-item cf">
                     <label class="item-label"><span class="need_flag">*</span>学生成绩Excel文件上传<span class="check-tips">请选择符合格式的.xls或.xlsx文件</span></label>
                     <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
@@ -107,6 +119,21 @@
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
     <script type="text/javascript">
+        $('#filter').click(function(){
+            var href = $('#ajaxPostUrl').val();
+            var publicId=$("#publicId").val();
+            var exam_date = $('#exam_date').val();
+            var exam_grade = $('#exam_grade').val();
+            $.post(href,
+                    {   exam_date:exam_date,
+                        exam_grade:exam_grade,
+                        public_id:publicId
+                    },
+                    function(data){
+
+                    });
+        });
+
         $('#submit').click(function(){
             $('#form').submit();
         });
