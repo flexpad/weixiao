@@ -13,7 +13,7 @@ class CourseController extends AddonsController{
         }
 
         parent::__construct ();
-        $this->model = $this->getModel('WxyCourse'); //getModelByName ( $_REQUEST ['_controller'] );
+        $this->model = $this->getModel('WxyClassCourse'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
 
@@ -105,7 +105,7 @@ class CourseController extends AddonsController{
             //var_dump($data['timestamp']);
             $id = I('post.id');
             //$map['cover'] = $data['cover'];
-            $model = M('WxyCourse');
+            $model = M('WxyClassCourse');
             if (!intval($id)) {
                 $map['name'] = array('like',$data['name']);
                 if ($model->where($map)->select())
@@ -136,27 +136,27 @@ class CourseController extends AddonsController{
         //$data['sdate'] = '2017-01-12';
         //$this->assign('data', $data);
         $map['id'] = I('id');
-        $model = M('WxyCourse');
+        $model = M('WxyClassCourse');
         $data = $model->where($map)->find();
         $this->assign('id', $map['id']);
         $this->assign('data', $data);
         $this->display('add');
     }
 
-    public function scoreimport() {
+    public function courseimport() {
         $id = I('id');
-        $model = M('WxyCourse');
+        $model = M('WxyClassCourse');
         
         if (IS_POST) {
             $data['file'] = I('post.file');
-            $data['courseid'] = ltrim(strstr(I('post.course'), '.', true));
-            $data['classdate'] = I('post.classdate');
+            //$data['grade'] = ltrim(strstr(I('post.grade'), '.', true));
+            $data['date'] = I('post.date');
             $data['comment'] = I('post.comment');
             $data['token'] = $this->token;
             if (!intval($data['file'])) $this->error("数据文件未上传！");
-            $import_model = D('WxyScoreimport');
+            $import_model = D('WxyClassCourse');
             $import_model->addImport($data);
-            if ($this->import_data_from_excel($data['file'], $data['courseid'], $data['classdate'])) //import student data from uploaded Excel file.
+            if ($this->import_course_data_from_excel($data['file'], $data['date'], $data['comment'])) //import course data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -172,7 +172,7 @@ class CourseController extends AddonsController{
 
     public function comment() {
         $id = I('id');
-        $model = M('WxyCourse');
+        $model = M('WxyClassCourse');
 
         if (IS_POST) {
             $data['file'] = I('post.file');
@@ -196,10 +196,6 @@ class CourseController extends AddonsController{
         }
     }
 
-    public function courseimport() {
-        $model = M('WxyClassCourse');
-    }
-
     private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
         if ($courseid == NULL) return false;
         $data = array();
@@ -218,7 +214,7 @@ class CourseController extends AddonsController{
             'G'=>'comment'*/
         );
         $data = importFormExcel($file_id, $column);
-        $score_model = D('WxyCourseComments');
+        $score_model = D('WxyClassCourse');
         //var_dump($student_model);
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
@@ -231,31 +227,25 @@ class CourseController extends AddonsController{
         else return false;
     }
 
-    private function import_data_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
-        if ($courseid == NULL) return false;
+    private function import_course_data_from_excel($file_id, $date = NULL, $comment = NULL) {
+        if ($date == NULL) return false;
         $data = array();
         $column = array (
-            'A' => 'studentno',
-            /*
-            'B' => 'uid',
-            'C' => 'token',
-            'D'=>'oid',
-            */
-            'B'=>'score1',
-            'C'=>'score2',
-            'D'=>'score3',
-            'E'=>'score',
-            'F'=>'exmscore',
-            'G'=>'comment'
+            'A' => 'grade',
+            'B'=>'classid',
+            'C'=>'coursetype',
+            'D'=>'coursename',
+            'E'=>'teacher',
+            'F'=>'description',
         );
         $data = importFormExcel($file_id, $column);
-        $score_model = D('WxyScore');
+        $course_model = D('WxyClassCourse');
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
-                $row['courseid'] = $courseid;
-                $row['classdate'] = $classdate;
-                $score_model->addScore($row);
+                $row['date'] = $date;
+                $row['comment'] = $comment;
+                $course_model->addCourse($row);
             }
             return true;
         }
