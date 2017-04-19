@@ -153,7 +153,7 @@ class ClassCourseController extends AddonsController{
             $map['id'] = I('post.id');
             $map['token'] = $this->token;
             $model->where($map)->save($data);
-            $this->success("课程更新成功！");
+            $this->success("课程更新成功！", U('lists'));
             //To do here.
             
         }
