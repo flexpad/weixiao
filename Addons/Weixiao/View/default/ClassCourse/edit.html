@@ -33,11 +33,11 @@
       </ul>
       <div class="tab-content"> 
         <!-- 表单 -->
-        <form id="form" action="{:U('add?model='.$model['id'])}" method="post" class="form-horizontal">
+        <form id="form" action="{:U('edit?model='.$model['id'])}" method="post" class="form-horizontal">
             	 <div class="form-item cf">
                     <label class="item-label"><span class="need_flag">*</span>课程名称<span class="check-tips"></span></label>
                     <div class="controls">
-                      <input type="text" class="text input-large" name="name" value="{$data.name}">
+                      <input type="text" class="text input-large" name="course_name" value="{$data.course_name}">
                     </div>
                   </div>  
                    <div class="form-item cf">
@@ -67,7 +67,7 @@
                 </div>
             </div>-->
 
-            <div class="form-item cf">
+            <!--<div class="form-item cf">
                   		<label class="item-label"><span class="need_flag">*</span>封面图片<span class="check-tips">图片高度控制在200px-400px之间</span></label>
                 		<div class="controls uploadrow2" data-max="1" title="点击修改图片" rel="cover">
                             <input type="file" id="upload_picture_cover">
@@ -79,17 +79,17 @@
                               </notempty>
                             </div>
                       </div>
-                  </div>
+            </div>-->
                   
-                  <div class="form-item cf">
+            <div class="form-item cf">
                     <label class="item-label"><span class="need_flag">*</span>描述<span class="check-tips"></span></label>
                     <div class="controls">
                       <label class="textarea input-large">
-                          <textarea name="intro" style="width:700px; height:200px;">{$data.intro}</textarea>
-                          {:hook('adminArticleEdit', array('name'=>'intro','value'=>$data.intro))}
+                          <textarea name="description" style="width:700px; height:200px;">{$data.description}</textarea>
+                          {:hook('adminArticleEdit', array('name'=>'intro','value'=>$data.description))}
                       </label>
                     </div>
-                  </div>
+            </div>
 
             <div class="form-item form_bh">
                 <input type="hidden" name="id" value="{$data.id}">
