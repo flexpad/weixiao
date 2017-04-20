@@ -86,7 +86,12 @@ class ClassCourseController extends AddonsController{
         $this->assign('list_grids', $grids);
         $this->assign('list_data', $data);
         $this->meta_title = $this->model ['title'] . '列表';
-
+        $muti_search[0]['type'] = 'datetime';
+        $muti_search[0]['title'] = '按以下课表生效时间范围进行筛选';
+        $muti_search[0]['start_time'] = '';
+        $muti_search[0]['end_time'] = date("Y-m-d");
+        $this->assign('muti_search',$muti_search);
+        $this->assign('search_key', 'valid_date');
         $this->display();
     }
 
