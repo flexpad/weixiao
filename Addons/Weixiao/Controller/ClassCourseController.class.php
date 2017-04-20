@@ -36,6 +36,11 @@ class ClassCourseController extends AddonsController{
     {
         $page = I('p', 1, 'intval'); // 默认显示第一页数据
 
+        $start_time = I('start_time');
+        $end_time = I('end_time');
+
+        var_dump($start_time);
+        var_dump($end_time);
         // 解析列表规则
         $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
         $grids = $list_data ['list_grids'];
@@ -91,6 +96,7 @@ class ClassCourseController extends AddonsController{
         $muti_search[0]['start_time'] = '';
         $muti_search[0]['end_time'] = date("Y-m-d");
         $this->assign('muti_search',$muti_search);
+        $this->assign('search_button', false);
         $this->assign('search_key', 'valid_date');
         $this->display();
     }
