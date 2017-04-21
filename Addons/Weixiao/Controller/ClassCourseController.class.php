@@ -62,6 +62,10 @@ class ClassCourseController extends AddonsController{
                 $map [$name] = $val;
             }
         }
+        //按时间范围来查询
+        if($start_time != '' && $end_time != '') {
+            $map['valid_date'] = array(array('egt',$start_time), array('elt',$end_time), 'AND');
+        }
 
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
