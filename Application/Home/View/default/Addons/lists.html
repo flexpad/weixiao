@@ -45,6 +45,10 @@
                     </volist>                    
                     </select>
                 </case>
+                <case value="input">
+                    <span>{$vo.title}：</span>
+                    <input type="text" name="{$vo.name}" class="search-input input-small" placeholder="{$vo.placeholder}">
+                </case>
                 <case value="datetime">
                     <span>{$vo.title}：</span>
              <input type="datetime" name="start_time" class="search-input date input-small" value="{$vo.start_time}" placeholder="请选择时间">
