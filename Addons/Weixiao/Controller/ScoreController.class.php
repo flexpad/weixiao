@@ -54,11 +54,11 @@ class ScoreController extends AddonsController{
 
             if($name == 'start_time' && $val !="")
             {
-                ($map['classdate'] == NULL)?$map['classdate']= array(array('gt',$val)):array_push($map['classdate'],array('gt',$val));
+                ($map['classdate'] == NULL)?$map['classdate']= array(array('gt',$val)):array_push($map['classdate'],array('egt',$val));
             }
             if($name == 'end_time' && $val !="")
             {
-                ($map['classdate'] == NULL)?$map['classdate']= array(array('lt',$val)):array_push($map['classdate'],array('lt',$val));
+                ($map['classdate'] == NULL)?$map['classdate']= array(array('lt',$val)):array_push($map['classdate'],array('elt',$val));
             }
         }
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
@@ -187,6 +187,7 @@ class ScoreController extends AddonsController{
         }
         else {
             $this->assign('public_id', $this->public_id);
+            $this->assign('course_valid_date',date('Y-m-d',strtotime('-1 year')));
             $this->display('import');
         }
     }
