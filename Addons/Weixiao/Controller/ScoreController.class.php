@@ -29,17 +29,15 @@ class ScoreController extends AddonsController{
     public function lists()
     {
         $page = I('p', 1, 'intval'); // 默认显示第一页数据
-
         // 解析列表规则
         $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
         $grids = $list_data ['list_grids'];
         $fields = $list_data ['fields'];
-
-        //var_dump($grids);
-        // 关键字搜索
         $map ['token'] = get_token();
+
+        // 关键字搜索
         $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'title';
-        
+
         if (isset ($_REQUEST [$key])) {
             $map [$key] = array(
                 'like',
@@ -48,13 +46,21 @@ class ScoreController extends AddonsController{
             unset ($_REQUEST [$key]);
         }
         // 条件搜索
+        //$date_range = array();
         foreach ($_REQUEST as $name => $val) {
             if (in_array($name, $fields)) {
                 $map [$name] = $val;
             }
-        }
 
-        var_dump($map);
+            if($name == 'start_time' && $val !="")
+            {
+                ($map['classdate'] == NULL)?$map['classdate']= array(array('gt',$val)):array_push($map['classdate'],array('gt',$val));
+            }
+            if($name == 'end_time' && $val !="")
+            {
+                ($map['classdate'] == NULL)?$map['classdate']= array(array('lt',$val)):array_push($map['classdate'],array('lt',$val));
+            }
+        }
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
         // 读取模型数据列表
@@ -82,11 +88,15 @@ class ScoreController extends AddonsController{
         }
         $this->assign('list_grids', $grids);
         $this->assign('list_data', $data);
-        $this->assign('search_key', 'name');
-        $key_datetime = array("type"=>"datetime","title"=>"有效时间","start_time"=>date("Y/m/d"),"end_time"=>date("Y/m/d"));
-        $key_course = array("type"=>"select","title"=>"科目","options"=>array(array("value"=>1,"name"=>"语文","title"=>"语文"),array("value"=>2,"name"=>"数学","title"=>"数学")));
+        $this->assign('search_button',false);
+
+        $key_datetime = array("type"=>"datetime","title"=>"有效时间","start_time"=>"","end_time"=>date("Y/m/d"));
+        //$key_datetime = array("type"=>"datetime","title"=>"有效时间");
+        //$key_course = array("type"=>"select","title"=>"科目","name"=>"subject","options"=>array(array("value"=>1,"name"=>"语文","title"=>"语文"),array("value"=>2,"name"=>"数学","title"=>"数学")));
+        $key_course = array("type"=>"input","title"=>"科目","name"=>"subject");
         $muti_keys = array($key_datetime,$key_course,NULL);
         $this->assign('muti_search',$muti_keys);
+        $this->assign('search_key',array('classdate','subject'));
         $this->meta_title = $this->model ['title'] . '列表';
 
         $this->display('lists');
@@ -97,15 +107,47 @@ class ScoreController extends AddonsController{
         $this->display();
     }
     */
+
     public function add(){
-        //$map = array('token'=>this.token);
-        //$fields = array('token');
-
-        //$course_data = M('')->field(empty ($fields) ? true : $fields)->where($map);
-
-        $sel_course = array(["id"=>1,"name"=>"语文"],["id"=>2,"name"=>"数学"]);
+        $courseImport = D('WxyClassCourseimport')->query("SELECT * FROM `wp_wxy_class_course` ORDER by `valid_date` desc limit 1");
+        $map = array("token"=>$this->token,"grade"=>"2","class_id"=>"2","valid_date"=>$courseImport[0]["valid_date"]);
+        $course_data = M('WxyClassCourse')->where($map)->select();
+        //var_dump($course_data);
+        $sel_course = array();
+        for ($i = 0; $i < count($course_data);$i++){
+            $sel_course[$i]["id"] = $course_data[$i]['id'];
+            $sel_course[$i]["name"] = $course_data[$i]['course_name'];
+            $sel_course[$i]["teacher"] = $course_data[$i]['teacher'];
+        }
+        //var_dump($sel_course);
+        $this->assign('public_id', $this->public_id);
         $this->assign('course_lists',$sel_course);
+        $this->assign('course_valid_date',$course_data[0]["valid_date"]);
         $this->display('import');
+    }
+
+    public function score_ajax_filter(){
+        if (!IS_POST) $this->error("请在表单中提交！");
+
+        $public_id = I('public_id');
+        $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        if ($map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
+
+        $map['class_id'] = I('exam_class');
+        $map['grade'] = I('exam_grade');
+        $map['valid_date'] = I('valid_date');
+        //var_dump($map);
+        $course_data = M('WxyClassCourse')->where($map)->select();
+        //var_dump($course_data);
+
+        $sel_course = array();
+        for ($i = 0; $i < count($course_data);$i++){
+            $sel_course[$i]["id"] = $course_data[$i]['id'];
+            $sel_course[$i]["name"] = $course_data[$i]['course_name'];
+            $sel_course[$i]["teacher"] = $course_data[$i]['teacher'];
+        }
+        //var_dump($sel_course);
+        $this->ajaxReturn($sel_course,'JSON');
     }
 
     public function import(){
@@ -121,8 +163,9 @@ class ScoreController extends AddonsController{
         if ($uid == 0) redirect(U('/Home/Public'));
         if (IS_POST) {
             $data['token'] = $token;
-            $data['teacher'] = I('post.teacher');
-            $data['courseid'] = explode('.',I('post.courseid'))[0];
+            $course_obj = explode('.',I('post.courseid'));
+            $data['teacher'] = $course_obj[2];
+            $data['courseid'] = $course_obj[0];
             $data['term'] = I('post.term');
             $data['file'] = I('post.file');
             $data['classdate'] = I('post.classdate');
@@ -131,7 +174,7 @@ class ScoreController extends AddonsController{
             $import_model = D('WxyScoreimport');
             $res = $import_model->addImport($data);
             $data['termid'] = $res;
-            $data['subject'] = explode('.',I('post.courseid'))[1];
+            $data['subject'] = $course_obj[1];
 
             if ($this->import_student_score_from_excel($data['file'],$data)) //import student data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
@@ -157,7 +200,6 @@ class ScoreController extends AddonsController{
         );
         $data = importFormExcel($file_id, $column);
         $score_model = D('WxyScore');
-
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
@@ -166,6 +208,12 @@ class ScoreController extends AddonsController{
                 $row['courseid'] = $base_data['courseid'];
                 $row['subject'] = $base_data['subject'];
                 $row['term'] = $base_data['term'];
+
+                $map['token'] =  $this->token;
+                $map['studentno'] =  $row['studentno'];
+                $stu_arry = M('WxyStudentCard')->where($map)->select();
+                if ($stu_arry.count() != 0) $row['name'] = $stu_arry[0]['name'];
+
                 $score_model->addScore($row);
             }
             return true;
