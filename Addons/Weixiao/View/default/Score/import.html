@@ -38,35 +38,36 @@
       <div class="tab-content"> 
         <!-- 表单 -->
         <form id="form" action="{:U('import?model='.$model['id'])}" method="post" class="form-horizontal">
-            <!--<div class="form-item cf">
-                <label class="item-label"><span class="need_flag">*</span>考试时间<span class="check-tips"></span></label>
-                <div class="controls">
-                    <input id = 'exam_date' type="datetime" name="valid_date" class="text date" value="{$field.valid_date)}" placeholder="请选择日期" />
-
-                </div>
-            </div>-->
             <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>年级<span class="check-tips"></span></label>
                 <div class="controls">
-                  <input id ='exam_grade' type="text" class="text input-large" name="grade" placeholder="年级">
+                    <select name="exam_grade" id="sel_grade" onchange=get_course_list()>
+                        <option value = "1">一年级</option>
+                        <option value = "2">二年级</option>
+                        <option value = "3">三年级</option>
+                        <option value = "4">四年级</option>
+                        <option value = "5">五年级</option>
+                        <option value = "6">六年级</option>
+                    </select>
                   <input type="hidden" value='{$public_id}' id = 'publicId'>
                   <input type="hidden" value="{:U('addon/Weixiao/Score/score_ajax_filter')}" id = 'ajaxPostUrl'>
+                  <input type="hidden" value="{$course_valid_date}" id = 'valid_date'>
                 </div>
             </div>
             <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>所在班（请输入数字）<span class="check-tips"></span></label>
                 <div class="controls">
-                    <input type="text" class="text input-large" name="class_id" placeholder="所在班">
-                    <button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal">课程筛选</button>
+                    <input type="text" class="text input-large" name="class_id" id="exam_class" value="1" onchange=get_course_list()>
+                    <button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal" onclick=get_course_list()>课程筛选</button>
                 </div>
             </div>
 
             <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>课程（仅列出最近一年的课程，历史数据编辑可从列表项点击进入）<span class="check-tips"></span></label>
                 <div class="controls">
-                    <select name="courseid">
+                    <select name="courseid" id="exam_course">
                         <volist name="course_lists" id="vo">
-                            <option >{$vo.id}.{$vo.name}</option>
+                            <option >{$vo.id}.{$vo.name}.{$vo.teacher}</option>
                         </volist>
                     </select>
                 </div>
@@ -77,7 +78,12 @@
                     <input type="text" class="text input-large" name="term" placeholder="阶段考试名称（月考，期中...)">
                 </div>
             </div>
-
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>考试时间<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input id = 'exam_date' type="datetime" name="classdate" class="text date" value="{$field.classdate)}" placeholder="请选择日期" />
+                </div>
+            </div>
             <div class="form-item cf">
                     <label class="item-label"><span class="need_flag">*</span>学生成绩Excel文件上传<span class="check-tips">请选择符合格式的.xls或.xlsx文件</span></label>
                     <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
@@ -119,24 +125,37 @@
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
     <script type="text/javascript">
-        $('#filter').click(function(){
+        function get_course_list()
+        {
             var href = $('#ajaxPostUrl').val();
             var publicId=$("#publicId").val();
-            var exam_date = $('#exam_date').val();
-            var exam_grade = $('#exam_grade').val();
+            var exam_class = $('#exam_class').val();
+            var exam_grade = $('#sel_grade').val();
+            var exam_valid_date = $('#valid_date').val();
             $.post(href,
-                    {   exam_date:exam_date,
-                        exam_grade:exam_grade,
-                        public_id:publicId
-                    },
-                    function(data){
+                {
+                    exam_class:exam_class,
+                    exam_grade:exam_grade,
+                    public_id:publicId,
+                    valid_date:exam_valid_date,
+                },
+                function(sel_course){
+                   var json_data =  JSON.parse(sel_course);
+                   console.log(json_data);
+                   console.log (json_data.length);
+                   $('#exam_course').contents().remove();
+                   if(json_data.length == 0)
+                   {
+                       $("<option value = '-1'> 没有课程列表</option>").appendTo('#exam_course');
+                   }
+                   for(var i =0 ;i < json_data.length;i++)
+                   {
+                       $("<option >"+json_data[i]['id']+"."+json_data[i]['name']+"."+json_data[i]['teacher']+"</option>").appendTo('#exam_course');
+                   }
 
-                    });
-        });
-
-        $('#submit').click(function(){
-            $('#form').submit();
-        });
+                },
+                'text');
+        }
 
         $(function(){
             initUploadFile();
@@ -154,10 +173,15 @@
                 autoclose:true
             });
             showTab();
-            hide_move();
+            //hide_move();
 
             $('.select_type').each(function(){ select_type(this); });
-            $('.select_type').change(function(){ select_type(this); });
+            $('.select_type').change(function(){ alert("1");select_type(this); });
+            /*
+            $('#submit').click(function(){
+                alert("submit click");
+                $('#form').submit();
+            });*/
         });
 
     </script>
