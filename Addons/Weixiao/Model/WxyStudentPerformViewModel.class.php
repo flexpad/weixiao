@@ -31,7 +31,7 @@ class WxyStudentPerformViewModel extends ViewModel {
             '_on' => 'WxyStudentCard.studentno = WxyScore.studentno AND WxyStudentCard.token = WxyScore.token'
         ),
 
-        'WxyCourse' => array (
+        'WxyClassCourse' => array (
             'name' => 'course_name',
             'teacher' => 'teacher',
             '_on' => 'WxyScore.courseid = WxyCourse.id'
