@@ -39,8 +39,6 @@ class ClassCourseController extends AddonsController{
         $start_time = I('start_time');
         $end_time = I('end_time');
 
-        var_dump($start_time);
-        var_dump($end_time);
         // 解析列表规则
         $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
         $grids = $list_data ['list_grids'];
