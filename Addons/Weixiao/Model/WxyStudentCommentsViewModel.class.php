@@ -31,7 +31,7 @@ class WxyStudentCommentsViewModel extends ViewModel {
             'couese_name' => 'course_name',
             'teacher' => 'teacher',
             'sdate' => 'classdate',
-            '_on' => 'WxyCourseComments.courseid = WxyCourse.id'
+            '_on' => 'WxyCourseComments.courseid = WxyClassCourse.id'
         ),
         /*
         'WxyDailyTime' => array(
