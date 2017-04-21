@@ -135,7 +135,11 @@ class ScoreController extends AddonsController{
 
         $map['class_id'] = I('exam_class');
         $map['grade'] = I('exam_grade');
-        $map['valid_date'] = I('valid_date');
+        $valid_date = I('valid_date');
+        if ($valid_date != NULL) {
+            $map['valid_date'] = array('egt',$valid_date);
+        }
+
         //var_dump($map);
         $course_data = M('WxyClassCourse')->where($map)->select();
         //var_dump($course_data);
