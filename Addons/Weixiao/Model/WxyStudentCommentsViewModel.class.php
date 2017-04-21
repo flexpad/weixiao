@@ -27,8 +27,8 @@ class WxyStudentCommentsViewModel extends ViewModel {
             '_on' => 'WxyStudentCard.id = WxyCourseComments.sid AND WxyStudentCard.token = WxyCourseComments.token'
         ),
 
-        'WxyCourse' => array (
-            'name' => 'course_name',
+        'WxyClassCourse' => array (
+            'couese_name' => 'course_name',
             'teacher' => 'teacher',
             'sdate' => 'classdate',
             '_on' => 'WxyCourseComments.courseid = WxyCourse.id'

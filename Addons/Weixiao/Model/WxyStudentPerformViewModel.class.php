@@ -32,9 +32,9 @@ class WxyStudentPerformViewModel extends ViewModel {
         ),
 
         'WxyClassCourse' => array (
-            'name' => 'course_name',
+            'course_name' => 'course_name',
             'teacher' => 'teacher',
-            '_on' => 'WxyScore.courseid = WxyCourse.id'
+            '_on' => 'WxyScore.courseid = WxyClassCourse.id'
         ),
         /*
         'WxyDailyTime' => array(

@@ -187,6 +187,7 @@ class ScoreController extends AddonsController{
         }
         else {
             $this->assign('public_id', $this->public_id);
+            $this->assign('course_valid_date',date('Y-m-d',strtotime('-1 year')));
             $this->display('import');
         }
     }
