@@ -62,6 +62,7 @@ class ClassCourseController extends AddonsController{
                 $map [$name] = $val;
             }
         }
+
         //按时间范围来查询
         if($start_time != '' && $end_time != '') {
             $map['valid_date'] = array(array('egt',$start_time), array('elt',$end_time), 'AND');
@@ -70,7 +71,6 @@ class ClassCourseController extends AddonsController{
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
         // 读取模型数据列表
-
         empty ($fields) || in_array('id', $fields) || array_push($fields, 'id');
         $name = parse_name(get_table_name($this->model ['id']), true);
         //var_dump($name);
