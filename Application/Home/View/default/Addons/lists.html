@@ -45,6 +45,10 @@
                     </volist>                    
                     </select>
                 </case>
+                <case value="input">
+                    <span>{$vo.title}：</span>
+                    <input type="text" name="{$vo.name}" class="search-input input-small" placeholder="{$vo.placeholder}">
+                </case>
                 <case value="datetime">
                     <span>{$vo.title}：</span>
              <input type="datetime" name="start_time" class="search-input date input-small" value="{$vo.start_time}" placeholder="请选择时间">
@@ -125,7 +129,7 @@ $(function(){
       /*var str = $('.search-input').val();
       var query  = $('.search-input').attr('name')+'='+str.replace(/(^\s*)|(\s*$)/g,"");
       */
-      console.log("Query String is: ", query);
+      //console.log("Query String is: ", query);
 
       if( url.indexOf('?')>0 ) {
           url += '&' + query;
