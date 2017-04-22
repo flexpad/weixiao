@@ -217,8 +217,9 @@ class ScoreController extends AddonsController{
                 $map['token'] =  $this->token;
                 $map['studentno'] =  $row['studentno'];
                 $stu_arry = M('WxyStudentCard')->where($map)->select();
-                if ($stu_arry.count() != 0) $row['name'] = $stu_arry[0]['name'];
 
+                if (count($stu_arry) != 0) $row['name'] = $stu_arry[0]['name'];
+                //var_dump($map,$stu_arry,$stu_arry[0]['name'],count($stu_arry),$row);
                 $score_model->addScore($row);
             }
             return true;
