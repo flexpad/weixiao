@@ -165,6 +165,7 @@
 </div>
 <p class="p" style="text-align: center"></p>
 <input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value='0' id = 'query_value'>
 <input type="hidden" value="{:U('addon/Weixiao/Wap/score_ajax_show')}" id = 'ajaxPostUrl'>
 
 <!-- 底部导航 -->
@@ -192,9 +193,11 @@
         if(Q==1){
             startdate=$(".startdate").val();
             deadline=$("input[name='deadline']").val();
+            $("#query_value").val(1);
         }else if(Q==2){
             deadline=null;
             startdate="1990-1-1";
+            $("#query_value").val(2);
         }
         $.post(href,{search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo},function(data){
             $(".panel-group").html("");
@@ -218,5 +221,67 @@
 
         }, 'text');
     }
+
+    $(function(){
+        var winH = $(window).height(); //页面可视区域高度
+        var i = 1; //设置当前页数
+
+        $(window).scroll(function() {
+            var href = $('#ajaxPostUrl').val();
+            var startdate="";
+            var deadline="";
+            if ($("#query_value").val() == '0') {
+                console.log("query_value = 0");
+                return;
+            }
+            else{
+                var publicId=$("#publicId").val();
+                var studentNo=$(".studentNo").html();
+                if($("#query_value").val()==1){
+                    startdate=$(".startdate").val();
+                    deadline=$("input[name='deadline']").val();
+                }else if($("#query_value").val()==2){
+                    deadline=null;
+                    startdate="1990-1-1";
+                }
+            }
+            var pageH = $(document.body).height();
+            var scrollT = $(window).scrollTop(); //滚动条top
+            var aa = (pageH-winH-scrollT)/winH;
+            var str = "";
+            var json;
+            if (aa<0.02){
+                i++;
+                $.post(href,
+                    {search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo,page:i},
+                    function(data){
+                    json = JSON.parse(data);
+                    if (json){
+                        $.each(json, function(index, item){
+
+                            str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+index+'"> <div> <p class="omit_show">'
+                            str += '课程：'+item["course_name"]+'</p>';
+                            str += '<p  class="collapse_left">'+item["classdate"]+'</p>'
+                            str += '<p  class="collapse_right">'+item["teacher"]+'</p> </div> </a> </h4> </div>';
+                            str += '<div id="collapse'+index+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
+                            str += '<p class="attendance_right">'+item["score1"]+'</p> </li>';
+                            str += '<li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">'+item["score2"]+'</p> </li> ';
+                            str += '<li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">'+item["score3"]+'</p> </li> ';
+                            str += '<li> <p class="attendance_left">总分：</p> <p class="attendance_right">'+item["exmscore"]+'</p> </li> </ul> </div> </div> </div>';
+
+                            $(".panel-group").append(str);
+                        });
+
+
+                    } else{
+                        str = '已经到底';
+                        $(".p").html(str);
+                        return false;
+                    }
+                }, 'text');
+            }
+        });
+    });
+
 </script>
 </body>
