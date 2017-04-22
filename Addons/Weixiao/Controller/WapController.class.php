@@ -63,6 +63,7 @@ class WapController extends AddonsController {
     public function bind() {
         $openid = get_openid();
         $studentcare_model = D('WxyStudentCare');
+        $this->assign("page_title","微校：学生绑定");
         if (IS_POST) {
             $follow_data = array();
             $studentcare = array();
@@ -153,7 +154,7 @@ class WapController extends AddonsController {
             $this->assign('care_count', $studentcare_model->where($map2)->count());
             $this->assign('oid', $data['public_name']);
             $this->assign('public_id', $public_id);
-            
+
             $this->_footer();
             $this->display('bind_student');
         }
@@ -161,11 +162,13 @@ class WapController extends AddonsController {
 
     public function index()
     {
+        $this->assign("page_title","微校：学生绑定");
         $this->display('bind_student');
     }
 
     public function infor() {
         $public_id = intval(I('publicid'));
+        $this->assign("page_title","微校：学生信息");
         $public_id = ($public_id > 0) ? $public_id:1;
         
         $map['id'] = $public_id;
@@ -205,7 +208,7 @@ class WapController extends AddonsController {
         $public_id = I('public_id', 0, 'intval');
         empty ($public_id) && $public_id = I('publicid', 0, 'intval');
         $public_id = ($public_id > 0) ? $public_id:1;
-
+        $this->assign("page_title","微校：学生成绩");
         $studentno = I('studentno');
         if ($studentno == NULL) $this->error("学号错误，请输入正确的学号！");
 
@@ -248,6 +251,8 @@ class WapController extends AddonsController {
     public function comment(){
         // retrieve db table get: course, bind, dailytime, score.
         // filter by courseid.
+        $this->assign("page_title","微校：学生评语");
+
         $public_id = I('public_id', 0, 'intval');
         empty ($public_id) && $public_id = I('publicid', 0, 'intval');
         $public_id = ($public_id > 0) ? $public_id:1;
@@ -341,6 +346,7 @@ class WapController extends AddonsController {
 
     public function show_attendance()
     {
+        $this->assign("page_title","微校：学生");
 
         $public_id = I('public_id', 0, 'intval');
         empty ($public_id) && $public_id = I('publicid', 0, 'intval');
@@ -448,6 +454,7 @@ class WapController extends AddonsController {
         if (!IS_POST) $this->error("请在表单中提交！");
 
         $public_id = I('public_id');
+        $page = I('page', 1, 'intval'); // 默认显示第一页数据
         $stuCard_map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
         if ($stuCard_map ['token'] == NULL) $this->error("公众号ID错误，请输入正确的公众号ID！");
 
@@ -456,6 +463,7 @@ class WapController extends AddonsController {
         $end_date = (I('search_end_date'));
         //var_dump($str_start);
         //var_dump($str_end);
+        //var_dump($page);
         if ($end_date || ($start_date == NULL && $end_date == NULL))
             $map['classdate'] = array('BETWEEN',array($start_date,$end_date));
         $map['token'] = $stuCard_map ['token'];
@@ -463,7 +471,8 @@ class WapController extends AddonsController {
         $map['openid'] = get_openid();
         $model = D('WxyStudentPerformView');
 
-        $data = $model->where($map)->select();
+        $row = 5;
+        $data = $model->where($map)->order('classdate')->page($page, $row)->select();
         /*var_dump($model->_sql());*/
         if ($data == NULL)
             $this->ajaxReturn(NULL,'JSON');
