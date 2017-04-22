@@ -152,6 +152,8 @@ class WapController extends AddonsController {
             $map2['openid'] = $openid;
             $this->assign('care_count', $studentcare_model->where($map2)->count());
             $this->assign('oid', $data['public_name']);
+            $this->assign('public_id', $public_id);
+            
             $this->_footer();
             $this->display('bind_student');
         }
@@ -165,7 +167,7 @@ class WapController extends AddonsController {
     public function infor() {
         $public_id = intval(I('publicid'));
         $public_id = ($public_id > 0) ? $public_id:1;
-
+        
         $map['id'] = $public_id;
         $data = M('public')->where($map)->find();
 
