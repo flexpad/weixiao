@@ -181,6 +181,24 @@ class WeixinModel extends Model {
 	public function downloadFile($media_id, $acctoken = '') {
 		// TODO
 	}
+
+	/* 微信消息模板发送*/
+	public function send_msg_form($openid,$template_id,$url,$data){
+        $postData = array(
+            "touser"=>$openid,
+            "template_id"=>$template_id,
+            "url"=>$url,
+            "data"=>$data);
+        $acc_token = get_access_token();
+        $retData = http_post("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$acc_token,$postData);
+        if ($retData == false){
+            addWeixinLog ( "sendMsgForm Error: send message time out");
+            return NULL;
+        }else {
+            return $retData;
+        }
+    }
+
 	/**
 	 * GET 请求
 	 *
