@@ -204,7 +204,10 @@ class ScoreController extends AddonsController{
         foreach ($score_data as $value) {
             $url = U('addon/Weixiao/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
             //var_dump($value);
-            D('WxyScore')->send_score_to_user($value['openid'], $url, $value);
+            if (D('WxyScore')->send_score_to_user($value['openid'], $url, $value) != NULL)
+                $this->success("此次成绩通知单已经发送到关注该学生的微信号上！");
+            else
+                $this->error("成绩通知单发送错误！");
         };
     }
 

@@ -41,7 +41,7 @@ class WxyScoreModel extends Model{
         $template_id = "4yl4CcKuTIVJrSObYB1SsP9uakWRnzzfpVXq7TANV3o";
         $data = array(
             "first"         =>  array(
-                                'value' => "亲爱的" . $info["stuname"] . "家长," . $info["stuname"] . "同学的在" . $info["exam"] . "考试取得以下成绩",
+                                'value' => "亲爱的" . $info["stuname"] . "家长," . $info["stuname"] . "同学的在" . $info["exam"] . "考试中取得以下成绩：",
                                 'color' => '#0000ff'
                                 ),
             "childName"     =>  array(
@@ -65,7 +65,7 @@ class WxyScoreModel extends Model{
                                 'color' => '#008000'
                                 )
         );
-        $this->send_msg_form($openId, $template_id, $url, $data);
+        return $this->send_msg_form($openId, $template_id, $url, $data);
     }
     
     private function http_post($url, $param) {
@@ -111,13 +111,13 @@ class WxyScoreModel extends Model{
             "topcolor" => "#7B68EE",
             "data"=>$data);
         $acc_token = get_access_token();
-        echo "<p> the result is: </p>";
+        /*echo "<p> the result is: </p>";
         var_dump($postData);
-        echo "<p> the result is: </p>";
+        echo "<p> the result is: </p>";*/
         $retData = false;
         $retData = $this->http_post("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$acc_token,json_encode($postData));
-        echo "<p> the result is: </p>";
-        var_dump($retData);
+        /*echo "<p> the result is: </p>";
+        var_dump($retData);*/
 
         if ($retData == false){
             addWeixinLog ( "sendMsgForm Error: send message time out");
