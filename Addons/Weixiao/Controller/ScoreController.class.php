@@ -174,13 +174,15 @@ class ScoreController extends AddonsController{
             $data['file'] = I('post.file');
             $data['classdate'] = I('post.classdate');
             $data['comment'] = I('post.comment');
+            $sendflag = (I('post.msgsend') == "on")?true:false ;
+
             if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = D('WxyScoreimport');
             $res = $import_model->addImport($data);
             $data['termid'] = $res;
             $data['subject'] = $course_obj[1];
 
-            if ($this->import_student_score_from_excel($data['file'],$data)) //import student data from uploaded Excel file.
+            if ($this->import_student_score_from_excel($data['file'],$data,$sendflag)) //import student data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -211,8 +213,21 @@ class ScoreController extends AddonsController{
         };
     }
 
+    private function wx_send_msg($score_id){
+        $map['id'] = $score_id;
+        $score_data = D('WxyScoreNotifyView')->where($map)->select();
+        //var_dump($score_data);
+
+        foreach ($score_data as $value) {
+            $url = U('addon/Weixiao/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
+            //var_dump($value);
+            $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value);
+            //var_dump($retdata);
+        };
+
+    }
     //This function was modified for full time school under Weixiao addon.
-    private function import_student_score_from_excel($file_id,$base_data) {
+    private function import_student_score_from_excel($file_id,$base_data,$sendflag) {
         $data = array();
         $column = array (
             'A' => 'studentno',  //学生编号
@@ -239,7 +254,13 @@ class ScoreController extends AddonsController{
 
                 if (count($stu_arry) != 0) $row['name'] = $stu_arry[0]['name'];
                 //var_dump($map,$stu_arry,$stu_arry[0]['name'],count($stu_arry),$row);
-                $score_model->addScore($row);
+                $row['weixinmsgsend'] = $sendflag?"已发送":"未发送";
+                $it = $score_model->addScore($row);
+                if($sendflag){
+                    //var_dump($it);
+                    $this->wx_send_msg($it);
+                }
+
             }
             return true;
         }
