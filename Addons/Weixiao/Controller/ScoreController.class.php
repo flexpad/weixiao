@@ -202,15 +202,26 @@ class ScoreController extends AddonsController{
         $map['id'] = $score_id;
         $score_data = D('WxyScoreNotifyView')->where($map)->select();
         //var_dump($score_data);
-
+        $statue = 0;
         foreach ($score_data as $value) {
             $url = U('addon/Weixiao/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
             //var_dump($value);
-            if (D('WxyScore')->send_score_to_user($value['openid'], $url, $value) != NULL)
-                $this->success("此次成绩通知单已经发送到关注该学生的微信号上！");
-            else
-                $this->error("成绩通知单发送错误！");
+            $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value);
+
+            $statue += ($retdata["errcode"] == 0)?0:1;
+            usleep(60000);
         };
+
+        if($statue == 0) {
+            $this->success("此次成绩通知单已经发送到关注该学生的微信号上！");
+
+            $data = M('WxyScore')->where($map)->select()[0];
+            $data["weixinmsgsend"] = "已发送";
+            //var_dump($data);
+            M('WxyScore')->where($map)->save($data);
+        }
+        else
+            $this->error("成绩通知单发送错误！");
     }
 
     private function wx_send_msg($score_id){
@@ -223,7 +234,7 @@ class ScoreController extends AddonsController{
             //var_dump($value);
             $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value);
             if($retdata["errcode"] == 0)
-                usleep(20000);
+                usleep(30000);
             else
                 usleep(1000);
         };
