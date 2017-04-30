@@ -222,7 +222,10 @@ class ScoreController extends AddonsController{
             $url = U('addon/Weixiao/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
             //var_dump($value);
             $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value);
-            //var_dump($retdata);
+            if($retdata["errcode"] == 0)
+                usleep(20000);
+            else
+                usleep(1000);
         };
 
     }
