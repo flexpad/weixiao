@@ -165,6 +165,7 @@
 </div>
 <p class="p" style="text-align: center"></p>
 <input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value='0' id="listcount">
 <input type="hidden" value='0' id = 'query_value'>
 <input type="hidden" value="{:U('addon/Weixiao/Wap/score_ajax_show')}" id = 'ajaxPostUrl'>
 
@@ -199,6 +200,7 @@
             startdate="1990-1-1";
             $("#query_value").val(2);
         }
+        $("#listcount").value = 0;
         $.post(href,{search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo},function(data){
             $(".panel-group").html("");
             $(".p").html("");
@@ -257,13 +259,19 @@
                     function(data){
                     json = JSON.parse(data);
                     if (json){
-                        $.each(json, function(index, item){
 
-                            str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+index+'"> <div> <p class="omit_show">'
+                        $.each(json, function(index, item){
+                            //$(".panel-group").remove(".panel");
+                            var item_id = parseInt($("#listcount").val()) + 1;
+                            //console.log("item_id = ");
+                            //console.log(item_id);
+                            $("#listcount").val( item_id);
+
+                            str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+item_id+'"> <div> <p class="omit_show">'
                             str += '课程：'+item["course_name"]+'</p>';
                             str += '<p  class="collapse_left">'+item["classdate"]+'</p>'
                             str += '<p  class="collapse_right">'+item["teacher"]+'</p> </div> </a> </h4> </div>';
-                            str += '<div id="collapse'+index+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
+                            str += '<div id="collapse'+item_id+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
                             str += '<p class="attendance_right">'+item["score1"]+'</p> </li>';
                             str += '<li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">'+item["score2"]+'</p> </li> ';
                             str += '<li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">'+item["score3"]+'</p> </li> ';
