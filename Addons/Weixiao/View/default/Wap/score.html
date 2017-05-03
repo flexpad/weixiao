@@ -200,7 +200,7 @@
             startdate="1990-1-1";
             $("#query_value").val(2);
         }
-        $("#listcount").value = 0;
+        $("#listcount").val(0);
         $.post(href,{search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo},function(data){
             $(".panel-group").html("");
             $(".p").html("");
@@ -210,15 +210,14 @@
             console.log (json_data);
             if(json_data==null){
                 str = '没有数据';
-                console.log("sss");
                 $(".p").html(str);
                 return false;
             }else if (json_data.length>0){
-                console.log("aaa");
                 for(var i=0; i < json_data.length;i++){
                     str= ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'"> <div> <p class="omit_show">课程：'+json_data[i]["course_name"]+'</p> <p  class="collapse_left">'+json_data[i]["classdate"]+'</p> <p  class="collapse_right">'+json_data[i]["teacher"]+'</p> </div> </a> </h4> </div> <div id="collapse'+i+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> <p class="attendance_right">'+json_data[i]["score1"]+'</p> </li> <li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">'+json_data[i]["score2"]+'</p> </li> <li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">'+json_data[i]["score3"]+'</p> </li> <li> <p class="attendance_left">总分：</p> <p class="attendance_right">'+json_data[i]["exmscore"]+'</p> </li>   </ul> </div> </div> </div>';
                     $(".panel-group").append(str);
                 }
+                $("#listcount").val(json_data.length);
             }
 
         }, 'text');
