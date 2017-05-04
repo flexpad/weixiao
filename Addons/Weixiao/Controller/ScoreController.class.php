@@ -261,6 +261,7 @@ class ScoreController extends AddonsController{
                 $row['courseid'] = $base_data['courseid'];
                 $row['subject'] = $base_data['subject'];
                 $row['term'] = $base_data['term'];
+                $row['score'] = '';
 
                 $map['token'] =  $this->token;
                 $map['studentno'] =  $row['studentno'];

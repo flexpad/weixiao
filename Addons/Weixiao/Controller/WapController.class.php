@@ -471,8 +471,17 @@ class WapController extends AddonsController {
         $map['openid'] = get_openid();
         $model = D('WxyStudentPerformView');
 
-        $row = 5;
+        $row = 8;
         $data = $model->where($map)->order('classdate')->page($page, $row)->select();
+
+        /*foreach($data as $key => $row) {
+
+            if ($row['score'] == NULL)  $data[$key]['score'] = '';
+            if ($row['score1'] == NULL) $data[$key]['score1'] = '';
+            if ($row['score2'] == NULL) $data[$key]['score2'] = '';
+            if ($row['score3'] == NULL) $data[$key]['score3'] = '';
+            if ($row['exmscore'] == NULL) $data[$key]['exmscore'] = '';
+        }*/
         /*var_dump($model->_sql());*/
         if ($data == NULL)
             $this->ajaxReturn(NULL,'JSON');
