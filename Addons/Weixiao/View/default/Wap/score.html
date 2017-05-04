@@ -1,7 +1,126 @@
 <include file="Public/mobile_head"/>
 <link href="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/css/bootstrap.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
 <link href="{:ADDON_PUBLIC_PATH}/weui.min.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/iscroll-probe.js?v={:SITE_VERSION}"></script>
 <title></title>
+<style type="text/css">
+
+    #header {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        /*
+        padding: 0;
+        color: #eee;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;*/
+    }
+
+    #footer {
+        position: absolute;
+        z-index: 2;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 48px;
+        background: #444;
+        padding: 0;
+        border-top: 1px solid #444;
+    }
+
+    #wrapper {
+        position: absolute;
+        z-index: 1;
+        top: 316px;
+        bottom: 48px;
+        left:9999px; /* Not a must - can be 0 - but it makes the appearance of the content a bit nicer */
+        width: 100%;
+        background: #ccc;
+
+    }
+
+    #scroller {
+        position: absolute;
+        z-index: 1;
+
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 100%;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    .pullDownLabel, .pullUpLabel {color:#999}
+    .pullDown, .pullUp {background:#fff;height:40px;line-height:40px;font-weight:bold;font-size:0.8em;color:#888}
+    .pullDown .pullDownIcon, .pullUp .pullUpIcon
+    {
+        display:block;
+        float:left;
+        opacity:0.4;
+        width:40px;
+        height:40px;
+        background:url({:ADDON_PUBLIC_PATH}/pull_to_refresh.png) 0 0 no-repeat;
+        -webkit-background-size:40px 80px;
+        -ms-background-size:40px 80px;
+        background-size:40px 80px;
+        -webkit-transition-property:-webkit-transform;
+        -ms-transition-property:-webkit-transform;
+        -webkit-transition-duration:250ms;
+        -ms-transition-duration:250ms
+    }
+
+    .pullDown .pullDownIcon {
+        -webkit-transform:rotate(0deg);
+        -ms-transform:rotate(0deg)
+    }
+    .pullUp .pullUpIcon  {
+        -webkit-transform:rotate(-180deg);
+        -ms-transform:rotate(-180deg)
+    }
+
+    .pullDown.flip .pullDownIcon {
+        -webkit-transform:rotate(-180deg);
+        -ms-transform:rotate(-180deg)
+    }
+    .pullUp.flip .pullUpIcon {
+        -webkit-transform:rotate(0deg);
+        -ms-transform:rotate(0deg)}
+    .pullDown.loading .pullDownIcon, .pullUp.loading .pullUpIcon {
+        background-position:0 100%;
+        -webkit-transform:rotate(0deg);
+        -ms-transform:rotate(0deg);
+        -webkit-transition-duration:0ms;
+        -ms-transition-duration:0ms;
+        -webkit-animation-name:loading;
+        -ms-animation-name:loading;
+        -webkit-animation-duration:1s;
+        -ms-animation-duration:1s;
+        -webkit-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-timing-function:linear;
+        -ms-animation-timing-function:linear
+    }
+
+
+
+
+</style>
 <style>
     .informationUl{
         list-style: none;
@@ -21,7 +140,7 @@
     }
     .institution_name{
         text-align: center;
-        margin: 40px auto 20px;
+        margin: 10px auto 10px;
     }
     .attendance_left{
         display:inline-block;
@@ -80,7 +199,8 @@
 </style>
 <body>
 <title>微校：成绩查询</title>
-<div class="attendance_head">
+<div id="header">
+    <div class="attendance_head">
     <div class="institution_name">
         <img src="{:ADDON_PUBLIC_PATH}/A0.png" alt="" width="90px" height="50px">
         <p  class="attendance_head_p">成绩和表现</p>
@@ -89,81 +209,39 @@
         <p class="attendance_left">学号：<span class="studentNo">{$studentno}</span></p>
         <p class="attendance_right">姓名：{$student_name}</p>
     </div>
-</div>
-<!--<div class="weui-cell">-->
-    <!--<div class="weui-cell__hd attendance-hd-lb" >-->
-        <!--<label for="" class="weui-label attendance-lb" >日期</label>-->
-    <!--</div>-->
-    <!--<div class="weui-cell__bd attendance-bd" >-->
-        <!--<input class="weui-input" type="date" value="" style="padding:8px;"/>-->
-    <!--</div>-->
-<!--</div>-->
-<div class="weui-cell">
+    </div>
+    <div class="weui-cell">
     <div class="weui-cell__hd " >
         <label for="" class="weui-label " >开始日期</label>
     </div>
     <div class="weui-cell__bd " >
         <input class="weui-input startdate" type="date" value=""  name="startdate" style="height: 40px"/>
     </div>
-</div>
-<div class="weui-cell weui">
+    </div>
+    <div class="weui-cell weui">
     <div class="weui-cell__hd " >
         <label for="" class="weui-label " >结束日期</label>
     </div>
     <div class="weui-cell__bd " >
         <input class="weui-input" type="date" value=""  name="deadline" style="height: 40px"/>
     </div>
-</div>
-<div type="submit" onclick="query(1)" class="weui-btn weui-btn_primary weui-btn_mini "  style="margin-left: 20px">查询</div>
-<div type="submit" onclick="query(2)" class="weui-btn weui-btn_primary weui-btn_mini">查询全部</div>
-<div class="panel-group" id="accordion">
-<!--    <volist name="data" id="vo">
-        <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$i}">
-                    <div>
-                        <p class="omit_show">课程：{$vo.course_name}</p>
-                        <p  class="collapse_left">{$vo.classdate}</p>
-                        <p  class="collapse_right">{$vo.teacher}</p>
-                    </div>
-                </a>
-            </h4>
-        </div>
-        <div id="collapse{$i}" class="panel-collapse collapse">
-            <div class="panel-body">
-                <ul class="informationUl">
-                    <li>
-                        <p class="attendance_left">课堂表现（70分）：</p>
-                        <p class="attendance_right">{$vo.score1}</p>
-                    </li>
-                    <li>
-                        <p class="attendance_left">出勤情况（10分）：</p>
-                        <p class="attendance_right">{$vo.score2}</p>
-                    </li>
-                    <li>
-                        <p class="attendance_left">作业完成（20分）：</p>
-                        <p class="attendance_right">{$vo.score3}</p>
-                    </li>
-                    <li>
-                        <p class="attendance_left">总分：</p>
-                        <p class="attendance_right">{$vo.score}</p>
-                    </li>
-                    <li>
-                        <p class="attendance_left">小测试：</p>
-                        <p class="attendance_right">{$vo.exmscore}</p>
-                    </li>
-                    <li>
-                        <p class="attendance_left">教师评语：</p>
-                        <span >测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </div>
-    </volist>-->
+    <div type="submit" onclick="query(1)" class="weui-btn weui-btn_primary weui-btn_mini "  style="margin-left: 20px">查询</div>
+    <div type="submit" onclick="query(2)" class="weui-btn weui-btn_primary weui-btn_mini">查询全部</div>
 </div>
-<p class="p" style="text-align: center"></p>
+
+<div id="wrapper">
+    <div id="scroller">
+        <div class="pullDown">
+            <span class="pullDownIcon">&nbsp;</span>
+            <span class="pullDownLabel">上拉重新刷新...</span>
+        </div>
+        <div class="panel-group" id="accordion"></div>
+        <div class="pullUp"></div>
+        <p class="p" style="text-align: center"></p>
+    </div>
+</div>
+
 <input type="hidden" value='{$public_id}' id = 'publicId'>
 <input type="hidden" value='0' id="listcount">
 <input type="hidden" value='0' id = 'query_value'>
@@ -184,111 +262,297 @@
 <script src="{:ADDON_PUBLIC_PATH}/jquery-3.1.1.min.js?v={:SITE_VERSION}"></script>
 <script src="{:ADDON_PUBLIC_PATH}/bootstrap3.3.7/js/bootstrap.min.js?v={:SITE_VERSION}"></script>
 <!--查询-->
+
 <script type="text/javascript">
-    function query(Q) {
+    (function ($) {
+        var items_per_page = 8;
+        var scroll_in_progress = false;
+        var myScroll;
         var href = $('#ajaxPostUrl').val();
-        var publicId=$("#publicId").val();
-        var studentNo=$(".studentNo").html();
-        var startdate="";
-        var deadline="";
-        if(Q==1){
-            startdate=$(".startdate").val();
-            deadline=$("input[name='deadline']").val();
-            $("#query_value").val(1);
-        }else if(Q==2){
-            deadline=null;
-            startdate="1990-1-1";
-            $("#query_value").val(2);
-        }
-        $("#listcount").val(0);
-        $.post(href,{search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo},function(data){
-            $(".panel-group").html("");
-            $(".p").html("");
-            var json_data =  JSON.parse(data);
-            var str= " ";
-            console.log (typeof (json_data));
-            console.log (json_data);
-            if(json_data==null){
-                str = '没有数据';
-                $(".p").html(str);
-                return false;
-            }else if (json_data.length>0){
-                for(var i=0; i < json_data.length;i++){
-                    str= ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'"> <div> <p class="omit_show">课程：'+json_data[i]["course_name"]+'</p> <p  class="collapse_left">'+json_data[i]["classdate"]+'</p> <p  class="collapse_right">'+json_data[i]["teacher"]+'</p> </div> </a> </h4> </div> <div id="collapse'+i+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> <p class="attendance_right">'+json_data[i]["score1"]+'</p> </li> <li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">'+json_data[i]["score2"]+'</p> </li> <li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">'+json_data[i]["score3"]+'</p> </li> <li> <p class="attendance_left">总分：</p> <p class="attendance_right">'+json_data[i]["exmscore"]+'</p> </li>   </ul> </div> </div> </div>';
-                    $(".panel-group").append(str);
-                }
-                $("#listcount").val(json_data.length);
-            }
+        var startdate = "";
+        var deadline = "";
+        var pageH = $(document.body).height();
+        var scrollT = $(window).scrollTop(); //滚动条top
+        //var aa = (pageH - winH - scrollT) / winH;
+        var str = "";
+        var i = 1;
+        var items = 0;
 
-        }, 'text');
-    }
+        $.fn.load_content = function (refresh, next_page) {
 
-    $(function(){
-        var winH = $(window).height(); //页面可视区域高度
-        var i = 1; //设置当前页数
-
-        $(window).scroll(function() {
-            var href = $('#ajaxPostUrl').val();
-            var startdate="";
-            var deadline="";
+            var clean_dom = false;
             if ($("#query_value").val() == '0') {
                 console.log("query_value = 0");
                 return;
             }
-            else{
-                var publicId=$("#publicId").val();
-                var studentNo=$(".studentNo").html();
-                if($("#query_value").val()==1){
-                    startdate=$(".startdate").val();
-                    deadline=$("input[name='deadline']").val();
-                }else if($("#query_value").val()==2){
-                    deadline=null;
-                    startdate="1990-1-1";
+            else {
+                var publicId = $("#publicId").val();
+                var studentNo = $(".studentNo").html();
+                if ($("#query_value").val() == 1) {
+                    startdate = $(".startdate").val();
+                    deadline = $("input[name='deadline']").val();
+                } else if ($("#query_value").val() == 2) {
+                    deadline = null;
+                    startdate = "1990-1-1";
                 }
             }
-            var pageH = $(document.body).height();
-            var scrollT = $(window).scrollTop(); //滚动条top
-            var aa = (pageH-winH-scrollT)/winH;
-            var str = "";
-            var json;
-            if (aa<0.02){
-                i++;
-                $.post(href,
-                    {search_start_date:startdate, search_end_date:deadline,public_id:publicId,studentNo:studentNo,page:i},
-                    function(data){
-                    json = JSON.parse(data);
-                    if (json){
 
-                        $.each(json, function(index, item){
-                            //$(".panel-group").remove(".panel");
-                            var item_id = parseInt($("#listcount").val()) + 1;
-                            //console.log("item_id = ");
-                            //console.log(item_id);
-                            $("#listcount").val( item_id);
+            // This is a DEMO function which generates DEMO content into the scroller.
+            // Here you should place your AJAX request to fetch the relevant content (e.g. $.post(...))
 
-                            str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+item_id+'"> <div> <p class="omit_show">'
-                            str += '课程：'+item["course_name"]+'</p>';
-                            str += '<p  class="collapse_left">'+item["classdate"]+'</p>'
-                            str += '<p  class="collapse_right">'+item["teacher"]+'</p> </div> </a> </h4> </div>';
-                            str += '<div id="collapse'+item_id+'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
-                            str += '<p class="attendance_right">'+item["score1"]+'</p> </li>';
-                            str += '<li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">'+item["score2"]+'</p> </li> ';
-                            str += '<li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">'+item["score3"]+'</p> </li> ';
-                            str += '<li> <p class="attendance_left">总分：</p> <p class="attendance_right">'+item["exmscore"]+'</p> </li> </ul> </div> </div> </div>';
+            if (!refresh) {
+                clean_dom = true;
+                next_page = 1;
+            }
+            else if (refresh && !next_page) {
+                clean_dom = true;
+                next_page = 1;
+            }
 
-                            $(".panel-group").append(str);
+            $.post(href, {
+                        search_start_date: startdate,
+                        search_end_date: deadline,
+                        public_id: publicId,
+                        studentNo: studentNo,
+                        page: next_page
+                    },
+                    function (data) {
+                        /*console.log("Ajaxreturn data: ", data);*/
+                        //json = JSON.parse(data);
+                        /*
+                         setTimeout(function() { // This immitates the CALLBACK of your AJAX function*/
+
+                        // Loading the initial content
+                        if (clean_dom) {
+                            /*console.log("Cleaned the list! ", clean_dom);*/
+                            $("#wrapper > #scroller > .panel-group").empty();
+                            items = 0;
+                        }
+                        pullDownEl = document.querySelector('#wrapper .pullDown');
+                        if (data == null) {
+                            $('.p').html('<span class="pullUpLabel">已经到头了，拉我下来吧...</span>');
+                        }
+                        else {
+                            $('.p').empty();
+                        }
+
+
+
+                        $.each(data, function (index, item) {
+                            items++;
+                            str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse' + items + '"> <div> <p class="omit_show">'
+                            str += '课程：' + item["course_name"] + '</p>';
+                            str += '<p  class=" collapse_left ">' + item["classdate"] + '</p>'
+                            str += '<p  class="collapse_right " >' + item["teacher"] + '</p> </div> </a> </h4> </div>';
+                            str += '<div id="collapse' + items +'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
+                            str += '<p class="attendance_right">' + item["score1"] + '</p> </li>';
+                            str += '<li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">' + item["score2"] + '</p> </li> ';
+                            str += '<li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">' + item["score3"] + '</p> </li> ';
+                            str += '<li> <p class="attendance_left">总分：</p> <p class="attendance_right">' + item["exmscore"] + '</p> </li> </ul> </div> </div> </div>';
+
+                            $("#wrapper > #scroller > .panel-group").append(str);
                         });
 
+                        if (refresh) {
 
-                    } else{
-                        str = '已经到底';
-                        $(".p").html(str);
-                        return false;
-                    }
-                }, 'text');
+                            myScroll.refresh();
+                            pullActionCallback();
+
+                        } else {
+
+                            if (myScroll) {
+                                myScroll.destroy();
+                                $(myScroll.scroller).attr('style', ''); // Required since the styles applied by IScroll might conflict with transitions of parent layers.
+                                myScroll = null;
+                            }
+                            trigger_myScroll();
+
+                        }
+                    });
+
+        };
+
+        function pullDownAction() {
+            $().load_content('refresh');
+            $('#wrapper > #scroller > .panel-group').data('page', 1);
+
+            // Since "topOffset" is not supported with iscroll-5
+            $('#wrapper > #scroller').css({top: 0});
+
+        }
+
+        function pullUpAction(callback) {
+            if ($('#wrapper > #scroller > .panel-group').data('page')) {
+                var next_page = parseInt($('#wrapper > #scroller > .panel-group').data('page'), 10) + 1;
+            } else {
+                var next_page = 2;
             }
+            $().load_content('refresh', next_page);
+            $('#wrapper > #scroller > .panel-group').data('page', next_page);
+
+            if (callback) {
+                callback();
+            }
+        }
+
+        function pullActionCallback() {
+            if (pullDownEl && pullDownEl.className.match('loading')) {
+
+                pullDownEl.className = 'pullDown';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉重新刷新';
+
+                myScroll.scrollTo(0, parseInt(pullUpOffset) * (-1), 200);
+
+            } else if (pullUpEl && pullUpEl.className.match('loading')) {
+
+                $('.pullUp').removeClass('loading').html('');
+
+            }
+        }
+
+        var pullActionDetect = {
+            count: 0,
+            limit: 10,
+            check: function (count) {
+                if (count) {
+                    pullActionDetect.count = 0;
+                }
+                // Detects whether the momentum has stopped, and if it has reached the end - 200px of the scroller - it trigger the pullUpAction
+                setTimeout(function () {
+                    if (myScroll.y <= (myScroll.maxScrollY + 200) && pullUpEl && !pullUpEl.className.match('loading')) {
+                        $('.pullUp').addClass('loading').html('<span class="pullUpIcon">&nbsp;</span><span class="pullUpLabel">加载中...</span>');
+                        pullUpAction();
+                    } else if (pullActionDetect.count < pullActionDetect.limit) {
+                        pullActionDetect.check();
+                        pullActionDetect.count++;
+                    }
+                }, 200);
+            }
+        }
+
+        function trigger_myScroll(offset) {
+            pullDownEl = document.querySelector('#wrapper .pullDown');
+            if (pullDownEl) {
+                pullDownOffset = pullDownEl.offsetHeight;
+            } else {
+                pullDownOffset = 0;
+            }
+            pullUpEl = document.querySelector('#wrapper .pullUp');
+            if (pullUpEl) {
+                pullUpOffset = pullUpEl.offsetHeight;
+            } else {
+                pullUpOffset = 0;
+            }
+
+            if ($('#wrapper .panel-group > .panel').length < items_per_page) {
+                // If we have only 1 page of result - we hide the pullup and pulldown indicators.
+                $('#wrapper .pullDown').hide();
+                $('#wrapper .pullUp span').hide();
+                offset = 0;
+            } else if (!offset) {
+                // If we have more than 1 page of results and offset is not manually defined - we set it to be the pullUpOffset.
+                offset = pullUpOffset;
+            }
+
+            console.log("This is offset: ", offset);
+
+            myScroll = new IScroll('#wrapper', {
+                probeType: 1,
+                tap: true,
+                click: false,
+                preventDefaultException: {tagName: /.*/},
+                mouseWheel: true,
+                scrollbars: true,
+                fadeScrollbars: true,
+                interactiveScrollbars: false,
+                keyBindings: false,
+                deceleration: 0.0002,
+                startY: (parseInt(offset) * (-1))
+            });
+
+            myScroll.on('scrollStart', function () {
+                scroll_in_progress = true;
+            });
+            myScroll.on('scroll', function () {
+
+                scroll_in_progress = true;
+
+                if ($('#wrapper .panel-group > .panel').length >= items_per_page) {
+                    if (this.y >= 5 && pullDownEl && !pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'pullDown flip';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '释放后刷新';
+                        this.minScrollY = 0;
+                    } else if (this.y <= 5 && pullDownEl && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'pullDown';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh';
+                        this.minScrollY = -pullDownOffset;
+                    }
+
+                    console.log(this.y);
+
+                    pullActionDetect.check(0);
+
+                }
+            });
+            myScroll.on('scrollEnd', function () {
+                setTimeout(function () {
+                    scroll_in_progress = false;
+                }, 100);
+                if ($('#wrapper .panel-group > .panel').length >= items_per_page) {
+                    if (pullDownEl && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'pullDown loading';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                        pullDownAction();
+                    }
+                    // We let the momentum scroll finish, and if reached the end - loading the next page
+                    pullActionDetect.check(0);
+                }
+            });
+
+            // In order to prevent seeing the "pull down to refresh" before the iScoll is trigger - the wrapper is located at left:-9999px and returned to left:0 after the iScoll is initiated
+            setTimeout(function () {
+                $('#wrapper').css({left: 0});
+            }, 100);
+        }
+
+        $(function () {
+
+            $().load_content();
+
         });
-    });
+
+        /*document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);*/
+
+        document.addEventListener(document, "touchmove", function(e) {
+            console.log(e.defaultPrevented);  // will be false
+            e.preventDefault();   // does nothing since the listener is passive
+            console.log(e.defaultPrevented);  // still false
+        }, Modernizr.passiveeventlisteners ? {passive: true} : false);
+
+
+    })(window.jQuery);
+
+    function query(Q) {
+        var href = $('#ajaxPostUrl').val();
+        var publicId = $("#publicId").val();
+        var studentNo = $(".studentNo").html();
+        var startdate = "";
+        var deadline = "";
+        if (Q == 1) {
+            startdate = $(".startdate").val();
+            deadline = $("input[name='deadline']").val();
+            $("#query_value").val(1);
+        } else if (Q == 2) {
+            deadline = null;
+            startdate = "1990-1-1";
+            $("#query_value").val(2);
+        }
+
+        $().load_content();
+    }
 
 </script>
+
 </body>
