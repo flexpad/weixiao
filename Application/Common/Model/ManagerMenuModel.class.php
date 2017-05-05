@@ -13,7 +13,26 @@ class ManagerMenuModel extends Model {
 	private function _get_manager_menu($uid, $addonList) {
 		$menu_map ['uid'] = $uid;
 		$menu_map ['is_hide'] = 0;
+		$public_token = get_token();
+		$public_map['token'] = $public_token;
+		$public_data = M('public')->where($public_map)->find();
+		
+		// Filtering the manage_menu items.
+		if ($public_data != NULL) {
+			$link_map['public_id'] = $public_data['id'];
+			$hidden_menu = M('public_group')->where($link_map)->getField('manage_menu_status');
+			$menu_map ['id'] = array (
+				'not in',
+				$hidden_menu
+			);
+			$menu_map ['pid'] = array (
+				'not in',
+				$hidden_menu
+			);
+		};
+
 		$menus = $this->where ( $menu_map )->order ( 'sort asc, id asc' )->select ();
+		
 		// 没配置菜单时取默认的菜单
 		if (empty ( $menus )) {
 			$managerId = get_userinfo ( $uid, 'manager_id' );
@@ -40,7 +59,7 @@ class ManagerMenuModel extends Model {
 				$menus = $this->where ( $menu_map )->order ( 'sort asc, id asc' )->select ();
 			}
 		}
-		
+
 		// 侧边栏数据
 		foreach ( $menus as $k => $m ) {
 			if ($m ['menu_type'] == 0) {
@@ -71,6 +90,7 @@ class ManagerMenuModel extends Model {
 			$res ['default_data'] [$cate ['url']] = $param;
 			empty ( $m ['addon_name'] ) || $res ['default_data'] [$cate ['addon_name']] = $param;
 		}
+
 		// 顶部栏数据
 		foreach ( $menus as $k => $m ) {
 			if ($m ['menu_type'] != 0) {
@@ -88,6 +108,9 @@ class ManagerMenuModel extends Model {
 					unset ( $menus [$k] );
 					continue;
 				}
+
+
+				if ($menus['id'])
 				
 				if (empty ( $cate ['url'] ) && ! empty ( $res ['core_side_menu'] [$m ['id']] )) {
 					$cate ['url'] = $res ['core_side_menu'] [$m ['id']] [0] ['url'];
@@ -117,7 +140,6 @@ class ManagerMenuModel extends Model {
 			$res ['default_data'] [$cate ['url']] = $param;
 			empty ( $m ['addon_name'] ) || $res ['default_data'] [$cate ['addon_name']] = $param;
 		}
-		
 		return $res;
 	}
 	function get($uid) {
@@ -126,6 +148,7 @@ class ManagerMenuModel extends Model {
 		
 		// 第二步：获取导航数据
 		$menus = $this->_get_manager_menu ( $uid, $addonList );
+
 		// dump ( $menus );
 		// 第三步：获取用户登录进入时的初始化URL
 		$menus ['init_url'] = '';
@@ -183,6 +206,7 @@ class ManagerMenuModel extends Model {
 		
 		$index_2 = strtolower ( MODULE_NAME . '/' . CONTROLLER_NAME . '/*' );
 		$menus ['core_side_menu'] = $index_2 == 'home/publiclink/*' ? '' : $menus ['core_side_menu'] [$default ['top']];
+
 		return $menus;
 	}
 }

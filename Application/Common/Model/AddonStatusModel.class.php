@@ -45,7 +45,6 @@ class AddonStatusModel extends Model {
 		
 		$info = get_token_appinfo ( $map ['token'] );
 		$token_status = json_decode ( $info ['addon_status'], true );
-		
 		// 等级权限
 		if ($info ['group_id']) {
 			$map2 ['id'] = $info ['group_id'];
@@ -102,7 +101,7 @@ class AddonStatusModel extends Model {
 		}
 		
 		$data = M ( 'Addons' )->where ( $map )->order ( 'id DESC' )->select ();
-		
+
 		return $data;
 	}
 }
