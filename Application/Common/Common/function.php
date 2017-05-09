@@ -2352,13 +2352,13 @@ function importFormExcel($attach_id, $column, $dateColumn = array()) {
 			if ($dateColumn) {
 				foreach ( $dateColumn as $d ) {
 					if ($k == $d) {
-						$addData [$v] = gmdate ( "Y-m-d H:i:s", PHPExcel_Shared_Date::ExcelToPHP ( $objPHPExcel->getActiveSheet ()->getCell ( "$k$j" )->getValue () ) );
+						$addData [$v] = gmdate ( "Y-m-d H:i:s", PHPExcel_Shared_Date::ExcelToPHP ( $objPHPExcel->getActiveSheet ()->getCell ( "$k$j" )->getCalculatedValue () ) );
 					} else {
-						$addData [$v] = trim ( ( string ) $objPHPExcel->getActiveSheet ()->getCell ( $k . $j )->getValue () );
+						$addData [$v] = trim ( ( string ) $objPHPExcel->getActiveSheet ()->getCell ( $k . $j )->getCalculatedValue () );
 					}
 				}
 			} else {
-				$addData [$v] = trim ( ( string ) $objPHPExcel->getActiveSheet ()->getCell ( $k . $j )->getValue () );
+				$addData [$v] = trim ( ( string ) $objPHPExcel->getActiveSheet ()->getCell ( $k . $j )->getCalculatedValue () );
 			}
 		}
 		
