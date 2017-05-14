@@ -193,7 +193,7 @@ class ScoreController extends AddonsController{
         }
         else {
             if($this->wx_msg_sending){
-                $this->jump(U('send_wx_msg?termid='.$base_data['termid'].'&pageid=1'), "系统正在发送微信消息....");
+                //$this->jump(U('send_wx_msg?termid='.$base_data['termid'].'&pageid=1'), "系统正在发送微信消息....");
             }
             else{
                 $this->assign('public_id', $this->public_id);
@@ -288,9 +288,10 @@ class ScoreController extends AddonsController{
         $data['name'] = $row['studentname'];
 
         foreach ($fromat as $item) {
-            if( $row[$item['course_name']] == '') continue;
+            if( $row[$item['course_name']] == '') continue; //The blank item will not be saved.
             else {
-                $data['subject'] = $item['course_name'];
+                $data['subject'] = $item['subject']; // To separate subject and course classification.
+                $data['course_name'] = $item['course_name'];
                 $data['exmscore'] = $row[$item['course_name']];
                 $data['weixinmsgsend'] = "未发送";
                 $score_model->addScore($data);

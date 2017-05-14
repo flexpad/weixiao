@@ -16,11 +16,18 @@ class WxyStudentPerformViewModel extends ViewModel {
             'gender' => 'gender',
             'school' => 'school',
             'grade'  => 'grade',
+            'class_id' => 'class_id',
             'phone'  => 'phone',
-            '_on'=>'WxyStudentCare.sid = WxyStudentCard.id'), // To see changed to WxyStudentCard.id
+            '_on'=>'WxyStudentCare.sid = WxyStudentCard.id',
+            /*'_type' => 'RIGHT'*/
+        ), // To see changed to WxyStudentCard.id
 
         'WxyScore' => array(
+            'subject' => 'subject',
+            'course_name' => 'course_name',
             'courseid' => 'courseid',
+            'termid' => 'termid',
+            'term' => 'term',
             'score' => 'score',
             'score1' => 'score1',
             'score2' => 'score2',
@@ -28,13 +35,14 @@ class WxyStudentPerformViewModel extends ViewModel {
             'exmscore' => 'exmscore',
             'classdate' => 'classdate',
             'comment' => 'comment',
-            '_on' => 'WxyStudentCard.studentno = WxyScore.studentno AND WxyStudentCard.token = WxyScore.token'
+            '_on' => 'WxyStudentCard.studentno = WxyScore.studentno AND WxyStudentCard.token = WxyScore.token',
+            /*'_type' => 'RIGHT'*/
         ),
 
         'WxyClassCourse' => array (
-            'course_name' => 'course_name',
             'teacher' => 'teacher',
-            '_on' => 'WxyScore.courseid = WxyClassCourse.id'
+            '_on' => 'WxyScore.subject = WxyClassCourse.course_name AND WxyStudentCard.token = WxyClassCourse.token AND WxyStudentCard.grade = WxyClassCourse.grade AND WxyStudentCard.class_id = WxyClassCourse.class_id',
+            '_type' => 'RIGHT'
         ),
         /*
         'WxyDailyTime' => array(

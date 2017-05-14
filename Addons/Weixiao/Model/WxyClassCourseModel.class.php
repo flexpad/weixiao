@@ -4,7 +4,7 @@ namespace Addons\Weixiao\Model;
 use Think\Model;
 
 /**
- * Course模型
+ * ClassCourse模型
  */
 class WxyClassCourseModel extends Model{
     /*public function addImport($data){
