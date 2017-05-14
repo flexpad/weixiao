@@ -1,0 +1,166 @@
+<extend name="Base/common" />
+<block name="body">
+    <style type="text/css">
+        .money {
+            width: 50px;
+        }
+        .specTable .param {
+            display: none;
+        }
+        .specTable p {
+            display: block;
+            line-height: 50px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .check-tips {
+            color: #aaa;
+            margin-left:2px;
+        }
+        .cf{
+            margin-left:20px;
+        }
+    </style>
+    <!-- 标签页导航 -->
+    <div class="span9 page_message">
+        <section id="contents">
+            <ul class="tab-nav nav">
+                <li class="current"><a href="{:U('edit', array('id'=>I('request.id')))}">成绩Excel表格式定义<b class="arrow fa fa-sort"></b></a></li>
+                <!--
+                <li class=""><a href="{:U('lists')}">学生列表</a></li>
+                <li class=""><a href="{:U('edit', array('id'=>I('request.id')))}">编辑学生资料</a></li>
+                <li class=""><a href="{:U('comment', array('id'=>I('request.id')))}">学生评语录入</a></li>
+                <li class=""><a href="{:U('comments_import', array('id'=>I('request.id')))}">学生评语导入</a></li>
+                -->
+
+            </ul>
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('edit?model='.$model['id'])}" method="post" class="form-horizontal">
+                    <!--<div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>年级<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <select name="exam_grade" id="sel_grade" onchange=get_course_list()>
+                                <option value = "1">一年级</option>
+                                <option value = "2">二年级</option>
+                                <option value = "3">三年级</option>
+                                <option value = "4">四年级</option>
+                                <option value = "5">五年级</option>
+                                <option value = "6">六年级</option>
+                            </select>
+                            <input type="hidden" value='{$public_id}' id = 'publicId'>
+                            <input type="hidden" value="{:U('addon/Weixiao/Score/score_ajax_filter')}" id = 'ajaxPostUrl'>
+                            <input type="hidden" value="{$course_valid_date}" id = 'valid_date'>
+                        </div>
+                    </div>-->
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>科目（如：语文、数学、自然等等）<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="subject" placeholder="科目名称" value="{$data.subject}">
+                            <!--<button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal" onclick=get_course_list()>课程筛选</button>-->
+                        </div>
+                    </div>
+
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>课程（或考核项）名称<span class="check-tips"></span></label>
+
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="course_name" placeholder="课程（或考核项）名称" value="{$data.course_name}">
+                            <!--<select name="course" id="exam_course">
+                                <volist name="course_lists" id="vo">
+                                    <option >{$vo.id}.{$vo.name}.{$vo.teacher}</option>
+                                </volist>
+                            </select>-->
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>成绩Excel表中列号<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="column" placeholder="成绩Excel表中列号" value="{$data.column}">
+                        </div>
+                    </div>
+
+                    <div class="form-item form_bh">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">提 交</button>
+                    </div>
+                </form>
+            </div>
+
+
+    </div>
+    </section>
+    </div>
+    </div>
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <php> if(C('COLOR_STYLE')=='blue_color') echo '
+        <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+        '; </php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        function get_course_list()
+        {
+            var href = $('#ajaxPostUrl').val();
+            var publicId=$("#publicId").val();
+            var exam_class = $('#exam_class').val();
+            var exam_grade = $('#sel_grade').val();
+            var exam_valid_date = $('#valid_date').val();
+            $.post(href,
+                    {
+                        exam_class:exam_class,
+                        exam_grade:exam_grade,
+                        public_id:publicId,
+                        valid_date:exam_valid_date,
+                    },
+                    function(sel_course){
+                        var json_data =  JSON.parse(sel_course);
+                        console.log(json_data);
+                        console.log (json_data.length);
+                        $('#exam_course').contents().remove();
+                        if(json_data.length == 0)
+                        {
+                            $("<option value = '-1'> 没有课程列表</option>").appendTo('#exam_course');
+                        }
+                        for(var i =0 ;i < json_data.length;i++)
+                        {
+                            $("<option >"+json_data[i]['id']+"."+json_data[i]['name']+"."+json_data[i]['teacher']+"</option>").appendTo('#exam_course');
+                        }
+
+                    },
+                    'text');
+        }
+
+        $(function(){
+            initUploadFile();
+
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            showTab();
+            //hide_move();
+
+            $('.select_type').each(function(){ select_type(this); });
+            $('.select_type').change(function(){ alert("1");select_type(this); });
+            /*
+             $('#submit').click(function(){
+             alert("submit click");
+             $('#form').submit();
+             });*/
+        });
+
+    </script>
+</block>
