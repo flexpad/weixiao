@@ -16,7 +16,9 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'token'     => 'token',
             'id'        => 'id', 
             'sid'       => 'sid', 
-            'courseid'  => 'courseid', 
+            'courseid'  => 'courseid',
+            'name'      => 'stuname',
+            'subject'   => 'course',
             'term'      => 'exam', 
             'score'     => 'score', 
             'score1'    => 'score1', 
@@ -32,7 +34,7 @@ class WxyScoreNotifyViewModel extends ViewModel {
         'WxyStudentCare'=>array(
             'openid' => 'openid',
             '_on'    => 'WxyScore.token = WxyStudentCare.token AND WxyScore.studentno = WxyStudentCare.studentno'),
-        
+        /*
         'WxyStudentCard'=>array('name'=>'student_name',
             'name' => 'stuname',
             '_on'=>'WxyStudentCare.sid = WxyStudentCard.id'), // To see changed to WxyStudentCard.id
@@ -42,7 +44,7 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'teacher' => 'teacher',
             '_on' => 'WxyScore.courseid = WxyClassCourse.id'
         ),
-        /*
+
         'WxyDailyTime' => array(
             'arriveTime' => 'arriveTime',
             'leaveTime' => 'leaveTime',
