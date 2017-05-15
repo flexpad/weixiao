@@ -49,7 +49,7 @@ class WxyScoreModel extends Model{
                                 'color' => '#0000ff'
                                 ),
             "courseName"    =>  array(
-                                'value' => $info["course"],
+                                'value' => $info["course_name"],
                                 'color' => '#0000ff'
                                 ),
             "time"          =>  array (

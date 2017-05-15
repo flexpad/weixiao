@@ -17,8 +17,9 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'id'        => 'id', 
             'sid'       => 'sid', 
             'courseid'  => 'courseid',
+            'course_name' => 'course_name', //added the course_name in the score table
             'name'      => 'stuname',
-            'subject'   => 'course',
+            'subject'   => 'subject',
             'term'      => 'exam', 
             'score'     => 'score', 
             'score1'    => 'score1', 
