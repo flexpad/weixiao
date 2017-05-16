@@ -22,6 +22,7 @@ class ScoreController extends AddonsController{
         $this->schooltype = D('Common/Public')->getInfoByToken($this->token, 'public_type');
         $this->public_id = D('Common/Public')->getInfoByToken($this->token, 'id');
         $this->wx_msg_sending = false;
+        $this->stu_year = 17;  //2017学年，后续实现需要从数据库基础表去数据哈
         //var_dump($this->model);
     }
 
@@ -170,6 +171,11 @@ class ScoreController extends AddonsController{
             $data['file'] = I('post.file');
             $data['classdate'] = I('post.classdate');
             $data['comment'] = I('post.comment');
+            $grade = I('post.exam_grade');
+            $class_id = I('class_id');
+            if ($grade == NULL || $class_id == NULL) $this->error('请务必输入此次导入成绩对应的年级和班号！');
+            else $grade = sprintf('%2s', $this->stu_year - intval($grade));
+
             $sendflag = (I('post.msgsend') == "on")?true:false ;
 
             if (!intval($data['file'])) $this->error("数据文件未上传！");
@@ -178,7 +184,7 @@ class ScoreController extends AddonsController{
             $data['termid'] = $res;
             //$data['subject'] = $course_obj[1];
 
-            if ($this->import_student_score_from_excel($data['file'],$data,$sendflag)) //import student data from uploaded Excel file.
+            if ($this->import_student_score_from_excel($data['file'], $data, $grade, $class_id, $sendflag)) //import student data from uploaded Excel file.
             {
                 if ($sendflag == true)
                 {
@@ -298,30 +304,33 @@ class ScoreController extends AddonsController{
             }
         }
     }
-    private function import_student_score_from_excel($file_id,$base_data,$sendflag) {
+    private function import_student_score_from_excel($file_id, $base_data, $grade, $class_id, $sendflag) {
         $tableform_map['token'] = $this->token;
         $fromat = M('WxyScoreTableformat')->where($tableform_map)->select();
 
         $column = array (
-            'A' => 'classid',  //班级
+            'A' => 'classid',     //班级
             'B'=>'studentno',     //学号
-            'C'=>'studentname',     //学生姓名
-            'D'=>'examnum',      //考号
+            'C'=>'studentname',   //学生姓名
+            'D'=>'examnum',       //考号
         );
         foreach ($fromat as $item) {
             $column[$item['column']] = $item['course_name'];
         }
 
         $data = importFormExcel($file_id, $column);
-        //var_dump($data);
+
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
                 $row['termid']= $base_data['termid'];
                 $row['classdate'] = $base_data['classdate'];
                 $row['term'] = $base_data['term'];
-                $this->add_score_in_model($row,$fromat);
-
+                if (strlen($row['studentno']) < 3) { //Convert the short format student number to normal format!
+                    $row['studentno'] = $grade. sprintf('%02s', $class_id). sprintf('%02s', $row['studentno']);
+                }
+                //dump($row);
+                $this->add_score_in_model($row, $fromat);
             }
             return true;
         }
