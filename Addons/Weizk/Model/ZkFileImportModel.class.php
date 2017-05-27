@@ -1,0 +1,18 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: qiaoc
+ * Date: 2016/11/23
+ * Time: 15:45
+ */
+namespace Addons\WeiZk\Model;
+use Think\Model;
+/*
+ * Scoreimport 模型
+ */
+class ZkFileImportModel extends Model{
+    public function addImport($data){
+        $res = $this->add ( $data );
+        return $res;
+    }
+}
