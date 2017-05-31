@@ -18,4 +18,8 @@ class ClientEvalController extends AddonsController
         $this->token = get_token();
     }
 
+    public function lists()
+    {
+        parent::lists($this->model);
+    }
 }

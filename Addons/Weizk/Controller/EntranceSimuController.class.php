@@ -17,5 +17,8 @@ class EntranceSimuController extends AddonsController
         $this->model = $this->getModel('ZkEntranceSimu');
         $this->token = get_token();
     }
-
+    public function lists()
+    {
+        parent::lists($this->model);
+    }
 }

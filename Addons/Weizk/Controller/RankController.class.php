@@ -17,5 +17,8 @@ class RankController extends AddonsController
         $this->model = $this->getModel('ZkRank');
         $this->token = get_token();
     }
-
+    public function lists()
+    {
+        parent::lists($this->model);
+    }
 }

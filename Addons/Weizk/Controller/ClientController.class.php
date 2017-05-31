@@ -17,5 +17,8 @@ class ClientController extends AddonsController
         $this->model = $this->getModel('ZkClient');
         $this->token = get_token();
     }
-
+    public function lists()
+    {
+        parent::lists($this->model);
+    }
 }

@@ -17,5 +17,8 @@ class ExamRecordController extends AddonsController
         $this->model = $this->getModel('ZkExamRecord');
         $this->token = get_token();
     }
-
+    public function lists()
+    {
+        parent::lists($this->model);
+    }
 }
