@@ -1,0 +1,39 @@
+<!-- 用户绑定页面 -->
+<include file="Public/mobile_head"/>
+
+<style>
+    .uicon{border-radius:60px;width: 120px;}
+</style>
+<body style="background-color: #e4e4e4">
+<title>微中考：用户中心>信息录入</title>
+<form  method="post" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form"  style="background-color: #fbfbfb;padding-bottom: 20px">
+    <!-- 基础文档模型 -->
+    <div class="mui-input-row">
+        <label>用户名</label>
+        <input type="text" class="mui-input-clear" name="name" id="name" placeholder="请输入学生姓名">
+    </div>
+    <div class="mui-input-row">
+        <label>电话号码</label>
+        <input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="电话号码">
+    </div>
+    <div class="mui-input-row">
+        <label>当前所在学校</label>
+        <input type="text" class="mui-input-clear" name="school" id="school" placeholder="学校全称">
+    </div>
+    <div class="mui-input-row">
+        <label>当前所在班级类型</label>
+        <input type="text" class="mui-input-clear"  name="classtype" id="classtype" placeholder="重点/实验/普通">
+    </div>
+    <div class="mui-input-row">
+        <label>毕业日期（年份）</label>
+        <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" placeholder="2019">
+    </div>
+    <div class="mui-button-row">
+        <button type="submit" class="mui-btn mui-btn-primary" >确认</button>
+    </div>
+</form>
+</body>
+</html>
+
+
+
