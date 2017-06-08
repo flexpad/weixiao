@@ -9,31 +9,14 @@
 
 namespace Addons\Weizk\Controller;
 
-use Home\Controller\AddonsController;
+use Addons\Weizk\Controller\BaseController;
 
-class ClientWapController extends AddonsController{
+class ClientWapController extends BaseController{
     var $config;
     var $token;
     var $publicid;
     function _initialize() {
         parent::_initialize ();
-        $this->assign('nav',null);
-        $config = getAddonConfig ( 'Weizk' );
-        $config ['cover_url'] = get_cover_url ( $config ['cover'] );
-        $config['background_arr']=explode(',', $config['background']);
-        $config ['background_id'] = $config ['background_arr'][0];
-        $config ['background'] = get_cover_url ( $config ['background_id'] );
-        $this->config = $config;
-        $this->assign ( 'config', $config );
-        //dump ( $config );
-        // dump(get_token());
-
-        // 定义模板常量
-        $act = strtolower ( _ACTION );
-        $temp = $config ['template_' . $act];
-        $act = ucfirst ( $act );
-        $this->assign ( 'page_title', $config ['title'] );
-        define ( 'CUSTOM_TEMPLATE_PATH', ONETHINK_ADDON_PATH . 'Weizk/View/default/Template' );
     }
     public function __construct() {
         if (_ACTION == 'show') {
@@ -44,6 +27,14 @@ class ClientWapController extends AddonsController{
         $this->model = $this->getModel('ZkClient'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->publicid = D('Common/Public')->getInfoByToken($this->token, 'id');
+    }
+
+    public function index() {
+        $this->display("index");
+    }
+
+    public function test() {
+        $this->display("test");
     }
 
     public function updateInfor() {
@@ -93,6 +84,7 @@ class ClientWapController extends AddonsController{
                 }
                 else {
                     $follow_model->where($map)->save($data);
+
                     $client['name'] = $name;
                     $client['phone'] = $phone;
                     $client['token'] = $this->token;
@@ -127,4 +119,5 @@ class ClientWapController extends AddonsController{
             $this->display('updateInfor');
         }
     }
+
 }
