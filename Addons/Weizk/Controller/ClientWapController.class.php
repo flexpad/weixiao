@@ -37,6 +37,30 @@ class ClientWapController extends BaseController{
         $this->display("test");
     }
 
+    public function user_center()
+    {
+        $this->assign("page_title","微中考：用户中心");
+        $public_id = intval(I('publicid'));
+        $this->assign('public_id', $public_id);
+
+        $map['openid'] = get_openid();
+        $map['uid'] = $this->uid;
+        $map['token'] = $this->token;
+
+        $data = M('ZkClient')->where($map)->order('id')->select();
+        $ret_data = array();
+        foreach($data as $index=>$item){
+            $ret_data[$index] = array("value"=>$item['id'],"text"=>$item['name'],"state"=>"valid");
+        }
+        for($index = count($ret_data); $index<3;++$index)
+        {
+            $ret_data[$index] = array("value"=>0,"text"=>"绑定新学生","state"=>"none");
+        }
+        $this->assign("bind_students",$ret_data);
+        //var_dump($ret_data);
+        $this->display("user_center");
+    }
+
     public function updateInfor() {
         $openid = get_openid();
         $client_model = D('ZkClient');
@@ -112,7 +136,7 @@ class ClientWapController extends BaseController{
 
             $map2['openid'] = $openid;
             $this->assign('care_count', $client_model->where($map2)->count());
-            $this->assign('oid', $data['public_name']);
+            $this->assign('user_id', $user['uid']);
             $this->assign('public_id', $public_id);
 
             //$this->_footer();
@@ -120,4 +144,23 @@ class ClientWapController extends BaseController{
         }
     }
 
+    public function get_bind_students()
+    {
+        if (!IS_POST) $this->error("请在表单中提交！");
+
+        $map['openid'] = get_openid();
+        $map['uid'] = $this->uid;
+        $map['token'] = $this->token;
+
+        $data = M('ZkClient')->where($map)->order('id')->select();
+        $ret_data = array();
+        foreach($data as $index=>$item){
+            $ret_data[$index] = array("value"=>$item['id'],"text"=>$item['name']);
+        }
+        $this->ajaxReturn(json_encode($ret_data),'JSON');
+    }
+
+    public function show_student(){
+
+    }
 }
