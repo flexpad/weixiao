@@ -161,6 +161,13 @@ class ClientWapController extends BaseController{
     }
 
     public function show_student(){
-
+        $this->assign("page_title","微中考：学生信息");
+        $public_id = intval(I('publicid'));
+        $map['id'] = I('clientid');
+        $data = M('ZkClient')->where($map)->select();
+        if($data == NULL) $this->error("用户ID有误，请返回重新选择！");
+        $this->assign('public_id', $public_id);
+        $this->assign('std_info',$data[0]);
+        $this->display('student');
     }
 }
