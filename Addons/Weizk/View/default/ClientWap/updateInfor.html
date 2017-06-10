@@ -7,7 +7,7 @@
 	</div>
     
     <br />
-    <form  class="mui-input-group" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form"  style="background-color: #fbfbfb;padding-bottom: 20px">
+    <form  class="mui-input-group" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form">
         <!-- 基础文档模型 -->
         <div class="mui-input-row">
             <label>用户名</label>
@@ -18,19 +18,19 @@
             <label>电话号码</label>
             <input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="电话号码">
         </div>
-        <button id="showHschoolPicker" class="mui-btn mui-btn-block" type="button">当前所在学校</button>
-        <div id="hschoolResult" class="ui-alert"></div>
         <div class="mui-input-row">
-            <input type="text" class="mui-input-clear" name="school" id="hschool" >
+        	<label>就读于</label>
+            <input type="text" class="mui-input-clear" name="school" id="mschoolPicker" placeholder="学校名称">
         </div>
         <div class="mui-input-row">
-            <label>所在班级类型</label>
+            <label>班级类型</label>
             <input type="text" class="mui-input-clear"  name="classtype" id="classtype" placeholder="重点/实验/普通">
         </div>
         <div class="mui-input-row">
             <label>毕业年份</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" placeholder="2019">
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" placeholder="2017">
         </div>
+        <!-- 
         <div class="mui-input-row">
             <label>最心仪的学校</label>
             <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
@@ -51,15 +51,17 @@
             <label>候选学校四</label>
             <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
         </div>
+        -->
         <div class="mui-button-row">
-            <button type="submit" class="mui-btn mui-btn-negative mui-btn-block mui-btn-outlined" >确认</button>
+            <button type="submit" class="mui-btn mui-btn-primary" >确 认</button>
         </div>
+        
     </form>
 </div>
 <input type="hidden" value='{$public_id}' id = 'publicId'>
 <input type="hidden" value='0' id="userId">
 <input type="hidden" value='0' id = 'query_value'>
-<input type="hidden" value="{:U('addon/Weizk/HschoolWap/picker_list')}" id = 'ajaxPostUrl'>
+<input type="hidden" value="{:U('addon/Weizk/MschoolWap/picker_list')}" id = 'ajaxPostUrl'>
 <script>
 	function update_picker(data,picker,tg_button,result){
         //级联示例
@@ -67,7 +69,8 @@
         
 		tg_button.addEventListener('tap', function(event) {
 			picker.show(function(items) {
-				result.innerText = JSON.stringify(items[0]);
+				console.log(items);
+				tg_button.value = (items[0]['text']);
 				//返回 false 可以阻止选择框的关闭
 				//return false;
 			});
@@ -100,9 +103,8 @@
         $.ready(function() {
             //-----------------------------------------
             var hschoolPicker = new $.PopPicker();
-            var hschoolResult = doc.getElementById('hschoolResult');
-            var showHschoolPickerButton = doc.getElementById('showHschoolPicker');
-			get_picker_data(hschoolPicker,showHschoolPickerButton,hschoolResult);
+            var showHschoolPickerButton = doc.getElementById('mschoolPicker');
+			get_picker_data(hschoolPicker,showHschoolPickerButton);
 			
         });
     })(mui, document);

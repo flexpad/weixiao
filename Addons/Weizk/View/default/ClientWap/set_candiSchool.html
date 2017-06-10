@@ -1,0 +1,92 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+
+<div class="mui-content">
+
+	<div class="mui-input-group" action="{:U('addon/Weizk/ClientWap/set_candiSchool', array('publicid'=>$public_id,'clientid'=>$client_id))}" id="form">
+        <div class="mui-input-row">
+            <label>最心仪的学校</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="fav_hschool" placeholder="学校名称">
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校一</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool1" placeholder="学校名称">
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校二</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool2" placeholder="学校名称">
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校三</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool3" placeholder="学校名称">
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校四</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool4" placeholder="学校名称">
+        </div>	
+        <div class="mui-button-row">
+            <button type="submit" class="mui-btn mui-btn-primary" >确 认</button>
+        </div>        
+	</div>
+</div>
+<input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value='{$client_id}' id = 'clientId'>	
+<input type="hidden" value="{:U('addon/Weizk/HschoolWap/picker_list')}" id = 'ajaxPostUrl'>
+<script>
+	function update_picker(data,picker,tg_button){
+        //级联示例
+        picker.setData(data);
+        
+		tg_button.addEventListener('tap', function(event) {
+			picker.show(function(items) {
+				console.log(items);
+				tg_button.value = (items[0]['text']);
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);        
+	}
+    function get_picker_data(picker,tg_button){
+		var publicId = $("#publicId").val();
+		var userId = $("#userId").val();
+		var ajaxUrl = $("#ajaxPostUrl").val();
+		mui.ajax(ajaxUrl,{
+			data: {
+				public_id: publicId,
+				uid: userId,
+			},
+			dataType:'json',
+			type:'post',
+			timeout:10000,
+			headers:{'Content-Type':'application/json'},
+			success:function(data){
+				var pickerData = JSON.parse(data);
+				update_picker(pickerData,picker,tg_button);
+			},
+			error:function(xhr,type,errorThrown){
+				console.log(type);
+			}
+		});
+    }	
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            var hschoolPicker = new $.PopPicker();
+            var favHschoolPicker = doc.getElementById('fav_hschool');
+			get_picker_data(hschoolPicker,favHschoolPicker);
+			var candiHschoolPicker = doc.getElementById('cadi_hschool1');
+			get_picker_data(hschoolPicker,candiHschoolPicker);
+			candiHschoolPicker = doc.getElementById('cadi_hschool1');
+			get_picker_data(hschoolPicker,candiHschoolPicker);
+			candiHschoolPicker = doc.getElementById('cadi_hschool2');
+			get_picker_data(hschoolPicker,candiHschoolPicker);
+			candiHschoolPicker = doc.getElementById('cadi_hschool3');
+			get_picker_data(hschoolPicker,candiHschoolPicker);
+			candiHschoolPicker = doc.getElementById('cadi_hschool4');
+			get_picker_data(hschoolPicker,candiHschoolPicker);
+				
+        });
+    })(mui, document);
+</script>
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

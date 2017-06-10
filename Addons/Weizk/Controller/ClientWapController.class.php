@@ -166,8 +166,25 @@ class ClientWapController extends BaseController{
         $map['id'] = I('clientid');
         $data = M('ZkClient')->where($map)->select();
         if($data == NULL) $this->error("用户ID有误，请返回重新选择！");
+        $school_map['id'] = $data[0]['c_school'];
+        $mschool = M('ZkMschool')->where($map)->select();
+
+        $std_info = $data;
+        $std_info['c_school'] = $mschool[0]['name'];
         $this->assign('public_id', $public_id);
         $this->assign('std_info',$data[0]);
+        $this->assign("client_id",$map['id']);
         $this->display('student');
+    }
+
+    public function set_candiSchool(){
+        $this->assign("page_title","微中考：学生信息");
+        $public_id = intval(I('publicid'));
+        $client_id = I('clientid');
+
+        $this->assign("page_title","微中考：设定学生目标学校");
+        $this->assign("client_id",$client_id);
+        $this->assign('public_id', $public_id);
+        $this->display('set_candiSchool');
     }
 }
