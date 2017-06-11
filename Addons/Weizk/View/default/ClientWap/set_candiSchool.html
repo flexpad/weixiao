@@ -3,44 +3,36 @@
 
 <div class="mui-content">
 
-	<div class="mui-input-group" action="{:U('addon/Weizk/ClientWap/set_candiSchool', array('publicid'=>$public_id,'clientid'=>$client_id))}" id="form">
-        <div class="mui-input-row">
-            <label>最心仪的学校</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="fav_hschool" placeholder="学校名称">
-        </div>
-        <div class="mui-input-row">
-            <label>候选学校一</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool1" placeholder="学校名称">
-        </div>
-        <div class="mui-input-row">
-            <label>候选学校二</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool2" placeholder="学校名称">
-        </div>
-        <div class="mui-input-row">
-            <label>候选学校三</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool3" placeholder="学校名称">
-        </div>
-        <div class="mui-input-row">
-            <label>候选学校四</label>
-            <input type="text" class="mui-input-clear"  name="grand_year" id="cadi_hschool4" placeholder="学校名称">
-        </div>	
+	<form class="mui-input-group" action="{:U('addon/Weizk/ClientWap/set_candiSchool', array('publicid'=>$public_id,'clientid'=>$client_id))}" id="form" method="post">
+		<notempty name="candi_schools">
+			<volist name='candi_schools' id='vo'>
+	        <div class="mui-input-row">
+	            <label>{$vo['title']}</label>
+	            <input type="text" class="mui-input-clear"  name="{$vo['name']}" id="{$vo['name']}" placeholder="学校名称" value="{$vo['text']}">
+	            <input type="text" class="mui-input-clear"  name="{$vo['name']}Id" id="{$vo['name']}Id" type="hidden" value="{$vo['school_id']}">
+	        </div>
+			</volist>
+		</notempty>
+		<input type="hidden" value='{$public_id}' name='publicId' id = 'publicId'>
+		<input type="hidden" value='{$client_id}' name='clientId' id = 'clientId'>
         <div class="mui-button-row">
             <button type="submit" class="mui-btn mui-btn-primary" >确 认</button>
-        </div>        
-	</div>
+        </div> 
+        
+	</form>
 </div>
-<input type="hidden" value='{$public_id}' id = 'publicId'>
-<input type="hidden" value='{$client_id}' id = 'clientId'>	
+
 <input type="hidden" value="{:U('addon/Weizk/HschoolWap/picker_list')}" id = 'ajaxPostUrl'>
 <script>
 	function update_picker(data,picker,tg_button){
         //级联示例
         picker.setData(data);
         
-		tg_button.addEventListener('tap', function(event) {
+		tg_button[0].addEventListener('tap', function(event) {
 			picker.show(function(items) {
 				console.log(items);
-				tg_button.value = (items[0]['text']);
+				tg_button[0].value = (items[0]['text']);
+				tg_button[1].value = (items[0]['value']);
 				//返回 false 可以阻止选择框的关闭
 				//return false;
 			});
@@ -72,17 +64,15 @@
         $.init();
         $.ready(function() {
             var hschoolPicker = new $.PopPicker();
-            var favHschoolPicker = doc.getElementById('fav_hschool');
+            var favHschoolPicker = [doc.getElementById('candi_school0'),doc.getElementById('candi_school0Id')];
 			get_picker_data(hschoolPicker,favHschoolPicker);
-			var candiHschoolPicker = doc.getElementById('cadi_hschool1');
+			var candiHschoolPicker = [doc.getElementById('candi_school1'),doc.getElementById('candi_school1Id')];
 			get_picker_data(hschoolPicker,candiHschoolPicker);
-			candiHschoolPicker = doc.getElementById('cadi_hschool1');
+			candiHschoolPicker = [doc.getElementById('candi_school2'),doc.getElementById('candi_school2Id')];
 			get_picker_data(hschoolPicker,candiHschoolPicker);
-			candiHschoolPicker = doc.getElementById('cadi_hschool2');
+			candiHschoolPicker = [doc.getElementById('candi_school3'),doc.getElementById('candi_school3Id')];
 			get_picker_data(hschoolPicker,candiHschoolPicker);
-			candiHschoolPicker = doc.getElementById('cadi_hschool3');
-			get_picker_data(hschoolPicker,candiHschoolPicker);
-			candiHschoolPicker = doc.getElementById('cadi_hschool4');
+			candiHschoolPicker = [doc.getElementById('candi_school4'),doc.getElementById('candi_school4Id')];
 			get_picker_data(hschoolPicker,candiHschoolPicker);
 				
         });
