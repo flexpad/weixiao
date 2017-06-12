@@ -69,7 +69,8 @@ class ClientWapController extends BaseController{
             $follow_data = array();
             $name = trim(I('post.name'));
             $phone = trim(I('post.mobile'));
-            $school_name = trim(I('post.school'));
+            $school_name = trim(I('post.mschool'));
+            $school_id = trim(I('post.mschoolId'));
             $class_type = trim(I('post.classtype'));
             $grand_year = trim(I('post.grand_year'));
 
@@ -112,7 +113,7 @@ class ClientWapController extends BaseController{
                     $client['name'] = $name;
                     $client['phone'] = $phone;
                     $client['token'] = $this->token;
-                    $client['c_school'] = $school_name;
+                    $client['c_school'] = $school_id;
                     $client['class_type'] = $class_type;
                     $client['grand_year'] = $grand_year;
 
@@ -169,23 +170,60 @@ class ClientWapController extends BaseController{
         $school_map['id'] = $data[0]['c_school'];
         $mschool = M('ZkMschool')->where($map)->select();
 
-        $std_info = $data;
-        $std_info['c_school'] = $mschool[0]['name'];
+        $std_info = $data[0];
+        $std_info['c_school_name'] = $mschool[0]['name'];
         $this->assign('public_id', $public_id);
-        $this->assign('std_info',$data[0]);
+        $this->assign('std_info',$std_info);
         $this->assign("client_id",$map['id']);
         $this->display('student');
     }
 
     public function set_candiSchool(){
-        $this->assign("page_title","微中考：学生信息");
-        $public_id = intval(I('publicid'));
-        $client_id = I('clientid');
-
         $this->assign("page_title","微中考：设定学生目标学校");
-        $this->assign("client_id",$client_id);
-        $this->assign('public_id', $public_id);
-        $this->display('set_candiSchool');
+
+        if (IS_POST) {
+            $public_id = intval(I('post.publicId'));
+            $client_id = I('post.clientId');
+            $map['id'] = $client_id;
+
+
+            $client_data = M('ZkClient')->where($map)->find();
+            if($client_data == NULL)  $this->error("请选择正确的学校！");
+
+            for($index=0;$index<5;$index++){
+                $client_data['candi_school'.$index] = intval(I(('post.candi_school'.$index.'Id')));
+            }
+            var_dump($client_data);
+            $res = M('ZkClient')->save($client_data);
+
+            if($res == true)
+            {
+                $this->success("用户信息更新成功！", U('show_student', 'publicid=' . $public_id.'&client_id='.$client_id));
+            }
+            $this->error("请在微信中打开！");
+
+        }
+        else{
+            $public_id = intval(I('publicid'));
+            $client_id = intval(I('clientid'));
+            $map['id'] = $client_id;
+            $data = M('ZkClient')->where($map)->find();
+            $titles = array('最心仪的学校','候选学校一','候选学校二','候选学校三','候选学校四');
+            $schools = array();
+
+            for($index=0; $index < 5; $index++){
+                $school_map['id'] = $data['candi_school'.$index];
+                $hschool = M('ZkHschool')->where($school_map)->find();
+                $schools[$index] = array('title'=>$titles[$index],'name'=>'candi_school'.$index,'text'=>$hschool['name'],'school_id'=>$hschool['id']);
+            }
+            //var_dump($schools);
+            $this->assign("client_id",$client_id);
+            $this->assign('public_id', $public_id);
+            //var_dump($schools);
+            $this->assign('candi_schools',$schools);
+            $this->display('set_candiSchool');
+        }
+
     }
 
     function Hschoollists()

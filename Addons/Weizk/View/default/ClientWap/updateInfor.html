@@ -7,7 +7,7 @@
 	</div>
     
     <br />
-    <form  class="mui-input-group" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form">
+    <form  class="mui-input-group" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form" method="post">
         <!-- 基础文档模型 -->
         <div class="mui-input-row">
             <label>用户名</label>
@@ -20,7 +20,8 @@
         </div>
         <div class="mui-input-row">
         	<label>就读于</label>
-            <input type="text" class="mui-input-clear" name="school" id="mschoolPicker" placeholder="学校名称">
+            <input type="text" class="mui-input-clear" name="mschool" id="mschool" placeholder="学校名称">
+            <input type="text" class="mui-input-clear" name="mschoolId" id="mschoolId" type="hidden">
         </div>
         <div class="mui-input-row">
             <label>班级类型</label>
@@ -103,8 +104,8 @@
         $.ready(function() {
             //-----------------------------------------
             var hschoolPicker = new $.PopPicker();
-            var showHschoolPickerButton = doc.getElementById('mschoolPicker');
-			get_picker_data(hschoolPicker,showHschoolPickerButton);
+            var showMschoolPicker= doc.getElementById('mschool');
+			get_picker_data(hschoolPicker,showMschoolPicker);
 			
         });
     })(mui, document);
