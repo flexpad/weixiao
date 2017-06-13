@@ -193,14 +193,16 @@ class ClientWapController extends BaseController{
             for($index=0;$index<5;$index++){
                 $client_data['candi_school'.$index] = intval(I(('post.candi_school'.$index.'Id')));
             }
-            var_dump($client_data);
+            //var_dump($client_data);
             $res = M('ZkClient')->save($client_data);
 
             if($res == true)
             {
-                $this->success("用户信息更新成功！", U('show_student', 'publicid=' . $public_id.'&client_id='.$client_id));
+                $this->success("用户信息更新成功！", U('show_student', 'publicid=' . $public_id.'&clientid='.$client_id));
             }
-            $this->error("请在微信中打开！");
+            else{
+                $this->error("用户信息更新失败/无改变！");
+            }
 
         }
         else{
@@ -216,10 +218,9 @@ class ClientWapController extends BaseController{
                 $hschool = M('ZkHschool')->where($school_map)->find();
                 $schools[$index] = array('title'=>$titles[$index],'name'=>'candi_school'.$index,'text'=>$hschool['name'],'school_id'=>$hschool['id']);
             }
-            //var_dump($schools);
+
             $this->assign("client_id",$client_id);
             $this->assign('public_id', $public_id);
-            //var_dump($schools);
             $this->assign('candi_schools',$schools);
             $this->display('set_candiSchool');
         }
