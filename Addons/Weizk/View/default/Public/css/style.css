@@ -550,3 +550,11 @@ img{max-width: 100%; width: auto; height: auto; vertical-align: top; border: 0;}
 	z-index: 5;
 	background: whitesmoke;
 }
+
+.mui-pull-margin-200 {
+	top: 198px;
+}
+
+.eva-li {
+	padding-right: 40px;
+}
