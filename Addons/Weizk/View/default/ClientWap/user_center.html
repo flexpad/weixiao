@@ -1,0 +1,55 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+<div class="mui-content">
+	<div class="mui-card">
+		<ul class="mui-table-view">
+		    <li class="mui-table-view-cell mui-collapse">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon8.png" style="vertical-align: top;">
+		        	<p style="margin-top: 10px;">绑定学生</p>
+		        </a>
+		        <notempty name="bind_students">
+		        <ul class="mui-table-view mui-table-view-chevron">
+		        <volist name='bind_students' id='he'>
+		        	<switch name="he.state">
+		        		<case value='valid'>
+				         	<li class="mui-table-view-cell"><a class="mui-navigate-right" 
+				         		href="{:U('addon/Weizk/ClientWap/show_student/publicid/'.$public_id.'/clientid/'.$he['value'])}"><p>{$key+1}:{$he['text']}</p></a>
+							</li>
+						</case>
+						<case value='none'>
+				         	<li class="mui-table-view-cell"><a class="mui-navigate-right" 
+				         		href="{:U('addon/Weizk/ClientWap/updateInfor/publicid/'.$public_id)}"><p>{$key+1}:{$he['text']}</p></a>
+							</li>							
+						</case>
+					</switch>
+		        </volist>
+		        </ul>
+		        </notempty>
+       
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right" >
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon1.png">
+		        	<p style="margin-top: 10px;">小目标设定</p>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon5.png">
+		        	<p style="margin-top: 10px;">评估记录</p>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon7.png">
+		        	<p style="margin-top: 10px;">问答记录</p>
+		        </a>
+		    </li>
+		</ul>
+	</div>
+</div>
+<input type="hidden" value='{$public_id}' id = 'publicId'>
+
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

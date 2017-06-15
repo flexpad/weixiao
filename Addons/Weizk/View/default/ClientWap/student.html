@@ -1,0 +1,61 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+
+<div class="mui-content">
+	<div class="mui-card">
+		<ul class="mui-table-view">
+		    <li class="mui-table-view-cell mui-collapse">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/per-image.png" style="vertical-align: top;">
+		        	<p style="margin-top: 10px;">学生基本信息</p>
+		        </a>
+		        <notempty name="std_info">
+		        <ul class="mui-table-view mui-table-view-chevron">
+		         	<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#"><p>姓名 ： {$std_info['name']}</p></a></li>
+					<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#"><p>就读于 ： {$std_info['c_school_name']}</p></a></li>
+					<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#"><p>班级 类型： {$std_info['classtype']}</p></a></li>
+					<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#"><p>毕业年号 ： {$std_info['grand_year']}</p></a></li>
+					<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#"><p>电话号码 ： {$std_info['phone']}</p></a></li>
+		        </ul>
+		        </notempty>
+       
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right" href="{:U('addon/Weizk/ClientWap/set_candiSchool/publicid/'.$public_id.'/clientid/'.$client_id)}">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon1.png">
+		        	<p style="margin-top: 10px;">设定目标学校</p>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/print.png">
+		        	<p style="margin-top: 10px;">模拟自愿填写</p>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon5.png">
+		        	<p style="margin-top: 10px;">评估记录</p>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon7.png">
+		        	<p style="margin-top: 10px;">问答记录</p>
+		        </a>
+		    </li>
+		</ul>
+	</div>
+</div>
+<input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value='{$client_id}' id = 'clientId'>	
+<script>
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+
+        });
+    })(mui, document);
+</script>
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

@@ -20,23 +20,31 @@ class ZkClientModel extends Model{
         $data['token'] = $token;
 
         $map ['token'] = $data['token'];
-        $map ['name'] = $data['name'];
         $map ['uid'] = $data['uid'];
         $map ['openid'] = $data['openid'];
         $vl = $this->where($map)->select();
         $num = count($vl);
-        if($num == 1){
-            $this->where($map)->save($data);
-            return true;
+        if($vl != NULL){
+            foreach ($vl as $item){
+                if ($item['name'] == $data['name']){
+                    $this->where($map)->save($data);
+                    return ture;
+                }
+            }
+            if($num < 3) {
+                $this->add($data);
+                return true;
+            }
+            else {
+                return false;
+            }
+
         }
-        else if($num == 0){
+        else {
             $this->add ($data);
             return true;
         }
-        else
-        {
-            return false;
-        }
+
     }
 
 }

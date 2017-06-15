@@ -1,39 +1,115 @@
 <!-- 用户绑定页面 -->
-<include file="Public/mobile_head"/>
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+<div class="mui-content">
+	<div class="mui-content-padded">
+		<h5>绑定学生信息录入</h5>
+	</div>
+    
+    <br />
+    <form  class="mui-input-group" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form" method="post">
+        <!-- 基础文档模型 -->
+        <div class="mui-input-row">
+            <label>用户名</label>
+            <input type="text" class="mui-input-clear" name="name" id="name" placeholder="请输入学生姓名">
+        </div>
 
-<style>
-    .uicon{border-radius:60px;width: 120px;}
-</style>
-<body style="background-color: #e4e4e4">
-<title>微中考：用户中心>信息录入</title>
-<form  method="post" action="{:U('addon/Weizk/ClientWap/updateInfor', array('publicid'=>$public_id))}" id="form"  style="background-color: #fbfbfb;padding-bottom: 20px">
-    <!-- 基础文档模型 -->
-    <div class="mui-input-row">
-        <label>用户名</label>
-        <input type="text" class="mui-input-clear" name="name" id="name" placeholder="请输入学生姓名">
-    </div>
-    <div class="mui-input-row">
-        <label>电话号码</label>
-        <input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="电话号码">
-    </div>
-    <div class="mui-input-row">
-        <label>当前所在学校</label>
-        <input type="text" class="mui-input-clear" name="school" id="school" placeholder="学校全称">
-    </div>
-    <div class="mui-input-row">
-        <label>当前所在班级类型</label>
-        <input type="text" class="mui-input-clear"  name="classtype" id="classtype" placeholder="重点/实验/普通">
-    </div>
-    <div class="mui-input-row">
-        <label>毕业日期（年份）</label>
-        <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" placeholder="2019">
-    </div>
-    <div class="mui-button-row">
-        <button type="submit" class="mui-btn mui-btn-primary" >确认</button>
-    </div>
-</form>
-</body>
-</html>
-
-
+        <div class="mui-input-row">
+            <label>电话号码</label>
+            <input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="电话号码">
+        </div>
+        <div class="mui-input-row">
+        	<label>就读于</label>
+            <input type="text" class="mui-input-clear" name="mschool" id="mschool" placeholder="学校名称">
+            <input type="text" class="mui-input-clear" name="mschoolId" id="mschoolId" type="hidden">
+        </div>
+        <div class="mui-input-row">
+            <label>班级类型</label>
+            <input type="text" class="mui-input-clear"  name="classtype" id="classtype" placeholder="重点/实验/普通">
+        </div>
+        <div class="mui-input-row">
+            <label>毕业年份</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" placeholder="2017">
+        </div>
+        <!-- 
+        <div class="mui-input-row">
+            <label>最心仪的学校</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校一</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校二</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校三</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
+        </div>
+        <div class="mui-input-row">
+            <label>候选学校四</label>
+            <input type="text" class="mui-input-clear"  name="grand_year" id="grand_year" >
+        </div>
+        -->
+        <div class="mui-button-row">
+            <button type="submit" class="mui-btn mui-btn-primary" >确 认</button>
+        </div>
+        
+    </form>
+</div>
+<input type="hidden" value='{$public_id}' id = 'publicId'>
+<input type="hidden" value='0' id="userId">
+<input type="hidden" value='0' id = 'query_value'>
+<input type="hidden" value="{:U('addon/Weizk/MschoolWap/picker_list')}" id = 'ajaxPostUrl'>
+<script>
+	function update_picker(data,picker,tg_button,result){
+        //级联示例
+        picker.setData(data);
+        
+		tg_button.addEventListener('tap', function(event) {
+			picker.show(function(items) {
+				console.log(items);
+				tg_button.value = (items[0]['text']);
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);        
+	}
+    function get_picker_data(picker,tg_button,result){
+		var publicId = $("#publicId").val();
+		var userId = $("#userId").val();
+		var ajaxUrl = $("#ajaxPostUrl").val();
+		mui.ajax(ajaxUrl,{
+			data: {
+				public_id: publicId,
+				uid: userId,
+			},
+			dataType:'json',
+			type:'post',
+			timeout:10000,
+			headers:{'Content-Type':'application/json'},
+			success:function(data){
+				var pickerData = JSON.parse(data);
+				update_picker(pickerData,picker,tg_button,result);
+			},
+			error:function(xhr,type,errorThrown){
+				console.log(type);
+			}
+		});
+    }
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            //-----------------------------------------
+            var hschoolPicker = new $.PopPicker();
+            var showMschoolPicker= doc.getElementById('mschool');
+			get_picker_data(hschoolPicker,showMschoolPicker);
+			
+        });
+    })(mui, document);
+</script>
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>
 
