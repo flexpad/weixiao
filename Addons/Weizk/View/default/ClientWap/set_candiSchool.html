@@ -2,7 +2,10 @@
 <body>
 
 <div class="mui-content">
-
+	<div class="mui-slider">
+		<img src="{:ADDON_PUBLIC_PATH}/school/img/self-report.png">
+	</div>	
+	
 	<form class="mui-input-group" action="{:U('addon/Weizk/ClientWap/set_candiSchool', array('publicid'=>$public_id,'clientid'=>$client_id))}" id="form" method="post">
 		<notempty name="candi_schools">
 			<volist name='candi_schools' id='vo'>
