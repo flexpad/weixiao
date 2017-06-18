@@ -1,0 +1,88 @@
+<extend name="Base/common" />
+<block name="body">
+    <div class="span9 page_message">
+        <section id="contents"> <include file="Addons/_nav" />
+            <div class="tab-content">
+                <!-- 表单 -->
+                <php> $post_url || $post_url = U('add?model='.$model['id'], $get_param);</php>
+                <form id="form" action="{$post_url}" method="post" class="form-horizontal form-center">
+                    <div class="form-item cf">
+                        <label class="item-label">*</span>测试项目名称<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="name" value="{$data['name']}" >
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label">测试题目序列（以","分开）</label>
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="item_list" value="{$data['item_list']}" >
+                        </div>
+                    </div>
+                    <div class="form-item form_bh">
+                        <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{$submit_name|default='确 定'}</button>
+                    </div>
+                </form>
+
+    </div>
+
+
+    </section>
+    </div>
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '
+        <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+        ';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $('#submit').click(function(){
+            $('#form').submit();
+        });
+        $(function(){
+            var UploadFileExts = "{$UploadFileExts}";
+            //初始化上传图片插件
+            initUploadImg();
+            if(UploadFileExts!=""){
+                initUploadFile(function(){},UploadFileExts);
+            }else{
+                initUploadFile();
+            }
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            showTab();
+
+            $('.toggle-data').each(function(){
+                var data = $(this).attr('toggle-data');
+                if(data=='') return true;
+
+                if($(this).is(":selected") || $(this).is(":checked")){
+                    change_event(this)
+                }
+            });
+            $('.toggle-data').bind("click",function(){ change_event(this) });
+            $('select').change(function(){
+                $('.toggle-data').each(function(){
+                    var data = $(this).attr('toggle-data');
+                    if(data=='') return true;
+
+                    if($(this).is(":selected") || $(this).is(":checked")){
+                        change_event(this)
+                    }
+                });
+            });
+        });
+    </script>
+</block>
