@@ -62,6 +62,11 @@ class ClientWapController extends BaseController{
     }
 
     public function updateInfor() {
+        $public_id = intval(I('publicid'));
+        $public_id = ($public_id > 0) ? $public_id:1;
+
+        $client_id = intval(I('clientid'));
+        $client_id = ($client_id > 0) ? $client_id:0;
         $openid = get_openid();
         $client_model = D('ZkClient');
         $this->assign("page_title","微中考：用户信息录入");
@@ -70,13 +75,12 @@ class ClientWapController extends BaseController{
             $name = trim(I('post.name'));
             $phone = trim(I('post.mobile'));
             $school_name = trim(I('post.mschool'));
-            $school_id = trim(I('post.mschoolId'));
+            $school_id = intval(I('post.mschool_id'));
             $class_type = trim(I('post.classtype'));
             $grand_year = trim(I('post.grand_year'));
 
             $map['openid'] = $user['openid'] = $openid;
             $user['uid'] = $this->uid;
-
 
             $follow_model = M('public_follow');
             $data = $follow_model->where($map)->find();
@@ -100,12 +104,12 @@ class ClientWapController extends BaseController{
                 //Need add user data here also TBD.
             }
             else if ($data == NULL && $userdata['subscribe'] == 0)
-                $this->error("请关注我们的微信公号后再更新用户信息！！！", U('updateInfor', 'publicid=' . $this->publicid));
+                $this->error("请关注我们的微信公号后再更新用户信息！！！", U('updateInfor', 'publicid=' . $public_id));
             else if ($data != NULL) {
                 $data['has_subscribe'] = $userdata['subscribe'];
                 if ($userdata['subscribe'] == 0) {
                     $follow_model->where($map)->save($data);
-                    $this->error("请关注我们的微信公号后更新用户信息！！！", U('updateInfor', 'publicid=' . $this->publicid));
+                    $this->error("请关注我们的微信公号后更新用户信息！！！", U('updateInfor', 'publicid=' .$public_id));
                 }
                 else {
                     $follow_model->where($map)->save($data);
@@ -120,27 +124,26 @@ class ClientWapController extends BaseController{
                     $res = $client_model->approve($client, $user, $this->token);
                     if($res == true)
                     {
-                        $this->success("用户信息更新成功！", U('updateInfor', 'publicid=' . $this->publici));
+                        $this->success("用户信息更新成功！", U('user_center', 'publicid='.$this->publicid));
                     }
                 }
             }
             $this->error("用户信息更新有误，请返回重新输入！");
         }
         else {
-            $public_id = intval(I('publicid'));
-            $public_id = ($public_id > 0) ? $public_id:1;
-
             $map['id'] = $public_id;
             $data = M('public')->where($map)->find();
             if ($this->token == NULL)
                 $this->token = $data['token'];
 
-            $map2['openid'] = $openid;
-            $this->assign('care_count', $client_model->where($map2)->count());
+            if($client_id != 0 ){
+                $map2['id'] = $client_id;
+                $clientData = $client_model->where($map2)->find();
+                $this->assign("client_data",$clientData);
+            }
+
             $this->assign('user_id', $user['uid']);
             $this->assign('public_id', $public_id);
-
-            //$this->_footer();
             $this->display('updateInfor');
         }
     }
@@ -168,7 +171,7 @@ class ClientWapController extends BaseController{
         $data = M('ZkClient')->where($map)->select();
         if($data == NULL) $this->error("用户ID有误，请返回重新选择！");
         $school_map['id'] = $data[0]['c_school'];
-        $mschool = M('ZkMschool')->where($map)->select();
+        $mschool = M('ZkMschool')->where($school_map)->select();
 
         $std_info = $data[0];
         $std_info['c_school_name'] = $mschool[0]['name'];
