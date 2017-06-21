@@ -10,7 +10,7 @@ class ZkClientModel extends Model{
 
     public function approve($client, $user, $token){
 
-        $data['phone'] = string($client['phone']);
+        $data['phone'] = ($client['phone']);
         $data['name'] = $client['name'];
         $data['c_school'] = $client['c_school'];
         $data['grand_year'] = $client['grand_year'];
@@ -18,6 +18,7 @@ class ZkClientModel extends Model{
         $data['uid'] = $user['uid'];
         $data['openid'] = $user['openid'];
         $data['token'] = $token;
+        $data['classtype'] = $client['class_type'];
 
         $map ['token'] = $data['token'];
         $map ['uid'] = $data['uid'];
@@ -26,8 +27,9 @@ class ZkClientModel extends Model{
         $num = count($vl);
         if($vl != NULL){
             foreach ($vl as $item){
-                if ($item['name'] == $data['name']){
-                    $this->where($map)->save($data);
+                if ($item['name'] === $data['name']){
+                    $map['id'] = $item['id'];
+                    $this->where($item)->save($data);
                     return ture;
                 }
             }
