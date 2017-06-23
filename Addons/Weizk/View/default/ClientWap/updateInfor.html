@@ -20,8 +20,9 @@
         <div class="mui-input-row">
         	<label>就读于</label>
             <input type="text" class="mui-input-clear" name="mschool" id="mschool" placeholder="学校名称">
-            <input type="text" class="mui-input-clear" name="mschoolId" id="mschoolId" type="hidden">
+            <input type="text" class="mui-input-clear" name="mschool_id" id="mschool_id" type="hidden">
         </div>
+
         <div class="mui-input-row">
             <label>班级类型</label>
             <input type="text" class="mui-input-clear"  name="classtype" id="classtype" placeholder="重点/实验/普通">
@@ -71,6 +72,7 @@
 			picker.show(function(items) {
 				console.log(items);
 				tg_button.value = (items[0]['text']);
+				result.value = (items[0]['value']);
 				//返回 false 可以阻止选择框的关闭
 				//return false;
 			});
@@ -104,7 +106,8 @@
             //-----------------------------------------
             var hschoolPicker = new $.PopPicker();
             var showMschoolPicker= doc.getElementById('mschool');
-			get_picker_data(hschoolPicker,showMschoolPicker);
+            var schoolId = doc.getElementById('mschool_id');
+			get_picker_data(hschoolPicker,showMschoolPicker,schoolId);
 			
         });
     })(mui, document);

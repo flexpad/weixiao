@@ -1,0 +1,13 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+	<div id="container" class="mui-content">
+    	<div class="mui-card">
+        	<h6>{$info.title}</h6>
+            <div class="lead_content">{$info.intro}</div>
+            <a href="{:U('profile','survey_id='.$info[id])}" class="lead_btn">马上开始</a>
+		</div>
+    	<p class="copyright">{$system_copy_right}{$tongji_code}</p>
+    </div>
+    
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>
