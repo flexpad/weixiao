@@ -83,7 +83,6 @@ class EvalPrjController extends AddonsController {
         $overtime = $this->_is_overtime ( $id );
         //	$overtime = $overtime ? 1 :( $overtime ? 2 : 0 ) ;
 
-
 // 		if($overtime= 1)$status="调研进行中";
 // 		if($overtime= 2)$status="调研未开始";
 // 		if($overtime= 0)$status="调研已结束";
@@ -100,8 +99,10 @@ class EvalPrjController extends AddonsController {
         // $map ['token'] = get_token ();
         // $info = M ( 'survey' )->where ( $map )->find ();
         $info = D ( 'ZkEvalPrj' )->getSurveyInfo ( $survey_id );
-        $this->assign ( 'info', $info );
+        $public_id = get_token_appinfo ( $map ['token'] )['id'];
 
+        $this->assign ( 'info', $info );
+        $this->assign('$public_id',$public_id);
         // 增加积分
         //add_credit ( 'survey' );
         $this->display ();

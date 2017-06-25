@@ -3,7 +3,7 @@
 	<div id="container" class="mui-content">
     	
         <div class="mui-card">
-        <img src="{:ADDON_PUBLIC_PATH}/finish.png" width="150"/><br/><br/>
+        <img src="{:ADDON_PUBLIC_PATH}/images/finish.png" width="150"/><br/><br/>
         <if condition="empty($info['finish_tip'])">测评完成，谢谢参与<else/>{$info.finish_tip}</if>
         </div>
         
@@ -11,9 +11,9 @@
         <a class="share_btn" href="{$event_url}">参加抽奖活动</a>
         <php> } </php>
         
-        <a href="javascript:;" onClick="closepage();" class="share_btn">返回微信</a>
+        <a href="{:U('addon/Weizk/ClientWap/user_center/', array('publicid'=>$public_id))}" >返回微信</a>
                    
-    	<p class="copyright">{$system_copy_right}{$tongji_code}</p>
+    	<!-- <p class="copyright">{$system_copy_right}{$tongji_code}</p> -->
 <script type="text/javascript">
 function closepage(){
 	WeixinJSBridge.call('closeWindow');
