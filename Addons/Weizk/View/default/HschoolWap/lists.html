@@ -1,0 +1,197 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html" />
+
+<body>
+<div class="eva-header">
+    <div class="mui-row">
+        <div class="mui-col-sm-6 mui-col-xs-6">
+            <li class="mui-table-view-cell current">
+                <a href="evaluation.html">学校概况</a>
+            </li>
+        </div>
+        <div class="mui-col-sm-6 mui-col-xs-6">
+            <li class="mui-table-view-cell">
+                <a href="news.html">升学资讯</a>
+            </li>
+        </div>
+    </div>
+</div>
+<div class="mui-content">
+    <!--图片轮播-->
+    <div id="slider" class="mui-slider" >
+        <div class="mui-slider-group mui-slider-loop">
+            <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                </a>
+            </div>
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                </a>
+            </div>
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner2.png">
+                </a>
+            </div>
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner3.png">
+                </a>
+            </div>
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
+                </a>
+            </div>
+            <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href="#">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                </a>
+            </div>
+        </div>
+        <div class="mui-slider-indicator">
+            <div class="mui-indicator mui-active"></div>
+            <div class="mui-indicator"></div>
+            <div class="mui-indicator"></div>
+            <div class="mui-indicator"></div>
+        </div>
+    </div>
+
+
+    <!--下拉刷新容器-->
+    <div id="pullrefresh" class="mui-scroll-wrapper mui-pull-margin-200">
+        <div class="mui-scroll">
+            <!--数据列表-->
+            <ul class="evaluation mui-table-view">
+            </ul>
+        </div>
+    </div>
+
+    <div class="h60"></div>
+    <div class="eva-adv">
+        <a href=""><img src="{:ADDON_PUBLIC_PATH}/images/adv.png"/></a>
+        <div class="close"><img src="{:ADDON_PUBLIC_PATH}/images/close-white.png"/></div>
+    </div>
+</div>
+<script type="text/javascript">
+    mui.init({
+        pullRefresh: {
+            container: '#pullrefresh',
+            down: {
+                callback: pulldownRefresh
+            },
+            up: {
+                contentrefresh: '正在加载...',
+                callback: pullupRefresh
+            }
+        }
+    });
+
+    document.addEventListener('touchstart', function(event) {
+        // 判断默认行为是否可以被禁用
+        if (event.cancelable) {
+        // 判断默认行为是否已经被禁用
+            if (!event.defaultPrevented) {
+                event.preventDefault();
+            }
+        }
+    }, false);
+    /**
+     * 下拉刷新具体业务实现
+     */
+    function pulldownRefresh() {
+        setTimeout(function() {
+            $(".mui-table-view").empty();  //清空DOM对象: mui-table-view
+            counter = 1;                    //刷新页号重置为1
+            page_count = 0;
+            Flag = false;
+            data();
+
+            mui('#pullrefresh').pullRefresh().endPullupToRefresh(Flag);
+            mui('#pullrefresh').pullRefresh().refresh(true);
+            mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+        }, 1500);
+    }
+    var page_count = 0;
+    /**
+     * 上拉加载具体业务实现
+     */
+    function pullupRefresh() {
+        setTimeout(function() {
+            data();
+            mui('#pullrefresh').pullRefresh().endPullupToRefresh(Flag); //参数为true代表没有更多数据了。
+        }, 1500);
+    }
+    if (mui.os.plus) {
+        mui.plusReady(function() {
+            setTimeout(function() {
+                mui('#pullrefresh').pullRefresh().pullupLoading();
+            }, 1000);
+
+        });
+    } else {
+        mui.ready(function() {
+            mui('#pullrefresh').pullRefresh().pullupLoading();
+        });
+    }
+    //加载更多
+    //var pageSize = 6;//每页显示条数
+    var counter = 1;//计数器
+    //var pageStart = 0;//开始数据条数
+    var Flag = false;
+    function data() {
+        //业务
+        var result = "";
+        var href = window.location.href;
+        $.ajax({
+                type: 'post',
+                url: href,
+                async: true,
+                dataType: 'json',
+                data: {page: counter},
+                success: function (data) {
+                    //data = JSON.parse(rawdata);
+                    Flag = data==null||data==undefined||data=='';
+                    //判断是否有返回值 当没有返回值的时候就为空，则代表没有更多数据了
+                    console.log("data: ", data);
+                    console.log("Page_count: ", page_count);
+                    console.log("Counter: ", counter);
+                    console.log("Flag: ", Flag);
+
+                    if(Flag == false){
+                        counter++;
+                    }
+                    $.each(data, function (i, value) {
+                        /*console.log("i: ", i);
+                        console.log("value: ", value);*/
+
+                        //数据清洗，为空数据时，不要显示成 null
+                        if (value.abstract == null) value.abstract = '';
+                        if (value.coverurl == null|| value.coverurl == '') value.coverurl = '/Uploads/Picture/2017-06-15/59421f35bc119.jpg';
+
+                        console.log("url:", value.url);
+
+                        result += '<li class="mui-table-view-cell">'+
+                                    '<a href="' + value.url + '">' +
+                                        '<div class="eva-pic">' +
+                                        '<img src="'+ value.coverurl + '" />' +
+                                        '<label>人气 8.2<small></small></label>' +
+                                        '</div>' +
+                                        '<div class="eva-text">' +
+                                            '<h2>' + value.name + '</h2>' +
+                                            '<p>' + value.abstract + '</p>' +
+                                        '</div>' +
+                                    '</a>' +
+                                '</li>'
+                    });
+                    $(".mui-table-view").append(result); //Add the content into the DOM.
+                }
+            }
+        );
+    }
+</script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-1.10.1.min.js" ></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/app.js" ></script>
+</body>
+</html>
