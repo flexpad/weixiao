@@ -47,7 +47,7 @@ class HschoolWapController extends BaseController
 
     }
 
-    function Hschoollists()
+    function lists()
     {
         $public_id = I('publicid', 0, 'intval');
         empty ($public_id) && $public_id = I('public', 0, 'intval');
@@ -140,7 +140,7 @@ class HschoolWapController extends BaseController
                 if ($li ['jump_url'] && empty ($li ['content'])) {
                     $li ['url'] = $li ['jump_url'];
                 } else {
-                    $li ['url'] = U('schoolDetail', array(
+                    $li ['url'] = U('detail', array(
                         'id' => $li ['id']
                     ));
                 }
@@ -170,13 +170,13 @@ class HschoolWapController extends BaseController
                 $this->ajaxReturn($lists);
             else {
                 //var_dump($lists);
-                $this->display("schoolList");
+                $this->display("lists");
             }
         }
 
     }
 
-    function schoolDetail()
+    function detail()
     {
         /*
         if (file_exists(ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html')) {
@@ -200,7 +200,7 @@ class HschoolWapController extends BaseController
         //var_dump($data);
         $this->assign('info', $data);
         //$this->_footer();
-        $this->display("schoolDetail");
+        $this->display("detail");
         //}
     }
 
