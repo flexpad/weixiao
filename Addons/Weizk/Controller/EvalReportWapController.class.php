@@ -49,7 +49,7 @@ class EvalReportWapController extends BaseController
             $prj_data = M('ZkEvalPrj')->where($prj_map)->find();
             $ret_list[$key]['title'] = ($prj_data)?$prj_data['title']:'此测评问题已删除';
             $ret_list[$key]['c_time'] = date('Y-m-d H:i:s', $val['timestamp ']);
-            $client_data = D('ZkClient')->get_clinet_info($val['client_id ']);
+            $client_data = D('ZkClient')->get_clinet_info($val['client_id']);
             $ret_list[$key]['client_name'] = $client_data['name'];
             $ret_list[$key]['id'] = $val['id'];
         }

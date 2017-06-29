@@ -111,9 +111,11 @@ class EvalPrjController extends AddonsController {
         $info = D ( 'ZkEvalPrj' )->getSurveyInfo ( $survey_id );
         $public_id = get_token_appinfo ( $map ['token'] )['id'];
 
-        $this->create_eval_report($survey_id,$client_id);
+        $report_id = $this->create_eval_report($survey_id,$client_id);
+        var_dump($report_id);
         $this->assign ( 'info', $info );
-        $this->assign('$public_id',$public_id);
+        $this->assign('public_id',$public_id);
+        $this->assign('report_id',$report_id);
         // 增加积分
         //add_credit ( 'survey' );
         $this->display ();
@@ -137,6 +139,7 @@ class EvalPrjController extends AddonsController {
 
         if ($report) {
             $d_model->updateReportInfo ( $survey_id,$follow_id,$client_id, $data );
+            return $report['id'];
         } else {
             $data ['prj_id'] = $survey_id;
             $data ['token'] = get_token ();
@@ -144,7 +147,8 @@ class EvalPrjController extends AddonsController {
             $data ['client_id'] =  $client_id;
             $data ['openid'] = get_openid ();
             M ( 'ZkEvalReport' )->add ( $data );
-            $d_model->getReportInfo ( $survey_id, $follow_id,$client_id, true );
+            $report = $d_model->getReportInfo ( $survey_id, $follow_id,$client_id, true );
+            return $report['id'];
         }
     }
     // 已过期返回 true ,否则返回 false
