@@ -1,0 +1,26 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html" />
+<body>
+<div class="mui-content white">
+	<ul class="mui-table-view">
+		<notempty name="student_list">
+			<volist name='student_list' id='item'>
+			    <li class="mui-table-view-cell">
+			        <a class="mui-navigate-right" href="{:U('addon/Weizk/EvalPrj/index/id/2/client_id/'.$item['id'])}">
+			        	<p>{$item['name']}</p>
+			        </a>
+			    </li>
+		   	</volist>
+	    </notempty>
+	    <empty name="student_list">
+	    	<li class="mui-table-view-cell">
+	        	<a class="mui-navigate-right" href="#">没有绑定学生，点击进入新增绑定</a>
+	    	</li>
+	    </empty>
+	</ul>
+	
+	
+</div>
+
+
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>
