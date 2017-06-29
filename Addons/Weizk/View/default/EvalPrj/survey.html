@@ -6,7 +6,7 @@
   <span class="quote">NO.{$num}</span>
   <h6 class="a_title">{$question.title}</h6>
   <p class="w_tips">{$question.intro}</p>
-  <form class="answer_form" id="answerform" action="{:U('survey?id='.$_GET['id'].'&next_id='.$next_id)}" method="post">
+  <form class="answer_form" id="answerform" action="{:U('survey?id='.$_GET['id'].'&next_id='.$next_id.'&client_id='.$client_id)}" method="post">
     <input name="next_id" value="{$next_id}" type="hidden">
     <input name="question_id" value="{$question.id}" type="hidden">
     <input name="num" value="{$num}" type="hidden">
@@ -46,7 +46,7 @@
     </if>
   </form>
 </div>
-<p class="copyright">{$system_copy_right}{$tongji_code}</p>
+<<!-- p class="copyright">{$system_copy_right}{$tongji_code}</p> -->
 
 <script>
 		var is_require = "{$question.is_must}";

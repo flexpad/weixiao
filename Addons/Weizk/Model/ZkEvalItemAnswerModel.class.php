@@ -8,13 +8,14 @@ use Think\Model;
  * Survey模型
  */
 class ZkEvalItemAnswerModel extends Model {
-    function getAnswerInfo($survey_id, $question_id,$follow_id,$update = false, $data = array()) {
+    function getAnswerInfo($survey_id, $question_id,$follow_id,$client_id,$update = false, $data = array()) {
         $key = 'ZkEvalItemAnswer_getAnswerInfo_' . $survey_id.'_'.$question_id.'_'.$follow_id;
         $info = S ( $key );
         if ($info === false || $update) {
             $map ['prj_id'] = $survey_id;
             $map['item_id']=$question_id;
             $map ['uid'] = $follow_id;
+            $map['client_id'] = $client_id;
             $info = ( array ) (empty ( $data ) ? $this->where ( $map )->find () : $data);
 
             S ( $key, $info, 86400 );
@@ -22,13 +23,14 @@ class ZkEvalItemAnswerModel extends Model {
 
         return $info;
     }
-    function updateAnswer($survey_id,$question_id,$follow_id,$data=array()){
+    function updateAnswer($survey_id,$question_id,$follow_id,$client_id,$data=array()){
         $map ['prj_id'] = $survey_id;
         $map['item_id']=$question_id;
         $map ['uid'] = $follow_id;
+        $map['client_id'] = $client_id;
         $res = $this->where ( $map )->save ( $data );
         if ($res) {
-            $this->getAnswerInfo ( $survey_id,$question_id,$follow_id, true );
+            $this->getAnswerInfo ( $survey_id,$question_id,$follow_id,$client_id, true );
         }
         return $res;
     }

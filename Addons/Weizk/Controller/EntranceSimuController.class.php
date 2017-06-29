@@ -1,9 +1,9 @@
 <?php
 
 namespace Addons\Weizk\Controller;
-use Home\Controller\AddonsController;
+use Addons\Weizk\Controller\BaseController;
 
-class EntranceSimuController extends AddonsController
+class EntranceSimuController extends BaseController
 {
     private $token;
 
@@ -20,5 +20,10 @@ class EntranceSimuController extends AddonsController
     public function lists()
     {
         parent::lists($this->model);
+    }
+
+    public function updateForm()
+    {
+
     }
 }

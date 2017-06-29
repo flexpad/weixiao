@@ -26,33 +26,36 @@ class EvalPrjController extends AddonsController {
     }
     function survey() {
         $id = I ( 'get.id', 0, 'intval' );
+        $client_id = I ( 'get.client_id', 0, 'intval' );
         $num = I ( 'num', 1, 'intval' );
         $token = get_token ();
         $survey = D ( 'ZkEvalPrj' )->getSurveyInfo ( $id );
         $list = D ( 'ZkEvalItem' )->getQuestionInfo ( $id );
+
         if (IS_POST) {
             $follow_id = $this->mid;
             $question_id = I ( 'post.question_id', 0, 'intval' );
-            $answer = D ( 'ZkEvalItemAnswer' )->getAnswerInfo ( $id, $question_id, $follow_id );
+            $answer = D ( 'ZkEvalItemAnswer' )->getAnswerInfo ( $id, $question_id, $follow_id ,$client_id);
 
             $data ['cTime'] = time ();
             $data ['answer'] = serialize ( $_POST ['answer'] );
             if ($answer) {
-                D ( 'ZkEvalItemAnswer' )->updateAnswer ( $id, $question_id, $follow_id, $data );
+                D ( 'ZkEvalItemAnswer' )->updateAnswer ( $id, $question_id, $follow_id,$client_id, $data );
             } else {
                 $data ['prj_id'] = $id;
                 $data ['token'] = $token;
                 $data ['item_id'] = $question_id;
                 $data ['uid'] = $follow_id;
+                $data ['client_id'] =  $client_id;
                 $data ['openid'] = get_openid ();
                 M ( 'ZkEvalItemAnswer' )->add ( $data );
-                D ( 'ZkEvalItemAnswer' )->getAnswerInfo ( $id, $question_id, $follow_id, true );
+                D ( 'ZkEvalItemAnswer' )->getAnswerInfo ( $id, $question_id, $follow_id,$client_id, true );
             }
             $num = $num + 1;
         }
         $question_id = I ( 'post.next_id', 0, 'intval' );
         if ($question_id == '-1') {
-            redirect ( U ( 'finish', 'survey_id=' . $id ) );
+            redirect ( U ( 'finish', array ('survey_id'=>$id,'client_id'=>$client_id ) ));
         }
         if (empty ( $question_id )) {
             $question = $list [0];
@@ -72,11 +75,13 @@ class EvalPrjController extends AddonsController {
         $this->assign ( 'next_id', $next_id );
         $this->assign ( 'extra', $extra );
         $this->assign ( 'num', $num );
+        $this->assign ('client_id',$client_id);
 
         $this->display ();
     }
     function index() {
         $id = $map ['id'] = I ( 'id', 0, 'intval' );
+        $client_id = I ( 'client_id', 0, 'intval' );
 //		$openid = get_openid ();
         $map ['token'] = get_token ();
         $public_info = get_token_appinfo ( $map ['token'] );
@@ -92,15 +97,21 @@ class EvalPrjController extends AddonsController {
         $info = M ( 'ZkEvalPrj' )->where ( $map )->find ();
         $this->assign ( 'info', $info );
         $this->assign ( 'public_info', $public_info );
+        $this->assign('client_id',$client_id);
+
         $this->display ();
     }
+
+
     function finish() {
         $survey_id = I ( 'survey_id', 0, 'intval' );
-        // $map ['token'] = get_token ();
+        $client_id = I ( 'client_id', 0, 'intval' );
+        $map ['token'] = get_token ();
         // $info = M ( 'survey' )->where ( $map )->find ();
         $info = D ( 'ZkEvalPrj' )->getSurveyInfo ( $survey_id );
         $public_id = get_token_appinfo ( $map ['token'] )['id'];
 
+        $this->create_eval_report($survey_id,$client_id);
         $this->assign ( 'info', $info );
         $this->assign('$public_id',$public_id);
         // 增加积分
@@ -108,6 +119,34 @@ class EvalPrjController extends AddonsController {
         $this->display ();
     }
 
+    function select_client(){
+        $token = get_token ();
+        $uid = $this->mid;
+        $openid = get_openid();
+        $data = D('ZkClient')->get_user_all_client_info($token,$openid,$uid);
+        $this->assign('student_list',$data);
+        $this->display ();
+    }
+    private function create_eval_report($survey_id,$client_id){
+        $follow_id = $this->mid;
+        $d_model = D ( 'ZkEvalReport' );
+        $report = $d_model->getReportInfo( $survey_id,$follow_id ,$client_id);
+
+        $data ['timestamp'] = time ();
+        $data ['report'] = "ABCDEFGHIJKLMOPQRSTUVWXYZ!!!".time();
+
+        if ($report) {
+            $d_model->updateReportInfo ( $survey_id,$follow_id,$client_id, $data );
+        } else {
+            $data ['prj_id'] = $survey_id;
+            $data ['token'] = get_token ();
+            $data ['uid'] = $follow_id;
+            $data ['client_id'] =  $client_id;
+            $data ['openid'] = get_openid ();
+            M ( 'ZkEvalReport' )->add ( $data );
+            $d_model->getReportInfo ( $survey_id, $follow_id,$client_id, true );
+        }
+    }
     // 已过期返回 true ,否则返回 false
     private function _is_overtime($survey_id) {
         // 先看调研期限过期与否
@@ -124,7 +163,6 @@ class EvalPrjController extends AddonsController {
 
         if ((! empty ( $the_survey ['start_time'] )) &&  $the_survey ['end_time'] < NOW_TIME)
             return 0;  //结束
-
 
 
     }

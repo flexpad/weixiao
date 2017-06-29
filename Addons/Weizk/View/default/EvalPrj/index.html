@@ -8,9 +8,9 @@
 	</div>
    
    	<div >
-    <a href="{:U('survey','id='.$info[id])}" class="lead_btn">立即参与</a>
+    <a href="{:U('survey',array('id'=>$info[id],'client_id'=>$client_id))}" class="lead_btn">立即参与</a>
 	</div>
-
+	<input type="hidden" value='{$clinet_id}' id = 'clinet_id'>
     <!-- <p class="copyright">{$system_copy_right}</p> -->
 </div>
 

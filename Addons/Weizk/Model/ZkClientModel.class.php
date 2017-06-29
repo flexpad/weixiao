@@ -48,5 +48,15 @@ class ZkClientModel extends Model{
         }
 
     }
+    public function get_clinet_info($id){
+        $map['id'] = $id;
+        return $this->where($map)->find();
+    }
 
+    public function get_user_all_client_info($token,$openid,$uid){
+        $map['openid'] = $openid;
+        $map['uid'] = $uid;
+        $map['token'] =$token;
+        return $this->where($map)->order('id')->select();
+    }
 }
