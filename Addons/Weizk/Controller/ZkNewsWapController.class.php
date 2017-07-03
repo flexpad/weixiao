@@ -183,6 +183,9 @@ class ZkNewsWapController extends BaseController
 
     function detail()
     {
+
+        $public_id = I('publicid', 0, 'intval');
+        empty ($public_id) && $public_id = $this->publicid;
         /*
         if (file_exists(ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html')) {
             $this->pigcms_detail();
@@ -203,7 +206,11 @@ class ZkNewsWapController extends BaseController
         // dump($info);exit;
         $data = M('custom_reply_news')->where($map)->find();
         $data['cTime'] = date('y/m/d', $data['cTime']);
-        //var_dump($data);
+
+        $data['eval_url'] = U('/addon/Weizk/EvalPrj/select_client', array('publicid'=>$public_id));
+
+        var_dump($data);
+
         $this->assign('info', $data);
 
         M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
