@@ -178,6 +178,9 @@ class HschoolWapController extends BaseController
 
     function detail()
     {
+        $public_id = I('publicid', 0, 'intval');
+        empty ($public_id) && $public_id = $this->publicid;
+
         /*
         if (file_exists(ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html')) {
             $this->pigcms_detail();
@@ -197,6 +200,8 @@ class HschoolWapController extends BaseController
 
         // dump($info);exit;
         $data = M('zk_hschool')->where($map)->find();
+
+        $data['eval_url'] = U('/addon/Weizk/EvalPrj/select_client', array('publicid'=>$public_id));
         //var_dump($data);
         $this->assign('info', $data);
         //$this->_footer();
