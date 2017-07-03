@@ -205,6 +205,9 @@ class ZkNewsWapController extends BaseController
         $data['cTime'] = date('y/m/d', $data['cTime']);
         //var_dump($data);
         $this->assign('info', $data);
+
+        M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
+
         //$this->_footer();
         $this->display("detail");
         //}
