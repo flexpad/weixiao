@@ -11,7 +11,7 @@ namespace Addons\Weizk\Controller;
 
 use Addons\Weizk\Controller\BaseController;
 
-class HschoolWapController extends BaseController
+class ZkNewsWapController extends BaseController
 {
     var $config;
     var $token;
@@ -29,7 +29,7 @@ class HschoolWapController extends BaseController
         }
 
         parent::__construct();
-        $this->model = $this->getModel('ZkHschool'); //getModelByName ( $_REQUEST ['_controller'] );
+        $this->model = $this->getModel('custom_reply_news'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->publicid = D('Common/Public')->getInfoByToken($this->token, 'id');
     }
@@ -37,7 +37,7 @@ class HschoolWapController extends BaseController
     public function picker_list(){
         if (!IS_POST) $this->error("请在表单中提交！");
 
-        $data = M('ZkHschool')->order('id')->select();
+        $data = M('custom_reply_news')->order('id')->select();
         $ret_data = array();
         foreach($data as $index=>$item){
             $ret_data[$index] = array("value"=>$item['id'],"text"=>$item['name']);
@@ -51,16 +51,21 @@ class HschoolWapController extends BaseController
     {
         $public_id = I('publicid', 0, 'intval');
         empty ($public_id) && $public_id = I('public', 0, 'intval');
-        $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+        //$map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+
         // TBD if public_id is not found in Public table, how to detail?
         //var_dump($public_id);
         //var_dump($map);
         //exit();
-
         //$map ['token'] = $this->token;
         if ($public_id || IS_AJAX) {
-            $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
-            empty ($map['token']) && $map['token'] = $this->token;
+            if(IS_AJAX)
+                $map['cate_id'] = intval(I('post.cateid'));
+            else
+                $map['cate_id'] = I('cateid', 0, 'intval');
+            //var_dump($map);
+            //$map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+            //empty ($map['token']) && $map['token'] = $this->token;
             /*
             $cate = D('WxyCourse')->where('id = ' . $map ['cate_id'])->find();
             $this->assign('cate', $cate);
@@ -111,7 +116,7 @@ class HschoolWapController extends BaseController
             if (IS_AJAX) $page = intval(I('post.page'));
             $row = isset ($_REQUEST ['list_row']) ? intval($_REQUEST ['list_row']) : 6;
 
-            $data = M('zk_hschool')->where($map)->order('id ASC')->page($page, $row)->select();
+            $data = M('custom_reply_news')->where($map)->order('id ASC')->page($page, $row)->select();
             //var_dump($data);
 
             if (empty ($data)) {
@@ -126,7 +131,7 @@ class HschoolWapController extends BaseController
                 //redirect();
             }
             /* 查询记录总数 */
-            $count = M('zk_hschool')->where($map)->count();
+            $count = M('custom_reply_news')->where($map)->count();
             $list_data ['list_data'] = $data;
 
             // 分页
@@ -157,6 +162,7 @@ class HschoolWapController extends BaseController
                 $li['coverurl'] = get_square_url($li['cover'], 600);
                 //if (IS_AJAX) $li['coverurl'] = urlencode($li['coverurl']);
                 $li['fcTime'] = $li['sdate'];
+                $li['cTime'] = date('y/m/d', $li['cTime']);
                 $lists [] = $li;
                 //}
             }
@@ -173,14 +179,13 @@ class HschoolWapController extends BaseController
                 $this->display("lists");
             }
         }
-
     }
 
     function detail()
     {
+
         $public_id = I('publicid', 0, 'intval');
         empty ($public_id) && $public_id = $this->publicid;
-
         /*
         if (file_exists(ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html')) {
             $this->pigcms_detail();
@@ -199,11 +204,17 @@ class HschoolWapController extends BaseController
         //$this->assign('info', $info);
 
         // dump($info);exit;
-        $data = M('zk_hschool')->where($map)->find();
+        $data = M('custom_reply_news')->where($map)->find();
+        $data['cTime'] = date('y/m/d', $data['cTime']);
 
         $data['eval_url'] = U('/addon/Weizk/EvalPrj/select_client', array('publicid'=>$public_id));
-        //var_dump($data);
+
+        var_dump($data);
+
         $this->assign('info', $data);
+
+        M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
+
         //$this->_footer();
         $this->display("detail");
         //}

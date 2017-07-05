@@ -30,7 +30,7 @@
         <!-- 主页面标题 -->
         <header class="mui-bar mui-bar-nav header">
             <a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"  href="#offCanvasSide" ></a>
-            <h1 class="mui-title"><a href=""><img src="images/i4-logo.png"/></a></h1>
+            <h1 class="mui-title"><a href=""><img src="{:ADDON_PUBLIC_PATH}/images/i4-logo.png"/></a></h1>
             <a class="mui-icon mui-icon-search mui-pull-right" href="search.html"></a>
         </header>
 
@@ -40,18 +40,64 @@
                 <div class="mui-content">
                     <div id="menu-backdrop" class="menu-backdrop"></div>
                     <div class="mui-content article ">
-                        <section class="content">
-                            <notempty name="info.cover"><p><img src="{$info.cover|get_cover_url}"/></p></notempty>
-                            {$info.intro|htmlspecialchars_decode}
-                        </section>
-                    </div>
+                        <h2 class="article-title">{$info.name}</h2>
+                        <div class="article-text">
+                            官网网址：<a href="">{$info.website}</a>
+                            <!--<label class="time">{$info.cTime}</label>
+                            <label class="view">{$info.view_count}</label>-->
+                        </div>
+                        <!-- <div class="evaluating">
+                             <div class="evaluating-top">
+                                         <span class="logo fl">
+                                             <img src="images/jx3.jpg" />
+                                         </span>
+                                 <div class="right fr">
+                                     <span class="score">8.5<small>分</small></span>
+                                     <a href="storedetail.html" class="btn">查看详情</a>
+                                 </div>
+                                 <div class="middle">
+                                     <h2>感恩笔记本</h2>
+                                     <p>感恩笔记本-用感恩的心看世界，记录生命给予的</p>
+                                 </div>
+                             </div>
+                             <div class="evaluating-bot">
+                                 <img src="images/ewm.jpg" />
+                                 <p>保存二维码，前往微信扫一扫，体验小程序</p>
+                             </div>
+                         </div> -->
+                        <div class="mui-content-padded">
+                            <!--        <p>继昨天微信小程序推出群共享功能之后，今天又接连发布了附近的小程序功能。进一步完善线下场景服务。/p>
+                                    <p>附近的小程序，顾名思义，就是有小程序的商户，可以将门店小程序或普通小程序展示在“附近”。当用户走到某个地点，</p>
+                                    <p><strong>打开“发现→小程序→附近的小程序”，即可将目前所处地的附近的小程序收入囊中</strong></p>
+                                    <p><br/></p>
+                                    <p>
+                                        <img src="images/content.gif"  />
+                                    </p>
+                                    <p><br/></p>
+                                    <p>图片全屏后，双击或双指缩放均可对图片进行放大、缩小操作，左右滑动可查看同组(data-preview-group相同的图片为一组)其它图片，点击会关闭预览</p>
+                                    <p><br/></p>
+                                    <p>
+                                        <img src="images/xinwen.jpg" />
+                                    </p>-->
+                            <section class="content">
+                                <notempty name="info.cover"><p><img src="{$info.cover|get_cover_url}"/></p></notempty>
+                                {$info.intro|htmlspecialchars_decode}
+                            </section>
+                        </div>
+                </div>
                     <!--广告位-->
                     <div class="guanggao">
-                        <h2>
+<!--                        <h2>
                             <span>广告</span>
                             <i></i>
                         </h2>
-                        <a href=""><img src="images/advantage.jpg" /></a>
+                        <a href=""><img src="images/advantage.jpg" /></a>-->
+                        <a href={$info.eval_url} type="button" class="mui-btn mui-icon mui-icon-home">
+                            评估
+                        </a>
+                        <a href={$info.url} type="button" class="mui-btn mui-icon mui-icon-home">
+                            咨询
+                        </a>
                     </div>
 
                 </div>
