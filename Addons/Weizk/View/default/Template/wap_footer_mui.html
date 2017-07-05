@@ -8,15 +8,20 @@
                 </a>
             </li>
             <li class="mui-tab-item">
-                <a href="{:U('/addon/Weizk/EvalPrj/index/2')}">
+            	<notempty name="client_id">
+                <a href="{:U('/addon/Weizk/EvalPrj/index/2/client_id/'.$client_id)}">
+                </notempty>
+                <empty name="client_id">
+                <a href="{:U('/addon/Weizk/EvalPrj/index/2/client_id/0')}">
+                </empty>                	
                     <i class="iconfont icon-computer"></i>
                     <p>自助评估</p>
                 </a>
             </li>
             <li class="mui-tab-item">
-                <a href="ask.html">
+                <a href="http://www.jzk12.com/wecenter">
                     <i class="iconfont icon-ask"></i>
-                    <p>咨询帮助</p>
+                    <p>咨询求助</p>
                 </a>
             </li>
             <li class="mui-tab-item">
@@ -28,7 +33,9 @@
         </ul>
     </nav>
 </footer>
-
+<script type="text/javascript">
+    mui('body').on('tap','a',function(){document.location.href=this.href;});
+</script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-1.10.1.min.js" ></script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/app.js" ></script>
 </body>

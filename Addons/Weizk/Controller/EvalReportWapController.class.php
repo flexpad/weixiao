@@ -35,9 +35,13 @@ class EvalReportWapController extends BaseController
         $this->publicid = D('Common/Public')->getInfoByToken($this->token, 'id');
     }
 
-    private function get_lists($page){
+    private function get_lists($page,$client_id=0){
         $map['token'] = $this->token;
         $map['openid'] = get_openid();
+        if($client_id != 0)
+        {
+            $map['client_id'] = $client_id;
+        }
         $row = 5;
         //$data = M('ZkEvalReport')->where($map)->order('id')->page($page, $row)->select();
         $data = M('ZkEvalReport')->where($map)->order('id')->select();
@@ -58,9 +62,11 @@ class EvalReportWapController extends BaseController
     }
     public function lists()
     {
-        $data = $this->get_lists(1);
+        $client_id = I('clientid', 0, 'intval'); // 默认显示第一页数据
+        $data = $this->get_lists(1,$client_id);
 
         $this->assign('report_list',$data);
+        $this->assign('public_id', $this->publicid);
         $this->display('lists');
     }
     public function ajx_lists(){
@@ -78,6 +84,7 @@ class EvalReportWapController extends BaseController
         $prj_data = M('ZkEvalPrj')->where($prj_map)->find();
         $ret_detail['title'] = $prj_data['title'];
         $this->assign('detail',$ret_detail);
+        $this->assign('public_id', $this->publicid);
         $this->display();
     }
 }

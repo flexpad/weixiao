@@ -7,7 +7,7 @@
 	<div class="mui-card">
 		<ul class="mui-table-view">
 		    <li class="mui-table-view-cell mui-collapse">
-		        <a class="mui-navigate-right">
+		        <a class="mui-navigate-right" href="#">
 		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon8.png" style="vertical-align: top;">
 		        	<p style="margin-top: 10px;">绑定学生</p>
 		        </a>
@@ -32,7 +32,7 @@
        
 		    </li>
 		    <li class="mui-table-view-cell mui-collapse">  	
-		        <a class="mui-navigate-right" >
+		        <a class="mui-navigate-right"  href="#">
 		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon1.png">
 		        	<p style="margin-top: 10px;">小目标设定</p>
 		        </a>
@@ -42,7 +42,7 @@
 			        	<switch name="he.state">
 			        		<case value='valid'>
 					         	<li class="mui-table-view-cell">
-					         		<a class="mui-navigate-right" 
+					         		<a class="mui-navigate-right"
 					         		href="{:U('addon/Weizk/ClientWap/set_candiSchool/publicid/'.$public_id.'/clientid/'.$he['value'])}">
 					         		<p>{$he['text']}</p>
 					         		</a>
@@ -54,13 +54,13 @@
 		        </notempty>	
 		    </li>
 		    <li class="mui-table-view-cell">
-		        <a class="mui-navigate-right">
+		        <a class="mui-navigate-right"  href="{:U('addon/Weizk/EvalReportWap/lists')}">
 		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon5.png">
 		        	<p style="margin-top: 10px;">评估记录</p>
 		        </a>
 		    </li>
 		    <li class="mui-table-view-cell">
-		        <a class="mui-navigate-right">
+		        <a class="mui-navigate-right"  href="#">
 		        	<img class="mui-media-object mui-pull-left" src="{:ADDON_PUBLIC_PATH}/school/img/icon7.png">
 		        	<p style="margin-top: 10px;">问答记录</p>
 		        </a>
