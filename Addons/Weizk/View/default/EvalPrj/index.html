@@ -1,18 +1,22 @@
 <include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
 <body>
-<div class="mui-content">
-	<img src="{$info.cover|get_cover_url}" width="100%"/>
-	<div >
-		<h6 class="m_t"><div style="word-wrap:break-word;">{$info.title}</div></h6>
-		<div class="lead_content" style="word-wrap:break-word;">{$info.intro}</div>
+
+	<div class="whole" style=" position:relative;">
+		<div class="pc_img">
+			<img id="gif" />
+		</div>
+		<div class="dc_tit1">
+			<img src="{:ADDON_PUBLIC_PATH}/images/dc_tit.png" />
+		</div>
+		<input type="hidden" value='{$clinet_id}' id = 'clinet_id'>
+		<a href="{:U('survey',array('id'=>$info['id'],'client_id'=>$client_id))}"><div class="btn"></div></a>
+
+		<div class="eval_desc">
+			<!--<img src="{$info.cover|get_cover_url}" width="100%"/>
+			<h6 class="m_t"><div style="word-wrap:break-word;">{$info.title}</div></h6>-->
+			<div class="lead_content" style="word-wrap:break-word;">{$info.intro}</div>
+		</div>
 	</div>
-   
-   	<div >
-    <a href="{:U('survey',array('id'=>$info[id],'client_id'=>$client_id))}" class="lead_btn">立即参与</a>
-	</div>
-	<input type="hidden" value='{$clinet_id}' id = 'clinet_id'>
-    <!-- <p class="copyright">{$system_copy_right}</p> -->
-</div>
 
 <script type="text/javascript">
 	$.WeiPHP.initWxShare({
@@ -21,7 +25,16 @@
 		desc:"{$info.intro}",
 		link:window.location.href
 	})
-
+</script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $(".dc_tit1").animate({
+            left:87+'vw'
+        },1500);
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    document.getElementById("gif").src="{:ADDON_PUBLIC_PATH}/images/animate_bg.gif?"+Math.random();
 </script>
 <!-- 底部导航 -->
 <include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

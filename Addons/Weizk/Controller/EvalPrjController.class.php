@@ -82,6 +82,7 @@ class EvalPrjController extends AddonsController {
     function index() {
         $id = $map ['id'] = I ( 'id', 0, 'intval' );
         $client_id = I ( 'client_id', 0, 'intval' );
+
         if($client_id == 0)
         {
             $url = addons_url ( 'Weizk://EvalPrj/select_client');
@@ -102,6 +103,7 @@ class EvalPrjController extends AddonsController {
 // 		$this->assign ( 'status', $status);
 
         $info = M ( 'ZkEvalPrj' )->where ( $map )->find ();
+
         $this->assign ( 'info', $info );
         $this->assign ( 'public_info', $public_info );
         $this->assign('client_id',$client_id);
