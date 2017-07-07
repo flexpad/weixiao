@@ -211,7 +211,10 @@ class EvalPrjController extends AddonsController {
             // 获取模型的字段信息
             $Model = $this->checkAttr ( $Model, $model ['id'] );
             $res = false;
-            $Model->create () && $res = $Model->$act ();
+            $data = I ( 'post.' );
+            $data['token'] = get_token ();
+            $data ['cTime'] = date("Y-m-d H:i:s",time());
+            $Model->create ($data) && $res = $Model->$act ();
             if ($res !== false) {
                 $act == 'add' && $id = $res;
 
