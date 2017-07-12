@@ -5,12 +5,12 @@
     <div class="mui-row">
         <div class="mui-col-sm-6 mui-col-xs-6">
             <li class="mui-table-view-cell ">
-                <a href="evaluation.html">测评</a>
+                <a href="evaluation.html">学校概况</a>
             </li>
         </div>
         <div class="mui-col-sm-6 mui-col-xs-6">
             <li class="mui-table-view-cell current">
-                <a href="news.html">资讯</a>
+                <a href="news.html">升学资讯</a>
             </li>
         </div>
     </div>
@@ -20,41 +20,31 @@
     <div id="slider" class="mui-slider" >
         <div class="mui-slider-group mui-slider-loop">
             <div class="mui-slider-item mui-slider-item-duplicate">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                <a href={$slideshow[0].url}>
+                    <img src={$slideshow[0].img}>
                 </a>
             </div>
-            <div class="mui-slider-item">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
-                </a>
-            </div>
-            <div class="mui-slider-item">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner2.png">
-                </a>
-            </div>
-            <div class="mui-slider-item">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner3.png">
-                </a>
-            </div>
-            <div class="mui-slider-item">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
-                </a>
-            </div>
+            <volist name="slideshow" id="vo">
+                <div class="mui-slider-item">
+                    <a href={$vo.url}>
+                        <img src={$vo.img}>
+                    </a>
+                </div>
+            </volist>
             <div class="mui-slider-item mui-slider-item-duplicate">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
+                <a href={$slideshow[0].url}>
+                    <img src={$slideshow[0].img}>
                 </a>
             </div>
         </div>
         <div class="mui-slider-indicator">
-            <div class="mui-indicator mui-active"></div>
-            <div class="mui-indicator"></div>
-            <div class="mui-indicator"></div>
-            <div class="mui-indicator"></div>
+            <volist name="slideshow" id="vo">
+                <if condition="$key eq 0">
+                    <div class="mui-indicator mui-active"></div>
+                <else/>
+                    <div class="mui-indicator"></div>
+                </if>
+            </volist>
         </div>
     </div>
     <!--资讯列表-->
@@ -224,6 +214,14 @@
             }
         );
     }
+
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            mui('body').on('tap','a',function(){document.location.href=this.href;});
+        });
+    })(mui, document);
+
 </script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-1.10.1.min.js" ></script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/app.js" ></script>
