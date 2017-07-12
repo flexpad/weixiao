@@ -81,22 +81,9 @@ class ZkNewsWapController extends BaseController
                 ));
             }
             $this->assign('category', $category);
-            // 幻灯片
+            */
 
-            $slideshow = M('weisite_slideshow')->where($map)->order('sort asc, id desc')->select();
-            foreach ($slideshow as &$vo) {
-                $vo ['img'] = get_cover_url($vo ['img']);
-            }
-
-            foreach ($slideshow as &$data) {
-                foreach ($category as $c) {
-                    if ($data ['cate_id'] == $c ['id']) {
-                        $data ['url'] = $c ['url'];
-                    }
-                }
-            }
-            $this->assign('slideshow', $slideshow);
-
+            /*
             $this->_footer();
             if ($this->config ['template_subcate'] == 'default') {
                 // code...
@@ -169,6 +156,27 @@ class ZkNewsWapController extends BaseController
             //var_dump($lists);
             //$this->assign('slide_data', $slideData);
             $this->assign('lists', $lists);
+
+            // 幻灯片
+            $map = null;
+            $map ['token'] = D('Common/Public')->getinfo($public_id, 'token');
+            empty ($map['token']) && $map['token'] = $this->token;
+
+            $slideshow = M('weisite_slideshow')->where($map)->order('sort asc, id desc')->select();
+            foreach ($slideshow as &$vo) {
+                $vo ['img'] = get_cover_url($vo ['img']);
+            }
+
+            /*            foreach ($slideshow as &$data) {
+                            foreach ($category as $c) {
+                                if ($data ['cate_id'] == $c ['id']) {
+                                    $data ['url'] = $c ['url'];
+                                }
+                            }
+                        }*/
+
+            $this->assign('slideshow', $slideshow);
+
             //$this->assign ( $list_data );
             //$this->_footer();
             //var_dump($lists);
@@ -209,7 +217,7 @@ class ZkNewsWapController extends BaseController
 
         $data['eval_url'] = U('/addon/Weizk/EvalPrj/select_client', array('publicid'=>$public_id));
 
-        var_dump($data);
+        //var_dump($data);
 
         $this->assign('info', $data);
 
