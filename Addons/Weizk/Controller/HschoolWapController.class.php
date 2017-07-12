@@ -76,13 +76,15 @@ class HschoolWapController extends BaseController
                 ));
             }
             $this->assign('category', $category);
-            // 幻灯片
+            */
 
+            // 幻灯片
             $slideshow = M('weisite_slideshow')->where($map)->order('sort asc, id desc')->select();
             foreach ($slideshow as &$vo) {
                 $vo ['img'] = get_cover_url($vo ['img']);
             }
 
+            /*
             foreach ($slideshow as &$data) {
                 foreach ($category as $c) {
                     if ($data ['cate_id'] == $c ['id']) {
@@ -90,8 +92,11 @@ class HschoolWapController extends BaseController
                     }
                 }
             }
+            */
+
             $this->assign('slideshow', $slideshow);
 
+            /*
             $this->_footer();
             if ($this->config ['template_subcate'] == 'default') {
                 // code...
