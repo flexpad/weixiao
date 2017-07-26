@@ -43,10 +43,13 @@ class EvalReportWapController extends BaseController
             $map['client_id'] = $client_id;
         }
         $row = 5;
-        //$data = M('ZkEvalReport')->where($map)->order('id')->page($page, $row)->select();
-        $data = M('ZkEvalReport')->where($map)->order('id')->select();
+
+        $data = M('ZkEvalReport')->where($map)->order('id')->page($page, $row)->select();
+        //$data = M('ZkEvalReport')->where($map)->order('id')->select();
+
         if($data == NULL)
             return NULL;
+
         $ret_list = array();
         foreach($data as $key => $val) {
             $prj_map['id'] = $val['prj_id'];
@@ -56,6 +59,7 @@ class EvalReportWapController extends BaseController
             $client_data = D('ZkClient')->get_clinet_info($val['client_id']);
             $ret_list[$key]['client_name'] = $client_data['name'];
             $ret_list[$key]['id'] = $val['id'];
+            $ret_list[$key]['url'] = U('detail', array('id'=>$val ['id']));
         }
 
         return $ret_list;
@@ -63,12 +67,20 @@ class EvalReportWapController extends BaseController
     public function lists()
     {
         $client_id = I('clientid', 0, 'intval'); // 默认显示第一页数据
-        $data = $this->get_lists(1,$client_id);
+        $page = I('page', 1, 'intval');
+        if (IS_AJAX) $page = intval(I('post.page'));
+
+        $data = $this->get_lists($page, $client_id);
 
         $this->assign('report_list',$data);
         $this->assign('public_id', $this->publicid);
-        $this->display('lists');
+
+        if (IS_AJAX)
+            $this->ajaxReturn($data);
+        else
+            $this->display('lists');
     }
+
     public function ajx_lists(){
         $page = I('page', 1, 'intval'); // 默认显示第一页数据
         $data = get_lists($page);
