@@ -283,4 +283,224 @@ class DailyTimeController extends AddonsController
         }
         else return false;
     }
+
+    public function newRecord() {
+
+        $response['status'] = 'newRecord: FAILED.';
+        if (IS_POST)
+        {
+            $Model = M('WxyDailyTime');
+            $data['Token'] = I('post.token');
+            if($data['Token'] != 'gh_2837e31e28ed')
+                return false;
+            $response['SN'] = I('post.SN');
+
+            $record_str = I('post.record');
+            parse_str($record_str, $record);
+            $data['studentID'] = $record['PIN'];
+
+/*            var_dump('---------');
+            var_dump($record);
+            var_dump('---------');*/
+
+            $recordTime = strtotime($record['TIME']);
+            $date = date('Y-m-d', $recordTime);
+            $firstTime = strtotime($date);
+            $lastTime = $firstTime + 86400;
+            $map['Token'] = $data['Token'];
+            $map['studentID'] = $data['studentID'];
+            $map['arriveTime'] = array(array('egt',$firstTime), array('elt',$lastTime), 'AND');
+
+            //var_dump($map);
+            $dbData = $Model->where($map)->select();
+            //var_dump($dbData);
+            if($dbData != NULL)
+            {
+                if($recordTime > intval($dbData[0]['arriveTime']))
+                {
+                    if($dbData[0]['leaveTime']==NULL || $recordTime>intval($dbData[0]['leaveTime']))
+                    {
+                        $data['leaveTime'] = $recordTime;
+                        $Model->where($map)->save($data);
+                        $response['status'] = 'newRecord: record leaveTime.';
+                        $response['data'] = $data;
+                    }
+                }
+                else
+                {
+                    $data['arriveTime'] = $recordTime;
+                    $Model->where($map)->save($data);
+                    $response['status'] = 'newRecord: change arriveTime.';
+                    $response['data'] = $data;
+                }
+            }
+            else
+            {
+                $data['arriveTime'] = $recordTime;
+                $Model->add($data);
+                $response['status'] = 'newRecord: record arriveTime.';
+                $response['data'] = $data;
+            }
+        }
+        else
+        {
+            $response['status'] = 'newRecord: NOT POST.';
+        }
+
+        json_encode($response);
+        $this->ajaxReturn($response);
+    }
+
+    public function syncRecord() {
+        $response['status'] = 'syncRecord: OK';;
+        if (IS_POST)
+        {
+            $Model = M('WxyDailyTime');
+            $data['Token'] = I('post.token');
+            if ($data['Token'] != 'gh_2837e31e28ed')
+                return false;
+            $response['SN'] = I('post.SN');
+            $records_str = I('post.records');
+
+           /* $data['Token'] = 'gh_2837e31e28ed';
+            $records_str = '[{"STATUS": 255, "RESERVED2": "0\\n162100012", "RESERVED1": "0", "TIME": "2017-08-09 10:23:19", "PIN": "1621000123", "VERIFY": "2", "WORKCODE": "0"}, {"STATUS": 255, "RESERVED2": "0\\n162100012", "RESERVED1": "0", "TIME": "2017-08-09 10:23:19", "PIN": "1621000124", "VERIFY": "2", "WORKCODE": "0"}, {"STATUS": 255, "RESERVED2": "0\\n162100012", "RESERVED1": "0", "TIME": "2017-08-09 10:23:19", "PIN": "1621000133", "VERIFY": "2", "WORKCODE": "0"}]';*/
+
+            $records = json_decode($records_str, true);
+
+            var_dump('=== ');
+            //var_dump('records_str = ',$records_str);
+            //var_dump(' ===');
+            var_dump('records = ', $records);
+            var_dump(' ===');
+
+
+            $i = 0;
+            foreach ($records as $vo)
+            {
+                $recordTime = strtotime($vo['TIME']);
+                $date = date('Y-m-d', $recordTime);
+                $firstTime = strtotime($date);
+                $lastTime = $firstTime + 86400;
+                $data['studentID'] = $vo['PIN'];
+                $map['Token'] = $data['Token'];
+                $map['studentID'] = $data['studentID'];
+                $map['arriveTime'] = array(array('egt',$firstTime), array('elt',$lastTime), 'AND');
+
+                //var_dump($map);
+                $dbData = $Model->where($map)->select();
+                if($dbData == NULL)
+                {
+                    $data['arriveTime'] = $recordTime;
+                    $Model->add($data);
+                    $response['status'] = 'syncRecord: record missing, save arriveTime';
+                    $response['data'][$i++] = $data;
+                }
+                else
+                {
+                    $db_arrTime = intval($dbData[0]['arriveTime']);
+                    $db_leaTime = intval($dbData[0]['leaveTime']);
+                    if($recordTime < $db_arrTime)
+                    {
+                        $data['arriveTime'] = $recordTime;
+                        $Model->where($map)->save($data);
+                        $response['status'] = 'syncRecord: time is before db_arriveTime, resave arriveTime';
+                        $response['data'][$i++] = $data;
+                    }
+                    else if(($dbData[0]['leaveTime'] == NULL && $recordTime > $db_arrTime) ||
+                            ($dbData[0]['leaveTime'] != NULL && $recordTime > $db_leaTime) )
+                    {
+                        $data['leaveTime'] = $recordTime;
+                        $Model->where($map)->save($data);
+                        $response['status'] = 'syncRecord: time is after db_leaveTime, resave leaveTime';
+                        $response['data'][$i++] = $data;
+                    }
+                }
+            }
+        }
+        else
+        {
+            $response = 'syncRecord: NOT POST.';
+        }
+
+        json_encode($response);
+        $this->ajaxReturn($response);
+    }
+
+    public function updateStudent() {
+
+        if (IS_POST)
+        {
+            $token = I('post.token');
+            if ($token != 'gh_2837e31e28ed')
+                return false;
+
+            $response['status'] = 'updateStudent: OK';
+            $response['SN'] = I('post.SN');
+            $preTimeStamp = I('post.timeStamp');
+
+           /* $response['op_code'] = 'add';
+            $stuCardManMode = M('WxyStudentCardManage');
+            $map['operation'] = 'add';
+            $stuChangeData = $stuCardManMode->where($map)->select();
+            if($stuChangeData == NULL)
+            {
+                $map['operation'] = 'change';
+                $response['op_code'] = 'change';
+                $stuChangeData = $stuCardManMode->where($map)->select();
+                if($stuChangeData == NULL)
+                {
+                    $map['operation'] = 'dele';
+                    $response['op_code'] = 'dele';
+                    $stuChangeData = $stuCardManMode->where($map)->select();
+                }
+            }*/
+
+            $studentTimeCard = M('WxyStudentTimeCard')->select();
+            if($studentTimeCard != NULL)
+            {
+                $response['timeStamp'] = $studentTimeCard[0]['updatetime']; //用户数据更新时间
+                if($response['timeStamp'] != $preTimeStamp)
+                    foreach($studentTimeCard as $i => $vo)
+                    {
+                        $response['users'][$i]['PIN'] = $vo['studentno'];
+                        $response['users'][$i]['Name'] = $vo['name'];
+                        $response['users'][$i]['Pri'] = '0';
+                        $response['users'][$i]['Passwd'] = '123';
+                        $response['users'][$i]['Card'] = $vo['cardno'];
+                        $response['users'][$i]['Grp'] = '1';
+                        $response['users'][$i]['TZ'] = '0001000100000000';
+                    }
+            }
+        }
+        else
+        {
+            $response = 'updateStudent: NOT POST.';
+        }
+
+        json_encode($response);
+        $this->ajaxReturn($response);
+    }
+
+    public function getCommand() {
+
+        if (IS_POST)
+        {
+            $token = I('post.token');
+            if ($token != 'gh_2837e31e28ed')
+                return false;
+
+            $response['timeStamp'] = time();
+            $response['SN'] = I('post.SN');
+            if(M('WxyStudentTimeCard')->count() > 0)
+                $response['cmd_list']['updatestd'] = 1;
+
+        }
+        else
+        {
+            $response = 'getCommand: NOT POST.';
+        }
+
+        json_encode($response);
+        $this->ajaxReturn($response);
+    }
 }
