@@ -341,6 +341,25 @@ class DailyTimeController extends AddonsController
                 $response['status'] = 'newRecord: record arriveTime.';
                 $response['data'] = $data;
             }
+
+            //发消息给微信
+            $map = NULL;
+            $map['Token'] = $map['token'] = $data['Token'];
+            $map['studentno'] = $data['studentID'];
+            $studentCare = M('WxyStudentCare')->where($map)->select();
+            if($studentCare != NULL)
+            {
+                foreach($studentCare as $vo)
+                {
+                    $openid = $vo['openid'];
+                    $url = '#';
+                    $info['name'] = M('WxyStudentTimeCard')->where($map)->select()[0]['name'];
+                    $info['stuId'] = $data['studentID'];
+                    $info['attendTime'] = $record['TIME'];
+                    $info['attendState'] = '刷卡签到';
+                    D('WxyDailyTime')->send_attend_to_user($openid, $url, $info);
+                }
+            }
         }
         else
         {
