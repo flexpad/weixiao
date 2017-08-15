@@ -386,11 +386,11 @@ class DailyTimeController extends AddonsController
 
             $records = json_decode($records_str, true);
 
-            var_dump('=== ');
+            /*var_dump('=== ');
             //var_dump('records_str = ',$records_str);
             //var_dump(' ===');
             var_dump('records = ', $records);
-            var_dump(' ===');
+            var_dump(' ===');*/
 
 
             $i = 0;
