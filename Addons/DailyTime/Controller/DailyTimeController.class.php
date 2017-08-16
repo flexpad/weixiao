@@ -356,7 +356,7 @@ class DailyTimeController extends AddonsController
                     $info['name'] = M('WxyStudentTimeCard')->where($map)->select()[0]['name'];
                     $info['stuId'] = $data['studentID'];
                     $info['attendTime'] = $record['TIME'];
-                    $info['attendState'] = '刷卡签到';
+                    $info['attendState'] = ($response['status']=='newRecord: record arriveTime.')?'到校签到':'离校签到';
                     D('WxyDailyTime')->send_attend_to_user($openid, $url, $info);
                 }
             }
@@ -512,7 +512,6 @@ class DailyTimeController extends AddonsController
             $response['SN'] = I('post.SN');
             if(M('WxyStudentTimeCard')->count() > 0)
                 $response['cmd_list']['updatestd'] = 1;
-
         }
         else
         {
