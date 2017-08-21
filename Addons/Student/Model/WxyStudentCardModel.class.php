@@ -7,13 +7,11 @@ use Think\Model;
  * Student_Card模型
  */
 class WxyStudentCardModel extends Model{
-    protected $studentManMode;
     public function __construct() {
         if (_ACTION == 'show') {
             $GLOBALS ['is_wap'] = true;
         }
         parent::__construct ();
-        $this->studentManMode = M('WxyStudentCardManage');
     }
 
     public function addStudent($data){
