@@ -235,12 +235,10 @@ class StudentController extends AddonsController{
             'H'=>'grade',
             'I'=>'studentno',
             'J'=>'phone',
-            'K'=>'cardno'
         );
         $data = importFormExcel($file_id, $column);
         //var_dump($data);
         //exit();
-        $timeStamp = time();
         $student_model = D('WxyStudentCard');
         //var_dump($student_model);
         if ($data['status']) {
@@ -251,7 +249,7 @@ class StudentController extends AddonsController{
                 $row['gender'] = ($row['gender'] == '男') ? 1 : 0;
                 if ($row['gender'] == '女') $row['gender'] = 2;
                 //$row['cardno'] = strval($row['cardno']);
-                $student_model->addStudent($row, $timeStamp);
+                $student_model->addStudent($row);
             }
             return true;
         }

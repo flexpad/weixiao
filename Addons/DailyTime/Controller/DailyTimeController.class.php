@@ -341,6 +341,25 @@ class DailyTimeController extends AddonsController
                 $response['status'] = 'newRecord: record arriveTime.';
                 $response['data'] = $data;
             }
+
+            //发消息给微信
+            $map = NULL;
+            $map['Token'] = $map['token'] = $data['Token'];
+            $map['studentno'] = $data['studentID'];
+            $studentCare = M('WxyStudentCare')->where($map)->select();
+            if($studentCare != NULL)
+            {
+                foreach($studentCare as $vo)
+                {
+                    $openid = $vo['openid'];
+                    $url = '#';
+                    $info['name'] = M('WxyStudentTimeCard')->where($map)->select()[0]['name'];
+                    $info['stuId'] = $data['studentID'];
+                    $info['attendTime'] = $record['TIME'];
+                    $info['attendState'] = ($response['status']=='newRecord: record arriveTime.')?'到校签到':'离校签到';
+                    D('WxyDailyTime')->send_attend_to_user($openid, $url, $info);
+                }
+            }
         }
         else
         {
@@ -367,11 +386,11 @@ class DailyTimeController extends AddonsController
 
             $records = json_decode($records_str, true);
 
-            var_dump('=== ');
+            /*var_dump('=== ');
             //var_dump('records_str = ',$records_str);
             //var_dump(' ===');
             var_dump('records = ', $records);
-            var_dump(' ===');
+            var_dump(' ===');*/
 
 
             $i = 0;
@@ -493,7 +512,6 @@ class DailyTimeController extends AddonsController
             $response['SN'] = I('post.SN');
             if(M('WxyStudentTimeCard')->count() > 0)
                 $response['cmd_list']['updatestd'] = 1;
-
         }
         else
         {
