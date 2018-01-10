@@ -30,6 +30,9 @@ class ClientWapController extends BaseController{
     }
 
     public function index() {
+        $public_id = I('publicid', 0, 'intval');
+        empty ($public_id) && $public_id = I('public', 0, 'intval');
+        $this->assign("public_id", $public_id);
         $this->display("index");
     }
 

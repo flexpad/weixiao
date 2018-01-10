@@ -471,34 +471,17 @@ class WapController extends AddonsController {
         $map['openid'] = get_openid();
         $model = D('WxyStudentPerformView');
 
-        $row = 20;
-        $rawdata = $model->where($map)->order('studentno', 'termid desc', 'subject desc')->page($page, $row)->select();
-        $data = array();
-        $subject = '';
-        $classdate = '';
-        $i = -1;
-        foreach($rawdata as $key => $val) {
-            //val_dump($subject);
-            if ($subject != $val['subject'] || $classdate != $val['classdate']) {
-                $i++;
-                $data[$i]['teacher'] = is_null($val['teacher'])?'':$val['teacher'];
-                $subject = $val['subject'];
-                $classdate = $val['classdate'];
-                $data[$i]['subject'] = is_null($val['subject'])?'':$val['subject'];
-                $data[$i]['classdate'] = is_null($val['classdate'])?'':$val['classdate'];
-                //dump($row);
-                $j = 0;
-                $data[$i]['score'] = array();
-                $data[$i]['score'][$j]['name'] = is_null($val['course_name'])?'':$val['course_name'];
-                $data[$i]['score'][$j]['exmscore'] = is_null($val['exmscore'])?'':$val['exmscore'];
+        $row = 8;
+        $data = $model->where($map)->order('classdate')->page($page, $row)->select();
 
-            } else {
-                $j++;
-                $data[$i]['score'][$j]['name'] = is_null($val['course_name'])?'':$val['course_name'];
-                $data[$i]['score'][$j]['exmscore'] = is_null($val['exmscore'])?'':$val['exmscore'];
-            }
+        /*foreach($data as $key => $row) {
 
-        }
+            if ($row['score'] == NULL)  $data[$key]['score'] = '';
+            if ($row['score1'] == NULL) $data[$key]['score1'] = '';
+            if ($row['score2'] == NULL) $data[$key]['score2'] = '';
+            if ($row['score3'] == NULL) $data[$key]['score3'] = '';
+            if ($row['exmscore'] == NULL) $data[$key]['exmscore'] = '';
+        }*/
         /*var_dump($model->_sql());*/
         if ($data == NULL)
             $this->ajaxReturn(NULL,'JSON');

@@ -68,6 +68,7 @@ border-radius: 6px;margin-left: 5px;width: 12px;height: 12px;background: #fff;}
             var json;
             if (aa<0.02){
                 i++;
+                console.log("The Href is:", href);
                 $.post(href,{ajax:1, page:i},function(data){
                     json = JSON.parse(data);
                     if (json){

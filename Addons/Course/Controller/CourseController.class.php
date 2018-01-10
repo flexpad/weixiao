@@ -16,6 +16,7 @@ class CourseController extends AddonsController{
         $this->model = $this->getModel('WxyCourse'); //getModelByName ( $_REQUEST ['_controller'] );
         $this->token = get_token();
         $this->school = D('Common/Public')->getInfoByToken($this->token, 'public_name');
+        $this->schooltype = D('Common/Public')->getInfoByToken($this->token, 'public_type');
 
         /*var_dump($this->model);
         var_dump($_REQUEST ['_controller']);
@@ -143,20 +144,37 @@ class CourseController extends AddonsController{
         $this->display('add');
     }
 
-    public function scoreimport() {
+    public function scoreimport(){
+        $uid = $this->uid;
+        $token = $this->token;
         $id = I('id');
         $model = M('WxyCourse');
-        
+
+        if ($uid == 0) redirect(U('/Home/Public'));
         if (IS_POST) {
             $data['file'] = I('post.file');
             $data['courseid'] = ltrim(strstr(I('post.course'), '.', true));
             $data['classdate'] = I('post.classdate');
             $data['comment'] = I('post.comment');
             $data['token'] = $this->token;
+            /*$data['token'] = $token;
+            $course_obj = explode('.',I('post.courseid'));
+            $data['teacher'] = $course_obj[2];
+            $data['courseid'] = $course_obj[0];
+            $data['term'] = I('post.term');
+            $data['file'] = I('post.file');
+            $data['classdate'] = I('post.classdate');
+            $data['comment'] = I('post.comment');*/
+
+            $sendflag = (I('post.msgsend') == "on")?true:false ;
+
             if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = D('WxyScoreimport');
-            $import_model->addImport($data);
-            if ($this->import_data_from_excel($data['file'], $data['courseid'], $data['classdate'])) //import student data from uploaded Excel file.
+            $res = $import_model->addImport($data);
+            /*$data['termid'] = $res;
+            $data['subject'] = $course_obj[1];*/
+
+            if ($this->import_student_score_from_excel($data['file'],$data,$sendflag)) //import student data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -166,7 +184,12 @@ class CourseController extends AddonsController{
             $map['token'] = $this->token;
             $data = $model->where($map)->select();
             $this->assign('lists', $data);
+            $this->assign('id', $id);
             $this->display('import');
+
+            /*$this->assign('public_id', $this->public_id);
+            $this->assign('course_valid_date',date('Y-m-d',strtotime('-1 year')));
+            $this->display('import');*/
         }
     }
 
@@ -192,6 +215,7 @@ class CourseController extends AddonsController{
             $map['token'] = $this->token;
             $data = $model->where($map)->select();
             $this->assign('lists', $data);
+            $this->assign('id', $id);
             $this->display('commentimport');
         }
     }
@@ -232,11 +256,6 @@ class CourseController extends AddonsController{
         $data = array();
         $column = array (
             'A' => 'studentno',
-            /*
-            'B' => 'uid',
-            'C' => 'token',
-            'D'=>'oid',
-            */
             'B'=>'score1',
             'C'=>'score2',
             'D'=>'score3',
@@ -266,6 +285,94 @@ class CourseController extends AddonsController{
         $interval = date_diff($datetime1, $datetime2);
         return $interval->format($differenceFormat);
     }
-    
+
+    // Send a Weixin template message to use to notify the score:
+
+    public function send()
+    {
+        $score_id = I('id');
+        $map['id'] = $score_id;
+        $score_data = D('WxyScoreNotifyView')->where($map)->select();
+        //var_dump($score_data);
+        $statue = 0;
+        foreach ($score_data as $value) {
+            $url = U('addon/Student/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
+            //var_dump($value);
+            $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value, $this->token, $this->school);
+
+            $statue += ($retdata["errcode"] == 0)?0:1;
+            usleep(60000);
+        };
+
+        if($statue == 0) {
+            $this->success("此次成绩通知单已经发送到关注该学生的微信号上！");
+
+            $data = M('WxyScore')->where($map)->select()[0];
+            $data["weixinmsgsend"] = "已发送";
+            //var_dump($data);
+            M('WxyScore')->where($map)->save($data);
+        }
+        else
+            $this->error("成绩通知单发送错误！");
+    }
+
+    private function wx_send_msg($score_id){
+        $map['id'] = $score_id;
+        $score_data = D('WxyScoreNotifyView')->where($map)->select();
+        //var_dump($score_data);
+
+        foreach ($score_data as $value) {
+            $url = U('addon/Student/Wap/score', array('publicid'=>$this->public_id, 'studentno' => $value['studentno']));
+            //var_dump($value);
+            $retdata = D('WxyScore')->send_score_to_user($value['openid'], $url, $value, $this->token, $this->school);
+            if($retdata["errcode"] == 0)
+                usleep(30000);
+            else
+                usleep(1000);
+        };
+
+    }
+
+    //This function was modified for full time school under Weixiao addon.
+    private function import_student_score_from_excel($file_id,$base_data,$sendflag) {
+        $data = array();
+        $column = array (
+            'A' => 'studentno',  //学生编号
+            'B'=>'score1',     //课堂表现
+            'C'=>'score2',     //出勤情况
+            'D'=>'score3',      //作业完成
+            'E'=>'score',       //总分
+            'F'=>'exmscore',    //测试分数
+            'G'=>'comment'
+        );
+        $data = importFormExcel($file_id, $column);
+        $score_model = D('WxyScore');
+        if ($data['status']) {
+            foreach  ($data['data'] as $row) {
+                $row['token'] = $this->token;
+                //$row['termid']= $base_data['termid'];
+                $row['classdate'] = $base_data['classdate'];
+                $row['courseid'] = $base_data['courseid'];
+                //$row['subject'] = $base_data['subject'];
+                //$row['term'] = $base_data['term'];
+                //$row['score'] = '';
+                $map['token'] =  $this->token;
+                $map['studentno'] =  $row['studentno'];
+                $stu_arry = M('WxyStudentCard')->where($map)->select();
+
+                if (count($stu_arry) != 0) $row['name'] = $stu_arry[0]['name'];
+                //var_dump($map,$stu_arry,$stu_arry[0]['name'],count($stu_arry),$row);
+                $row['weixinmsgsend'] = $sendflag?"已发送":"未发送";
+                $it = $score_model->addScore($row);
+                if($sendflag){
+                    //var_dump($it);
+                    $this->wx_send_msg($it);
+                }
+
+            }
+            return true;
+        }
+        else return false;
+    }
     
 }

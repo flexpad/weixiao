@@ -16,16 +16,13 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'token'     => 'token',
             'id'        => 'id', 
             'sid'       => 'sid', 
-            'courseid'  => 'courseid',
-            'course_name' => 'course_name', //added the course_name in the score table
-            'name'      => 'stuname',
-            'subject'   => 'subject',
+            'courseid'  => 'courseid', 
             'term'      => 'exam', 
             'score'     => 'score', 
             'score1'    => 'score1', 
             'score2'    => 'score2', 
             'score3'    => 'score3', 
-            'exmscore'  => 'socreStr', 
+            'exmscore'  => 'socreStr',
             'classdate' =>  'classdate', 
             'comment'   =>  'comment',
             'studentno' => 'studentno'
@@ -35,7 +32,7 @@ class WxyScoreNotifyViewModel extends ViewModel {
         'WxyStudentCare'=>array(
             'openid' => 'openid',
             '_on'    => 'WxyScore.token = WxyStudentCare.token AND WxyScore.studentno = WxyStudentCare.studentno'),
-        /*
+        
         'WxyStudentCard'=>array('name'=>'student_name',
             'name' => 'stuname',
             '_on'=>'WxyStudentCare.sid = WxyStudentCard.id'), // To see changed to WxyStudentCard.id
@@ -45,7 +42,7 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'teacher' => 'teacher',
             '_on' => 'WxyScore.courseid = WxyClassCourse.id'
         ),
-
+        /*
         'WxyDailyTime' => array(
             'arriveTime' => 'arriveTime',
             'leaveTime' => 'leaveTime',

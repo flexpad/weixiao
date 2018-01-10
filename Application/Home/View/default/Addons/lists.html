@@ -45,10 +45,6 @@
                     </volist>                    
                     </select>
                 </case>
-                <case value="input">
-                    <span>{$vo.title}：</span>
-                    <input type="text" name="{$vo.name}" class="search-input input-small" placeholder="{$vo.placeholder}">
-                </case>
                 <case value="datetime">
                     <span>{$vo.title}：</span>
              <input type="datetime" name="start_time" class="search-input date input-small" value="{$vo.start_time}" placeholder="请选择时间">
@@ -73,8 +69,7 @@
             </volist>
              
              <!-- <a class="sort " href="#" title="排序">排序:高->低</a> -->
-              <php> $get_param[model]=$model['name']; $search_url || $search_url = addons_url($_REQUEST ['_addons'].'://'.$_REQUEST ['_controller'].'/lists');</php>
-              <button type="button" class="sch-btn btn" href="javascript:;" id="search" url="{$search_url}">搜索</button> </div>
+             <button type="button" class="sch-btn btn" href="javascript:;" id="search">搜索</button> </div>
         </form>
         </notempty>
       </div>
@@ -116,27 +111,16 @@
 $(function(){
 	//搜索功能
   $("#search").click(function(){
-      var url = $(this).attr('url');
-      var query = '';
-      $('.search-input').each(function(index){
-          var str = $(this).val();
-          if (query != '')
-            query = query + '&' + $(this).attr('name')+'='+str.replace(/(^\s*)|(\s*$)/g,"");
-          else
-            query = query + $(this).attr('name')+'='+str.replace(/(^\s*)|(\s*$)/g,"");
-      });
+    var url = $(this).attr('url');
+    var str = $('.search-input').val()
+        var query  = $('.search-input').attr('name')+'='+str.replace(/(^\s*)|(\s*$)/g,"");
 
-      /*var str = $('.search-input').val();
-      var query  = $('.search-input').attr('name')+'='+str.replace(/(^\s*)|(\s*$)/g,"");
-      */
-      //console.log("Query String is: ", query);
-
-      if( url.indexOf('?')>0 ) {
-          url += '&' + query;
-      } else{
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
             url += '?' + query;
-      }
-      window.location.href = url;
+        }
+    window.location.href = url;
   }); 
 
     //回车自动提交

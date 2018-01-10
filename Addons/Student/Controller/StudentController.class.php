@@ -25,7 +25,6 @@ class StudentController extends AddonsController{
 
         $this->assign ( 'model', $this->model );
         */
-
     }
 
     /**
@@ -35,28 +34,30 @@ class StudentController extends AddonsController{
     {
         $page = I('p', 1, 'intval'); // 默认显示第一页数据
 
-        // 解析列表规则
-        $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
-        $grids = $list_data ['list_grids'];
-        $fields = $list_data ['fields'];
-
         // 关键字搜索
         $map ['token'] = get_token();
-        $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'title';
+        $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'studentno';
+
         if (isset ($_REQUEST [$key])) {
             $map [$key] = array(
                 'like',
                 '%' . htmlspecialchars($_REQUEST [$key]) . '%'
             );
-            unset ($_REQUEST [$key]);
+            //unset ($_REQUEST [$key]);
         }
+
+
+        //注意代码顺序：解析列表规则必须在搜索关键字搜索处理之后！！
+        // 解析列表规则
+        $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
+        $grids = $list_data ['list_grids'];
+        $fields = $list_data ['fields'];
         // 条件搜索
         foreach ($_REQUEST as $name => $val) {
             if (in_array($name, $fields)) {
                 $map [$name] = $val;
             }
         }
-
         $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
 
         // 读取模型数据列表
@@ -84,6 +85,7 @@ class StudentController extends AddonsController{
         }
         $this->assign('list_grids', $grids);
         $this->assign('list_data', $data);
+        $this->assign('searchkey', $key);
         $this->meta_title = $this->model ['title'] . '列表';
 
         $this->display();
@@ -95,7 +97,7 @@ class StudentController extends AddonsController{
     }
     */
     public function add(){
-        $this->display('add');
+        $this->display('import');
     }
 
     public function edit() {
@@ -234,7 +236,7 @@ class StudentController extends AddonsController{
             'G'=>'school',
             'H'=>'grade',
             'I'=>'studentno',
-            'J'=>'phone'
+            'J'=>'phone',
         );
         $data = importFormExcel($file_id, $column);
         //var_dump($data);
@@ -248,7 +250,7 @@ class StudentController extends AddonsController{
                 $row['phone'] = strval($row['phone']);
                 $row['gender'] = ($row['gender'] == '男') ? 1 : 0;
                 if ($row['gender'] == '女') $row['gender'] = 2;
-
+                //$row['cardno'] = strval($row['cardno']);
                 $student_model->addStudent($row);
             }
             return true;

@@ -93,7 +93,7 @@ class WeiSiteController extends BaseController {
 	}
 	// 分类列表
 	function lists() {
-		$cate_id = I ( 'cate_id', 0, 'intval' );
+		$cate_id = I ( 'get.cate_id', 0, 'intval' );
 		empty ( $cate_id ) && $cate_id = I ( 'classid', 0, 'intval' );
         //var_dump($cate_id);
 		if (file_exists ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_lists'] . '.html' )) {
@@ -227,7 +227,7 @@ class WeiSiteController extends BaseController {
 
 			$this->_footer ();
 			$this->display ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/TemplateDetail/' . $this->config ['template_detail'] . '/detail.html' );
-		}
+        }
 	}
 
 	// 3G页面底部导航

@@ -90,8 +90,8 @@ $(function(){
             var sstr = "";
             var json;
             if (aa<0.02){
-                console.log("1");
                 i++;
+                console.log("The Href is:", href);
                 $.post(href,{ajax:1, page:i},function(data){
                     console.log("2");
                     json = JSON.parse(data);

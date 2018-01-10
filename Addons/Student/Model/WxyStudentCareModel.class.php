@@ -14,8 +14,23 @@ use Think\Model;
 class WxyStudentCareModel extends Model{
     public function approve($student, $user, $token){
         $studentcard_model = D('WxyStudentCard');
+        $studenttimecard_model=D('WxyStudentTimeCard');
+        $studentno = $student['studentno'];
         $student = $studentcard_model->verify($student);
-        if ($student == NULL) return false;
+        if ($student == NULL)
+        {
+            $map_t['serial_no'] = $studentno;
+            $data = $studenttimecard_model->where($map_t)->find();
+            if ($data != NULL)
+            {
+                $map_s['studentno'] = $data['studentno'];
+                $student = $studentcard_model->where($map_s)->find();
+                unset($data);
+                if ($student == NULL) return false;
+            }
+            else
+                return false;
+        }
 
         $data['sid'] = $student['id']; // To see changed to $student['id']
         $data['studentno'] = $student['studentno'];

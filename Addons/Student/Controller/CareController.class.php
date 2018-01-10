@@ -33,10 +33,6 @@ class CareController extends AddonsController
     {
         $page = I('p', 1, 'intval'); // 默认显示第一页数据
 
-// 解析列表规则
-        $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
-        $grids = $list_data ['list_grids'];
-        $fields = $list_data ['fields'];
 
 // 关键字搜索
         $map ['token'] = get_token();
@@ -48,6 +44,12 @@ class CareController extends AddonsController
             );
             unset ($_REQUEST [$key]);
         }
+
+// 解析列表规则
+        $list_data = $this->_get_model_list($this->model);//_list_grid($this->model);
+        $grids = $list_data ['list_grids'];
+        $fields = $list_data ['fields'];
+
 // 条件搜索
         foreach ($_REQUEST as $name => $val) {
             if (in_array($name, $fields)) {

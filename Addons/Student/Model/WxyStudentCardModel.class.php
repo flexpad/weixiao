@@ -7,14 +7,24 @@ use Think\Model;
  * Student_Card模型
  */
 class WxyStudentCardModel extends Model{
+    public function __construct() {
+        if (_ACTION == 'show') {
+            $GLOBALS ['is_wap'] = true;
+        }
+        parent::__construct ();
+    }
+
     public function addStudent($data){
         $map ['token'] = $data['token'];
         $map ['studentno'] = $data['studentno'];
+        $map['name'] = $data['name'];
         //var_dump($map);
         //var_dump($this->where[$map]);
-        if ($this->where($map)->select() != NULL) {
-            return false;
-        } else {
+
+        if ($this->where($map)->select() != NULL)
+            return $this->where($map)->save($data);
+        else
+        {
             $res = $this->add ( $data );
             return $res;   
         }           

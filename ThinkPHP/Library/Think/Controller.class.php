@@ -1036,7 +1036,7 @@ abstract class Controller {
 					'like',
 					'%' . htmlspecialchars ( $_REQUEST [$key] ) . '%' 
 			);
-			unset ( $_REQUEST [$key] );
+			unset ( $_REQUEST [$key] );  //Should be commented!
 		}
 		
 		// 条件搜索

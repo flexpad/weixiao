@@ -64,8 +64,9 @@ return array(
         'template_filter'=> array(
             'Behavior\ContentReplaceBehavior', // 模板输出替换
         ),
-        'view_filter'   =>  array(
-            'Behavior\WriteHtmlCacheBehavior', // 写入静态缓存
+
+        'view_filter' => array(
+            'Behavior\TokenBuildBehavior', // 表单令牌
         ),
     ),
 );

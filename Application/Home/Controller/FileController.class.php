@@ -21,13 +21,14 @@ class FileController extends HomeController {
 		/* 调用文件上传组件上传文件 */
 		$File = D('File');
 		$file_driver = C('DOWNLOAD_UPLOAD_DRIVER');
-		var_dump($file_driver);
+		//var_dump($file_driver);
 		//var_dump($File);
 	}
 	public function upload(){
 		$return  = array('status' => 1, 'info' => '上传成功', 'data' => '');
 		/* 调用文件上传组件上传文件 */
 		$File = D('File');
+        C('TOKEN_ON',false);
 		$file_driver = C('DOWNLOAD_UPLOAD_DRIVER');
 		
 		$info = $File->upload(
@@ -74,6 +75,7 @@ class FileController extends HomeController {
 
         /* 调用文件上传组件上传文件 */
         $Picture = D('Picture');
+        C('TOKEN_ON',false);
         $pic_driver = C('PICTURE_UPLOAD_DRIVER');
         $info = $Picture->upload(
             $_FILES,

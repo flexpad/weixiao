@@ -1176,7 +1176,6 @@ class Model {
 				}
 			}
 		}
-		
 		// 检测提交字段的合法性
 		if (isset ( $this->options ['field'] )) { // $this->field('field1,field2...')->create()
 			$fields = $this->options ['field'];
@@ -1186,6 +1185,7 @@ class Model {
 		} elseif ($type == self::MODEL_UPDATE && isset ( $this->updateFields )) {
 			$fields = $this->updateFields;
 		}
+
 		if (isset ( $fields )) {
 			if (is_string ( $fields )) {
 				$fields = explode ( ',', $fields );
@@ -1193,21 +1193,21 @@ class Model {
 			// 判断令牌验证字段
 			if (C ( 'TOKEN_ON' ))
 				$fields [] = C ( 'TOKEN_NAME', null, '__hash__' );
-			foreach ( $data as $key => $val ) {
+            foreach ( $data as $key => $val ) {
 				if (! in_array ( $key, $fields )) {
 					unset ( $data [$key] );
 				}
 			}
 		}
-		
+
 		// 数据自动验证
-		if (! $this->autoValidation ( $data, $type ))
-			return false;
-			
-			// 表单令牌验证
+		if (! $this->autoValidation ( $data, $type )) {
+            return false;
+        }
+		// 表单令牌验证
 		if (! $this->autoCheckToken ( $data )) {
 			$this->error = L ( '_TOKEN_ERROR_' );
-			return false;
+            return false;
 		}
 		
 		// 验证完成生成数据对象
@@ -1239,7 +1239,7 @@ class Model {
 		if (C ( 'TOKEN_ON' )) {
 			$name = C ( 'TOKEN_NAME', null, '__hash__' );
 			if (! isset ( $data [$name] ) || ! isset ( $_SESSION [$name] )) { // 令牌数据无效
-				return false;
+                return false;
 			}
 			
 			// 令牌验证

@@ -1303,7 +1303,7 @@ function get_list_field($data, $grid, $model) {
 					'[EDIT]',
 					'[SEND]',
 					'[COMMENT]', // COMMENT operation for student comments.
-					'[MODEL]' 
+					'[MODEL]'
 			), array (
 					'del?id=[id]&model=[MODEL]',
 					'edit?id=[id]&model=[MODEL]',

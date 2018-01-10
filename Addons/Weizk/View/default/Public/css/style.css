@@ -85,7 +85,7 @@ img{max-width: 100%; width: auto; height: auto; vertical-align: top; border: 0;}
 .eva-header{position: fixed; top: 0; width: 100%; border-bottom: 1px solid #efefef; z-index: 100; background: #f4f4f4;}
 .eva-header li{ text-align: center; font-size: 18px;}
 .eva-header .current a{ color: #0db252;}
-.mui-content{ padding-top: 44px;}
+/*.mui-content{ padding-top: 44px;}*/
 .evaluation{ overflow: hidden; }
 .evaluation li{ background: #fff; padding: .3rem; border-bottom: 1px solid #EFEFEF;}
 .evaluation .eva-pic{ position: relative; overflow: hidden; border-radius: .08rem;}
@@ -561,6 +561,11 @@ img{max-width: 100%; width: auto; height: auto; vertical-align: top; border: 0;}
 
 .eva-li {
 	padding-right: 40px;
+}
+
+/*首页样式*/
+.menu a {
+	color: white;
 }
 
 /*学业评估首页*/

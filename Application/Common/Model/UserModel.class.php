@@ -16,6 +16,15 @@ use Think\Model;
  * @author 麦当苗儿 <zuojiazi@vip.qq.com>
  */
 class UserModel extends Model {
+    protected $insertFields = array (
+        'nickname',
+        'login_name',
+        'password',
+        'email',
+        'mobile',
+        'truename',
+        'is_audit'
+    );
 	protected $_validate = array (
 			array (
 					'nickname',
@@ -85,13 +94,17 @@ class UserModel extends Model {
 				'email' => $email,
 				'mobile' => $mobile,
 				'truename' => $truename,
-				'is_audit' => C ( 'REG_AUDIT' ) 
+				'is_audit' => C ( 'REG_AUDIT' )
 		);
-		
+
 		// 验证手机
 		empty ( $mobile ) || $data ['mobile'] = $mobile;
 		$data = $this->_deal_nickname ( $data );
-		/* 添加用户 */
+        if (C ( 'TOKEN_ON' )) {
+            $data['__hash__'] = I('post.__hash__');
+        }
+
+        /* 添加用户 */
 		if ($this->create ( $data )) {
 			$uid = $this->add ();
 			return $uid ? $uid : 0; // 0-未知错误，大于0-注册成功
