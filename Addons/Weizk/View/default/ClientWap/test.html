@@ -1,0 +1,111 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+
+<!-- 主界面不动、菜单移动 -->
+<!-- 侧滑导航根容器 -->
+<div class="mui-off-canvas-wrap mui-draggable mui-slide-in">
+    <!-- 菜单容器 -->
+    <aside class="mui-off-canvas-left" id="offCanvasSide">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!-- 菜单具体展示内容 -->
+
+            </div>
+        </div>
+    </aside>
+    <!-- 主页面容器 -->
+    <div class="mui-inner-wrap">
+        <!-- 主页面标题 -->
+        <header class="mui-bar mui-bar-nav">
+            <a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left" href="#offCanvasSide"></a>
+            <h1 class="mui-title">标题</h1>
+        </header>
+        <nav class="mui-bar mui-bar-tab">
+            <a class="mui-tab-item mui-active">
+                <span class="mui-icon mui-icon-home"></span>
+                <span class="mui-tab-label">首页</span>
+            </a>
+            <a class="mui-tab-item">
+                <span class="mui-icon mui-icon-phone"></span>
+                <span class="mui-tab-label">电话</span>
+            </a>
+            <a class="mui-tab-item">
+                <span class="mui-icon mui-icon-email"></span>
+                <span class="mui-tab-label">邮件</span>
+            </a>
+            <a class="mui-tab-item">
+                <span class="mui-icon mui-icon-gear"></span>
+                <span class="mui-tab-label">设置</span>
+            </a>
+        </nav>
+        <div class="mui-content mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!-- 主界面具体展示内容 -->
+                <div class="mui-slider">
+                    <div class="mui-slider-group">
+                        <div class="mui-slider-item">
+                            <a href="#">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                                <p class="mui-slider-title">文字说明1</p>
+                            </a>
+                        </div>
+                        <div class="mui-slider-item">
+                            <a href="#">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/banner2.png">
+                                <p class="mui-slider-title">文字说明2</p>
+                            </a>
+                        </div>
+                        <div class="mui-slider-item">
+                            <a href="#">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/banner3.png">
+                                <p class="mui-slider-title">文字说明3</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mui-slider-indicator">
+                        <div class="mui-indicator mui-active"></div>
+                        <div class="mui-indicator"></div>
+                        <div class="mui-indicator"></div>
+                    </div>
+                </div>
+
+
+                <button id="showCityPicker" class="mui-btn mui-btn-block" type="button">二级联动示例 ...</button>
+                <div id="cityResult" class="ui-alert"></div>
+
+            </div>
+        </div>
+        <div class="mui-off-canvas-backdrop"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    mui.init()
+</script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/city.data.js?ver=0.1"></script>
+<script>
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+
+            //-----------------------------------------
+            //级联示例
+            var cityPicker = new $.PopPicker({
+                layer: 2
+            });
+            cityPicker.setData(cityData);
+            console.table(cityData);
+            var showCityPickerButton = doc.getElementById('showCityPicker');
+            var cityResult = doc.getElementById('cityResult');
+            showCityPickerButton.addEventListener('tap', function(event) {
+                cityPicker.show(function(items) {
+                    cityResult.innerText = "你选择的城市是:" + items[0].text + " " + items[1].text;
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+            //-----------------------------------------
+
+        });
+    })(mui, document);
+</script>

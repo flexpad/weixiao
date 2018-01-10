@@ -1,0 +1,124 @@
+<extend name="Base/common" />
+<block name="body">
+    <style type="text/css">
+        .money {
+            width: 50px;
+        }
+        .specTable .param {
+            display: none;
+        }
+        .specTable p {
+            display: block;
+            line-height: 50px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .check-tips {
+            color: #aaa;
+            margin-left:2px;
+        }
+        .cf{
+            margin-left:20px;
+        }
+        .class{
+            height: 25px;
+        }
+    </style>
+    <!-- 标签页导航 -->
+    <div class="span9 page_message">
+        <section id="contents">
+            <ul class="tab-nav nav">
+                <li class=""><a href="{:U('lists')}">课程列表</a></li>
+                <li class=""><a href="{:U('add')}">编辑课程<b class="arrow fa fa-sort"></b></a></li>
+                <li class=""><a href="{:U('scoreimport')}">成绩导入</a></li>
+                <li class="current"><a href="{:U('comment')}">评语导入<b class="arrow fa fa-sort"></b></a></li>
+            </ul>
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('comment?model='.$model['id'])}" method="post" class="form-horizontal">
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>课程（仅列出最近一年的课程，历史数据编辑可从列表项点击进入）<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <select name="course">
+                                <volist name="lists" id="vo">
+                                    <option>{$vo.id}. {$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>上课时间<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <input type="datetime" name="classdate" class="text date" value="{$field.classdate)}" placeholder="请选择日期" />
+                        </div>
+                    </div>-->
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>学生评语Excel文件上传<span class="check-tips">请选择符合格式的.xls或.xlsx文件</span></label>
+                        <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
+                            <input type="file" id="upload_file_file">
+                            <input type="hidden" name="file" value="{$data.file}"/>
+                            <div class="upload-img-box"><present name="data[$field['name']]">
+                                <div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]|get_table_field=###,'id','name','File'}</div>
+                            </present>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>描述<span class="check-tips">导入评语数据的说明，控制在100汉字以内</span></label>
+                        <div class="controls">
+                            <label class="textarea input-large">
+                                <textarea class="text input-large" name="comment" >{$data.comment}</textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-item form_bh">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                    </div>
+                </form>
+            </div>
+
+
+    </div>
+    </section>
+    </div>
+    </div>
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <php> if(C('COLOR_STYLE')=='blue_color') echo '
+        <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+        '; </php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $('#submit').click(function(){
+            $('#form').submit();
+        });
+
+        $(function(){
+            initUploadFile();
+
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            showTab();
+            hide_move();
+
+            $('.select_type').each(function(){ select_type(this); });
+            $('.select_type').change(function(){ select_type(this); });
+        });
+
+    </script>
+</block>

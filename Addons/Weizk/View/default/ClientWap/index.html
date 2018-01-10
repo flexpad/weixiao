@@ -1,0 +1,339 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body>
+
+<!-- 主界面不动、菜单移动 -->
+<!-- 侧滑导航根容器 -->
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+    <!-- 菜单容器 -->
+    <aside class="mui-off-canvas-left" id="offCanvasSide">
+        <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!-- 菜单具体展示内容 -->
+                <div id="menu-slider" class="menu-wrapper">
+                    <div id="menu" class="menu">
+                        <a class="current" href="{:U('/addon/Weizk/ClientWap/index/publicid/'.$public_id)}">首页</a>
+                        <a href="{:U('/addon/Weizk/EvalPrj/index/id/2/client_id/0')}">学业评估</a>
+                        <a href="{:U('addon/Weizk/HschoolWap/lists/publicid/'.$public_id)}">高中</a>
+                        <a href="ranking.html">排行榜</a>
+                        <a href="{:U('addon/Weizk/ZkNewsWap/lists/cateid/99/publicid/'.$public_id)}">中考专题</a>
+                    </div>
+                </div>
+                <div id="menu-backdrop" class="menu-backdrop"></div>
+            </div>
+        </div>
+    </aside>
+    <!-- 主页面容器 -->
+    <div class="mui-inner-wrap">
+        <!-- 主页面标题 -->
+        <header class="mui-bar mui-bar-nav header">
+            <a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"  href="#offCanvasSide" ></a>
+            <h1 class="mui-title"><a href=""><img src="{:ADDON_PUBLIC_PATH}/images/i4-logo.png"/></a></h1>
+            <a class="mui-icon mui-icon-search mui-pull-right" href="search.html"></a>
+        </header>
+
+        <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!-- 主界面具体展示内容 -->
+                <div class="mui-content">
+                    <!--图片轮播-->
+                    <div id="slider" class="mui-slider">
+                        <div class="mui-slider-group mui-slider-loop">
+                            <div class="mui-slider-item mui-slider-item-duplicate">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                                </a>
+                            </div>
+                            <div class="mui-slider-item">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                                </a>
+                            </div>
+                            <div class="mui-slider-item">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner2.png">
+                                </a>
+                            </div>
+                            <div class="mui-slider-item">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner3.png">
+                                </a>
+                            </div>
+                            <div class="mui-slider-item">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
+                                </a>
+                            </div>
+                            <div class="mui-slider-item mui-slider-item-duplicate">
+                                <a href="#">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mui-slider-indicator">
+                            <div class="mui-indicator mui-active"></div>
+                            <div class="mui-indicator"></div>
+                            <div class="mui-indicator"></div>
+                            <div class="mui-indicator"></div>
+                        </div>
+                    </div>
+                    <!--导航-->
+                    <ul class="nav">
+                        <li>
+                            <a href="{:U('/addon/Weizk/EvalPrj/index/id/2/client_id/0')}">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/icon.png" />
+                                <p>学业评估</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('addon/Weizk/HschoolWap/lists/publicid/'.$public_id)}">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/icon3.png" />
+                                <p>高中</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="ranking.html">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/icon2.png" />
+                                <p>排行榜</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('addon/Weizk/ZkNewsWap/lists/cateid/99/publicid/'.$public_id)}">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/icon1.png" />
+                                <p>中考专题</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--
+                            作者：flexpad2011@gmail.com
+                            时间：2017-06-04
+                            描述：中考新闻
+                        -->
+                    <div class="index-title">
+                        <span>中考新闻</span>
+                        <a href="{:U('addon/Weizk/ZkNewsWap/lists/cateid/99/publicid/'.$public_id)}">显示全部<i class="mui-icon mui-icon-arrowright"></i></a>
+                    </div>
+                    <ul class="news">
+                        <li>
+                            <a href="newdetali.html">
+                                <div class="news-pic"><img src="{:ADDON_PUBLIC_PATH}/images/n1.jpg"></div>
+                                <div class="news-text">
+                                    <h2>有支付宝小程序吗？与微信小程序比有什么区别？</h2>
+                                    <div class="date">
+                                        <label class="time">05月08日 14:53</label>
+                                        <label class="view">90</label>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newdetali.html">
+                                <div class="news-pic"><img src="{:ADDON_PUBLIC_PATH}/images/n2.jpg"></div>
+                                <div class="news-text">
+                                    <h2>微信小程序可共享至微信群啦！朋友圈还远吗？</h2>
+                                    <div class="date">
+                                        <label class="time">05月08日 14:53</label>
+                                        <label class="view">90</label>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newdetali.html">
+                                <div class="news-pic"><img src="{:ADDON_PUBLIC_PATH}/images/n3.jpg"></div>
+                                <div class="news-text">
+                                    <h2>【早报】微信小程序新增功能：开发者可获取群ID</h2>
+                                    <div class="date">
+                                        <label class="time">05月08日 14:53</label>
+                                        <label class="view">90</label>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newdetali.html">
+                                <div class="news-pic"><img src="{:ADDON_PUBLIC_PATH}/images/n4.jpg"></div>
+                                <div class="news-text">
+                                    <h2>俄罗斯宣布封禁微信，网友表示：还有QQ</h2>
+                                    <div class="date">
+                                        <label class="time">05月08日 14:53</label>
+                                        <label class="view">90</label>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--专题推荐-->
+                    <div class="index-title">
+                        <span>专题推荐</span>
+                        <a href="{:U('addon/Weizk/HschoolWap/lists/publicid/'.$public_id)}">显示全部<i class="mui-icon mui-icon-arrowright"></i></a>
+                    </div>
+                    <div class="special">
+                        <div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+                            <div class="mui-scroll">
+                                <a href="specialdetail.html" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj.png" /></a>
+                                <a href="specialdetail.html" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj1.png" /></a>
+                                <a href="specialdetail.html" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj2.jpg" /></a>
+                                <a href="specialdetail.html" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj3.png" /></a>
+                                <a href="specialdetail.html" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj4.png" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--名校大比拼-->
+                    <div class="index-title">
+                        <span>名校大比拼</span>
+                        <a href="{:U('addon/Weizk/HschoolWap/lists/publicid/'.$public_id)}">显示全部<i class="mui-icon mui-icon-arrowright"></i></a>
+                    </div>
+                    <ul class="mui-table-view fresh-comment">
+                        <li>
+                            <a href="evadatail.html">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/test.jpg" />
+                                <div class="text">
+                                    <h2>成都七中林荫街校区</h2>
+                                    <p>感恩笔记本：发现身边美好的人和事，让自己变得更幸福一点</p>
+                                </div>
+                                <div class="score">
+                                    <span>8.5</span>分
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="evadatail.html">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/test1.jpg" />
+                                <div class="text">
+                                    <h2>成都石室中学文庙校区</h2>
+                                    <p>看图识字：提高宝宝独立识记兴趣，开发大脑</p>
+                                </div>
+                                <div class="score">
+                                    <span>8.5</span>分
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="evadatail.html">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/test2.png" />
+                                <div class="text">
+                                    <h2>成都树德中学宁夏街校区</h2>
+                                    <p>新品有戏应用：收罗全球最具设计和功能的好物</p>
+                                </div>
+                                <div class="score">
+                                    <span>8.5</span>分
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="evadatail.html">
+                                <img src="{:ADDON_PUBLIC_PATH}/images/test3.png" />
+                                <div class="text">
+                                    <h2>成都七中高新校区</h2>
+                                    <p>爱弹唱：有音乐，有快乐！</p>
+                                </div>
+                                <div class="score">
+                                    <span>8.5</span>分
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--广告-->
+                    <div class="advantage">
+                        <a href=""><img src="{:ADDON_PUBLIC_PATH}/images/advantage.jpg" /></a>
+                    </div>
+
+                    <!--每日精选-->
+                    <div class="index-title">
+                        <span>每日精选</span>
+                        <a href="">显示全部<i class="mui-icon mui-icon-arrowright"></i></a>
+                    </div>
+                    <div class="classify">
+                        <div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+                            <div class="mui-scroll">
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx1.PNG" />
+                                    <p>极简笔记</p>
+                                </a>
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx2.jpg" />
+                                    <p>洽总日签</p>
+                                </a>
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx3.jpg" />
+                                    <p>她厨美食</p>
+                                </a>
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx4.png" />
+
+                                    <p>热点小黄历</p>
+                                </a>
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx5.jpg" />
+                                    <p>健康计算器</p>
+                                </a>
+                                <a href="storedetail.html" class="item">
+                                    <img src="{:ADDON_PUBLIC_PATH}/images/jx6.png" />
+                                    <p>名片云管家</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--主题-->
+                    <div class="index-title"></div>
+                    <div class="special">
+                        <div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+                            <div class="mui-scroll">
+                                <a href="" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj.png" /></a>
+                                <a href="" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj1.png" /></a>
+                                <a href="" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj2.jpg" /></a>
+                                <a href="" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj3.png" /></a>
+                                <a href="" class="item"><img src="{:ADDON_PUBLIC_PATH}/images/tj4.png" /></a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="mui-off-canvas-backdrop"></div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+    //侧滑容器父节点
+    var offCanvasWrapper = mui('#offCanvasWrapper');
+
+    //主界面容器
+    var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+    //菜单容器
+    var offCanvasSide = document.getElementById("offCanvasSide");
+
+    //移动效果是否为整体移动
+    var moveTogether = false;
+    //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
+    var classList = offCanvasWrapper[0].classList;
+    offCanvasWrapper.offCanvas().refresh();
+
+    //主界面和侧滑菜单界面均支持区域滚动；
+    mui('#offCanvasSideScroll').scroll();
+    mui('#offCanvasContentScroll').scroll();
+    //实现ios平台原生侧滑关闭页面；
+    if (mui.os.plus && mui.os.ios) {
+        mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+            plus.webview.currentWebview().setStyle({
+                'popGesture': 'none'
+            });
+        });
+    }
+</script>
+
+
+<!--
+    作者：flexpad2011@gmail.com
+    时间：2017-06-04
+    描述：侧滑菜单
+-->
+<!--显示下拉-->
+
+
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>
+

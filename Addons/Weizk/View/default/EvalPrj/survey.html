@@ -1,0 +1,126 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html"/>
+<body style="background: #f05150;">
+
+<!---->
+<form class="answer_form" id="answerform" action="{:U('survey?id='.$_GET['id'].'&next_id='.$next_id.'&client_id='.$client_id)}" method="post">
+  <div class="whole">
+
+    <!--头部信息-->
+    <div class="eval_head">
+      <div class="dc_tit2">
+        <img src="{$survey.cover|get_cover_url}" />
+      </div>
+      <div class="dc_tit2">
+        <p>{$survey.title}</p>
+      </div>
+    </div>
+
+    <!--选择单选题目-->
+    <div class="t_con">
+      <div class="con_tit">
+        <p>NO.{$num}&nbsp;题</p>
+        <p>{$question.title}</p>
+        <p>{$question.intro}</p>
+      </div>
+      <div class="con_con">
+        <div>
+            <input name="next_id" value="{$next_id}" type="hidden">
+            <input name="question_id" value="{$question.id}" type="hidden">
+            <input name="num" value="{$num}" type="hidden">
+            <switch name="question.type">
+              <case value="textarea">
+                <!-- 文本框 -->
+                <div class="form-item textarea-item cf">
+                  <div class="controls">
+                    <textarea type="text" placeholder="在这里输入内容" class="text input-medium" name="answer">{$data}</textarea>
+                  </div>
+                </div>
+              </case>
+              <case value="checkbox">
+                <volist name="extra" id="vo">
+                  <div class="form-item cf">
+                    <label class="checkbox"><span class="li_style">{$i}</span> <input type="checkbox" value="{$key}" name="answer[]"
+                      <in name="key" value="$data" >checked="checked"</in>
+                      >{$vo} <span class="checked">&nbsp;</span></label>
+                  </div>
+                </volist>
+              </case>
+              <default/>
+              <volist name="extra" id="vo">
+                <div class="form-item cf">
+                  <label class="radio"><span class="li_style">{$i}</span> <input type="radio" value="{$key}" name="answer"
+
+                    <eq name="data" value="$key">checked="checked"</eq>
+                    >{$vo} <span class="checked">&nbsp;</span></label>
+                </div>
+              </volist>
+            </switch>
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <!--上提下题按钮-->
+    <div class="t_btn">
+      <if condition = "($next_id eq -1)">
+          <button id="answersubmit" type="submit">完成</a>
+      <else/>
+          <button id="next" type="submit">下一题</a>
+      </if>
+      <!--<button type="button">返回上一题</button>
+      <button id="next" type="button">下一题</button>-->
+    </div>
+    <!--提示遮罩层-->
+    <div class="ts_mask">
+      <div class="tishi">
+        <div class="qd"></div>
+      </div>
+    </div>
+  </div>
+</form>
+  <!---->
+
+  <!-- p class="copyright">{$system_copy_right}{$tongji_code}</p> -->
+
+<script>
+		var is_require = "{$question.is_must}";
+		var widget = "{$question.type}";
+		function checkForm(){
+			if(is_require=='0') return true;
+			var content = '';
+			var msg = '当前的题目是必选题,请先选择选项.';
+			if(widget=='textarea'){
+				content = $('textarea').val();
+				msg = '当前的题目不能为空.';
+			}else if(widget=='checkbox'){
+				content = $("input[type='checkbox']:checked").val();
+			}else{
+				content = $("input[type='radio']:checked").val();
+			}
+			//console.log(content);
+			//return false;
+			if(content=='' || content==undefined){
+				$.Dialog.fail(msg);
+				return false;
+			}
+		
+			return true;
+		}	
+		
+		(function($, doc) {
+	        $.init();
+	        $.ready(function() {
+	            //-----------------------------------------
+	            var bt_submit = doc.getElementById('answersubmit');
+							bt_submit.addEventListener('tap', function(event) {
+									if(checkForm()){
+										$('#answerform').submit();
+									}
+							});
+	        });
+	    })(mui, document);
+</script> 
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

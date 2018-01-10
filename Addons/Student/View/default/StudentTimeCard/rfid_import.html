@@ -1,0 +1,111 @@
+<extend name="Base/common" />
+<block name="body">
+<style type="text/css">
+.money {
+	width: 50px;
+}
+.specTable .param {
+	display: none;
+}
+.specTable p {
+	display: block;
+	line-height: 50px;
+}
+.text-center {
+	text-align: center;
+}
+.check-tips {
+	color: #aaa;
+	margin-left:2px;
+}
+.cf{
+	margin-left:20px;
+}
+</style>
+  <!-- 标签页导航 -->
+  <div class="span9 page_message">
+    <section id="contents">
+      <ul class="tab-nav nav">
+          <li class=""><a href="{:U('lists')}">考勤卡信息列表<b class="arrow fa fa-sort-up"></b></a></li>
+          <li class=""><a href="{:U('import')}">考勤卡信息导入<b class="arrow fa fa-sort-up"></b></a></li>
+          <li class="current"><a href="{:U('rfid_import')}">RFID考勤卡基础信息导入<b class="arrow fa fa-sort-up"></b></a></li>
+
+      </ul>
+      <div class="tab-content"> 
+        <!-- 表单 -->
+        <form id="form" action="{:U('rfid_import?model='.$model['id'])}" method="post" class="form-horizontal">
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>口令字（RDIF基础信息至关重要，必须输入正确口令字才能导入数据）<span class="check-tips"></span></label>
+                <div class="controls">
+                  <input type="text" class="text input-large" name="password" value="{$data.password}">
+                </div>
+              </div>
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>标题<span class="check-tips"></span></label>
+                <div class="controls">
+                  <input type="text" class="text input-large" name="title" value="{$data.title}">
+                </div>
+              </div>
+            <div class="form-item cf">
+                    <label class="item-label"><span class="need_flag">*</span>RFID考勤卡基础数据Excel文件上传<span class="check-tips">请选择符合格式的.xls或.xlsx文件（A:姓名,B:学号,C:卡号）</span></label>
+                    <div class="controls upload_file" rel="file" data-max="1" title="点击上传文件">
+                        <input type="file" id="upload_file_file">
+                        <input type="hidden" name="file" value="{$data.file}"/>
+                        <div class="upload-img-box"><present name="data[$field['name']]">
+                            <div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]|get_table_field=###,'id','name','File'}</div>
+                        </present>
+                        </div>
+                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label"><span class="need_flag">*</span>描述<span class="check-tips">导入数据说明，控制在100汉字以内</span></label>
+                <div class="controls">
+                  <label class="textarea input-large">
+                  <textarea class="text input-large" name="comment" >{$data.comment}</textarea>
+                  </label>
+                </div>
+            </div>
+            <div class="form-item form_bh">
+                  <input type="hidden" name="id" value="{$data.id}">
+                  <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            </div>
+        </form>
+      </div>
+
+
+</div>
+</section>
+</div>
+</div>
+</block>
+<block name="script">
+  <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <php> if(C('COLOR_STYLE')=='blue_color') echo '
+    <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    '; </php>
+  <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script> 
+  <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script> 
+  <script type="text/javascript">
+$('#submit').click(function(){
+    $('#form').submit();
+});
+
+$(function(){
+    initUploadFile();
+	
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:0,
+        autoclose:true
+    });
+    showTab();
+	hide_move();
+	
+	$('.select_type').each(function(){ select_type(this); });
+	$('.select_type').change(function(){ select_type(this); });
+});
+
+</script>
+</block>

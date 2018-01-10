@@ -1,0 +1,1243 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <script src="//hm.baidu.com/hm.js?b072351f205dad7e1293fe7b0d92ab66"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?b072351f205dad7e1293fe7b0d92ab66";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <title>IT方向测试卷</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <!-- 基础加载 必须-->
+
+
+    <script src="/train/framework/jquery.min.js" type="text/javascript"></script>
+    <script src="/train/framework/scripts/sys.aspx" type="text/javascript"></script>
+    <script>
+        var ROOT = '/train/';
+        var HANDLERS = '/exam_handler/';
+    </script>
+
+    <!--end 基础加载 必须--><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+    <link href="theme/test/wx/style.css?201705031241SS" rel="stylesheet" type="text/css">
+    <script src="framework/scripts/confirm.js?324234"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js?4e477626-0c1e-47ef-b759-2783bce8ff7a"></script>
+    <script>
+        var YXDK = 1;
+        var YXKDA = 1;
+        var YXKFS = 1;
+        var YXFX = 1;
+        var autoClose = 0;
+
+        var SJMS = 0;
+        var SJTS = '0#0#0#0';
+
+        var initToken = null;
+        //微信分享
+        $(document).ready(function () {
+            window.localStorage.sourceUrl = 'DoTestV2_tguid_3e6968b2-64ae-45a7-87ff-bba4c41fc3da#wechat_redirect';
+
+            $.ajax({ url: '/train//Handlers/WXTokenHandler.aspx', async: false, type: 'POST', data: { methodName: 'getToken', url: document.location.href }, success: function (res) {
+
+                initToken = eval('(' + res + ')');
+                //alert();
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: initToken.appid, // 必填，公众号的唯一标识
+                    timestamp: initToken.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: initToken.nonceStr, // 必填，生成签名的随机串
+                    signature: initToken.signature, // 必填，签名，见附录1
+                    jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'onMenuShareAppMessage', 'onMenuShareTimeline','closeWindow'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+            }, error: function (e) {initAgain(); }
+            });
+        });
+        //初始化失败就重来
+        function initAgain(){
+            $.ajax({ url: '/train//Handlers/WXTokenHandler.aspx', async: false, type: 'POST', data: { methodName: 'getToken', url: document.location.href }, success: function (res) {
+
+                initToken = eval('(' + res + ')');
+                //alert();
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: initToken.appid, // 必填，公众号的唯一标识
+                    timestamp: initToken.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: initToken.nonceStr, // 必填，生成签名的随机串
+                    signature: initToken.signature, // 必填，签名，见附录1
+                    jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'onMenuShareAppMessage', 'onMenuShareTimeline','closeWindow'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+            }, error: function (e) {initAgain(); }
+            });
+        }
+
+        var wxtitle = '';
+        var wxdesc = '';
+        wx.ready(function () {
+
+
+
+            if(YXFX !=1)
+                wx.hideOptionMenu();
+
+            if (autoClose == 1)
+                wx.closeWindow();
+
+            wx.onMenuShareTimeline({
+                title: 'IT方向的专业测试卷', // 分享标题
+                link: 'http://www.veryhoo.cn/train/JumpResult.aspx?type=test&guid=3e6968b2-64ae-45a7-87ff-bba4c41fc3da', // 分享链接
+                imgUrl: '', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+
+                    //document.location.href = '/train//RankList.aspx?score=' + lastScore + "&result=sss&uid=" + currentUser.id;
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: 'IT方向的专业测试卷', // 分享标题
+                desc: '为您提供IT方向的专业测试', // 分享描述
+                link: 'http://www.veryhoo.cn/train/JumpResult.aspx?type=test&guid=3e6968b2-64ae-45a7-87ff-bba4c41fc3da', // 分享链接
+                imgUrl: '', // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    //$.mobile.changePage('#finish', "pop", false, false);
+                    //document.location.href ='/train//RankList.aspx?score=' + lastScore + "&result=sss&uid=" + currentUser.id;
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        });
+
+        //主观图片上传
+        var isImgOver = true;
+        var txsrc = '';
+        var localIds;
+        var currentImg;
+        function getPhoto(p_send) {
+            currentImg = p_send;
+            if ($('#' + currentImg).attr("src").indexOf('plus_icon.png')>=0)
+            {
+                //如果点击的是加号
+                wx.chooseImage({
+                    success: function (res) {
+                        localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        if (localIds.length > 0) {
+                            uploadFile();
+                        }
+
+
+                    }
+                });
+            }
+            else
+            {
+                $('#filePanel').show();
+            }
+        }
+        function uploadFile() {
+            isImgOver = false;
+            wx.uploadImage({
+                localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                isShowProgressTips: 1, // 默认为1，显示进度提示
+                success: function (res) {
+
+                    if (typeof (res.serverId) != 'undefined') {
+                        var serverId = res.serverId; // 返回图片的服务器端ID
+                        $.ajax({ url: Services, type: 'POST', async: false, data: { methodName: 'UploadAnswerPic', sid: serverId }, success: function (res) {
+                            var result = res;
+                            result = eval("(" + result + ")");
+
+                            if (result.IsSuccess == 'true') {
+                                //alert($('#' + currentImg).attr('src'));
+                                $('#' + currentImg).removeClass().addClass('imgBtn');
+                                $('#' + currentImg).attr('src', '/train//tempFiles/Answer/' + result.Message);
+                                txsrc = '/tempFiles/Answer/' + result.Message;
+
+                                resetFileArray();
+
+
+                            }
+                            else {
+                                $.MsgBox.Alert('错误',result.Message);
+                            }
+                            isImgOver = true;
+
+                        }, error: function (e) {
+
+                            $.MsgBox.Alert('错误',e);
+                        }, dataType: 'text'
+                        });
+                    }
+
+                }
+            });
+        }
+
+        function replaceX(p_str)
+        {
+            p_str = p_str.replace(/\"/g,"“");
+            p_str = p_str.replace(/\'/g,"‘");
+            p_str = p_str.replace(/\n/g," ");
+            p_str = p_str.replace(/\t/g,"");
+            p_str = p_str.replace(/\r/g,"");
+            p_str = p_str.replace(/&quot;/g,"“");
+            p_str = p_str.replace(/&#39;/g,"‘");
+
+            return p_str;
+        }
+
+        function resetFileArray()
+        {
+            var imgs = $('.uploadBtn').find("img");
+
+            testObj.questions[current - 1].answerImages.splice(0, testObj.questions[current - 1].answerImages.length);
+            testObj.questions[current - 1].text = replaceX($('#answerTxt').val());
+
+
+            for (var i = 0; i< imgs.length; i++) {
+
+                if ($(imgs[i]).attr("src").indexOf('plus_icon.png') < 0) {
+                    testObj.questions[current - 1].answerImages.push($(imgs[i]).attr("src").replace('/train/',''));
+                }
+
+            }
+
+            $('#center').text(checkUnDo() + "题未做");
+
+        }
+
+        function answerTxt_onblur() {
+
+            testObj.questions[current - 1].answerText = replaceX($('#answerTxt').val());
+            $('#center').text(checkUnDo() + "题未做");
+        }
+
+
+    </script>
+</head>
+<body>
+<form method="post" action="DoTestV2.aspx?tguid=3e6968b2-64ae-45a7-87ff-bba4c41fc3da" id="form1">
+    <div class="aspNetHidden">
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUIMTU1NDg5MzNkZGDaKdrDVzc3ifE0997ilXlg9VPZefLMekdPW9bDHzjv">
+    </div>
+
+    <div id="picPrewPanel" onclick="$(this).hide()">
+        <div class="closeBtn">点击返回</div>
+        <img style="width:100%;height:100%">
+    </div>
+    <div id="filePanel">
+        <script>
+            function showPicPrew()
+            {
+                $('#filePanel').hide();
+                $('#picPrewPanel').find('img').attr('src',$('#'+currentImg).attr('src'));
+                $('#picPrewPanel').show();
+            }
+            function uploadOverride()
+            {
+
+                $.MsgBox.Confirm("确认信息", '上传将覆盖原有图片，是否确认继续?', function () {
+                    wx.chooseImage({
+                        success: function (res) {
+                            localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            if (localIds.length > 0) {
+                                $.ajax({ url: Services, type: 'POST', data: { methodName: 'DeletePic', loc: $('#'+currentImg).attr('src').replace('/train/',"") }, success: function (res) {
+
+
+                                }, error: function (e) { debugger; }
+                                });
+                                uploadFile();
+
+                            }
+
+
+                        }
+                    });
+                },function(){
+
+                });
+
+
+
+
+                $('#filePanel').hide();
+            }
+            function deleteFile()
+            {
+
+
+                $.MsgBox.Confirm("确认信息", '您确定要移除图片吗?', function () {
+                    $.ajax({ url: Services, type: 'POST', data: { methodName: 'DeletePic', loc: $('#'+currentImg).attr('src').replace('/train/',"") }, success: function (res) {
+                        var result = eval('(' + res + ')');
+
+                        $('#' + currentImg).attr('src', '/train/framework/images/plus_icon.png');
+                        $('#' + currentImg).removeClass().addClass('addImgBtn');
+                        resetFileArray();
+                    }, error: function (e) { debugger; }
+                    });
+                },function(){
+
+                });
+                $('#filePanel').hide();
+            }
+        </script>
+        <table width="100%" id="filePanel_tab">
+            <tbody><tr><td align="center" valign="middle"><img class="filePanel_icon" src="/train/framework/images/prew_img.png"></td><td valign="middle"><a id="" onclick="showPicPrew()" class="imgControlBtn">预览图片</a></td></tr>
+            <tr><td align="center" valign="middle"><img class="filePanel_icon" src="/train/framework/images/upload_img.png"></td><td valign="middle"><a id="" onclick="uploadOverride()" class="imgControlBtn">覆盖上传</a></td></tr>
+            <tr><td align="center" valign="middle"><img class="filePanel_icon" src="/train/framework/images/remove_img.png"></td><td valign="middle"><a id="" onclick="deleteFile()" class="imgControlBtn">删除图片</a></td></tr>
+            </tbody></table>
+        <div id="filePanel_bottom"><a class="btn" onclick="$('#filePanel').hide()">取消返回</a></div>
+    </div>
+    <div id="prev" style="display: none;">
+
+        <div id="prev_title">IT方向测试卷</div>
+        <div id="test_name">考试人：樵夫</div>
+        <div id="prev_desc">为确保结果能真实反应自己，请：1.在安静、独立的空间完成测评2.根据第一反应答题3.如遇网络问题，退出后可以重新进入答题界面为确保结果能真实反应自己，请：1.在安静、独立的空间完成测评2.根据第一反应答题3.如遇网络问题，退出后可以重新进入答题界面<br></div>
+        <div id="prev_btn">
+            <table width="100%" align="center">
+                <tbody><tr>
+                    <td width="50%" align="center"><a class="ksbtn" onclick="document.location.href='userEdit.aspx?uid='+currentUser.id">考生信息</a></td>
+                    <td align="center"><a class="btn" onclick="startTest();">开始测验</a></td>
+                </tr>
+                </tbody></table>
+        </div>
+    </div>
+    <div id="header" style="display: block;">
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tbody><tr style="display:none">
+                <td colspan="3">
+
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="center">
+                    <div id="timer">01:25:44</div>
+                </td>
+                <td align="center">
+                    <div id="center">25题未做</div>
+                </td>
+                <td width="30%" align="center">
+                    <div id="pages">1/25</div>
+                </td>
+            </tr>
+            </tbody></table>
+        <center>
+        </center>
+    </div>
+    <div id="bg_content">
+        <div id="bg">
+        </div>
+        <div id="loading" style="display: none;">
+            <div>
+                试卷加载中,请稍候...</div>
+        </div>
+        <div id="result">
+            <div style="font-size: 2em;">
+                考试结束
+            </div>
+            <script>
+                function dofav(){
+                    window.localStorage.favit = "1";
+                }
+                function showResultByFav(){
+                    if(window.localStorage.favit == "1"){
+                        $(".favPanel").hide();
+                        $(".jump2Result").show();
+                        //$("#score").show();
+                        //$("#zql").show();
+                        //$("#hs").show();
+                    }
+                }
+            </script>
+            <div class="favPanel">长按二维码关注，查看考试分数</div>
+            <div class="favPanel"> <img src="qr.jpg" onclick="dofav()" style="width:70%"></div>
+            <div class="jump2Result" style="display:none" onclick="window.open('https://mp.weixin.qq.com/s?__biz=MzUyMDA0ODM4Mg==&amp;mid=100000023&amp;idx=1&amp;sn=df6762d97cfebfdd1d3c8e25ac39c12a&amp;chksm=79f11a864e86939094b95e2fc1cbeff3317104f938eb97dad930fdf6d9272887567fb130ea63&amp;mpshare=1&amp;scene=1&amp;srcid=0413UORKqSdtHbAYXHe27xKL#rd')">点这里查看成绩</div>
+            <div id="score" onclick="showTestRank()" style="display:none">
+                92</div>
+            <div id="zql" style="display:none">
+                正确率：92%</div>
+            <div id="hs" style="display:none">
+                耗时：23分钟</div>
+        </div>
+    </div>
+    <center>
+        <div id="panel" style="display: block;">
+            <br>
+            <div id="qtype">1、单选题 (1分)</div>
+            <div id="title">我是女生</div>
+            <div id="content"></div>
+            <div id="attr">
+            </div>
+            <p id="type1Content">
+
+                <span id="ts" class="ts">&nbsp;&nbsp;请在下方点选：</span>
+                <br>
+            </p><ul id="answers" type="1">
+            <li id="a_34463330" class="item" onclick="ItemSelect(this)" isselect="0">A、是</li><li id="a_34463331" class="item" onclick="ItemSelect(this)" isselect="0">B、否</li></ul>
+            <p></p>
+            <div id="type4Content" style="text-align: left; display: none;">
+
+                <div class="ts">&nbsp;&nbsp;请拍照或上传答案图片</div>
+
+
+
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody><tr>
+                        <td align="left" valign="middle" width="33%" class="uploadTD">
+                            <div class="uploadBtn" onclick="getPhoto('img1')"><img id="img1" class="addImgBtn" src="/train/framework/images/plus_icon.png"></div>
+                        </td>
+                        <td align="left" valign="middle" width="34%" class="uploadTD">
+                            <div class="uploadBtn" onclick="getPhoto('img2')"><img id="img2" class="addImgBtn" src="/train/framework/images/plus_icon.png"></div>
+                        </td>
+                        <td align="left" valign="middle" width="33%" class="uploadTD"><div class="uploadBtn" onclick="getPhoto('img3')" ondblclick="removeImg('img3')"><img id="img3" class="addImgBtn" src="/train/framework/images/plus_icon.png"></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="left">
+                            <textarea id="answerTxt" onblur="answerTxt_onblur()" style="width:95%" placeholder="如有文字答案，请在这里填写"></textarea>
+                        </td>
+                    </tr>
+                    </tbody></table>
+
+
+
+            </div>
+            <div id="copyright" onclick="document.location.href='tel:13770783732'"></div>
+            <p id="note">
+            </p>
+            <p id="P1" style="min-height: 5em">
+            </p>
+        </div>
+        <div id="footer" style="display: block;">
+            <table width="100%" height="100%">
+                <tbody><tr>
+                    <td width="15%" align="center" class="subbtn">
+                        <a class="IconBg" onclick="jump2UnDo()">
+                            <img src="/train/framework/images/checker.png"></a>
+                    </td>
+                    <td align="center" class="subbtn">
+                        <a class="btn" id="subBtn" onclick="submitChecker()">提交试卷</a>
+                    </td>
+                    <td align="center" id="retbtn" style="display: none">
+                        <a class="btn" onclick="panelHide();$('#footer2').show();$('#result').show();">返回结论</a>
+                    </td>
+                    <td width="15%" align="center">
+                        <a class="IconBg" onclick="pre()">
+                            <img src="/train/framework/images/back.png"></a>
+                    </td>
+                    <td width="15%" align="center">
+                        <a class="IconBg" onclick="next()">
+                            <img src="/train/framework/images/forward.png"></a>
+                    </td>
+                </tr>
+                </tbody></table>
+        </div>
+        <div id="footer2">
+            <table width="100%" height="100%">
+
+                <tbody><tr>
+                    <td align="center" id="errTD">
+                        <a class="btn" onclick="review()">查看错题</a>
+                    </td>
+                    <td align="center" id="reTestTD">
+                        <a class="btn" onclick="history.go(0)">重做试卷</a>
+                    </td>
+                </tr>
+                </tbody></table>
+        </div>
+    </center>
+</form>
+
+
+<script>
+    ////倒计时
+    var counttime; //总秒钟
+    var jsq = 0;
+    var vartt;
+    var selectItem = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    function daojishi() {
+
+        if (counttime <= 60) {
+            $('#timer').attr("style", " color:red");
+        }
+        if (counttime >= 0) {
+            var ms = counttime % 60; //余数 89%60==29秒
+            ms = ms < 10 ? ("0" + ms) : ms;
+            var mis = Math.floor(counttime / 60); //分钟
+            if (mis >= 60) {
+                var hour = Math.floor(mis / 60);
+                hour = hour < 10 ? ("0" + hour) : hour;
+                mis = Math.floor((counttime - hour * 60 * 60) / 60);
+                mis = mis < 10 ? ("0" + mis) : mis;
+                $('#timer').text("" + hour + ":" + mis + ":" + ms);
+            } else if (mis >= 1) {
+                $('#timer').text("" + mis + ":" + ms);
+            } else {
+                $('#timer').text("" + ms + "秒");
+            }
+
+
+            counttime--;
+            jsq++;
+            vartt = window.setTimeout("daojishi()", 1000);
+        } else {
+
+
+            submitFunc();
+
+        }
+
+
+    }
+    var errorArr = new Array();
+    //是否浏览模式
+    var isReview = false;
+    var zql = "";
+    var score = 0;
+
+    var testguid = 'c7bbd148-caf5-4ebe-b60e-8f849f67315e';
+
+    function review() {
+        isReview = true;
+        if (errorArr.length == 0) {
+            $.MsgBox.Alert('',"你太强了，全对，所以木有错题浏览了");
+
+            return;
+        }
+        else {
+            testObj.questions = errorArr;
+            current = 1;
+            panelShow();
+            $('#result').hide();
+            $('#footer2').hide();
+            total = errorArr.length;
+            showQuestion(current);
+        }
+    }
+
+    function submitFunc() {
+        window.clearTimeout(vartt);
+
+        score = 0;
+        panelHide();
+        $('#loading').find("div").text("数据提交中，请稍等...");
+        $('#loading').show();
+        if (!isHasType4)
+        {
+            //没有主观题的试卷
+            var wrongids = "";
+
+
+
+            for (var i = 0; i < testObj.questions.length; i++) {
+                var as = testObj.questions[i].answers;
+                var isWrong = false;
+                for (var j = 0; j < as.length; j++) {
+                    if (as[j].isSel != as[j].isanswer) {
+                        isWrong = true;
+                        break;
+                    }
+                }
+                if (isWrong) {
+                    wrongids += testObj.questions[i].qid + ",";
+                    errorArr.push(testObj.questions[i]);
+                }
+                else {
+                    score = accAdd(score,parseFloat(testObj.questions[i].score));
+
+                }
+
+            }
+
+            zql = (1 - errorArr.length / total);
+            //上传错题
+            if (wrongids != "") {
+                wrongids = wrongids.substr(0, wrongids.length - 1);
+                $.ajax({ url: WrongHandlerServices, type: 'POST', data: { methodName: 'UploadWrong', uid: currentUser.id, tid: testObj.tid, qids: wrongids }, success: function (res) {
+                    var result = eval('(' + res + ')');
+                    if (result.IsSuccess == 'false') {
+
+                        $.MsgBox.Alert('错误',result.Message);
+
+                    }
+                }, error: function (e) { debugger; }
+                });
+            }
+            //上传做题记录
+            /**
+             $.ajax({ url: Services, type: 'POST', data: { methodName: 'UploadRecord', uid: currentUser.id, tid: testObj.tid, df: score, zql: zql, typeid: '-1', zqs: '-1', ms: '1' }, success: function (res) {
+	            var result = eval('(' + res + ')');
+	            debugger;
+	            if (result.IsSuccess == 'false') {
+	                $.MsgBox.Alert('错误',result.Message);
+
+	            }
+
+	        }, error: function (e) { debugger; }
+	        });
+             **/
+
+            var jobj = new Array();
+            var qs = testObj.questions;
+            for (var i = 0;i < qs.length;i++)
+            {
+                var q = {QID:qs[i].qid,QType:qs[i].type,SelectedAnswerID:[],IsRight:false,Score:0,AnswerText:"",AnswerImages:[],comment:""};
+
+
+                var as = qs[i].answers;
+                var isWrong = false;
+                for (var j = 0; j < as.length; j++) {
+                    if (as[j].isSel != as[j].isanswer) {
+                        isWrong = true;
+
+                    }
+                    if (as[j].isSel != null && as[j].isSel != "0")
+                    {
+                        q.SelectedAnswerID.push(as[j].aid);
+                    }
+                }
+                if (isWrong) {
+                    q.IsRight=false;
+                    q.Score = 0;
+                }
+                else {
+
+                    q.IsRight=true;
+                    q.Score = qs[i].score;
+                }
+
+                jobj.push(q);
+            }
+
+            $.ajax({ url: Services, type: 'POST', data: { methodName: 'UploadExamRecord',df:score,zql:zql, yhid: currentUser.id, tid: testObj.tid, djjyj: JSON.stringify(jobj), sfxj: 'y',sfsj:SJMS }, success: function (res) {
+                var result = eval('(' + res + ')');
+                if (YXKFS==1)
+                {
+
+                    $('#loading').hide();
+                    panelHide();
+                    $('#score').text(score);
+                    $('#zql').text("正确率:" + (zql * 100).toFixed(2) + "%");
+                    $('#hs').text("耗时:" + parseInt(jsq / 60) + '分钟' + jsq % 60 + "秒");
+
+                    showResultByFav();
+
+                    if(YXKDA!=1)
+                        $('#errTD').hide();
+                    $('#footer2').show();
+                    $('#result').show();
+                    $('#retbtn').show();
+                    $('.subbtn').remove();
+                    $('#ts').remove();
+                }
+                else
+                {
+
+                    alert("您已完成答卷，即将关闭考试页");
+                    WeixinJSBridge.call("closeWindow");
+                }
+            }, error: function (e) {
+                alert("提交成绩出现错误，请检查网络后重试");
+                $('#loading').hide();
+                panelShow();
+            }
+            });
+
+
+
+
+        }
+        else
+        {
+
+            //有主观题的试卷
+            var jobj = new Array();
+            var qs = testObj.questions;
+            for (var i = 0;i < qs.length;i++)
+            {
+                var q = {QID:qs[i].qid,QType:qs[i].type,SelectedAnswerID:[],IsRight:false,Score:0,AnswerText:"",AnswerImages:[],comment:""};
+
+                if (qs[i].type != "4")
+                {
+                    var as = qs[i].answers;
+                    var isWrong = false;
+                    for (var j = 0; j < as.length; j++) {
+                        if (as[j].isSel != as[j].isanswer) {
+                            isWrong = true;
+
+                        }
+                        if (as[j].isSel != null && as[j].isSel != "0")
+                        {
+                            q.SelectedAnswerID.push(as[j].aid);
+                        }
+                    }
+                    if (isWrong) {
+                        q.IsRight=false;
+                        q.Score = 0;
+                    }
+                    else {
+
+                        q.IsRight=true;
+                        q.Score = qs[i].score;
+                    }
+                }
+                else
+                {
+                    q.AnswerText = qs[i].answerText;
+                    q.AnswerImages = qs[i].answerImages;
+                }
+                jobj.push(q);
+            }
+
+
+
+
+
+            $.ajax({ url: Services, type: 'POST', data: { methodName: 'UploadExamRecord',df:"0",zql:"0", yhid: currentUser.id, tid: testObj.tid, djjyj: JSON.stringify(jobj), sfxj: 'y',sfsj:SJMS }, success: function (res) {
+                var result = eval('(' + res + ')');
+
+                if (result.IsSuccess == 'true') {
+
+                    $.MsgBox.Confirm('提醒','提交成功！请在2日内查询成绩',function(){
+                        WeixinJSBridge.call("closeWindow");
+                    },function(){
+                        WeixinJSBridge.call("closeWindow");
+                    });
+
+                }
+
+            }, error: function (e) {
+                alert("提交成绩出现错误，请检查网络后重试");
+                $('#loading').hide();
+                panelShow();
+
+            }
+            });
+
+        }
+
+    }
+    function showTestRank() {
+        document.location.href = '/train//RankList.aspx?score=' + score + "&tid=" + testObj.tid + "&uid=" + currentUser.id;
+    }
+
+    function checkUnDo() {
+        var emptynum = 0;
+        for (var i = 0; i < testObj.questions.length; i++) {
+            var as = testObj.questions[i].answers;
+            var num = 0;
+            if (testObj.questions[i].type != "4") {
+                for (var j = 0; j < as.length; j++) {
+                    var temp = typeof (as[j].isSel) == 'undefined' ? 0 : parseInt(as[j].isSel);
+                    num += temp;
+                }
+                if (num == 0) {
+                    emptynum++;
+
+                }
+            }
+            else {
+
+                if (testObj.questions[i].answerImages.length == 0 && testObj.questions[i].answerText == "") {
+                    emptynum++;
+                }
+            }
+        }
+        return emptynum;
+    }
+
+    function submitChecker() {
+        var emptynum = null;
+        for (var i = 0; i < testObj.questions.length; i++) {
+            var as = testObj.questions[i].answers;
+            var num = 0;
+            if (testObj.questions[i].type != "4") {
+                for (var j = 0; j < as.length; j++) {
+                    var temp = typeof (as[j].isSel) == 'undefined' ? 0 : parseInt(as[j].isSel);
+                    num += temp;
+                }
+                if (num == 0) {
+                    emptynum = i + 1;
+                    break;
+                }
+            } else {
+                if (testObj.questions[i].answerImages.length == 0 && testObj.questions[i].answerText == "") {
+                    emptynum = i + 1;
+                    break;
+                }
+            }
+
+        }
+        if (emptynum != null) {
+            $.MsgBox.Confirm("确认信息", '亲，还有题目没做完，确认要提交吗？', function () {
+                submitFunc();
+            },function(){
+                current = emptynum;
+                showQuestion(current);
+            });
+
+
+
+        }
+        else {
+            submitFunc();
+        }
+    }
+
+    function jump2UnDo() {
+        var emptynum = null;
+        for (var i = 0; i < testObj.questions.length; i++) {
+            var as = testObj.questions[i].answers;
+            var num = 0;
+            if (testObj.questions[i].type != "4") {
+                for (var j = 0; j < as.length; j++) {
+                    var temp = typeof (as[j].isSel) == 'undefined' ? 0 : parseInt(as[j].isSel);
+                    num += temp;
+                }
+                if (num == 0) {
+                    emptynum = i + 1;
+                    break;
+                }
+            } else {
+                if (testObj.questions[i].answerImages.length == 0 && testObj.questions[i].answerText == "") {
+                    emptynum = i + 1;
+                    break;
+                }
+            }
+        }
+        if (emptynum == null) {
+
+            $.MsgBox.Confirm("确认信息", '你已全部做完了，是否提交试卷？', function () {
+                submitFunc();
+            },function(){
+
+            });
+
+
+
+
+        }
+        else {
+            current = emptynum;
+            showQuestion(current);
+        }
+    }
+
+    var total = 0;
+    var current = 0;
+
+    function ItemSelect(p_sender) {
+        var item = $(p_sender);
+
+        var as = testObj.questions[current - 1].answers;
+        //如果不是多选，那么一次只能选一个
+        if (item.parent().attr("type") != "2") {
+            $(".item").css("backgroundColor", "");
+            $(".item").attr('isSelect', '0');
+
+            for (var i = 0; i < as.length; i++) {
+                as[i].isSel = "0";
+            }
+        }
+        if (item.attr('isSelect') == "1") {
+            item.css("backgroundColor", "");
+            item.attr('isSelect', '0');
+            for (var i = 0; i < as.length; i++) {
+                if (as[i].aid == item.attr("id").replace("a_", "")) {
+                    as[i].isSel = "0";
+                    break;
+                }
+            }
+        }
+        else {
+            item.css("backgroundColor", "#e67e22");
+            item.attr('isSelect', '1');
+            for (var i = 0; i < as.length; i++) {
+                if (as[i].aid == item.attr("id").replace("a_", "")) {
+                    as[i].isSel = "1";
+                    break;
+                }
+            }
+        }
+        $('#center').text(checkUnDo() + "题未做");
+
+    }
+    var testObj = null;
+
+    function randomsort(a, b) {
+        return Math.random()>.5 ? -1 : 1;
+
+    }
+
+    //随机模式
+    function SJpageOnLoad()
+    {
+
+        $.ajax({ url: Services, type: 'POST', data: { methodName: 'LoadRandExam', guid: '3e6968b2-64ae-45a7-87ff-bba4c41fc3da',num:SJTS }, success: function (res) {
+            var result = eval('(' + res + ')');
+
+            if (result.IsSuccess == 'false') {
+                $.MsgBox.Alert('错误', result.Message);
+            }
+            else {
+                var obj = result.Value;
+                testObj = obj;
+                $('#prev_title').text(testObj.bt);
+                $('#test_name').text("考试人："+currentUser.wxm);
+                if (testObj.sm != '') {
+                    $('#prev_desc').html(testObj.sm + "<br>");
+                }
+                else {
+                    var html = "<table width=100%>";
+                    html += "<tr><td width=50% align=center>测试题数</td><td width=50% align=center>" + testObj.questions.length + "题</td></tr>";
+                    html += "<tr><td width=50% align=center>测试总分</td><td width=50% align=center>" + testObj.score + "分</td></tr>";
+                    html += "<tr><td width=50% align=center>测试时限</td><td width=50% align=center>" + testObj.test_time + "分钟</td></tr></table>";
+                    $('#prev_desc').html(html);
+
+                    $('#prev_btn').css("position", "fixed");
+
+                }
+                //判断是否随机
+                if (testObj.sfsj == '1') {
+                    testObj.questions.sort(randomsort);
+                }
+                for (var i = 0; i < testObj.questions.length; i++) {
+                    for (var j = 0; j < testObj.questions[i].answers.length; j++) {
+                        testObj.questions[i].answers[j].isSel = "0";
+                    }
+                }
+
+            }
+            $('#loading').hide();
+
+        }, error: function (e) {}
+        });
+    }
+
+    function pageOnLoad()
+    {
+        var src = 1
+
+        HandlerServices = "http://115.159.195.222:2012/test/LoadTest";
+
+
+        $.ajax({ url: HandlerServices, type: 'POST', data: { methodName: 'LoadTest', guid: '3e6968b2-64ae-45a7-87ff-bba4c41fc3da',ispc:1 }, success: function (res) {
+            //alert(res);
+
+            var result = eval('(' + res + ')');
+            if(src == 0){
+                result.s = result.IsSuccess;
+                result.v = result.Value;
+            }
+            if (result.s == 'false') {
+                $.MsgBox.Alert('错误', result.Message);
+            }
+            else {
+                var obj = result.v;
+                testObj = obj;
+                $('#prev_title').text(testObj.bt);
+                $('#test_name').text("考试人："+currentUser.wxm);
+                if (testObj.sm != '') {
+                    $('#prev_desc').html(testObj.sm + "<br>");
+                }
+                else {
+                    var html = "<table width=100%>";
+                    html += "<tr><td width=50% align=center>测试题数</td><td width=50% align=center>" + testObj.questions.length + "题</td></tr>";
+                    html += "<tr><td width=50% align=center>测试总分</td><td width=50% align=center>" + testObj.score + "分</td></tr>";
+                    html += "<tr><td width=50% align=center>测试时限</td><td width=50% align=center>" + testObj.test_time + "分钟</td></tr></table>";
+                    $('#prev_desc').html(html);
+
+                    $('#prev_btn').css("position", "fixed");
+
+                }
+                //判断是否随机
+                if (testObj.sfsj == '1') {
+                    testObj.questions.sort(randomsort);
+                }
+                for (var i = 0; i < testObj.questions.length; i++) {
+                    for (var j = 0; j < testObj.questions[i].answers.length; j++) {
+                        testObj.questions[i].answers[j].isSel = "0";
+                    }
+                }
+
+            }
+            $('#loading').hide();
+
+        }, error: function (e) {}
+        });
+    }
+    $(document).ready(function () {
+
+        if (SJMS==1)
+            pageOnLoad = SJpageOnLoad;
+
+        if (YXDK != 1){
+            $('#reTestTD').hide();
+        }
+        panelHide();
+        if ('1'=='0')
+        {
+            $('#loading').show();
+            pageOnLoad();
+            $('#prev').show();
+
+        }
+        else
+        {
+            $('#prev').hide();
+            if (YXDK == 1)
+            {
+                $.MsgBox.Confirm("确认信息", '你已做完本卷了，是否再做一次？', function () {
+                    $('#loading').show();
+                    pageOnLoad();
+                    $('#prev').show();
+
+                },function(){
+                    document.location.href = "pages/examlist.aspx?uid="+currentUser.id;
+                    //window.open("pages/examlist.aspx?uid="+currentUser.id);
+                });
+            }
+            else
+            {
+                alert("您已完成试卷，无法重考，5秒后自动关闭或手动关闭");
+                if(YXKFS==1 && YXKDA == 1)
+                {
+                    document.location.href = "pages/examlist.aspx?uid="+currentUser.id;
+                }
+                else
+                {
+                    autoClose = 1;
+                    wx.closeWindow();
+                }
+            }
+        }
+    });
+    var isHasType4 = false;
+
+    function testInit() {
+        for (var i = 0; i < testObj.questions.length; i++) {
+            if (testObj.questions[i].type == "4") {
+                isHasType4 = true;
+                testObj.questions[i].answerImages = new Array();
+                testObj.questions[i].answerText = '';
+            }
+        }
+    }
+
+    function startTest() {
+        //创建界面
+        counttime = parseInt(testObj.test_time) * 60
+        //倒计时开始
+        daojishi();
+        //题目状态
+        current = 1;
+        testInit();
+        total = testObj.questions.length;
+        $('#pages').text(current + "/" + total);
+
+        showQuestion(current);
+        //微信分享相关
+        document.title = "" + testObj.bt;
+
+        $('#center').text(checkUnDo() + "题未做");
+        $('#prev').hide();
+        panelShow();
+    }
+
+    function panelHide() {
+        $('#footer').hide();
+        $('#header').hide();
+        $('#panel').hide();
+    }
+    function panelShow() {
+        $('#footer').show();
+        $('#header').show();
+        $('#panel').show();
+    }
+
+    function next() {
+        if (current == total) {
+            $.MsgBox.Alert('提醒','已到最后一题');
+            return;
+        }
+        else {
+            current++;
+            showQuestion(current);
+
+        }
+    }
+
+    function pre() {
+        if (current == 1) {
+            $.MsgBox.Alert('提醒',"已到第一题");
+            return;
+        }
+        else {
+            current--;
+            showQuestion(current);
+
+        }
+    }
+
+    function showQuestion(num) {
+        var question = testObj.questions[num - 1];
+        currentQuestion = testObj.questions[num - 1];
+        $('#pages').text(current + "/" + total);
+        switch (question.type) {
+            case "1":
+            {
+                $('#qtype').text("单选题" + " (" + question.score.replace(".0", "") + "分)");
+                break;
+            }
+            case "2":
+            {
+                $('#qtype').text("多选题" + " (" + question.score.replace(".0", "") + "分)");
+                break;
+            }
+            case "3":
+            {
+                $('#qtype').text("判断题" + " (" + question.score.replace(".0", "") + "分)");
+                break;
+            }
+            case "4":
+            {
+                $('#qtype').text("主观题" + " (" + question.score.replace(".0","") + "分)");
+                break;
+            }
+
+        }
+        $('#qtype').text(num + "、" + $('#qtype').text());
+        $('#title').html(question.title);
+        $('#content').html(question.content);
+        //附件显示
+        $('#attr').children().remove();
+        if (question.audio != "") {
+            $('#attr').append("<audio controls><source src='" + ROOT + question.audio + "' /></audio>");
+            $("#attr").show();
+        }
+        if (question.images != "") {
+
+            if (question.images.indexOf(".mp4") >= 0) {
+                var mp4link = question.images;
+                mp4link = mp4link.substr(mp4link.indexOf("src") + 4, mp4link.indexOf("/></p>") - mp4link.indexOf("src") - 4);
+                mp4link = $.trim(mp4link);
+                $('#attr').append("<video controls><source src='" + mp4link.replace("@ROOT", ROOT + "testimgs") + "' /></video>");
+            }
+            else {
+                if (question.images.indexOf("<img")>0){
+                    $('#attr').append($(question.images.replace("@ROOT", ROOT + "testimgs")).find("img").css("width", "100%"));
+                }
+                else
+                {
+                    $('#attr').append("<img src='" + question.images.replace("@ROOT", ROOT + "testimgs") + "' style='width:100%'/>");
+                }
+            }
+
+            $("#attr").show();
+        }
+
+
+        $('#answers').attr("type", question.type);
+        $('#answers').children().remove();
+        if (question.type != "4") {
+            //客观题处理
+            $('#type4Content').hide();
+            $('#type1Content').show();
+            for (var i = 0; i < question.answers.length; i++) {
+                var answerContent = question.answers[i].content.replace("A、", "").replace("B、", "").replace("C、", "").replace("D、", "").replace("E、", "").replace("F、", "");
+                answerContent = answerContent.replace("A．", "").replace("B．", "").replace("C．", "").replace("D．", "").replace("E．", "").replace("F．", "");
+                answerContent = answerContent.replace("A.", "").replace("B.", "").replace("C.", "").replace("D.", "").replace("E.", "").replace("F.", "");
+
+                var html = "<li id='a_" + question.answers[i].aid + "' class='item' onclick='ItemSelect(this)' @@ISSEL>" + selectItem[i] + '、' + answerContent + "</li>";
+                if (question.answers[i].isSel == "0" || typeof (question.answers[i].isSel) == 'undefined') {
+                    html = html.replace("@@ISSEL", "isSelect='0'");
+                }
+                else {
+                    html = html.replace("@@ISSEL", "style='background-color:#e67e22' isSelect='1'");
+                }
+                $('#answers').append(html);
+            }
+        }
+        else {
+            $('#type1Content').hide();
+            $('#type4Content').show();
+
+            $('#answerTxt').val(question.answerText);
+            var imgs = $('.uploadBtn').find('img');
+            for (var i =0 ;i < imgs.length;i++)
+            {
+
+
+                if (typeof(question.answerImages[i])!='undefined' && question.answerImages[i] != null)
+                {
+                    $(imgs[i]).removeClass().addClass('imgBtn');
+                    $(imgs[i]).attr("src", '/train/'+question.answerImages[i]);
+                }
+                else
+                {
+                    $(imgs[i]).removeClass().addClass('addImgBtn');
+                    $(imgs[i]).attr("src", '/train/framework/images/plus_icon.png');
+                }
+            }
+
+
+
+        }
+        if (isReview) {
+            $('#note').html("<span style='font-weight:bold;'>试题解析：</span>" + "<br>" + question.note);
+            $("li").attr("onclick", "");
+        }
+
+    }
+
+    /**
+     ** 加法函数，用来得到精确的加法结果
+     ** 说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的加法结果。
+     ** 调用：accAdd(arg1,arg2)
+     ** 返回值：arg1加上arg2的精确结果
+     **/
+    function accAdd(arg1, arg2) {
+        var r1, r2, m, c;
+        try {
+            r1 = arg1.toString().split(".")[1].length;
+        }
+        catch (e) {
+            r1 = 0;
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length;
+        }
+        catch (e) {
+            r2 = 0;
+        }
+        c = Math.abs(r1 - r2);
+        m = Math.pow(10, Math.max(r1, r2));
+        if (c > 0) {
+            var cm = Math.pow(10, c);
+            if (r1 > r2) {
+                arg1 = Number(arg1.toString().replace(".", ""));
+                arg2 = Number(arg2.toString().replace(".", "")) * cm;
+            } else {
+                arg1 = Number(arg1.toString().replace(".", "")) * cm;
+                arg2 = Number(arg2.toString().replace(".", ""));
+            }
+        } else {
+            arg1 = Number(arg1.toString().replace(".", ""));
+            arg2 = Number(arg2.toString().replace(".", ""));
+        }
+        return (arg1 + arg2) / m;
+    }
+</script>
+</body><iframe id="ping_iframe" src=" weixinping://iframe " style="display: none;"></iframe><iframe id="__WeixinJSBridgeIframe_SetResult" src="weixin://private/setresult/SCENE_HANDLEMSGFROMWX&amp;ZHVtbXk=" style="display: none;"></iframe><iframe id="__WeixinJSBridgeIframe" src="weixin://dispatch_message/" style="display: none;"></iframe></html>

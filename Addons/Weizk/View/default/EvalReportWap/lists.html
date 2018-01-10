@@ -1,0 +1,28 @@
+<include file="./Addons/Weizk/View/default/Template/wap_header_mui.html" />
+<body>
+<div class="mui-content white">
+	<ul class="mui-table-view">
+		<notempty name="report_list">
+			<volist name='report_list' id='item'>
+			    <li class="mui-table-view-cell">
+			        <a class="mui-navigate-right" href="{:U('addon/Weizk/EvalReportWap/detail/id/'.$item['id'])}">
+			        	<p>{$item['title']}--</p>
+			        	<p>{$item['client_name']}--</p>
+			        	<p>{$item['c_time']}</p>
+			        </a>
+			    </li>
+		   	</volist>
+	    </notempty>
+	    <empty name="report_list">
+	    	<li class="mui-table-view-cell">
+	        	<a class="mui-navigate-right" href="#">没有测评报告，点击进入测评</a>
+	    	</li>
+	    </empty>
+	</ul>
+	
+	
+</div>
+
+
+<!-- 底部导航 -->
+<include file="./Addons/Weizk/View/default/Template/wap_footer_mui.html"/>

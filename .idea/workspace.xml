@@ -2,53 +2,62 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="fc2af0fb-3de9-4094-9a66-2ebb8275ae55" name="Default" comment="部分Addon代码有更新！" />
-    <list default="true" id="3c4f3431-51c2-4218-a776-b34e23175ecf" name="Rejected commit: Default" comment="The MUI template's header and footer was updated.">
+    <list default="true" id="3c4f3431-51c2-4218-a776-b34e23175ecf" name="Rejected commit: Default" comment="Merged updates done by end of 2017">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/animate_bg.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/con_bg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/dc_pic.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/dc_tit.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/head.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/mxz_ts.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/share_t.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/wancheng.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/wxz.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/images/xz.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Ask/View/default/Ask/test_.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Course/Controller/ScoreController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Course/Model/WxyScoreNotifyViewModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Course/View/default/Score/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/Controller/StudentTimeCardController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/Model/WxyRfidDataModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/Model/WxyStudentTimeCardModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/View/default/StudentTimeCard/edit.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/View/default/StudentTimeCard/import.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/View/default/StudentTimeCard/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/View/default/StudentTimeCard/rfid_import.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Student/View/default/Wap/score.html0" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weixiao/View/default/ClassCourse/commentimport.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weixiao/View/default/ClassCourse/score.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/EvalItemAnswerControll.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/EvalItemAnswerController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/EvalPrjController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/EvalReportWapController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/ZkNewsWapController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Model/ZkEvalItemAnswerModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Model/ZkEvalItemModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Model/ZkEvalPrjModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/Model/ZkEvalReportModel.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/ClientWap/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/ClientWap/test.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Cms/edit.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/add.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/ajax_lists_data.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/edit.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/finish.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/profile.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/select_client.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/show.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalPrj/survey.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalReportWap/detail.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/EvalReportWap/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/HschoolWap/detail.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/HschoolWap/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Weizk/import.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/ZkNewsWap/detail.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/ZkNewsWap/lists.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Assessment.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Course/Controller/CourseController.class.php" afterPath="$PROJECT_DIR$/Addons/Course/Controller/CourseController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Course/Model/WxyScoreModel.class.php" afterPath="$PROJECT_DIR$/Addons/Course/Model/WxyScoreModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Course/View/default/Course/add.html" afterPath="$PROJECT_DIR$/Addons/Course/View/default/Course/add.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Course/View/default/Course/commentimport.html" afterPath="$PROJECT_DIR$/Addons/Course/View/default/Course/commentimport.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Course/View/default/Course/import.html" afterPath="$PROJECT_DIR$/Addons/Course/View/default/Course/import.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/Controller/DailyTimeController.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/Controller/DailyTimeController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/DailyTimeAddon.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/DailyTimeAddon.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/Model/DailyTimeModel.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/Model/DailyTimeModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/Model/WeixinAddonModel.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/Model/WeixinAddonModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/Model/WxyAttendanceimportModel.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/Model/WxyAttendanceimportModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/Model/WxyDailyTimeModel.class.php" afterPath="$PROJECT_DIR$/Addons/DailyTime/Model/WxyDailyTimeModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/edit.html" afterPath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/import.html" afterPath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/import.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/list.html" afterPath="$PROJECT_DIR$/Addons/DailyTime/View/default/DailyTime/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/Controller/CareController.class.php" afterPath="$PROJECT_DIR$/Addons/Student/Controller/CareController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/Controller/StudentController.class.php" afterPath="$PROJECT_DIR$/Addons/Student/Controller/StudentController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/Model/WxyStudentCardModel.class.php" afterPath="$PROJECT_DIR$/Addons/Student/Model/WxyStudentCardModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/Model/WxyStudentCareModel.class.php" afterPath="$PROJECT_DIR$/Addons/Student/Model/WxyStudentCareModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/View/default/Student/import.html" afterPath="$PROJECT_DIR$/Addons/Student/View/default/Student/import.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Student/View/default/Wap/score.html" afterPath="$PROJECT_DIR$/Addons/Student/View/default/Wap/score.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/Controller/WeiSiteController.class.php" afterPath="$PROJECT_DIR$/Addons/WeiSite/Controller/WeiSiteController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V1/info.php" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V1/info.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V1/lists.html" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V1/lists.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V2/info.php" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V2/info.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V2/lists.html" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V2/lists.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V3/info.php" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V3/info.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V3/lists.html" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V3/lists.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V4/info.php" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V4/info.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V4/lists.html" afterPath="$PROJECT_DIR$/Addons/WeiSite/View/default/TemplateLists/V4/lists.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weixiao/Controller/ScoreController.class.php" afterPath="$PROJECT_DIR$/Addons/Weixiao/Controller/ScoreController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weixiao/Controller/WapController.class.php" afterPath="$PROJECT_DIR$/Addons/Weixiao/Controller/WapController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weixiao/Model/WxyScoreModel.class.php" afterPath="$PROJECT_DIR$/Addons/Weixiao/Model/WxyScoreModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weixiao/Model/WxyScoreNotifyViewModel.class.php" afterPath="$PROJECT_DIR$/Addons/Weixiao/Model/WxyScoreNotifyViewModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weizk/Controller/ClientWapController.class.php" afterPath="$PROJECT_DIR$/Addons/Weizk/Controller/ClientWapController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/css/style.css" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Public/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Addons/Weizk/View/default/Template/wap_footer_mui.html" afterPath="$PROJECT_DIR$/Addons/Weizk/View/default/Template/wap_footer_mui.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Common/function.php" afterPath="$PROJECT_DIR$/Application/Common/Common/function.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Conf/config.php" afterPath="$PROJECT_DIR$/Application/Common/Conf/config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Conf/tags.php" afterPath="$PROJECT_DIR$/Application/Common/Conf/tags.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Model/UserModel.class.php" afterPath="$PROJECT_DIR$/Application/Common/Model/UserModel.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/Controller/FileController.class.php" afterPath="$PROJECT_DIR$/Application/Home/Controller/FileController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/default/Addons/lists.html" afterPath="$PROJECT_DIR$/Application/Home/View/default/Addons/lists.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThinkPHP/Library/Think/Controller.class.php" afterPath="$PROJECT_DIR$/ThinkPHP/Library/Think/Controller.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThinkPHP/Library/Think/Model.class.php" afterPath="$PROJECT_DIR$/ThinkPHP/Library/Think/Model.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThinkPHP/Mode/common.php" afterPath="$PROJECT_DIR$/ThinkPHP/Mode/common.php" />
     </list>
     <list id="ba11225e-683c-435e-a032-4faa666680c5" name="The MUI template's header and footer was updated." comment="" />
     <ignored path="weiphp3.0.iws" />
@@ -338,6 +347,20 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weixiao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weixiao" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Addons" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -351,6 +374,7 @@
     <property name="js-jscs-nodeInterpreter" value="E:\Program Files\nodejs\node.exe" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -488,7 +512,7 @@
       <workItem from="1512356152331" duration="582000" />
       <workItem from="1512704076969" duration="2770000" />
       <workItem from="1512977000779" duration="10057000" />
-      <workItem from="1514873483419" duration="6222000" />
+      <workItem from="1514873483419" duration="10903000" />
     </task>
     <task id="LOCAL-00001" summary="修正importFormExcel函数中的一个Bug，该Bug导致读取Excel2007文件报错。">
       <created>1478749119186</created>
@@ -728,18 +752,25 @@
       <option name="project" value="LOCAL" />
       <updated>1489577619346</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Merged updates done by end of 2017">
+      <created>1515553989964</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1515553989964</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="590027000" />
+    <option name="totallyTimeSpent" value="594708000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32928064" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18086347" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -800,8 +831,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="微信订阅资料页面。" />
-    <MESSAGE value="增加了考勤页面模板文件。" />
     <MESSAGE value="课程管理后台及前台展示页面。" />
     <MESSAGE value="增加COMMENT操作" />
     <MESSAGE value="2017年1月后，部分Addon代码有更新！" />
@@ -825,7 +854,9 @@
     <MESSAGE value="添加评语链接" />
     <MESSAGE value="Addon代码有更新，截止201703！" />
     <MESSAGE value="Change for class course." />
-    <option name="LAST_COMMIT_MESSAGE" value="Change for class course." />
+    <MESSAGE value="The MUI template's header and footer was updated." />
+    <MESSAGE value="Merged updates done by end of 2017" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged updates done by end of 2017" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1048,6 +1079,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1045">
           <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1055,6 +1087,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1653">
           <caret line="87" column="28" lean-forward="false" selection-start-line="87" selection-start-column="28" selection-end-line="87" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1084,6 +1117,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
           <caret line="40" column="18" lean-forward="false" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
