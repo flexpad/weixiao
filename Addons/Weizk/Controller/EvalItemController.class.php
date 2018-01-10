@@ -1,71 +1,89 @@
 <?php
 
 namespace Addons\Weizk\Controller;
+
 use Home\Controller\AddonsController;
 
-class EvalItemController extends AddonsController{
+class EvalItemController extends AddonsController {
+    var $model;
+    var $survey_id;
+    function _initialize() {
+        parent::_initialize();
 
-    public function __construct() {
-        if (_ACTION == 'show') {
-            $GLOBALS ['is_wap'] = true;
-        }
+        $this->model = $this->getModel ( 'ZkEvalItem' );
 
-        parent::__construct ();
-        $this->model = $this->getModel('ZkEvalItem');
+        $param ['prj_id'] = $this->survey_id = intval ( $_REQUEST ['survey_id'] );
+
+        $res ['title'] = '测评项目';
+        $res ['url'] = addons_url ( 'Weizk://EvalPrj/lists' );
+        $res ['class'] = '';
+        $nav [] = $res;
+
+        $res ['title'] = '问题管理';
+        $res ['url'] = addons_url ( 'Weizk://EvalItem/lists', $param );
+        $res ['class'] = 'current';
+        $nav [] = $res;
+
+        $this->assign ( 'nav', $nav );
     }
-    /**
-     * 显示指定模型列表数据
-     */
-    public function lists()
-    {
-        $page = I('p', 1, 'intval'); // 默认显示第一页数据
+    // 通用插件的列表模型
+    public function lists() {
+        $param ['survey_id'] = $this->survey_id;
+        $param ['model'] = $this->model ['id'];
+        $add_url = U ( 'add', $param );
+        $this->assign ( 'add_url', $add_url );
 
+        $map ['survey_id'] = $this->survey_id;
+        session ( 'common_condition', $map );
 
-        // 解析列表规则
-        $list_data = $this->_get_model_list($this->model);
+        parent::common_lists ( $this->model, 0, '', $order = 'sort asc,id asc' );
+    }
 
-        $grids = $list_data ['list_grids'];
-        $fields = $list_data ['fields'];
+    // 通用插件的编辑模型
+    public function edit() {
+        $id = I ( 'id' );
 
-        // 关键字搜索
-        $key = $this->model ['search_key'] ? $this->model ['search_key'] : 'title';
-        if (isset ($_REQUEST [$key])) {
-            $map [$key] = array(
-                'like',
-                '%' . htmlspecialchars($_REQUEST [$key]) . '%'
-            );
-            unset ($_REQUEST [$key]);
-        }
-        // 条件搜索
-        foreach ($_REQUEST as $name => $val) {
-            if (in_array($name, $fields)) {
-                $map [$name] = $val;
+        if (IS_POST) {
+            $Model = D ( parse_name ( get_table_name ( $this->model ['id'] ), 1 ) );
+            // 获取模型的字段信息
+            $Model = $this->checkAttr ( $Model, $this->model ['id'] );
+            if ($Model->create () && $Model->save ()) {
+                $param ['survey_id'] = $this->survey_id;
+                $param ['model'] = $this->model ['id'];
+                $url = U ( 'lists', $param );
+                $this->success ( '保存' . $this->model ['title'] . '成功！', $url );
+            } else {
+                $this->error ( $Model->getError () );
             }
         }
 
-        $row = empty ($this->model ['list_row']) ? 20 : $this->model ['list_row'];
-
-        // 读取模型数据列表
-        empty ($fields) || in_array('id', $fields) || array_push($fields, 'id');
-        $name = parse_name(get_table_name($this->model ['id']), true);
-
-
-        $data = M($name)->field(empty ($fields) ? true : $fields)->where($map)->order('id')->page($page, $row)->select();
-
-        /* 查询记录总数 */
-        $count = M($name)->where($map)->count();
-
-        if ($count > $row) {
-            $page = new \Think\Page ($count, $row);
-            $page->setConfig('theme', '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
-            $this->assign('_page', $page->show());
-        }
-        $this->assign('list_grids', $grids);
-        $this->assign('list_data', $data);
-
-
-        $this->display();
+        parent::common_edit ( $this->model, $id );
     }
 
+    // 通用插件的增加模型
+    public function add() {
+        if (IS_POST) {
+            $Model = D ( parse_name ( get_table_name ( $this->model ['id'] ), 1 ) );
+            // 获取模型的字段信息
+            $Model = $this->checkAttr ( $Model, $this->model ['id'] );
+            if ($Model->create () && $id = $Model->add ()) {
+                $param ['survey_id'] = $this->survey_id;
+                $param ['model'] = $this->model ['id'];
+                $url = U ( 'lists', $param );
+                $this->success ( '添加' . $this->model ['title'] . '成功！', $url );
+            } else {
+                $this->error ( $Model->getError () );
+            }
+            exit ();
+        }
 
-}
+        $normal_tips = '字段类型为单选、多选的参数格式第行一项，每项的值和标题用英文冒号分开。如：<br/>A:男<br/>B:女<br/>C:保密';
+        $this->assign ( 'normal_tips', $normal_tips );
+
+        parent::common_add ( $this->model );
+    }
+
+    // 通用插件的删除模型
+    public function del() {
+        parent::common_del ( $this->model );
+    }

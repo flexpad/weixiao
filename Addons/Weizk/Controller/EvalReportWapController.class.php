@@ -35,14 +35,21 @@ class EvalReportWapController extends BaseController
         $this->publicid = D('Common/Public')->getInfoByToken($this->token, 'id');
     }
 
-    private function get_lists($page){
+    private function get_lists($page,$client_id=0){
         $map['token'] = $this->token;
         $map['openid'] = get_openid();
+        if($client_id != 0)
+        {
+            $map['client_id'] = $client_id;
+        }
         $row = 5;
-        //$data = M('ZkEvalReport')->where($map)->order('id')->page($page, $row)->select();
-        $data = M('ZkEvalReport')->where($map)->order('id')->select();
+
+        $data = M('ZkEvalReport')->where($map)->order('id')->page($page, $row)->select();
+        //$data = M('ZkEvalReport')->where($map)->order('id')->select();
+
         if($data == NULL)
             return NULL;
+
         $ret_list = array();
         foreach($data as $key => $val) {
             $prj_map['id'] = $val['prj_id'];
@@ -52,17 +59,28 @@ class EvalReportWapController extends BaseController
             $client_data = D('ZkClient')->get_clinet_info($val['client_id']);
             $ret_list[$key]['client_name'] = $client_data['name'];
             $ret_list[$key]['id'] = $val['id'];
+            $ret_list[$key]['url'] = U('detail', array('id'=>$val ['id']));
         }
 
         return $ret_list;
     }
     public function lists()
     {
-        $data = $this->get_lists(1);
+        $client_id = I('clientid', 0, 'intval'); // 默认显示第一页数据
+        $page = I('page', 1, 'intval');
+        if (IS_AJAX) $page = intval(I('post.page'));
+
+        $data = $this->get_lists($page, $client_id);
 
         $this->assign('report_list',$data);
-        $this->display('lists');
+        $this->assign('public_id', $this->publicid);
+
+        if (IS_AJAX)
+            $this->ajaxReturn($data);
+        else
+            $this->display('lists');
     }
+
     public function ajx_lists(){
         $page = I('page', 1, 'intval'); // 默认显示第一页数据
         $data = get_lists($page);
@@ -78,6 +96,7 @@ class EvalReportWapController extends BaseController
         $prj_data = M('ZkEvalPrj')->where($prj_map)->find();
         $ret_detail['title'] = $prj_data['title'];
         $this->assign('detail',$ret_detail);
+        $this->assign('public_id', $this->publicid);
         $this->display();
     }
 }

@@ -82,9 +82,17 @@ class EvalPrjController extends AddonsController {
     function index() {
         $id = $map ['id'] = I ( 'id', 0, 'intval' );
         $client_id = I ( 'client_id', 0, 'intval' );
+
+        if($client_id == 0)
+        {
+            $url = addons_url ( 'Weizk://EvalPrj/select_client');
+            // dump($url);
+            redirect ( $url );
+        }
 //		$openid = get_openid ();
         $map ['token'] = get_token ();
         $public_info = get_token_appinfo ( $map ['token'] );
+
         $overtime = $this->_is_overtime ( $id );
         //	$overtime = $overtime ? 1 :( $overtime ? 2 : 0 ) ;
 
@@ -95,10 +103,11 @@ class EvalPrjController extends AddonsController {
 // 		$this->assign ( 'status', $status);
 
         $info = M ( 'ZkEvalPrj' )->where ( $map )->find ();
+
         $this->assign ( 'info', $info );
         $this->assign ( 'public_info', $public_info );
         $this->assign('client_id',$client_id);
-
+        $this->assign('public_id', $public_info['id']);
         $this->display ();
     }
 
@@ -112,7 +121,7 @@ class EvalPrjController extends AddonsController {
         $public_id = get_token_appinfo ( $map ['token'] )['id'];
 
         $report_id = $this->create_eval_report($survey_id,$client_id);
-        var_dump($report_id);
+
         $this->assign ( 'info', $info );
         $this->assign('public_id',$public_id);
         $this->assign('report_id',$report_id);
@@ -127,6 +136,9 @@ class EvalPrjController extends AddonsController {
         $openid = get_openid();
         $data = D('ZkClient')->get_user_all_client_info($token,$openid,$uid);
         $this->assign('student_list',$data);
+        $map ['token'] = $token;
+        $public_id = get_token_appinfo ( $map ['token'] )['id'];
+        $this->assign('public_id', $public_id);
         $this->display ();
     }
     private function create_eval_report($survey_id,$client_id){
@@ -199,7 +211,10 @@ class EvalPrjController extends AddonsController {
             // 获取模型的字段信息
             $Model = $this->checkAttr ( $Model, $model ['id'] );
             $res = false;
-            $Model->create () && $res = $Model->$act ();
+            $data = I ( 'post.' );
+            $data['token'] = get_token ();
+            $data ['cTime'] = date("Y-m-d H:i:s",time());
+            $Model->create ($data) && $res = $Model->$act ();
             if ($res !== false) {
                 $act == 'add' && $id = $res;
 

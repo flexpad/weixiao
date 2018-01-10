@@ -5,12 +5,12 @@
     <div class="mui-row">
         <div class="mui-col-sm-6 mui-col-xs-6">
             <li class="mui-table-view-cell current">
-                <a href="{:U('addon/Weizk/HschoolWap/lists/publicid/'.$public_id)}">学校概况</a>
+                <a href="evaluation.html">学校概况</a>
             </li>
         </div>
         <div class="mui-col-sm-6 mui-col-xs-6">
             <li class="mui-table-view-cell">
-                <a href="{:U('addon/Weizk/ZkNewsWap/lists/cateid/99/publicid/'.$public_id)}">升学资讯</a>
+                <a href="news.html">升学资讯</a>
             </li>
         </div>
     </div>
@@ -20,41 +20,66 @@
     <div id="slider" class="mui-slider" >
         <div class="mui-slider-group mui-slider-loop">
             <div class="mui-slider-item mui-slider-item-duplicate">
-                <a href="#">
+                <a href={$slideshow[0].url}>
+                    <img src={$slideshow[0].img}>
+                </a>
+            </div>
+            <volist name="slideshow" id="vo">
+                <div class="mui-slider-item">
+                    <a href={$vo.url}>
+                        <img src={$vo.img}>
+                    </a>
+                </div>
+            </volist>
+            <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href={$slideshow[0].url}>
+                    <img src={$slideshow[0].img}>
+                </a>
+            </div>
+ <!--           <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href="haha">
                     <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
                 </a>
             </div>
             <div class="mui-slider-item">
-                <a href="#">
+                <a href="haha">
                     <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
                 </a>
             </div>
             <div class="mui-slider-item">
-                <a href="#">
+                <a href="haha">
                     <img src="{:ADDON_PUBLIC_PATH}/images/banner2.png">
                 </a>
             </div>
             <div class="mui-slider-item">
-                <a href="#">
+                <a href="haha">
                     <img src="{:ADDON_PUBLIC_PATH}/images/banner3.png">
                 </a>
             </div>
             <div class="mui-slider-item">
-                <a href="#">
+                <a href="haha">
                     <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
                 </a>
             </div>
             <div class="mui-slider-item mui-slider-item-duplicate">
-                <a href="#">
-                    <img src="{:ADDON_PUBLIC_PATH}/images/banner1.jpg">
+                <a href="haha">
+                    <img src="{:ADDON_PUBLIC_PATH}/images/banner4.jpg">
                 </a>
-            </div>
+            </div>-->
         </div>
         <div class="mui-slider-indicator">
-            <div class="mui-indicator mui-active"></div>
+           <volist name="slideshow" id="vo">
+                <if condition="$key eq 0">
+                    <div class="mui-indicator mui-active"></div>
+                <else/>
+                    <div class="mui-indicator"></div>
+                </if>
+           </volist>
+<!--            <div class="mui-indicator mui-active"></div>
             <div class="mui-indicator"></div>
             <div class="mui-indicator"></div>
-            <div class="mui-indicator"></div>
+            <div class="mui-indicator"></div>-->
+
         </div>
     </div>
 
@@ -68,13 +93,14 @@
         </div>
     </div>
 
-    <div class="h60"></div>
+<!--    <div class="h60"></div>
     <div class="eva-adv">
         <a href=""><img src="{:ADDON_PUBLIC_PATH}/images/adv.png"/></a>
         <div class="close"><img src="{:ADDON_PUBLIC_PATH}/images/close-white.png"/></div>
-    </div>
+    </div>-->
 </div>
 <script type="text/javascript">
+
     mui.init({
         pullRefresh: {
             container: '#pullrefresh',
@@ -190,6 +216,14 @@
             }
         );
     }
+
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            mui('body').on('tap','a',function(){document.location.href=this.href;});
+        });
+    })(mui, document);
+
 </script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-1.10.1.min.js" ></script>
 <script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/app.js" ></script>
