@@ -2369,6 +2369,8 @@ function importFormExcel($attach_id, $column, $dateColumn = array()) {
 		
 		if (! $isempty)
 			$result [$j] = $addData;
+		else
+		    break;  //add this line to avoid endless circulation but the data row shall be full filed.
 	}
 	$res ['status'] = 1;
 	$res ['data'] = $result;
