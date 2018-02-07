@@ -51,10 +51,12 @@ abstract class Controller {
 			
 			$index_3 = strtolower ( MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME );
 			if ($index_3 != 'home/weixin/index') { // 微信客户端请求的用户初始化在home/weixin/index里实现，这里不作处理
-				$info = $this->initPublic ();
-				$this->initUser ( $info );
-				
-				$GLOBALS ['is_wap'] ? $this->initMoblie ( $info ) : $this->initWeb ( $info );
+                if (!$GLOBALS['is_api']) {
+                    $info = $this->initPublic ();
+                    $this->initUser ( $info );
+                }
+
+                $GLOBALS ['is_wap'] ? $this->initMoblie ( $info ) : $this->initWeb ( $info );
 				// 权限验证，原则：开放一切未禁止的页面
 				if ($this->mid > 0 && ! checkRule ( '', $this->mid )) {
 					$this->error ( '您无权访问！' );
@@ -1036,7 +1038,7 @@ abstract class Controller {
 					'like',
 					'%' . htmlspecialchars ( $_REQUEST [$key] ) . '%' 
 			);
-			unset ( $_REQUEST [$key] );  //Should be commented!
+			unset ( $_REQUEST [$key] );
 		}
 		
 		// 条件搜索

@@ -111,7 +111,9 @@ class App {
 		}
 		// weiphp 新增加是否是手机端的判断
 		$GLOBALS ['is_wap'] = isMobile () && (isWeixinBrowser ( 1 ) || strtolower ( $controller_name ) == 'wap');
-		
+		// the global var for api identifying:
+		$GLOBALS ['is_api'] = false;
+
 		if (! preg_match ( '/^[A-Za-z](\/|\w)*$/', $controller_name )) { // 安全检测
 			$module = false;
 		} elseif (C ( 'ACTION_BIND_CLASS' ) && false) {
