@@ -10,14 +10,13 @@
 namespace Addons\Student\Controller;
 use Addons\Student\Model\WxyStudentCareViewModel;
 use Home\Controller\AddonsController;
-require  __DIR__ . "/../../../vendor/autoload.php";
-require  '/home/wwwroot/weiphp30/Addons/Aes/wxBizDataCrypt.php';
-use Qcloud\Sms\SmsSingleSender;
-use Qcloud\Sms\SmsMultiSender;
-use Qcloud\Sms\SmsVoiceVerifyCodeSender;
-use Qcloud\Sms\SmsVoicePromptSender;
-use Qcloud\Sms\SmsStatusPuller;
-use Qcloud\Sms\SmsMobileStatusPuller;
+use Vendor\Qcloud\Sms\SmsSingleSender;
+use Vendor\Qcloud\Sms\SmsSenderUtil;
+//use Qcloud\Sms\SmsMultiSender;
+//use Qcloud\Sms\SmsVoiceVerifyCodeSender;
+//use Qcloud\Sms\SmsVoicePromptSender;
+//use Qcloud\Sms\SmsStatusPuller;
+//use Qcloud\Sms\SmsMobileStatusPuller;
 
 
 class WapController extends AddonsController {
@@ -122,6 +121,7 @@ class WapController extends AddonsController {
         $templateId = 92932;
         $smsSign = "腾讯云";
         $params = [(string)rand(1000,9999)];
+        //require_once(VENDOR_PATH . 'qcloudsms_php/SmsSingleSender.php');
         if (IS_POST) {
             $phoneNumbers[0] =$_POST['phonenum'];
             $openid = $_POST['openid'];
