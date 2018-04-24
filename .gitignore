@@ -13,3 +13,6 @@
 /vendors/*
 /Runtime
 /Uploads
+/.idea
+/Application/Common/Conf
+

@@ -341,16 +341,14 @@
                         $.each(data, function (index, item) {
                             items++;
                             str = ' <div class="panel panel-default"> <div class="panel-heading"> <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse' + items + '"> <div> <p class="omit_show">'
-                            str += '课程：' + item["subject"] + '</p>';
+                            str += '课程：' + item["course_name"] + '</p>';
                             str += '<p  class=" collapse_left ">' + item["classdate"] + '</p>'
                             str += '<p  class="collapse_right " >' + item["teacher"] + '</p> </div> </a> </h4> </div>';
-                            str += '<div id="collapse' + items +'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl">';
-
-                            for (var row in item["score"]) {
-                                str += '<li> <p class="attendance_left">' + item["score"][row]["name"] + '：</p> ';
-                                str += '<p class="attendance_right">' + item["score"][row]["exmscore"] + '</p></li>';
-                            }
-                            str += '</ul> </div> </div> </div>';
+                            str += '<div id="collapse' + items +'" class="panel-collapse collapse"> <div class="panel-body"> <ul class="informationUl"> <li> <p class="attendance_left">课堂表现：</p> ';
+                            str += '<p class="attendance_right">' + item["score1"] + '</p> </li>';
+                            str += '<li> <p class="attendance_left">出勤情况：</p> <p class="attendance_right">' + item["score2"] + '</p> </li> ';
+                            str += '<li> <p class="attendance_left">作业完成：</p> <p class="attendance_right">' + item["score3"] + '</p> </li> ';
+                            str += '<li> <p class="attendance_left">总分：</p> <p class="attendance_right">' + item["exmscore"] + '</p> </li> </ul> </div> </div> </div>';
 
                             $("#wrapper > #scroller > .panel-group").append(str);
                         });

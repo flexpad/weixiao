@@ -14,14 +14,12 @@ class WxyStudentTimeCardModel extends Model{
         parent::__construct ();
     }
 
-
     //增量添加记录
     public function addStudentTimeCard($data){
         $map ['token'] = $data['token'];
         $map ['studentno'] = $data['studentno'];
         //$map['name'] = $data['name'];
-        $RfidModel = D('WxyRfidData');
-        //$RfidModel->where()->find();
+
         $dbData = $this->where($map)->select();
 /*        var_dump('data = ', $data);
         var_dump('---- dbData = ', $dbData);*/

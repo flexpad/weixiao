@@ -76,4 +76,18 @@ class WxyStudentCareModel extends Model{
 
     }
     */
+    public function checksmscode($phonenum,$code,$openid,$update){
+        $key = 'Wxy_checksmscode' .$openid;
+        if ($update === true){
+            $info = array('phonnum'=>$phonenum,'verifycode'=>$code);
+            S ( $key, $info, 86400 );
+        }
+        $info = S ( $key );
+        if ($info === false){
+            return NULL;
+        }
+        else{
+            return $info;
+        }
+    }
 }

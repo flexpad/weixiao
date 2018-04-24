@@ -58,11 +58,11 @@
                 <label class="item-label"><span class="need_flag">*</span>所在班（请输入数字）<span class="check-tips"></span></label>
                 <div class="controls">
                     <input type="text" class="text input-large" name="class_id" id="exam_class" value="1" onchange=get_course_list()>
-                    <!--<button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal" onclick=get_course_list()>课程筛选</button>-->
+                    <button class="btn ajax-post" id="filter" type="filter" target-form="form-horizontal" onclick=get_course_list()>课程筛选</button>
                 </div>
             </div>
 
-            <!--<div class="form-item cf">
+            <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>课程（仅列出最近一年的课程，历史数据编辑可从列表项点击进入）<span class="check-tips"></span></label>
                 <div class="controls">
                     <select name="courseid" id="exam_course">
@@ -71,7 +71,7 @@
                         </volist>
                     </select>
                 </div>
-            </div>-->
+            </div>
             <div class="form-item cf">
                 <label class="item-label"><span class="need_flag">*</span>考试名称<span class="check-tips"></span></label>
                 <div class="controls">
@@ -103,14 +103,6 @@
                   </label>
                 </div>
             </div>
-
-            <div class="form-item cf">
-                <label class="item-label"><span class="need_flag">*</span>是否发送？<span class="check-tips">选择是否同步发送微信通知消息？</span></label>
-                <div class="controls">
-                    <input id = 'msgsend' type="checkbox" name="msgsend" class="checkbox" checked="checked" placeholder="是否发送？" />
-                </div>
-            </div>
-
             <div class="form-item form_bh">
                   <input type="hidden" name="id" value="{$data.id}">
                   <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>

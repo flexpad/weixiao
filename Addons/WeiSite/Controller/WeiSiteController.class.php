@@ -227,7 +227,7 @@ class WeiSiteController extends BaseController {
 
 			$this->_footer ();
 			$this->display ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/TemplateDetail/' . $this->config ['template_detail'] . '/detail.html' );
-        }
+		}
 	}
 
 	// 3G页面底部导航

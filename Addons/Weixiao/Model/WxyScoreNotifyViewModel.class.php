@@ -22,7 +22,7 @@ class WxyScoreNotifyViewModel extends ViewModel {
             'score1'    => 'score1', 
             'score2'    => 'score2', 
             'score3'    => 'score3', 
-            'exmscore'  => 'socreStr',
+            'exmscore'  => 'socreStr', 
             'classdate' =>  'classdate', 
             'comment'   =>  'comment',
             'studentno' => 'studentno'

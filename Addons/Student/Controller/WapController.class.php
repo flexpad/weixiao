@@ -8,9 +8,17 @@
 
 
 namespace Addons\Student\Controller;
-
 use Addons\Student\Model\WxyStudentCareViewModel;
 use Home\Controller\AddonsController;
+require  __DIR__ . "/../../../vendor/autoload.php";
+require  '/home/wwwroot/weiphp30/Addons/Aes/wxBizDataCrypt.php';
+use Qcloud\Sms\SmsSingleSender;
+use Qcloud\Sms\SmsMultiSender;
+use Qcloud\Sms\SmsVoiceVerifyCodeSender;
+use Qcloud\Sms\SmsVoicePromptSender;
+use Qcloud\Sms\SmsStatusPuller;
+use Qcloud\Sms\SmsMobileStatusPuller;
+
 
 class WapController extends AddonsController {
     var $config;
@@ -57,6 +65,159 @@ class WapController extends AddonsController {
         $this->assign ( 'model', $this->model );
         */
 
+    }
+    function define_str_replace($data){
+        return str_replace(' ','+',$data);
+    }
+    function getUserInfo($code,$encryptedData,$iv){
+        $appid='wx01a3ff4c47bc51d9';
+        $secret='d0599a5c8dfba96ea986aa34de371f67';
+        $grant_type='authorization_code';
+        $url='https://api.weixin.qq.com/sns/jscode2session';
+        $url= sprintf("%s?appid=%s&secret=%s&js_code=%s&grant_type=%",$url,$appid,$secret,$code,$grant_type);
+        $user_data=json_decode(file_get_contents($url));
+        $session_key= $this->define_str_replace($user_data->session_key);
+        $data="";
+        $wxBizDataCrypt=new \WXBizDataCrypt($appid,$session_key);
+        $errCode=$wxBizDataCrypt->decryptData($encryptedData,$iv,$data);
+        return ['errCode'=>$errCode,'data'=>json_decode($data),'session_key'=>$session_key];
+    }
+
+    public function weiminilogin() {
+
+        $iv=$this->define_str_replace(I('get.iv'));  //把空格转成+
+        $encryptedData=urldecode(I('get.encryptedData'));   //解码
+        $code=$this->define_str_replace(I('get.code')); //把空格转成+
+        //var_dump($iv,$encryptedData,$code);
+        $msg = $this->getUserInfo($code,$encryptedData,$iv); //获取微信用户信息（openid）
+        //var_dump($msg);
+        if($msg['errCode'] == 0){
+            $open_id = $msg['data']->openId;
+            $ret_state = array('error_code'=>0,'openid'=>$open_id);
+            $this->ajaxReturn($ret_state,'JSON');
+            /*
+            if(!$info||empty($info)){
+                $users_db->addUser(['open_id'=>$open_id,'last_time'=>['exp','now()']]);  //用户信息入库
+                $info=$users_db->getUserInfo($open_id);                                    //获取用户信息
+                $session_id=`head -n 80 /dev/urandom | tr -dc A-Za-z0-9 | head -c 168`;   //生成3rd_session
+                $session_db->addSession(['uid'=>$info['id'],'id'=>$session_id]);  //保存session
+            }
+            if($session_id){
+                $this->ajaxReturn(['error_code'=>0,'sessionid'=>$session_id]);   //把3rd_session返回给客户端
+            }else{
+                $this->ajaxReturn(['error_code'=>0,'sessionid'=>$session_db->getSid($info['id'])]);
+            }
+            */
+
+        }else{
+            $this->ajaxReturn(['error_code'=>1]);
+        }
+    }
+
+
+    var $appid = 1400073365;
+    var $appkey = "e282025aa7463de0645876148a174b56";
+    public function sendonesms(){
+        $phoneNumbers = [''];
+        $templateId = 92932;
+        $smsSign = "腾讯云";
+        $params = [(string)rand(1000,9999)];
+        if (IS_POST) {
+            $phoneNumbers[0] =$_POST['phonenum'];
+            $openid = $_POST['openid'];
+            var_dump($openid,$phoneNumbers);
+            try {
+                $ssender = new SmsSingleSender($this->appid, $this->appkey);
+                $result = $ssender->sendWithParam("86", $phoneNumbers[0], $templateId,
+                    $params, "", "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
+                $rsp = json_decode($result);
+                $ret_state['state'] = 0 ;
+                $ret_state['verifycode'] = $params[0];
+                $studentcare_model = D('WxyStudentCare');
+                $studentcare_model->checksmscode($phoneNumbers[0],$params[0],$openid,true);
+                return  $this->ajaxReturn($ret_state,'JSON');
+            } catch (\Exception $e) {
+                $ret_state = array();
+                $ret_state['state'] = 1;
+                return  $this->ajaxReturn(json_encode($ret_state),'JSON');
+            }
+        }
+    }
+
+    public function verfiycode(){
+        if (IS_POST) {
+            $code = $_POST['code'];
+            $openid = $_POST['openid'];
+            $map2['openid'] = $openid;
+            $studentcare_model = D('WxyStudentCare');
+            $data = $studentcare_model->where($map2)->find();
+
+            $ret_state = array();
+            $ret_state['state'] = 'success';
+            $ret_state['stulist'] = $data;
+            return $this->ajaxReturn($ret_state, 'JSON');
+        }
+    }
+
+    private function update_bind($info){
+        $user['uid'] = $this->uid;
+        $user['openid'] = get_openid();;
+        $studentcare_model = D('WxyStudentCare');
+        $studentcard_model = M('WxyStudentCard');
+        $map1['phone'] = $info['phonnum'];
+        $data = $studentcard_model->where($map1)->select();
+        //var_dump('first serch:',$data);
+        foreach ($data as $value) {
+            $student['studentno'] = $value['studentno'];
+            $student['name'] = $value['name'];
+            $student['phone'] = $value['phone'];
+            $student['token'] = $this->token;
+            //var_dump( $student);
+            $res = $studentcare_model->approve($student, $user, $this->token);
+        }
+        $map2['phone_bck'] = $info['phonnum'];
+        $data = $studentcard_model->where($map2)->select();
+        //var_dump($data);
+        foreach ($data as $value) {
+            $student['studentno'] = $value['studentno'];
+            $student['name'] = $value['name'];
+            $student['phone'] = $value['phone'];
+            $student['token'] = $this->token;
+            //var_dump('2', $value);
+            $res = $studentcare_model->approve($student, $user, $this->token);
+        }
+    }
+
+    public function singin(){
+        $public_id = intval(I('publicid'));
+        $public_id = ($public_id > 0) ? $public_id:1;
+        $openid = get_openid();
+
+        if(IS_POST){
+            $code = $_POST['verifycode'];
+            $ret_state['state'] = 0;
+            $ret_state['info'] = '验证错误！！！';
+            $ret_state['url'] = U('/addon/Student/Wap/infor/publicid/'.$public_id);
+            //var_dump($ret_state['url']);
+            $studentcare_model = D('WxyStudentCare');
+            $info = $studentcare_model->checksmscode(0,$code,$openid,false);
+            if ($info != NULL){
+                if ($info['verifycode'] == $code){
+                    $ret_state['state'] = 1;
+                    $ret_state['info'] = '验证通过';
+                    //var_dump($info);
+                    $this->update_bind($info);
+                }
+            }
+            return $this->ajaxReturn($ret_state, 'JSON');
+        }
+        else{
+            $map['id'] = $public_id;
+            $data = M('public')->where($map)->find();
+            $this->assign('oid', $data['public_name']);
+            $this->assign('openid', $openid);
+            $this->display('singin');
+        }
     }
     public function bind() {
         $openid = get_openid();
