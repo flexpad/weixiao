@@ -35,6 +35,37 @@ class WxyScoreModel extends Model{
             return false;
     }
 
+    public function send_course_comment_to_user($openId, $url, $info, $token) {
+        if ($info == NULL) return false;
+        $map['token'] = $token;
+        $map['msg_type'] = 'course comment';
+        $msg_template = D('WxyWxTemplate')->where($map)->find();
+        $template_id = $msg_template['msg_id'];
+
+        $data = array(
+            "first"         =>  array(
+                'value' => "亲爱的" . $info["stuname"] . "家长，" . $info["stuname"] . "同学在：\n" . $info["course"] . "课程\n学习中的评价情况如下：",
+                'color' => '#0000ff'
+            ),
+            "keyword1"    =>  array(
+                'value' => $info["course"],
+                'color' => '#0000ff'
+            ),
+            "keyword2"          =>  array (
+                'value' => $info['teacher'],
+                'color' => '#0000ff'
+            ),
+            "keyword3"         => array(
+                'value' => $info['date'],
+                'color' => '#0000ff'
+            ),
+            "remark"        =>  array(
+                'value' =>"老师评语：".$info['comment'],
+                'color' => '#008000'
+            )
+        );
+        return $this->send_msg_form($openId, $template_id, $url, $data);
+    }
     public function send_score_to_user($openId, $url, $info, $token, $public_name){
         if ($info == NULL) return false;
         $map['token'] = $token;

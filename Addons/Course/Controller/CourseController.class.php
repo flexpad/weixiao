@@ -202,10 +202,11 @@ class CourseController extends AddonsController{
             $data['courseid'] = ltrim(strstr(I('post.course'), '.', true));
             $data['comment'] = I('post.comment');
             $data['token'] = $this->token;
+            $sendflag = (I('post.msgsend') == "on")?true:false ;
             if (!intval($data['file'])) $this->error("数据文件未上传！");
             $import_model = M('wxy_course_commentsimport');
             $import_model->add($data);
-            if ($this->import_comments_from_excel($data['file'], $data['courseid'], $data['classdate'])) //import student data from uploaded Excel file.
+            if ($this->import_comments_from_excel($data['file'], $data['courseid'], $data['classdate'],$sendflag)) //import student data from uploaded Excel file.
                 $this->success('保存成功！', U ( 'lists'/*'import?model=' . $this->model ['name'], $this->get_param */), 600);
             else
                 $this->error('请检查文件格式');
@@ -220,7 +221,7 @@ class CourseController extends AddonsController{
         }
     }
 
-    private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
+    private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL,$is_send = false) {
         if ($courseid == NULL) return false;
         $data = array();
         $column = array (
@@ -239,16 +240,50 @@ class CourseController extends AddonsController{
         );
         $data = importFormExcel($file_id, $column);
         $score_model = D('WxyCourseComments');
-        //var_dump($student_model);
         if ($data['status']) {
             foreach  ($data['data'] as $row) {
                 $row['token'] = $this->token;
                 $row['courseid'] = $courseid;
                 $score_model->addComments($row);
+                $info = $score_model->verify($row);
+                if ($is_send && ($info != false) && ($info != NULL)) {
+                    $this->send_comment_msg($info);
+                }
             }
             return true;
         }
         else return false;
+    }
+
+    private function send_comment_msg($info = NULL) {
+        if ($info == NULL) return false;
+
+        $map['id'] = intval($info['courseid']);
+        $map['token'] = $info['token'];
+        $model = M('WxyCourse');
+        $course_data = $model->where($map)->find();
+
+        if ($course_data == NULL) return false;
+        $data['course'] = $course_data['name'];
+        $data['teacher'] = $course_data['teacher'];
+        $data['token'] = $info['token'];
+        $data['stuname'] = $info['name'];
+        $data['comment'] = $info['comments_txt'];
+        $data['date'] = $info['timestamp'];
+
+        $map1['studentno'] = $info['studentno'];
+        $map1['token'] = $info['token'];
+        $care_data = M('WxyStudentCare')->where($map1)->select();
+
+        if ($care_data == NULL) return false;
+
+        foreach ( $care_data as $item) {
+            $url = '';
+            D('WxyScore')->send_course_comment_to_user($item['openid'], $url, $data, $info['token']);
+        }
+
+
+        return true;
     }
 
     private function import_data_from_excel($file_id, $courseid = NULL, $classdate = NULL) {
