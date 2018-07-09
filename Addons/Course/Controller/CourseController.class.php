@@ -221,6 +221,55 @@ class CourseController extends AddonsController{
         }
     }
 
+    public function notify() {
+        $id = I('id');
+        $model = M('WxyCourse');
+
+        if (IS_POST) {
+            $sendflag = (I('post.msgsend') == "on")?true:false ;
+            $allflag = (I('post.allfollower') == "on")?true:false ;
+            $info['first_data'] = '本消息反映学校动态，敬请关注。';
+            $course = I('post.course');
+            $info['keyword1_data'] = substr($course, strpos($course, '. ') + 2);
+            $info['remark_data'] = I('post.comment');
+            $base_url = 'http://www.jzk12.com/weiphp30/index.php?s=/addon/WeiSite/WeiSite/detail/id/';
+            $article_id = intval(I('post.msgurl'));
+            if ($article_id == 0)
+                $url = '';
+            else
+                $url = $base_url.strval($article_id);
+            if ($info['remark_data'] == '') {
+                $map['id'] = $article_id;
+                $map['token'] = $this->token;
+                $data = M('custom_reply_news')->where($map)->find();
+                $map['id'] = $data['cate_id'];
+                $cate_data = M('weisite_category')->where($map)->find();
+                $cate_data = ($cate_data == null)?'': '【'. $cate_data['title'] . '】';
+                $info['remark_data'] = $cate_data . $data['title'] . '，点击查看详情：';
+            }
+            if ($allflag && $sendflag) {
+                $info['keyword1_data'] = '所有课程';
+                $info['keyword2_data'] = '全体';
+                $map1['token'] = $this->token;
+                $map1['has_subscribe'] = 1;
+                $map1['uid'] = 348;
+                $user_list = M('public_follow')->where($map1)->select();
+                foreach ($user_list as $user) {
+                    D('WxyCourse')->send_course_notification_to_user($user['openid'], $url, $info, $this->token);
+                }
+                $this->success('消息群发成功！');
+            }
+        }
+        else {
+            if ($id) $map['id'] = $id;
+            $map['token'] = $this->token;
+            $data = $model->where($map)->select();
+            $this->assign('lists', $data);
+            $this->assign('id', $id);
+            $this->display('coursenotify');
+        }
+    }
+
     private function import_comments_from_excel($file_id, $courseid = NULL, $classdate = NULL,$is_send = false) {
         if ($courseid == NULL) return false;
         $data = array();

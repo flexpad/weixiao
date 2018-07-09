@@ -1,0 +1,148 @@
+<extend name="Base/common" />
+<block name="body">
+    <style type="text/css">
+        .money {
+            width: 50px;
+        }
+        .specTable .param {
+            display: none;
+        }
+        .specTable p {
+            display: block;
+            line-height: 50px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .check-tips {
+            color: #aaa;
+            margin-left:2px;
+        }
+        .cf{
+            margin-left:20px;
+        }
+        .class{
+            height: 25px;
+        }
+    </style>
+    <!-- 标签页导航 -->
+    <div class="span9 page_message">
+        <section id="contents">
+            <ul class="tab-nav nav">
+                <li class=""><a href="{:U('lists')}">课程列表</a></li>
+                <li class=""><a href="{:U('edit', 'id='.$id)}">编辑课程<b class="arrow fa fa-sort"></b></a></li>
+                <li class=""><a href="{:U('scoreimport', 'id='.$id)}">成绩导入</a></li>
+                <li class=""><a href="{:U('comment', 'id='.$id)}">评语导入</a></li>
+                <li class="current"><a href="{:U('notify', 'id='.$id)}">课程通知<b class="arrow fa fa-sort"></b></a></li>
+            </ul>
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('notify?model='.$model['id'])}" method="post" class="form-horizontal">
+                    <div class="form-item cf">
+                        <label class="item-label">群发所有微信关注者？<span class="check-tips">选中此项将群发所有关注者，请谨慎选择！！！</span></label>
+                        <div class="controls">
+                            <input id = 'allfollower' type="checkbox" name="allfollower" class="checkbox" checked="unchecked" placeholder="是否发送？" />
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>课程（仅列出最近一年的课程，历史数据编辑可从列表项点击进入）<span class="check-tips"></span></label>
+                        <div class="controls">
+                            <select name="course" id="coursesel">
+                                <volist name="lists" id="vo">
+                                    <option>{$vo.id}. {$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>消息链接ID<span class="check-tips">跳转链接，对应微网站文章ID，请谨慎核对确认无误！！！</span></label>
+                        <div class="controls">
+                            <input type="text" class="text input-large" name="msgurl" value="">
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>通知内容<span class="check-tips">群发模板消息内容，请谨慎编辑内容，确认无误，为空则去文章标题！！！</span></label>
+                        <div class="controls">
+                            <span class="need_flag">*</span>内容模板
+                            <div style="margin-left: 40px;">
+                                <span class="check-tips">
+                                    {{first.DATA}} <br>
+                                    课程：{{keyword1.DATA}} <br>
+                                    参加人：{{keyword2.DATA}} <br>
+                                    {{remark.DATA}} <br>
+                                </span>
+                            </div>
+                        </div>
+                        <label class="item-label">在发送时，内容中的参数（{{remark.DATA}}内为参数）将被赋值替换为下面录入的信息：</label>
+                        <div class="controls">
+                            <label class="textarea input-large">
+                                <textarea class="text input-large" id="notifytxt" name="comment" >{$data.notify}</textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-item cf">
+                        <label class="item-label"><span class="need_flag">*</span>是否发送？<span class="check-tips">选中此项才能群发微信通知消息。</span></label>
+                        <div class="controls">
+                            <input id = 'msgsend' type="checkbox" name="msgsend" class="checkbox" checked="checked" placeholder="是否发送？" />
+                        </div>
+                    </div>
+                    <div class="form-item form_bh">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">发 送</button>
+                    </div>
+                </form>
+            </div>
+
+
+    </div>
+    </section>
+    </div>
+    </div>
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <php> if(C('COLOR_STYLE')=='blue_color') echo '
+        <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+        '; </php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $('#submit').click(function(){
+            $('#form').submit();
+        });
+
+        $('#allfollower').click(function() {
+            if ($('#allfollower').prop("checked")) {
+                $('#coursesel').hide();/*.css('display','block')*/;
+            }
+            else if(!$('#allfollower').prop("checked")){
+                $('#coursesel').show();
+            }
+        });
+
+        $(function(){
+            initUploadFile();
+            $("#allfollower").attr("checked",false);
+
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            showTab();
+            //hide_move();
+
+            $('.select_type').each(function(){ select_type(this); });
+            $('.select_type').change(function(){ select_type(this); });
+        });
+
+    </script>
+</block>
