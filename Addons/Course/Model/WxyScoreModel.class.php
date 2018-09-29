@@ -41,10 +41,11 @@ class WxyScoreModel extends Model{
         $map['msg_type'] = 'course comment';
         $msg_template = D('WxyWxTemplate')->where($map)->find();
         $template_id = $msg_template['msg_id'];
+        $commentor = ($info['teacher'] == NULL) || ($info['teacher'] == '') ? '学校教务' : $info['teacher'];
 
         $data = array(
             "first"         =>  array(
-                'value' => "亲爱的" . $info["stuname"] . "家长，" . $info["stuname"] . "同学在：\n" . $info["course"] . "课程\n学习中的评价情况如下：",
+                'value' => "亲爱的家长，" . $info["stuname"] . "同学的最新课程评语如下：",
                 'color' => '#0000ff'
             ),
             "keyword1"    =>  array(
@@ -52,7 +53,7 @@ class WxyScoreModel extends Model{
                 'color' => '#0000ff'
             ),
             "keyword2"          =>  array (
-                'value' => $info['teacher'],
+                'value' => $commentor,
                 'color' => '#0000ff'
             ),
             "keyword3"         => array(

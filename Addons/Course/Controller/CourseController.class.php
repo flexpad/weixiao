@@ -233,11 +233,15 @@ class CourseController extends AddonsController{
             $info['keyword1_data'] = substr($course, strpos($course, '. ') + 2);
             $info['remark_data'] = I('post.comment');
             $base_url = 'http://www.jzk12.com/weiphp30/index.php?s=/addon/WeiSite/WeiSite/detail/id/';
-            $article_id = intval(I('post.msgurl'));
-            if ($article_id == 0)
-                $url = '';
-            else
-                $url = $base_url.strval($article_id);
+            if (strlen(I('post.msgurl')) < 9) {
+                $article_id = intval(I('post.msgurl'));
+                if ($article_id == 0) $url = '';
+                else
+                    $url = $base_url . strval($article_id);
+            } else {
+                $url = I('post.msgurl');
+            }
+            /*dump ($url);*/
             if ($info['remark_data'] == '') {
                 $map['id'] = $article_id;
                 $map['token'] = $this->token;
@@ -248,16 +252,22 @@ class CourseController extends AddonsController{
                 $info['remark_data'] = $cate_data . $data['title'] . '，点击查看详情：';
             }
             if ($allflag && $sendflag) {
-                $info['keyword1_data'] = '所有课程';
-                $info['keyword2_data'] = '全体';
-                $map1['token'] = $this->token;
-                $map1['has_subscribe'] = 1;
-                $map1['uid'] = 348;
-                $user_list = M('public_follow')->where($map1)->select();
-                foreach ($user_list as $user) {
-                    D('WxyCourse')->send_course_notification_to_user($user['openid'], $url, $info, $this->token);
+                if ($url == '')
+                    $this->error('文章链接不存在，不能群发此消息！');
+                else {
+                    $info['keyword1_data'] = '所有课程';
+                    $info['keyword2_data'] = '全体';
+                    $map1['token'] = $this->token;
+                    $map1['has_subscribe'] = 1;
+                    //$map1['uid'] = 348;
+                    $user_list = M('public_follow')->where($map1)->select();
+                    foreach ($user_list as $user) {
+                        $resstr = D('WxyCourse')->send_course_notification_to_user($user['openid'], $url, $info, $this->token);
+                        //dump($resstr);
+                    }
+
+                    $this->success('消息群发成功！');
                 }
-                $this->success('消息群发成功！');
             }
         }
         else {
@@ -458,5 +468,23 @@ class CourseController extends AddonsController{
         }
         else return false;
     }
-    
+
+    function post($url, $param=array()){
+        if(!is_array($param)){
+            throw new Exception("参数必须为array");
+        }
+        $httph =curl_init($url);
+        curl_setopt($httph, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($httph, CURLOPT_SSL_VERIFYHOST, 1);
+        curl_setopt($httph,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($httph, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+        curl_setopt($httph, CURLOPT_POST, 1);//设置为POST方式
+        curl_setopt($httph, CURLOPT_POSTFIELDS, $param);
+        curl_setopt($httph, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($httph, CURLOPT_HEADER,1);
+        $rst=curl_exec($httph);
+        curl_close($httph);
+
+        return $rst;
+    }
 }

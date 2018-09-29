@@ -356,8 +356,13 @@ class DailyTimeController extends AddonsController
                     $info['name'] = M('WxyStudentTimeCard')->where($map)->select()[0]['name'];
                     $info['stuId'] = $data['studentID'];
                     $info['attendTime'] = $record['TIME'];
-                    $info['attendState'] = ($response['status']=='newRecord: record arriveTime.')?'到校签到':'离校签到';
-                    D('WxyDailyTime')->send_attend_to_user($openid, $url, $info);
+                    $zero1= date("y-m-d h:i:s");
+                    $zero2= $info['attendTime'];
+                    $delta_day = abs(ceil(($zero1-$zero2)/86400)); //过期时间超过3天的记录就不再发通知了。
+                    if($delta_day <= 3 ){
+                        $info['attendState'] = ($response['status']=='newRecord: record arriveTime.')?'到校签到':'离校签到';
+                        D('WxyDailyTime')->send_attend_to_user($openid, $url, $info);
+                    }
                 }
             }
         }

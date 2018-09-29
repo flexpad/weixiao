@@ -365,7 +365,7 @@ class WapController extends AddonsController {
 
         $data = $model->where($map)->select();
         if ($data == NULL)
-            $this->error("你尚未关注我校学生，请返回关注后再查询成绩！");
+            $this->error("未查到该生的成绩，系统将自动返回！");
 
         /*
         $i = 1;
@@ -537,6 +537,8 @@ class WapController extends AddonsController {
                 $data[$key]['leaveTime'] = date('Y-m-d H:i:s',$vo['leaveTime']);
             else
                 $data[$key]['leaveTime'] = '-------------';
+            if ($vo['description'] == Null)
+                $data[$key]['description'] = '';
             $data[$key]['state'] = $state[(int)$data[$key]['state']];
         }
         $this->assign('data', $data);
@@ -582,6 +584,8 @@ class WapController extends AddonsController {
                 $data[$key]['leaveTime'] = date('Y-m-d H:i:s',$vo['leaveTime']);
             else
                 $data[$key]['leaveTime'] = '-------------';
+            if ($vo['description'] == Null)
+                $data[$key]['description'] = '';
             $data[$key]['state'] = $state[(int)$data[$key]['state']];
         }
         $this->ajaxReturn($data,'JSON');
