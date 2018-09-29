@@ -2488,7 +2488,7 @@ CREATE TABLE `wp_custom_reply_news` (
   `intro` text COMMENT '简介',
   `cate_id` int(10) unsigned DEFAULT '0' COMMENT '所属类别',
   `cover` int(10) unsigned DEFAULT NULL COMMENT '封面图片',
-  `content` text COMMENT '内容',
+  `content` mediumtext COMMENT '内容',
   `cTime` int(10) DEFAULT NULL COMMENT '发布时间',
   `sort` int(10) unsigned DEFAULT '0' COMMENT '排序号',
   `view_count` int(10) unsigned DEFAULT '0' COMMENT '浏览数',

@@ -385,7 +385,8 @@ class UserModel extends Model {
 	}
 	function _deal_nickname($data, $type = 0) {
 		if (isset ( $data ['nickname'] )) {
-			$data ['nickname'] = deal_emoji ( $data ['nickname'], $type );
+            $data ['nickname']= mb_convert_encoding ( $data ['nickname'], 'UTF-8' );
+		    //$data ['nickname'] = deal_emoji ( $data ['nickname'], $type );
 		}
 		
 		return $data;
