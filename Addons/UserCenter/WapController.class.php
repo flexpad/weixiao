@@ -117,18 +117,21 @@ class WapController extends AddonsController {
 			
 			$map ['mobile'] = I ( 'mobile' );
 			$dao = D ( 'Common/Follow' );
+
+            $token = get_token();
+            $openid = get_openid();
+
 			// 判断是否已经注册过
 			$user = $dao->where ( $map )->find ();
 			if (! $user) {
-				$uid = $dao->init_follow_by_mobile ( $map ['mobile'] );
+				$uid = $dao->init_follow_by_mobile ( $token, $openid, $map ['mobile'] );
 				$dao->where ( $map )->setField ( 'status', 0 );
-				
 				$user = $dao->where ( $map )->find ();
 			}
 			
-			$map2 ['openid'] = get_openid ();
+			$map2 ['openid'] = $openid;
 			if ($map2 ['openid'] != - 1) {
-				$map2 ['token'] = get_token ();
+				$map2 ['token'] = $token;
 				$uid2 = M ( 'public_follow' )->where ( $map2 )->getField ( 'uid' );
 				if (! $uid2) {
 					$map2 ['mobile'] = $map ['mobile'];

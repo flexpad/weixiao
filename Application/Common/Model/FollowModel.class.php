@@ -58,6 +58,60 @@ class FollowModel extends Model {
 		
 		return $uid;
 	}
+
+	function init_follow_by_mobile ( $token = '', $openid, $mobile, $has_subscribe = false) {
+        empty ( $token ) && $token = get_token ();
+
+        if (empty ( $openid ) || $openid == - 1 || empty ( $token ) || $token == - 1)
+            return false;
+
+        $umap ['token'] = $data ['token'] = $token;
+        $umap ['openid'] = $data ['openid'] = $openid;
+        $datas = $data;
+        $user = M ( 'public_follow' )->where ( $umap )->find();
+
+        $uid  = isset($user['uid'])? $user['uid'] : 0;
+
+		if ($uid > 0) {
+        	$user['mobile'] = $mobile;
+            M ( 'public_follow' )->where ( $umap )->save($user);
+            return $uid;
+        }
+
+        // 自动注册
+        $config = getAddonConfig ( 'UserCenter', $token );
+		unset($user);
+        $user = array (
+            'experience' => intval ( $config ['experience'] ),
+            'score' => intval ( $config ['score'] ),
+
+            'reg_ip' => get_client_ip ( 1 ),
+            'reg_time' => NOW_TIME,
+            'last_login_ip' => get_client_ip ( 1 ),
+            'last_login_time' => NOW_TIME,
+
+            'status' => 1,
+            'is_init' => 1,
+            'is_audit' => 1,
+            'come_from' => 1
+        );
+        $user2 = getWeixinUserInfo ( $openid );
+
+        $user = array_merge ( $user, $user2 );
+        $user['headimgurl']=str_replace('http:', '', $user['headimgurl']);
+        $user['mobile'] = $mobile;
+        $data ['uid'] = D ( 'Common/User' )->add ( $user ); //Need to user new method to deal with emoji
+
+        if ($has_subscribe !== false) {
+            $data ['has_subscribe'] = $has_subscribe;
+        }
+        if ($uid == 0) {
+            M ( 'public_follow' )->where ( $umap )->save ( $data );
+        } else {
+			M ( 'public_follow' )->add ( $data );
+        }
+        return $uid;
+	}
 	
 	/**
 	 * 兼容旧的写法

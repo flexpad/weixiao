@@ -50,7 +50,7 @@
     }
     .omit_show{
         display: inline-block;
-        width: 50%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
+        width: 80%; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left: 15px;
     }
     .am-list>li>a{
         line-height: 1;
@@ -105,7 +105,7 @@
         <if condition="($vo.courseid neq $courseid)">
             <li class="am-panel" id="ap_{$vo.courseid}">
                 <a data-am-collapse="{parent: '#collapase-nav-1', target: '#c-nav{$vo.courseid}'}">
-                    <span class="omit_show">{$vo.course_name} </span><span class="sp_time">【{$vo.classdate}】</span><i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    <span class="omit_show">{$vo.course_name} </span><i class="am-icon-angle-right am-fr am-margin-right"></i>
                 </a>
             <ul class="am-list am-collapse admin-sidebar-sub" id="c-nav{$vo.courseid}">
         </if>
