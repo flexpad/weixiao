@@ -9,7 +9,7 @@ class WeiSiteController extends BaseController {
 		$public_info = get_token_appinfo ();
 		$normal_tips = '在微信里回复“微官网”即可以查看效果,也可以点击：<a href="' . addons_url ( 'WeiSite://WeiSite/index', array (
 				'publicid' => $public_info ['id']
-		) ) . '">预览</a>， <a id="copyLink" data-clipboard-text="' . addons_url ( 'WeiSite://WeiSite/index', array (
+		) ) . '">预览</a>ﺿ<a id="copyLink" data-clipboard-text="' . addons_url ( 'WeiSite://WeiSite/index', array (
 				'publicid' => $public_info ['id']
 		) ) . '">复制链接</a><script type="application/javascript">$.WeiPHP.initCopyBtn("copyLink");</script>';
 		$this->assign ( 'normal_tips', $normal_tips );
@@ -46,7 +46,7 @@ class WeiSiteController extends BaseController {
 		} else {
 			$map1 ['token'] = $map ['token'] = get_token ();
 			$map1 ['is_show'] = $map ['is_show'] = 1;
-			$map ['pid'] = 0; // 获取一级分类
+			$map ['pid'] = 0; // 获取一级分篿
 
 			// 分类
 			$category = M ( 'weisite_category' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
@@ -58,7 +58,7 @@ class WeiSiteController extends BaseController {
 			}
 			$this->assign ( 'category', $category );
 			// dump($category);
-			// 幻灯片
+			// 幻灯燿
 			$slideshow = M ( 'weisite_slideshow' )->where ( $map1 )->order ( 'sort asc, id desc' )->select ();
 			foreach ( $slideshow as &$vo ) {
 				$vo ['img'] = get_cover_url ( $vo ['img'] );
@@ -117,7 +117,7 @@ class WeiSiteController extends BaseController {
 					) );
 				}
 				$this->assign ( 'category', $category );
-				// 幻灯片
+				// 幻灯燿
 
 				$slideshow = M ( 'weisite_slideshow' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 				foreach ( $slideshow as &$vo ) {
@@ -207,8 +207,14 @@ class WeiSiteController extends BaseController {
 			}
 		}
 	}
+    private function trimall($str)  //删除空格
+    {
+        $oldchar=array(" ","　","\t","\n","\r","　");
+        $newchar=array("","","","","","");
+        return str_replace($oldchar,$newchar,$str);
+    }
 	// 详情
-	function detail() {
+    function detail() {
 		if (file_exists ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html' )) {
 			$this->pigcms_detail ();
 			$this->display ( ONETHINK_ADDON_PATH . 'WeiSite/View/default/pigcms/Index_' . $this->config ['template_detail'] . '.html' );
@@ -222,6 +228,15 @@ class WeiSiteController extends BaseController {
 			// dump($info);exit;
 			$this->assign ( 'info', $info );
 			$this->assign ('page_title',$info['title']);
+			$content = strip_tags($info['content']);
+            $pattern = '/\s/';
+            $content = preg_replace($pattern, '', $content);
+            $content = $this->trimall($content);
+            $content = mb_substr($content, 0, 80);
+
+			$this->assign ('brief_intro',$content.'...');
+			$this->assign ('cover',$info['cover']);
+			//var_dump($this->config ['template_detail']);
 			//dump($info['title']);
 			M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
 
@@ -302,13 +317,13 @@ class WeiSiteController extends BaseController {
 	/*
 	 * 兼容小猪CMS模板
 	 *
-	 * 移植方法：
-	 * 1、把 tpl\static\tpl 目录下的所有文档复制到 weiphp的 Addons\WeiSite\View\default\pigcms 目录下
-	 * 2、把 tpl\Wap\default 目录下的所有文档也复制到 weiphp的 Addons\WeiSite\View\default\pigcms 目录下
-	 * 3、把 tpl\User\default\common\ 目录下的所有图片文件复制到 weiphp的 Addons\WeiSite\View\default\pigcms 目录下
-	 * 4、把 PigCms\Lib\ORG\index.Tpl.php 文件复制到 weiphp的 Addons\WeiSite\View\default\pigcms 目录下
-	 * 5、把pigcms 目录下所有文档代码里的 Wap/Index/lists 替换成 Home/Addons/execute?_addons=WeiSite&_controller=WeiSite&_action=lists
-	 * 6、把pigcms 目录下所有文档代码里的 Wap/Index/index 替换成 Home/Addons/execute?_addons=WeiSite&_controller=WeiSite&_action=index
+	 * 移植方法ﺿ
+	 * 1、把 tpl\static\tpl 目录下的所有文档复制到 weiphp瘿Addons\WeiSite\View\default\pigcms 目录䶿
+	 * 2、把 tpl\Wap\default 目录下的所有文档也复制冿weiphp瘿Addons\WeiSite\View\default\pigcms 目录䶿
+	 * 3、把 tpl\User\default\common\ 目录下的所有图片文件复制到 weiphp瘿Addons\WeiSite\View\default\pigcms 目录䶿
+	 * 4、把 PigCms\Lib\ORG\index.Tpl.php 文件复制冿weiphp瘿Addons\WeiSite\View\default\pigcms 目录䶿
+	 * 5、把pigcms 目录下所有文档代码里瘿Wap/Index/lists 替换憿Home/Addons/execute?_addons=WeiSite&_controller=WeiSite&_action=lists
+	 * 6、把pigcms 目录下所有文档代码里瘿Wap/Index/index 替换憿Home/Addons/execute?_addons=WeiSite&_controller=WeiSite&_action=index
 	 */
 	function pigcms_init() {
 		// dump ( 'pigcms_init' );
@@ -365,7 +380,7 @@ class WeiSiteController extends BaseController {
 				'remark' => ''
 		);
 
-		// 微网站配置信息
+		// 微网站配置信忿
 		$data ['homeInfo'] = array (
 				'id' => $manager ['uid'],
 				'token' => $public_info ['token'],
@@ -382,7 +397,7 @@ class WeiSiteController extends BaseController {
 				'logo' => get_cover_url ( $this->config ['cover'] )
 		);
 
-		// 背景图
+		// 背景噿
 		$bgarr = $this->config ['background_arr'];
 		$data ['flashbgcount'] = count ( $bgarr );
 		foreach ( $bgarr as $bg ) {
@@ -406,7 +421,7 @@ class WeiSiteController extends BaseController {
 		$data ['flashbgcount'] = count ( $data ['flashbg'] );
 		$map ['token'] = get_token ();
 		$map ['is_show'] = 1;
-		// 幻灯片
+		// 幻灯燿
 		$slideshow = M ( 'weisite_slideshow' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 		foreach ( $slideshow as $vo ) {
 			$data ['flash'] [] = array (
@@ -420,7 +435,7 @@ class WeiSiteController extends BaseController {
 		}
 		$data ['num'] = count ( $data ['flash'] );
 
-		// 底部栏
+		// 底部枿
 		$this->_footer ( 'pigcms' );
 
 		// 设置版权信息
@@ -553,6 +568,7 @@ class WeiSiteController extends BaseController {
 		}
 		$res = $this->_deal_news ( $res, 1 );
 		$this->assign ( 'res', $res );
+		var_dump($res);
 		M ( 'custom_reply_news' )->where ( $map )->setInc ( 'view_count' );
 
 		$map2 ['cate_id'] = $res ['cate_id'];
@@ -570,7 +586,7 @@ class WeiSiteController extends BaseController {
 	function _pigcms_cate($pid = null) {
 		$map ['token'] = get_token ();
 		$map ['is_show'] = 1;
-		$pid === null || $map ['pid'] = $pid; // 获取一级分类
+		$pid === null || $map ['pid'] = $pid; // 获取一级分篿
 
 		$category = M ( 'weisite_category' )->where ( $map )->order ( 'sort asc, id desc' )->select ();
 		$count = count ( $category );

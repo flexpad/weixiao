@@ -13,6 +13,14 @@
                 {$info.content|htmlspecialchars_decode}
         </section>
     </div>
+    <script type="text/javascript">
+			$.WeiPHP.initWxShare({
+			  title: "{$page_title}",
+			  imgUrl: "{$info.cover|get_cover_url}",
+			  desc: "{$brief_intro}",
+			  link: window.location.href
+			})
+     </script>
 </div>
 <!-- 底部导航 -->
 {$footer_html}
